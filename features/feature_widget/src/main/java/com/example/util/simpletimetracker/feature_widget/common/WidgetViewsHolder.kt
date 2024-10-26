@@ -1,4 +1,4 @@
-package com.example.util.simpletimetracker.feature_widget.interactor
+package com.example.util.simpletimetracker.feature_widget.common
 
 import android.content.Context
 import android.view.ContextThemeWrapper

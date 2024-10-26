@@ -132,7 +132,7 @@ abstract class ChangeRecordBaseViewModel(
 
     protected abstract suspend fun updatePreview()
     protected abstract fun getChangeCategoryParams(data: ChangeTagData): ChangeRecordTagFromScreen
-    protected abstract suspend fun onSaveClickDelegate()
+    protected abstract suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit = {})
     protected open suspend fun sendPreviewUpdate(fullUpdate: Boolean) {}
     protected abstract val forceSecondsInDurationDialog: Boolean
     protected abstract val mergeAvailable: Boolean
@@ -776,14 +776,14 @@ abstract class ChangeRecordBaseViewModel(
                         showTimeEndedOnSplitPreview = showTimeEndedOnSplitPreview,
                     ),
                     duplicateParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.DuplicateParams(
-                        isAdditionalActionsAvailable = isAdditionalActionsAvailable,
+                        isAvailable = isAdditionalActionsAvailable,
                     ),
                     continueParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.ContinueParams(
                         originalRecordId = originalRecordId,
-                        isAdditionalActionsAvailable = isAdditionalActionsAvailable,
+                        isAvailable = isAdditionalActionsAvailable,
                     ),
                     repeatParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.RepeatParams(
-                        isAdditionalActionsAvailable = isAdditionalActionsAvailable,
+                        isAvailable = isAdditionalActionsAvailable,
                     ),
                     adjustParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.AdjustParams(
                         originalRecordId = originalRecordId,
@@ -816,8 +816,8 @@ abstract class ChangeRecordBaseViewModel(
                 )
             }
 
-            override suspend fun onSaveClickDelegate() {
-                this@ChangeRecordBaseViewModel.onSaveClickDelegate()
+            override suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit) {
+                this@ChangeRecordBaseViewModel.onSaveClickDelegate(doAfter)
             }
 
             override suspend fun onSplitComplete() {

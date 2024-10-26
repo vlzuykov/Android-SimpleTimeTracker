@@ -160,9 +160,8 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             runningRecordInteractor.getAll().forEach {
                 removeRunningRecordMediator.removeWithRecordAdd(it)
             }
-            // TODO RETRO update widgets
-            // TODO RETRO update notifs
-            // TODO RETRO update wear
+            // TODO do not update widgets if there was running records?
+            externalViewsInteractor.onRetroactiveTrackingModeChange()
         }
     }
 

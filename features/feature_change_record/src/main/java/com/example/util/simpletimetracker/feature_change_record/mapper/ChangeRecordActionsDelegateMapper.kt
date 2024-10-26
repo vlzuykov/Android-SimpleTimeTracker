@@ -86,8 +86,8 @@ class ChangeRecordActionsDelegateMapper @Inject constructor() {
                 updateViewData()
             }
 
-            override suspend fun onSaveClickDelegate() {
-                parent?.onSaveClickDelegate()
+            override suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit) {
+                parent?.onSaveClickDelegate(doAfter)
             }
         }
     }
@@ -163,7 +163,7 @@ class ChangeRecordActionsDelegateMapper @Inject constructor() {
             newTimeStarted = baseParams.newTimeStarted,
             newComment = baseParams.newComment,
             newCategoryIds = baseParams.newCategoryIds,
-            isAdditionalActionsAvailable = continueParams.isAdditionalActionsAvailable,
+            isAvailable = continueParams.isAvailable,
             isButtonEnabled = baseParams.isButtonEnabled,
         )
     }
@@ -173,7 +173,7 @@ class ChangeRecordActionsDelegateMapper @Inject constructor() {
             newTypeId = baseParams.newTypeId,
             newComment = baseParams.newComment,
             newCategoryIds = baseParams.newCategoryIds,
-            isAdditionalActionsAvailable = repeatParams.isAdditionalActionsAvailable,
+            isAvailable = repeatParams.isAvailable,
             isButtonEnabled = baseParams.isButtonEnabled,
         )
     }
@@ -185,7 +185,7 @@ class ChangeRecordActionsDelegateMapper @Inject constructor() {
             newTimeEnded = baseParams.newTimeEnded,
             newComment = baseParams.newComment,
             newCategoryIds = baseParams.newCategoryIds,
-            isAdditionalActionsAvailable = duplicateParams.isAdditionalActionsAvailable,
+            isAvailable = duplicateParams.isAvailable,
             isButtonEnabled = baseParams.isButtonEnabled,
         )
     }

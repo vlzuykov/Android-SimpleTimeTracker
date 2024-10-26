@@ -81,11 +81,12 @@ class RecordInteractor @Inject constructor(
 
     suspend fun addFromRunning(
         runningRecord: RunningRecord,
+        timeEnded: Long,
     ) {
         Record(
             typeId = runningRecord.id,
             timeStarted = runningRecord.timeStarted,
-            timeEnded = System.currentTimeMillis(),
+            timeEnded = timeEnded,
             comment = runningRecord.comment,
             tagIds = runningRecord.tagIds,
         ).let {

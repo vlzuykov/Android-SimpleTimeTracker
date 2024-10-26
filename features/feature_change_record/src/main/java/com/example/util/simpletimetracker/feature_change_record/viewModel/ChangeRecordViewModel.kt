@@ -120,7 +120,9 @@ class ChangeRecordViewModel @Inject constructor(
         )
     }
 
-    override suspend fun onSaveClickDelegate() {
+    override suspend fun onSaveClickDelegate(
+        doAfter: suspend () -> Unit,
+    ) {
         // Zero id creates new record
         val id = recordId.orZero()
         Record(
@@ -135,6 +137,7 @@ class ChangeRecordViewModel @Inject constructor(
             if (newTypeId != originalTypeId) {
                 externalViewsInteractor.onRecordChangeType(originalTypeId)
             }
+            doAfter()
             warmupCache(extra.daysFromToday)
             router.back()
         }

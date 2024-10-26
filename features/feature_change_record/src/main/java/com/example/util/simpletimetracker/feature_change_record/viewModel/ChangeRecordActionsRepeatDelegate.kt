@@ -32,19 +32,22 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
 
     suspend fun onRepeatClickDelegate() {
         val params = parent?.getViewDataParams() ?: return
-        recordActionRepeatMediator.execute(
-            typeId = params.newTypeId,
-            comment = params.newComment,
-            tagIds = params.newCategoryIds,
-        )
         // Exit.
-        parent?.onSaveClickDelegate()
+        parent?.onSaveClickDelegate(
+            doAfter = {
+                recordActionRepeatMediator.execute(
+                    typeId = params.newTypeId,
+                    comment = params.newComment,
+                    tagIds = params.newCategoryIds,
+                )
+            }
+        )
     }
 
     private fun loadRepeatViewData(): List<ViewHolderType> {
         val params = parent?.getViewDataParams()
             ?: return emptyList()
-        if (!params.isAdditionalActionsAvailable) return emptyList()
+        if (!params.isAvailable) return emptyList()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
@@ -64,13 +67,13 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
 
         fun getViewDataParams(): ViewDataParams?
         fun update()
-        suspend fun onSaveClickDelegate()
+        suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit)
 
         data class ViewDataParams(
             val newTypeId: Long,
             val newComment: String,
             val newCategoryIds: List<Long>,
-            val isAdditionalActionsAvailable: Boolean,
+            val isAvailable: Boolean,
             val isButtonEnabled: Boolean,
         )
     }

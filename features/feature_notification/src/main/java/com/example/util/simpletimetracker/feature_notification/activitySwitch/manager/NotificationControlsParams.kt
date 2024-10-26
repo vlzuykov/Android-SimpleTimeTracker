@@ -6,7 +6,7 @@ sealed interface NotificationControlsParams {
     object Disabled : NotificationControlsParams
 
     data class Enabled(
-        val hintIsVisible: Boolean,
+        val hint: String,
         val types: List<Type>,
         val typesShift: Int,
         val tags: List<Tag>,

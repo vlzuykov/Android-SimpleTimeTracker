@@ -27,7 +27,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
 ) {
 
     fun getControls(
-        hintIsVisible: Boolean,
+        hint: String,
         isDarkTheme: Boolean,
         types: List<RecordType>,
         runningRecords: List<RunningRecord> = emptyList(),
@@ -103,7 +103,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
                 }
             }
         return NotificationControlsParams.Enabled(
-            hintIsVisible = hintIsVisible,
+            hint = hint,
             types = repeatButtonViewData + typesViewData,
             typesShift = typesShift,
             tags = tagsViewData,

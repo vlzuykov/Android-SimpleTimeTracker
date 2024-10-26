@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/running_records_empty"
         android:textSize="11sp"
-        android:visibility="visible" />
+        android:visibility="gone"
+        tools:text="Controls hint"
+        tools:visibility="visible" />
 
     <RelativeLayout
         android:id="@+id/containerNotificationTypesPrev"

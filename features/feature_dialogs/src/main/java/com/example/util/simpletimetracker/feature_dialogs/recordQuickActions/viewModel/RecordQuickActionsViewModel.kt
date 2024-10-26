@@ -11,6 +11,7 @@ import com.example.util.simpletimetracker.core.extension.toViewData
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordActionContinueMediator
 import com.example.util.simpletimetracker.domain.interactor.RecordActionDuplicateMediator
 import com.example.util.simpletimetracker.domain.interactor.RecordActionMergeMediator
@@ -33,6 +34,7 @@ import javax.inject.Inject
 class RecordQuickActionsViewModel @Inject constructor(
     private val router: Router,
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val recordInteractor: RecordInteractor,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
     private val recordActionDuplicateMediator: RecordActionDuplicateMediator,
@@ -200,14 +202,17 @@ class RecordQuickActionsViewModel @Inject constructor(
         router.back()
     }
 
-    private fun loadState(): RecordQuickActionsState {
+    private suspend fun loadState(): RecordQuickActionsState {
+        val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
+
         val buttons = when (extra.type) {
-            is Type.RecordTracked -> listOf(
+            is Type.RecordTracked -> listOfNotNull(
                 RecordQuickActionsState.Button.Statistics(false),
                 RecordQuickActionsState.Button.Delete(false),
-                RecordQuickActionsState.Button.Continue(false),
+                RecordQuickActionsState.Button.Continue(false)
+                    .takeIf { !retroactiveTrackingModeEnabled },
                 RecordQuickActionsState.Button.Repeat(false),
-                RecordQuickActionsState.Button.Duplicate(true),
+                RecordQuickActionsState.Button.Duplicate(!retroactiveTrackingModeEnabled),
             )
             is Type.RecordUntracked -> listOf(
                 RecordQuickActionsState.Button.Statistics(false),

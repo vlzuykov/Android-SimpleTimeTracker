@@ -14,6 +14,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
     private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
     private val widgetInteractor: WidgetInteractor,
     private val wearInteractor: WearInteractor,
+    private val prefsInteractor: PrefsInteractor,
 ) {
 
     // Also removes running records and records.
@@ -28,10 +29,12 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.GoalCancel(RecordTypeGoal.IdData.Type(typeId)),
             Update.GoalReschedule(runningRecordIds + typeId),
             Update.WidgetStatistics,
-            Update.WidgetSingleType(typeId),
+            Update.WidgetSingleTypes.takeIf { getRetroactiveTrackingMode() }
+                ?: Update.WidgetSingleType(typeId),
+            Update.WidgetUniversal.takeIf { getRetroactiveTrackingMode() },
             Update.Wear.takeIf { !fromArchive },
             Update.NotificationTypes.takeIf { !fromArchive },
-            Update.NotificationWithControls.takeIf { !fromArchive }
+            Update.NotificationWithControls.takeIf { !fromArchive },
         )
     }
 
@@ -133,7 +136,9 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.NotificationWithControls,
             Update.GoalReschedule(listOf(typeId)),
             Update.WidgetStatistics,
-            Update.WidgetSingleType(typeId),
+            Update.WidgetSingleTypes.takeIf { getRetroactiveTrackingMode() }
+                ?: Update.WidgetSingleType(typeId),
+            Update.WidgetUniversal.takeIf { getRetroactiveTrackingMode() },
         )
     }
 
@@ -146,7 +151,9 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.NotificationWithControls.takeIf { updateNotificationSwitch },
             Update.GoalReschedule(listOf(typeId)),
             Update.WidgetStatistics,
-            Update.WidgetSingleType(typeId),
+            Update.WidgetSingleTypes.takeIf { getRetroactiveTrackingMode() }
+                ?: Update.WidgetSingleType(typeId),
+            Update.WidgetUniversal.takeIf { getRetroactiveTrackingMode() },
         )
     }
 
@@ -308,6 +315,15 @@ class UpdateExternalViewsInteractor @Inject constructor(
         )
     }
 
+    suspend fun onRetroactiveTrackingModeChange() {
+        runUpdates(
+            Update.WidgetSingleTypes,
+            Update.WidgetUniversal,
+            Update.NotificationWithControls,
+            Update.Wear
+        )
+    }
+
     // Update all widgets.
     suspend fun onWidgetsTransparencyChange() {
         runUpdates(
@@ -375,6 +391,10 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.WidgetQuickSettings,
             Update.Wear,
         )
+    }
+
+    private suspend fun getRetroactiveTrackingMode(): Boolean {
+        return prefsInteractor.getRetroactiveTrackingMode()
     }
 
     private suspend fun runUpdates(vararg updates: Update?) {

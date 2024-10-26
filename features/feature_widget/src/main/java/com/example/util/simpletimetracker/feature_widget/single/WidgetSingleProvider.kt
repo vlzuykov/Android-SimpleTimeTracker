@@ -27,6 +27,7 @@ import com.example.util.simpletimetracker.domain.extension.getDaily
 import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
@@ -40,7 +41,7 @@ import com.example.util.simpletimetracker.feature_views.extension.measureExactly
 import com.example.util.simpletimetracker.feature_views.extension.setAllMargins
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.feature_widget.R
-import com.example.util.simpletimetracker.feature_widget.interactor.WidgetViewsHolder
+import com.example.util.simpletimetracker.feature_widget.common.WidgetViewsHolder
 import com.example.util.simpletimetracker.navigation.params.screen.RecordTagSelectionParams
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -61,6 +62,9 @@ class WidgetSingleProvider : AppWidgetProvider() {
 
     @Inject
     lateinit var runningRecordInteractor: RunningRecordInteractor
+
+    @Inject
+    lateinit var recordInteractor: RecordInteractor
 
     @Inject
     lateinit var recordTypeInteractor: RecordTypeInteractor
@@ -142,6 +146,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
             val view: View
             val recordTypeId = prefsInteractor.getWidget(appWidgetId)
             val backgroundTransparency = prefsInteractor.getWidgetBackgroundTransparencyPercent()
+            val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
             val typeIds = typeIdsToUpdate
             if (typeIds.isNotEmpty() && recordTypeId !in typeIds) return@launch
             val runningRecord = if (runningRecordInteractor.has(recordTypeId)) {
@@ -149,6 +154,12 @@ class WidgetSingleProvider : AppWidgetProvider() {
             } else {
                 null
             }
+            val prevRecord = if (retroactiveTrackingModeEnabled) {
+                recordInteractor.getPrev(timeStarted = System.currentTimeMillis()).firstOrNull()
+            } else {
+                null
+            }
+            val isCurrentTypeLast = prevRecord?.typeId == recordTypeId
             val isDarkTheme: Boolean = prefsInteractor.getDarkMode()
 
             if (recordTypeId == REPEAT_BUTTON_ITEM_ID) {
@@ -161,7 +172,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     recordTypeIcon = viewData.iconId,
                     recordTypeName = viewData.name,
                     recordTypeColor = viewData.color,
-                    isRunning = false,
+                    isColored = false,
                     isChecked = null,
                     isComplete = false,
                     backgroundTransparency = backgroundTransparency,
@@ -187,6 +198,11 @@ class WidgetSingleProvider : AppWidgetProvider() {
                 } else {
                     null
                 }
+                val isColored = when {
+                    runningRecord != null -> recordType != null
+                    prevRecord != null -> isCurrentTypeLast
+                    else -> false
+                }
                 view = prepareView(
                     context = context,
                     recordTypeIcon = recordType?.icon
@@ -194,7 +210,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     recordTypeName = recordType?.name,
                     recordTypeColor = recordType?.color
                         ?.let { colorMapper.mapToColorInt(it, isDarkTheme) },
-                    isRunning = runningRecord != null && recordType != null,
+                    isColored = isColored,
                     isChecked = isChecked,
                     isComplete = recordTypeId in completeTypesStateInteractor.widgetTypeIds,
                     backgroundTransparency = backgroundTransparency,
@@ -205,13 +221,23 @@ class WidgetSingleProvider : AppWidgetProvider() {
             val bitmap = view.getBitmapFromView()
 
             val views = RemoteViews(context.packageName, R.layout.widget_layout)
-            if (runningRecord != null) {
-                val timeStarted = runningRecord.timeStarted
-                val base = SystemClock.elapsedRealtime() - (System.currentTimeMillis() - timeStarted)
-                views.setChronometer(R.id.timerWidget, base, null, true)
-                views.setViewVisibility(R.id.timerWidget, View.VISIBLE)
-            } else {
-                views.setViewVisibility(R.id.timerWidget, View.GONE)
+            when {
+                runningRecord != null -> {
+                    val timeStarted = runningRecord.timeStarted
+                    val base = System.currentTimeMillis() - timeStarted
+                    setChronometer(base, R.id.timerWidget, views, true)
+                    views.setViewVisibility(R.id.timerWidget2, View.GONE)
+                }
+                prevRecord != null && isCurrentTypeLast -> {
+                    val base1 = System.currentTimeMillis() - prevRecord.timeEnded
+                    val base2 = prevRecord.timeEnded - prevRecord.timeStarted
+                    setChronometer(base1, R.id.timerWidget, views, true)
+                    setChronometer(base2, R.id.timerWidget2, views, false)
+                }
+                else -> {
+                    views.setViewVisibility(R.id.timerWidget, View.GONE)
+                    views.setViewVisibility(R.id.timerWidget2, View.GONE)
+                }
             }
             views.setImageViewBitmap(R.id.ivWidgetBackground, bitmap)
             views.setOnClickPendingIntent(R.id.btnWidget, getPendingSelfIntent(context, appWidgetId))
@@ -227,7 +253,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
         recordTypeIcon: RecordTypeIcon?,
         recordTypeName: String?,
         recordTypeColor: Int?,
-        isRunning: Boolean,
+        isColored: Boolean,
         isChecked: Boolean?,
         isComplete: Boolean,
         backgroundTransparency: Long,
@@ -238,13 +264,13 @@ class WidgetSingleProvider : AppWidgetProvider() {
         val name = recordTypeName
             ?: R.string.widget_load_error.let(resourceRepo::getString)
 
-        val textColor = if (isRunning) {
+        val textColor = if (isColored) {
             resourceRepo.getColor(R.color.colorIcon)
         } else {
             resourceRepo.getColor(R.color.widget_universal_empty_color)
         }
 
-        val color = if (isRunning && recordTypeColor != null) {
+        val color = if (isColored && recordTypeColor != null) {
             recordTypeColor
         } else {
             ColorUtils.changeAlpha(
@@ -281,6 +307,17 @@ class WidgetSingleProvider : AppWidgetProvider() {
         preparedView = view
 
         return view
+    }
+
+    private fun setChronometer(
+        timestamp: Long,
+        chronometerId: Int,
+        views: RemoteViews,
+        started: Boolean,
+    ) {
+        val base = SystemClock.elapsedRealtime() - timestamp
+        views.setChronometer(chronometerId, base, null, started)
+        views.setViewVisibility(chronometerId, View.VISIBLE)
     }
 
     private fun measureView(context: Context, view: View) {

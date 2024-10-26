@@ -62,13 +62,31 @@ class AddRunningRecordMediator @Inject constructor(
         timeStarted: Long? = null,
         updateNotificationSwitch: Boolean = true,
     ) {
+        val actualTimeStarted = timeStarted ?: System.currentTimeMillis()
+        val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
+        val prevRecord = if (retroactiveTrackingMode) {
+            recordInteractor.getPrev(actualTimeStarted).firstOrNull()
+        } else {
+            null
+        }
         val rulesResult = processRules(
             typeId = typeId,
-            timeStarted = timeStarted ?: System.currentTimeMillis(),
+            timeStarted = if (
+                retroactiveTrackingMode &&
+                prevRecord != null &&
+                shouldMergeWithPrevRecord(typeId, prevRecord)
+            ) {
+                // If will merge - it will be one record,
+                // so need to check rules from original start.
+                prevRecord.timeStarted
+            } else {
+                actualTimeStarted
+            },
         )
         processMultitasking(
             typeId = typeId,
             isMultitaskingAllowedByRules = rulesResult.isMultitaskingAllowed,
+            timeEnded = actualTimeStarted,
         )
         val actualTags = getAllTags(
             typeId = typeId,
@@ -84,11 +102,11 @@ class AddRunningRecordMediator @Inject constructor(
             typeId = typeId,
             comment = comment,
             tagIds = actualTags,
-            timeStarted = timeStarted ?: System.currentTimeMillis(),
+            timeStarted = actualTimeStarted,
             updateNotificationSwitch = updateNotificationSwitch,
         )
-        if (prefsInteractor.getRetroactiveTrackingMode()) {
-            addRetroactiveModeInternal(startParams)
+        if (retroactiveTrackingMode) {
+            addRetroactiveModeInternal(startParams, prevRecord)
         } else {
             addInternal(startParams)
         }
@@ -126,9 +144,11 @@ class AddRunningRecordMediator @Inject constructor(
         }
     }
 
-    private suspend fun addRetroactiveModeInternal(params: StartParams) {
+    private suspend fun addRetroactiveModeInternal(
+        params: StartParams,
+        prevRecord: Record?,
+    ) {
         val type = recordTypeInteractor.get(params.typeId) ?: return
-        val prevRecord = recordInteractor.getPrev(params.timeStarted).firstOrNull()
 
         if (type.defaultDuration > 0L) {
             val newTimeStarted = prevRecord?.timeEnded
@@ -186,18 +206,17 @@ class AddRunningRecordMediator @Inject constructor(
         params: StartParams,
         prevRecord: Record?,
     ) {
-        val shouldMergeWithPrevRecord = prevRecord != null &&
-            prevRecord.typeId == params.typeId &&
-            prevRecord.tagIds == params.tagIds
-
-        val record = if (prevRecord != null && shouldMergeWithPrevRecord) {
+        val shouldMerge = shouldMergeWithPrevRecord(params.typeId, prevRecord)
+        val record = if (prevRecord != null && shouldMerge) {
             Record(
                 id = prevRecord.id, // Updates existing record.
                 typeId = params.typeId,
                 timeStarted = prevRecord.timeStarted,
                 timeEnded = params.timeStarted,
-                comment = params.comment,
-                tagIds = params.tagIds,
+                comment = params.comment.takeUnless { it.isEmpty() }
+                    ?: prevRecord.comment,
+                tagIds = params.tagIds.takeUnless { it.isEmpty() }
+                    ?: prevRecord.tagIds,
             )
         } else {
             val newTimeStarted = prevRecord?.timeEnded
@@ -255,6 +274,7 @@ class AddRunningRecordMediator @Inject constructor(
     private suspend fun processMultitasking(
         typeId: Long,
         isMultitaskingAllowedByRules: ResultContainer<Boolean>,
+        timeEnded: Long,
     ) {
         val isMultitaskingAllowedByDefault = prefsInteractor.getAllowMultitasking()
         val isMultitaskingAllowed = isMultitaskingAllowedByRules.getValueOrNull()
@@ -265,7 +285,13 @@ class AddRunningRecordMediator @Inject constructor(
             // Widgets will update on adding.
             runningRecordInteractor.getAll()
                 .filter { it.id != typeId }
-                .forEach { removeRunningRecordMediator.removeWithRecordAdd(it, updateWidgets = false) }
+                .forEach {
+                    removeRunningRecordMediator.removeWithRecordAdd(
+                        runningRecord = it,
+                        updateWidgets = false,
+                        timeEnded = timeEnded,
+                    )
+                }
         }
     }
 
@@ -276,6 +302,13 @@ class AddRunningRecordMediator @Inject constructor(
     ): List<Long> {
         val defaultTags = recordTypeToDefaultTagInteractor.getTags(typeId)
         return (tagIds + defaultTags + tagIdsFromRules).toSet().toList()
+    }
+
+    private fun shouldMergeWithPrevRecord(
+        typeId: Long,
+        prevRecord: Record?,
+    ): Boolean {
+        return prevRecord != null && prevRecord.typeId == typeId
     }
 
     private data class StartParams(

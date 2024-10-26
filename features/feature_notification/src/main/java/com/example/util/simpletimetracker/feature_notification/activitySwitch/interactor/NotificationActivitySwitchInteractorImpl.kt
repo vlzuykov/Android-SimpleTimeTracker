@@ -2,11 +2,14 @@ package com.example.util.simpletimetracker.feature_notification.activitySwitch.i
 
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
+import com.example.util.simpletimetracker.core.mapper.ColorMapper
+import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.interactor.GetSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.interactor.NotificationActivitySwitchInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
@@ -15,9 +18,13 @@ import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationActivitySwitchManager
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationActivitySwitchParams
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsParams
+import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
 class NotificationActivitySwitchInteractorImpl @Inject constructor(
+    private val iconMapper: IconMapper,
+    private val colorMapper: ColorMapper,
     private val manager: NotificationActivitySwitchManager,
     private val prefsInteractor: PrefsInteractor,
     private val resourceRepo: ResourceRepo,
@@ -29,6 +36,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
     private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val getNotificationActivitySwitchControlsInteractor: GetNotificationActivitySwitchControlsInteractor,
+    private val recordInteractor: RecordInteractor,
 ) : NotificationActivitySwitchInteractor {
 
     override suspend fun updateNotification(
@@ -60,6 +68,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         val showRepeatButton = prefsInteractor.getEnableRepeatButton()
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
+        val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
         val runningRecords = runningRecordInteractor.getAll()
         val range = timeMapper.getRangeStartAndEnd(
             rangeLength = RangeLength.Day,
@@ -74,6 +83,12 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             emptyList()
         }
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
+        val prevRecord = if (retroactiveTrackingModeEnabled) {
+            recordInteractor.getPrev(timeStarted = System.currentTimeMillis()).firstOrNull()
+        } else {
+            null
+        }
+        val prevRecordType = prevRecord?.typeId?.let(recordTypes::get)
         val goals = filterGoalsByDayOfWeekInteractor.execute(
             goals = recordTypeGoalInteractor.getAllTypeGoals(),
             range = range,
@@ -89,7 +104,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             emptyMap()
         }
         val controls = getNotificationActivitySwitchControlsInteractor.getControls(
-            hintIsVisible = false,
+            hint = "", // Replaced later.
             isDarkTheme = isDarkTheme,
             types = recordTypes.values.toList(),
             runningRecords = runningRecords,
@@ -101,11 +116,61 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             goals = goals,
             allDailyCurrents = allDailyCurrents,
         )
+        val hint: String
+        val icon: RecordTypeIcon?
+        val color: Int?
+        val title: String
+        val subtitle: String
+        val untrackedTimeStarted: Long?
+        val prevRecordDuration: Long?
+        when {
+            retroactiveTrackingModeEnabled && prevRecord != null && prevRecordType != null -> {
+                hint = resourceRepo.getString(R.string.retroactive_tracking_mode_hint)
+                icon = prevRecordType.icon.let(iconMapper::mapIcon)
+                color = colorMapper.mapToColorInt(prevRecordType.color, isDarkTheme)
+                title = resourceRepo.getString(R.string.statistics_detail_last_record) +
+                    " - " +
+                    prevRecordType.name
+                subtitle = timeMapper.formatTime(
+                    time = prevRecord.timeEnded,
+                    useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat(),
+                    showSeconds = prefsInteractor.getShowSeconds(),
+                ).let { resourceRepo.getString(R.string.notification_time_ended, it) }
+                untrackedTimeStarted = prevRecord.timeEnded
+                prevRecordDuration = prevRecord.timeEnded - prevRecord.timeStarted
+            }
+            retroactiveTrackingModeEnabled -> {
+                hint = ""
+                icon = RecordTypeIcon.Image(R.drawable.unknown)
+                color = colorMapper.toUntrackedColor(isDarkTheme)
+                title = resourceRepo.getString(R.string.retroactive_tracking_mode_hint)
+                subtitle = ""
+                untrackedTimeStarted = null
+                prevRecordDuration = null
+            }
+            else -> {
+                hint = ""
+                icon = RecordTypeIcon.Image(R.drawable.app_ic_launcher_monochrome)
+                color = colorMapper.toUntrackedColor(isDarkTheme)
+                title = resourceRepo.getString(R.string.running_records_empty)
+                subtitle = ""
+                untrackedTimeStarted = null
+                prevRecordDuration = null
+            }
+        }
 
         NotificationActivitySwitchParams(
-            title = resourceRepo.getString(R.string.running_records_empty),
+            icon = icon,
+            color = color,
+            title = title,
+            subtitle = subtitle,
             isDarkTheme = prefsInteractor.getDarkMode(),
-            controls = controls,
+            untrackedStartedTimeStamp = untrackedTimeStarted,
+            prevRecordDuration = prevRecordDuration,
+            controls = when (controls) {
+                is NotificationControlsParams.Disabled -> controls
+                is NotificationControlsParams.Enabled -> controls.copy(hint = hint)
+            },
         ).let(manager::show)
     }
 

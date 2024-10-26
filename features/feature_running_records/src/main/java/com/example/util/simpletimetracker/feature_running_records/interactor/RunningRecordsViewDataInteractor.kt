@@ -33,8 +33,6 @@ class RunningRecordsViewDataInteractor @Inject constructor(
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
 ) {
 
-    // TODO RETRO what to do on first start, when there is no prev record?
-    // TODO RETRO show timers also if any
     suspend fun getViewData(
         completeTypeIds: Set<Long>,
     ): List<ViewHolderType> {

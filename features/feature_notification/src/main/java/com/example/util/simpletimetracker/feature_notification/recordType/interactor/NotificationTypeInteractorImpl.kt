@@ -104,7 +104,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
                 emptyMap()
             }
             getNotificationActivitySwitchControlsInteractor.getControls(
-                hintIsVisible = true,
+                hint = resourceRepo.getString(R.string.running_records_empty),
                 isDarkTheme = isDarkTheme,
                 types = recordTypes.values.toList(),
                 showRepeatButton = showRepeatButton,
@@ -169,7 +169,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
                 emptyMap()
             }
             getNotificationActivitySwitchControlsInteractor.getControls(
-                hintIsVisible = true,
+                hint = resourceRepo.getString(R.string.running_records_empty),
                 isDarkTheme = isDarkTheme,
                 types = recordTypes.values.toList(),
                 showRepeatButton = showRepeatButton,
@@ -226,8 +226,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
             icon = recordType.icon.let(iconMapper::mapIcon),
             color = colorMapper.mapToColorInt(recordType.color, isDarkTheme),
             text = getNotificationText(recordType, recordTags),
-            timeStarted =
-            timeMapper.formatTime(
+            timeStarted = timeMapper.formatTime(
                 time = runningRecord.timeStarted,
                 useMilitaryTime = useMilitaryTime,
                 showSeconds = showSeconds,

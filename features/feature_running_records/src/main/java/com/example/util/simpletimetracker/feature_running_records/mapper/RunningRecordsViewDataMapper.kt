@@ -52,12 +52,8 @@ class RunningRecordsViewDataMapper @Inject constructor(
         )
     }
 
-    // TODO RETRO move strings to res.
-    // TODO RETRO check repeat.
-    // TODO RETRO check instant activities.
-    // TODO RETRO check record actions.
-    // TODO RETRO add scroll to top on first click when there were no records, otherwise hint is not visible.
-    // TODO RETRO check pomodoro start on activity click.
+    // TODO RETRO check first enter, main, widgets, notifs, wear.
+    // TODO RETRO add hint about how it works and limitations.
     fun mapToRetroActiveMode(
         typesMap: Map<Long, RecordType>,
         recordTags: List<RecordTag>,
@@ -71,7 +67,7 @@ class RunningRecordsViewDataMapper @Inject constructor(
 
         if (prevRecord == null) {
             result += EmptyViewData(
-                message = "Click on card to select what you have been doing",
+                message = resourceRepo.getString(R.string.retroactive_tracking_mode_hint),
                 hint = R.string.running_records_empty_hint.let(resourceRepo::getString),
             )
         }
@@ -117,7 +113,7 @@ class RunningRecordsViewDataMapper @Inject constructor(
                 RecordWithHintViewData(it)
             }
             result += HintViewData(
-                text = "Select what you have been doing",
+                text = resourceRepo.getString(R.string.retroactive_tracking_mode_hint),
                 paddingTop = 0,
                 paddingBottom = 0,
             )

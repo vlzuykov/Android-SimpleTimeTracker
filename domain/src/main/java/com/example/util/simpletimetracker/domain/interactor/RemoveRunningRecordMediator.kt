@@ -17,14 +17,19 @@ class RemoveRunningRecordMediator @Inject constructor(
         runningRecord: RunningRecord,
         updateWidgets: Boolean = true,
         updateNotificationSwitch: Boolean = true,
+        timeEnded: Long? = null, // null - take current time.
     ) {
+        val recordTimeEnded = timeEnded ?: System.currentTimeMillis()
         val durationToIgnore = prefsInteractor.getIgnoreShortRecordsDuration()
         val duration = TimeUnit.MILLISECONDS
-            .toSeconds(System.currentTimeMillis() - runningRecord.timeStarted)
+            .toSeconds(recordTimeEnded - runningRecord.timeStarted)
 
         if (duration > durationToIgnore || durationToIgnore == 0L) {
             // No need to update widgets and notification because it will be done in running record remove.
-            recordInteractor.addFromRunning(runningRecord)
+            recordInteractor.addFromRunning(
+                runningRecord = runningRecord,
+                timeEnded = recordTimeEnded
+            )
         }
         activityStartedStoppedBroadcastInteractor.onActivityStopped(
             typeId = runningRecord.id,

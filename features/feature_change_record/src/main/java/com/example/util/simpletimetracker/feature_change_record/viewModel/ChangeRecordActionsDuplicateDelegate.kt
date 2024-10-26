@@ -45,7 +45,7 @@ class ChangeRecordActionsDuplicateDelegate @Inject constructor(
     private fun loadDuplicateViewData(): List<ViewHolderType> {
         val params = parent?.getViewDataParams()
             ?: return emptyList()
-        if (!params.isAdditionalActionsAvailable) return emptyList()
+        if (!params.isAvailable) return emptyList()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
@@ -73,7 +73,7 @@ class ChangeRecordActionsDuplicateDelegate @Inject constructor(
             val newTimeEnded: Long,
             val newComment: String,
             val newCategoryIds: List<Long>,
-            val isAdditionalActionsAvailable: Boolean,
+            val isAvailable: Boolean,
             val isButtonEnabled: Boolean,
         )
     }

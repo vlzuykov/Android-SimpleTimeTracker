@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordActionContinueMediator
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
@@ -13,6 +14,7 @@ import javax.inject.Inject
 class ChangeRecordActionsContinueDelegate @Inject constructor(
     private val router: Router,
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val recordActionContinueMediator: RecordActionContinueMediator,
 ) : ChangeRecordActionsSubDelegate<ChangeRecordActionsContinueDelegate.Parent> {
 
@@ -57,10 +59,11 @@ class ChangeRecordActionsContinueDelegate @Inject constructor(
         }
     }
 
-    private fun loadContinueViewData(): List<ViewHolderType> {
+    private suspend fun loadContinueViewData(): List<ViewHolderType> {
         val params = parent?.getViewDataParams()
             ?: return emptyList()
-        if (!params.isAdditionalActionsAvailable) return emptyList()
+        if (!params.isAvailable) return emptyList()
+        if (prefsInteractor.getRetroactiveTrackingMode()) return emptyList()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
@@ -89,7 +92,7 @@ class ChangeRecordActionsContinueDelegate @Inject constructor(
             val newTimeStarted: Long,
             val newComment: String,
             val newCategoryIds: List<Long>,
-            val isAdditionalActionsAvailable: Boolean,
+            val isAvailable: Boolean,
             val isButtonEnabled: Boolean,
         )
     }

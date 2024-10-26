@@ -17,7 +17,7 @@ interface ChangeRecordActionsDelegate {
             checkTypeSelected: Boolean = true,
         )
 
-        suspend fun onSaveClickDelegate()
+        suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit = {})
 
         suspend fun onSplitComplete()
 
@@ -49,16 +49,16 @@ interface ChangeRecordActionsDelegate {
             )
 
             data class DuplicateParams(
-                val isAdditionalActionsAvailable: Boolean,
+                val isAvailable: Boolean,
             )
 
             data class ContinueParams(
                 val originalRecordId: Long,
-                val isAdditionalActionsAvailable: Boolean,
+                val isAvailable: Boolean,
             )
 
             data class RepeatParams(
-                val isAdditionalActionsAvailable: Boolean,
+                val isAvailable: Boolean,
             )
 
             data class AdjustParams(

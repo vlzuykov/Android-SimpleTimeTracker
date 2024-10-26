@@ -182,6 +182,7 @@ class RecordRepoImpl @Inject constructor(
     private fun clearCache() {
         getFromRangeCache.evictAll()
         getFromRangeByTypeCache.evictAll()
+        recordCache.evictAll()
         isEmpty = null
     }
 

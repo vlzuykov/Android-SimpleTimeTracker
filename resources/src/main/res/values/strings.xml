@@ -506,6 +506,7 @@ Example:<br/>
     <string name="notification_activity_text">Are you still doing: %s?</string>
     <string name="notification_goal_time_description">goal reached</string>
     <string name="notification_time_started">Started at %s</string>
+    <string name="notification_time_ended">Finished at %s</string>
     <string name="notification_record_type_stop">Stop</string>
     <string name="notification_pomodoro_subtitle">Starting: %s (%s)</string>
 
@@ -554,6 +555,9 @@ Example:<br/>
     <string name="pomodoro_state_break">Break</string>
     <string name="pomodoro_state_long_break">Long break</string>
     <string name="pomodoro_settings_periods_until_long_break">Periods until long break</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Select what you have been doing</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Emotion</string>

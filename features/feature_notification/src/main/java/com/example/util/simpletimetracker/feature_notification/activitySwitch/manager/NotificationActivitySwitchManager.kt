@@ -6,19 +6,22 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Build
+import android.os.SystemClock
 import android.view.ContextThemeWrapper
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.util.simpletimetracker.core.extension.allowVmViolations
-import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
-import com.example.util.simpletimetracker.feature_views.extension.measureExactly
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.utils.PendingIntents
-import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.recordType.customView.NotificationIconView
+import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
+import com.example.util.simpletimetracker.feature_views.extension.measureExactly
+import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.navigation.Router
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -95,15 +98,37 @@ class NotificationActivitySwitchManager @Inject constructor(
         params: NotificationActivitySwitchParams,
         isBig: Boolean,
     ): RemoteViews {
-        val iconBitmap = iconView.apply {
-            itemIcon = RecordTypeIcon.Image(R.drawable.app_ic_launcher_monochrome)
-            itemColor = colorMapper.toUntrackedColor(params.isDarkTheme)
-            measureExactly(iconSize)
-        }.getBitmapFromView()
-
         return RemoteViews(context.packageName, R.layout.notification_activity_switch_layout).apply {
-            setImageViewBitmap(R.id.ivNotificationActivitySwitchIcon, iconBitmap)
-            setTextViewText(R.id.tvNotificationActivitySwitchText, params.title)
+            setImageViewBitmap(R.id.ivNotificationActivitySwitchIcon, getIconBitmap(params.icon, params.color))
+            setTextViewText(R.id.tvNotificationActivitySwitchTitle, params.title)
+
+            if (params.subtitle.isNotEmpty()) {
+                setTextViewText(R.id.tvNotificationActivitySwitchSubtitle, params.subtitle)
+                setViewVisibility(R.id.tvNotificationActivitySwitchSubtitle, View.VISIBLE)
+            } else {
+                setViewVisibility(R.id.tvNotificationActivitySwitchSubtitle, View.GONE)
+            }
+
+            if (params.untrackedStartedTimeStamp != null || params.prevRecordDuration != null) {
+                if (params.untrackedStartedTimeStamp != null) {
+                    val base = SystemClock.elapsedRealtime() -
+                        (System.currentTimeMillis() - params.untrackedStartedTimeStamp)
+                    setChronometer(R.id.timerNotificationActivitySwitchTimer, base, null, true)
+                    setViewVisibility(R.id.timerNotificationActivitySwitchTimer, View.VISIBLE)
+                } else {
+                    setViewVisibility(R.id.timerNotificationActivitySwitchTimer, View.GONE)
+                }
+                if (params.prevRecordDuration != null) {
+                    val base = SystemClock.elapsedRealtime() - params.prevRecordDuration
+                    setChronometer(R.id.timerNotificationActivitySwitchTimer2, base, null, false)
+                    setViewVisibility(R.id.timerNotificationActivitySwitchTimer2, View.VISIBLE)
+                } else {
+                    setViewVisibility(R.id.timerNotificationActivitySwitchTimer2, View.GONE)
+                }
+                setViewVisibility(R.id.containerNotificationActivitySwitchTimes, View.VISIBLE)
+            } else {
+                setViewVisibility(R.id.containerNotificationActivitySwitchTimes, View.GONE)
+            }
 
             controlsManager.getControlsView(
                 from = NotificationControlsManager.From.ActivitySwitch,
@@ -113,6 +138,17 @@ class NotificationActivitySwitchManager @Inject constructor(
                 addView(R.id.containerNotificationMainContent, it)
             }
         }
+    }
+
+    private fun getIconBitmap(
+        icon: RecordTypeIcon,
+        color: Int,
+    ): Bitmap = synchronized(iconView) {
+        return iconView.apply {
+            itemIcon = icon
+            itemColor = color
+            measureExactly(iconSize)
+        }.getBitmapFromView()
     }
 
     companion object {

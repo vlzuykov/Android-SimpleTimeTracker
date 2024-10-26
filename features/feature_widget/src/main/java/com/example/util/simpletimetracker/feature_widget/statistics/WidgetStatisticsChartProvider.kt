@@ -31,7 +31,7 @@ import com.example.util.simpletimetracker.feature_views.extension.measureExactly
 import com.example.util.simpletimetracker.feature_views.extension.pxToDp
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.feature_widget.R
-import com.example.util.simpletimetracker.feature_widget.interactor.WidgetViewsHolder
+import com.example.util.simpletimetracker.feature_widget.common.WidgetViewsHolder
 import com.example.util.simpletimetracker.navigation.Router
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
