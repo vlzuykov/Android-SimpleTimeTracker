@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Masquer lorsque la notification de la minuterie est affichée</string>
     <string name="settings_keep_statistics_range">Conserver la plage de statistiques</string>
     <string name="settings_keep_statistics_range_hint">Si activé, les statistiques détaillées seront ouvertes avec la même plage de temps que celle sélectionnée dans les statistiques.</string>
+    <string name="settings_retroactive_tracking_mode">Activer le suivi du temps rétroactif</string>
+    <string name="settings_retroactive_tracking_mode_hint">Suivez le temps en sélectionnant quelle activité a été effectuée depuis la dernière fois plutôt que quelle activité sera effectuée à partir de maintenant.</string>
     <string name="settings_start_of_day">Décalage du début de journée</string>
     <string name="settings_start_of_day_hint">Le début de la journée sera décalé de la durée spécifiée, en avant ou en arrière selon le signe.</string>
     <string name="settings_start_of_day_hint_value">Aujourd\'hui commence à %s</string>
@@ -504,6 +506,7 @@ Exemple:<br/>
     <string name="notification_activity_text">Faites-vous toujours : %s ?</string>
     <string name="notification_goal_time_description">objectif atteint</string>
     <string name="notification_time_started">Commencé à %s</string>
+    <string name="notification_time_ended">Terminé à %s</string>
     <string name="notification_record_type_stop">Arrêt</string>
     <string name="notification_pomodoro_subtitle">Début : %s (%s)</string>
 
@@ -552,6 +555,9 @@ Exemple:<br/>
     <string name="pomodoro_state_break">Pause</string>
     <string name="pomodoro_state_long_break">Longue pause</string>
     <string name="pomodoro_settings_periods_until_long_break">Périodes jusqu\'à une longue pause</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Sélectionnez ce que vous avez fait</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Émotions</string>

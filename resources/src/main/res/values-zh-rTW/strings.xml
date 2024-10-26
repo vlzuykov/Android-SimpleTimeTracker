@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">顯示計時器通知時隱藏</string>
     <string name="settings_keep_statistics_range">保持統計範圍</string>
     <string name="settings_keep_statistics_range_hint">如果啟用，詳細統計訊息，將以在統計訊息中，選擇相同時間範圍打開</string>
+    <string name="settings_retroactive_tracking_mode">啟用追溯時間追蹤</string>
+    <string name="settings_retroactive_tracking_mode_hint">透過選擇自上次以來已完成的活動而不是從現在起將完成的活動來追蹤時間。</string>
     <string name="settings_start_of_day">推移開始</string>
     <string name="settings_start_of_day_hint">一天的開始將根據標誌向前或向後移動指定的時間量。</string>
     <string name="settings_start_of_day_hint_value">今天開始於 %s</string>
@@ -504,6 +506,7 @@ csv 文件必須包含以逗號分隔的這些列：<br/>
     <string name="notification_activity_text">你還在做：%s？</string>
     <string name="notification_goal_time_description">目標時達成</string>
     <string name="notification_time_started">開始於 %s</string>
+    <string name="notification_time_ended">於 %s 完成</string>
     <string name="notification_record_type_stop">停止</string>
     <string name="notification_pomodoro_subtitle">開始：%s (%s)</string>
 
@@ -552,6 +555,9 @@ csv 文件必須包含以逗號分隔的這些列：<br/>
     <string name="pomodoro_state_break">中斷</string>
     <string name="pomodoro_state_long_break">長時間休息</string>
     <string name="pomodoro_settings_periods_until_long_break">長時間休息前的時間</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">選擇您一直在做的事情</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">表情</string>

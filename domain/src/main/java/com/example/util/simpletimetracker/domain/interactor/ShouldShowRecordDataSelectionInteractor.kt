@@ -19,7 +19,7 @@ class ShouldShowRecordDataSelectionInteractor @Inject constructor(
         if (needToShowComment(typeId, commentInputAvailable)) {
             fields += RecordDataSelectionDialogResult.Field.Comment
         }
-        return  RecordDataSelectionDialogResult(fields)
+        return RecordDataSelectionDialogResult(fields)
     }
 
     private suspend fun needToShowTags(typeId: Long): Boolean {

@@ -9,6 +9,7 @@ import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.interactor.GetSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
@@ -21,7 +22,7 @@ import com.example.util.simpletimetracker.domain.model.WidgetType
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
 import com.example.util.simpletimetracker.wear_api.WearCommunicationAPI
-import com.example.util.simpletimetracker.wear_api.WearCurrentActivityDTO
+import com.example.util.simpletimetracker.wear_api.WearCurrentStateDTO
 import com.example.util.simpletimetracker.wear_api.WearRecordRepeatResponse
 import com.example.util.simpletimetracker.wear_api.WearSettingsDTO
 import com.example.util.simpletimetracker.wear_api.WearShouldShowTagSelectionRequest
@@ -38,6 +39,7 @@ class WearDataRepo @Inject constructor(
     private val recordTagInteractor: RecordTagInteractor,
     private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val runningRecordInteractor: RunningRecordInteractor,
+    private val recordInteractor: RecordInteractor,
     private val shouldShowRecordDataSelectionInteractor: ShouldShowRecordDataSelectionInteractor,
     private val removeRunningRecordMediator: Lazy<RemoveRunningRecordMediator>,
     private val addRunningRecordMediator: Lazy<AddRunningRecordMediator>,
@@ -54,9 +56,9 @@ class WearDataRepo @Inject constructor(
             .map(wearDataLocalMapper::map)
     }
 
-    override suspend fun queryCurrentActivities(): List<WearCurrentActivityDTO> {
-        return runningRecordInteractor.getAll().map { record ->
-            val tags = record.tagIds.mapNotNull { tagId ->
+    override suspend fun queryCurrentActivities(): WearCurrentStateDTO {
+        suspend fun mapTags(tagIds: List<Long>): List<WearTagDTO> {
+            return tagIds.mapNotNull { tagId ->
                 recordTagInteractor.get(tagId)?.let {
                     wearDataLocalMapper.map(
                         recordTag = it,
@@ -64,8 +66,21 @@ class WearDataRepo @Inject constructor(
                     )
                 }
             }
-            wearDataLocalMapper.map(record, tags)
         }
+
+        val runningRecords = runningRecordInteractor.getAll().map { record ->
+            wearDataLocalMapper.map(record, mapTags(record.tagIds))
+        }
+        val prevRecord = recordInteractor
+            .getPrev(timeStarted = System.currentTimeMillis())
+            .firstOrNull()
+            .let { record ->
+                wearDataLocalMapper.map(record, mapTags(record?.tagIds.orEmpty()))
+            }
+        return WearCurrentStateDTO(
+            currentActivities = runningRecords,
+            lastRecord = prevRecord,
+        )
     }
 
     override suspend fun startActivity(request: WearStartActivityRequest) {
@@ -115,6 +130,7 @@ class WearDataRepo @Inject constructor(
             allowMultitasking = prefsInteractor.getAllowMultitasking(),
             recordTagSelectionCloseAfterOne = prefsInteractor.getRecordTagSelectionCloseAfterOne(),
             enableRepeatButton = prefsInteractor.getEnableRepeatButton(),
+            retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode(),
         )
     }
 

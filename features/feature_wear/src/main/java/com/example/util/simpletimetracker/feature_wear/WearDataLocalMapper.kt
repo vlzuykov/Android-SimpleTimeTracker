@@ -7,13 +7,16 @@ package com.example.util.simpletimetracker.feature_wear
 
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
+import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.mapper.AppColorMapper
 import com.example.util.simpletimetracker.domain.model.AppColor
+import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
 import com.example.util.simpletimetracker.wear_api.WearCurrentActivityDTO
+import com.example.util.simpletimetracker.wear_api.WearLastRecordDTO
 import com.example.util.simpletimetracker.wear_api.WearRecordRepeatResponse
 import com.example.util.simpletimetracker.wear_api.WearSettingsDTO
 import com.example.util.simpletimetracker.wear_api.WearTagDTO
@@ -47,6 +50,19 @@ class WearDataLocalMapper @Inject constructor(
     }
 
     fun map(
+        record: Record?,
+        tags: List<WearTagDTO>,
+    ): WearLastRecordDTO {
+        return WearLastRecordDTO(
+            isPresent = record != null,
+            activityId = record?.typeId.orZero(),
+            startedAt = record?.timeStarted.orZero(),
+            finishedAt = record?.timeEnded.orZero(),
+            tags = tags,
+        )
+    }
+
+    fun map(
         recordTag: RecordTag,
         types: Map<Long, RecordType>,
     ): WearTagDTO {
@@ -64,11 +80,13 @@ class WearDataLocalMapper @Inject constructor(
         allowMultitasking: Boolean,
         recordTagSelectionCloseAfterOne: Boolean,
         enableRepeatButton: Boolean,
+        retroactiveTrackingMode: Boolean,
     ): WearSettingsDTO {
         return WearSettingsDTO(
             allowMultitasking = allowMultitasking,
             recordTagSelectionCloseAfterOne = recordTagSelectionCloseAfterOne,
             enableRepeatButton = enableRepeatButton,
+            retroactiveTrackingMode = retroactiveTrackingMode,
         )
     }
 

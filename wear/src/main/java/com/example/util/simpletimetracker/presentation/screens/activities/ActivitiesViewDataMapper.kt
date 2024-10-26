@@ -12,7 +12,9 @@ import com.example.util.simpletimetracker.data.WearResourceRepo
 import com.example.util.simpletimetracker.domain.model.WearActivity
 import com.example.util.simpletimetracker.domain.model.WearActivityIcon
 import com.example.util.simpletimetracker.domain.model.WearCurrentActivity
+import com.example.util.simpletimetracker.domain.model.WearLastRecord
 import com.example.util.simpletimetracker.domain.model.WearSettings
+import com.example.util.simpletimetracker.domain.model.WearTag
 import com.example.util.simpletimetracker.presentation.theme.ColorInactive
 import com.example.util.simpletimetracker.presentation.ui.components.ActivitiesListState
 import com.example.util.simpletimetracker.presentation.ui.components.ActivityChipState
@@ -35,12 +37,24 @@ class ActivitiesViewDataMapper @Inject constructor(
     fun mapContentState(
         activities: List<WearActivity>,
         currentActivities: List<WearCurrentActivity>,
+        lastRecord: WearLastRecord?,
         settings: WearSettings?,
         showCompactList: Boolean,
     ): ActivitiesListState.Content {
         val currentActivitiesMap = currentActivities.associateBy { it.id }
+        val retroactiveModeEnabled = settings?.retroactiveTrackingMode == true
         val items = mutableListOf<ActivityChipState>()
 
+        val hint = if (retroactiveModeEnabled) {
+            resourceRepo.getString(R.string.retroactive_tracking_mode_hint)
+        } else {
+            ""
+        }
+        if (retroactiveModeEnabled &&
+            lastRecord is WearLastRecord.Present
+        ) {
+            items += mapUntrackedItem(lastRecord)
+        }
         if (settings?.enableRepeatButton == true) {
             items += mapRepeatItem()
         }
@@ -48,11 +62,18 @@ class ActivitiesViewDataMapper @Inject constructor(
             mapItem(
                 activity = activity,
                 currentActivity = currentActivitiesMap[activity.id],
+                lastRecord = if (retroactiveModeEnabled) {
+                    lastRecord as? WearLastRecord.Present
+                } else {
+                    null
+                },
+                showCompactList = showCompactList,
             )
         }
 
         return ActivitiesListState.Content(
             isCompact = showCompactList,
+            hint = hint,
             items = items,
         )
     }
@@ -60,33 +81,89 @@ class ActivitiesViewDataMapper @Inject constructor(
     private fun mapItem(
         activity: WearActivity,
         currentActivity: WearCurrentActivity?,
+        lastRecord: WearLastRecord.Present?,
+        showCompactList: Boolean,
     ): ActivityChipState {
-        val tagString = currentActivity?.tags
-            .orEmpty()
-            .map { it.name }
-            .takeUnless { it.isEmpty() }
-            ?.joinToString(separator = ", ")
-            .orEmpty()
-        val icon = wearIconMapper.mapIcon(activity.icon)
+        val isCurrentTypeLast = lastRecord?.activityId == activity.id
+        val isRunning: Boolean
+        val timeHint: ActivityChipState.TimeHint?
+        val timeHint2: ActivityChipState.TimeHint?
+        val tagString: String
+        val hint: String
+        when {
+            lastRecord != null && isCurrentTypeLast -> {
+                val duration = ActivityChipState.TimeHint.Duration(lastRecord.finishedAt - lastRecord.startedAt)
+                val untracked = ActivityChipState.TimeHint.Timer(lastRecord.finishedAt)
+                isRunning = false
+                timeHint = if (showCompactList) untracked else duration
+                timeHint2 = if (showCompactList) duration else untracked
+                tagString = mapTagString(lastRecord.tags)
+                hint = resourceRepo.getString(R.string.statistics_detail_last_record)
+            }
+            currentActivity?.startedAt != null -> {
+                isRunning = true
+                timeHint = ActivityChipState.TimeHint.Timer(currentActivity.startedAt)
+                timeHint2 = ActivityChipState.TimeHint.None
+                tagString = mapTagString(currentActivity.tags)
+                hint = ""
+            }
+            else -> {
+                isRunning = false
+                timeHint = ActivityChipState.TimeHint.None
+                timeHint2 = ActivityChipState.TimeHint.None
+                tagString = ""
+                hint = ""
+            }
+        }
 
         return ActivityChipState(
             id = activity.id,
             name = activity.name,
-            icon = icon,
+            icon = wearIconMapper.mapIcon(activity.icon),
             color = activity.color,
             type = ActivityChipType.Base,
-            startedAt = currentActivity?.startedAt,
+            isRunning = isRunning,
+            timeHint = timeHint,
+            timeHint2 = timeHint2,
             tagString = tagString,
+            hint = hint,
         )
     }
 
     private fun mapRepeatItem(): ActivityChipState {
         return ActivityChipState(
-            id = 0L,
+            id = REPEAT_ITEM_ID,
             name = resourceRepo.getString(R.string.running_records_repeat),
             icon = WearActivityIcon.Image(R.drawable.wear_repeat),
             color = ColorInactive.toArgb().toLong(),
             type = ActivityChipType.Repeat,
         )
+    }
+
+    private fun mapUntrackedItem(
+        lastRecord: WearLastRecord.Present,
+    ): ActivityChipState {
+        return ActivityChipState(
+            id = UNTRACKED_ITEM_ID,
+            name = resourceRepo.getString(R.string.untracked_time_name),
+            icon = WearActivityIcon.Image(R.drawable.app_unknown),
+            color = ColorInactive.toArgb().toLong(),
+            type = ActivityChipType.Untracked,
+            timeHint = ActivityChipState.TimeHint.Timer(lastRecord.finishedAt),
+        )
+    }
+
+    private fun mapTagString(tags: List<WearTag>?): String {
+        return tags
+            .orEmpty()
+            .map { it.name }
+            .takeUnless { it.isEmpty() }
+            ?.joinToString(separator = ", ")
+            .orEmpty()
+    }
+
+    companion object {
+        private const val UNTRACKED_ITEM_ID = -1L
+        private const val REPEAT_ITEM_ID = -2L
     }
 }

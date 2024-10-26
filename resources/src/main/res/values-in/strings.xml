@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Sembunyikan ketika pemberitahuan pengatur waktu ditampilkan</string>
     <string name="settings_keep_statistics_range">Pertahankan rentang statistik</string>
     <string name="settings_keep_statistics_range_hint">Jika diaktifkan, statistik terperinci akan dibuka dengan rentang waktu yang sama yang dipilih dalam statistik.</string>
+    <string name="settings_retroactive_tracking_mode">Aktifkan pelacakan waktu retroaktif</string>
+    <string name="settings_retroactive_tracking_mode_hint">Lacak waktu dengan memilih aktivitas mana yang telah dilakukan sejak terakhir kali, bukan aktivitas mana yang akan dilakukan mulai sekarang.</string>
     <string name="settings_start_of_day">Pergeseran awal hari</string>
     <string name="settings_start_of_day_hint">Permulaan hari akan digeser dengan jumlah waktu yang ditentukan, maju atau mundur tergantung pada tandanya.</string>
     <string name="settings_start_of_day_hint_value">Hari ini mulai di %s</string>
@@ -504,6 +506,7 @@ Contoh:<br/>
     <string name="notification_activity_text">Apakah Anda masih melakukan: %s?</string>
     <string name="notification_goal_time_description">tujuan tercapai</string>
     <string name="notification_time_started">Dimulai pada %s</string>
+    <string name="notification_time_ended">Selesai pada %s</string>
     <string name="notification_record_type_stop">Berhenti</string>
     <string name="notification_pomodoro_subtitle">Mulai: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Contoh:<br/>
     <string name="pomodoro_state_break">Istirahat</string>
     <string name="pomodoro_state_long_break">Istirahat panjang</string>
     <string name="pomodoro_settings_periods_until_long_break">Periode hingga jeda panjang</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Pilih apa yang telah Anda lakukan</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Senyuman &amp; Emosi</string>

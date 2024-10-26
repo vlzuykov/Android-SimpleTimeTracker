@@ -28,11 +28,33 @@ data class WearActivityDTO(
 ) : Parcelable
 
 @Parcelize
+data class WearCurrentStateDTO(
+    @SerializedName("currentActivities")
+    val currentActivities: List<WearCurrentActivityDTO>,
+    @SerializedName("lastRecord")
+    val lastRecord: WearLastRecordDTO,
+) : Parcelable
+
+@Parcelize
 data class WearCurrentActivityDTO(
     @SerializedName("id")
     val id: Long,
     @SerializedName("startedAt")
     val startedAt: Long,
+    @SerializedName("tags")
+    val tags: List<WearTagDTO>,
+) : Parcelable
+
+@Parcelize
+data class WearLastRecordDTO(
+    @SerializedName("isPresent")
+    val isPresent: Boolean,
+    @SerializedName("activityId")
+    val activityId: Long,
+    @SerializedName("startedAt")
+    val startedAt: Long,
+    @SerializedName("finishedAt")
+    val finishedAt: Long,
     @SerializedName("tags")
     val tags: List<WearTagDTO>,
 ) : Parcelable
@@ -55,6 +77,8 @@ data class WearSettingsDTO(
     val recordTagSelectionCloseAfterOne: Boolean,
     @SerializedName("enableRepeatButton")
     val enableRepeatButton: Boolean,
+    @SerializedName("retroactiveTrackingMode")
+    val retroactiveTrackingMode: Boolean,
 ) : Parcelable
 
 @Parcelize

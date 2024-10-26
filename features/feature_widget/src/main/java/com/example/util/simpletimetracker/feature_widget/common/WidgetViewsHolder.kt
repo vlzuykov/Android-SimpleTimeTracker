@@ -16,7 +16,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class WidgetViewsHolder @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
 
     private var recordTypeView: RecordTypeView? = null

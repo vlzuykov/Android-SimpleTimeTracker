@@ -7,7 +7,7 @@ package com.example.util.simpletimetracker.data
 
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
 import com.example.util.simpletimetracker.wear_api.WearCommunicationAPI
-import com.example.util.simpletimetracker.wear_api.WearCurrentActivityDTO
+import com.example.util.simpletimetracker.wear_api.WearCurrentStateDTO
 import com.example.util.simpletimetracker.wear_api.WearRecordRepeatResponse
 import com.example.util.simpletimetracker.wear_api.WearRequests
 import com.example.util.simpletimetracker.wear_api.WearSettingsDTO
@@ -37,8 +37,8 @@ class WearRPCClient @Inject constructor(
         return response ?: throw WearRPCException
     }
 
-    override suspend fun queryCurrentActivities(): List<WearCurrentActivityDTO> {
-        val response: List<WearCurrentActivityDTO>? = messenger
+    override suspend fun queryCurrentActivities(): WearCurrentStateDTO {
+        val response: WearCurrentStateDTO? = messenger
             .send(WearRequests.QUERY_CURRENT_ACTIVITIES)
             ?.let(::mapFromBytes)
 

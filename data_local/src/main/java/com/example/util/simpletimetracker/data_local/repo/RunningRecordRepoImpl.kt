@@ -44,7 +44,7 @@ class RunningRecordRepoImpl @Inject constructor(
         logMessage = "has",
         accessCache = { cache?.any { it.id == id } },
         accessSource = { dao.get(id) != null },
-        afterSourceAccess = { initializeCache() }
+        afterSourceAccess = { initializeCache() },
     )
 
     override suspend fun add(runningRecord: RunningRecord): Long = mutex.withLockedCache(

@@ -40,7 +40,7 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
                     comment = params.newComment,
                     tagIds = params.newCategoryIds,
                 )
-            }
+            },
         )
     }
 

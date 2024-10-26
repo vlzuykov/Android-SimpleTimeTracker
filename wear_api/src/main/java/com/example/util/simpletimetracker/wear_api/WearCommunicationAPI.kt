@@ -18,7 +18,7 @@ interface WearCommunicationAPI {
      *
      * Retrieves a list of the currently running activity/activities
      */
-    suspend fun queryCurrentActivities(): List<WearCurrentActivityDTO>
+    suspend fun queryCurrentActivities(): WearCurrentStateDTO
 
     /**
      * [WearRequests.START_ACTIVITY]

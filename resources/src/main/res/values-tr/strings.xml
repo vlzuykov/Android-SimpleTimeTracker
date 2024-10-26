@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Zamanlayıcı bildirimi gösterildiğinde gizle</string>
     <string name="settings_keep_statistics_range">İstatistik aralığını koru</string>
     <string name="settings_keep_statistics_range_hint">Etkinleştirilirse, istatistiklerde seçilen aynı zaman aralığı ile ayrıntılı istatistikler açılır.</string>
+    <string name="settings_retroactive_tracking_mode">Geriye dönük zaman takibini etkinleştir</string>
+    <string name="settings_retroactive_tracking_mode_hint">Şu andan itibaren hangi etkinliğin yapılacağını değil, son seferden bu yana hangi etkinliğin yapıldığını seçerek zamanı takip edin.</string>
     <string name="settings_start_of_day">Gün başlangıcı</string>
     <string name="settings_start_of_day_hint">Günün başlangıcı, işarete bağlı olarak belirtilen süre kadar ileri veya geri kaydırılacaktır.</string>
     <string name="settings_start_of_day_hint_value">Bugün %s\'de başlıyor</string>
@@ -504,6 +506,7 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="notification_activity_text">Hala şunu yapıyor musunuz: %s?</string>
     <string name="notification_goal_time_description">hedef ulaşıldı</string>
     <string name="notification_time_started">Başlangıç zamanı %s</string>
+    <string name="notification_time_ended">%s\'de tamamlandı</string>
     <string name="notification_record_type_stop">Durmak</string>
     <string name="notification_pomodoro_subtitle">Başlangıç: %s (%s)</string>
 
@@ -552,6 +555,9 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="pomodoro_state_break">Ara</string>
     <string name="pomodoro_state_long_break">Uzun ara</string>
     <string name="pomodoro_settings_periods_until_long_break">Uzun araya kalan dönemler</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Ne yaptığınızı seçin</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">İfadeler</string>

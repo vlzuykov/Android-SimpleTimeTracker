@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Verbergen wanneer timermelding wordt weergegeven</string>
     <string name="settings_keep_statistics_range">Statistiekbereik behouden</string>
     <string name="settings_keep_statistics_range_hint">Indien ingeschakeld worden gedetailleerde statistieken geopend met hetzelfde tijdbereik geselecteerd in statistieken.</string>
+    <string name="settings_retroactive_tracking_mode">Schakel tijdregistratie met terugwerkende kracht in</string>
+    <string name="settings_retroactive_tracking_mode_hint">Houd de tijd bij door te selecteren welke activiteit sinds de vorige keer is uitgevoerd, in plaats van welke activiteit vanaf nu zal worden uitgevoerd.</string>
     <string name="settings_start_of_day">Shift begin van de dag</string>
     <string name="settings_start_of_day_hint">Het begin van de dag wordt verschoven met de opgegeven hoeveelheid tijd, vooruit of achteruit, afhankelijk van het teken.</string>
     <string name="settings_start_of_day_hint_value">Vandaag begint bij %s</string>
@@ -504,6 +506,7 @@ Voorbeeld:<br/>
     <string name="notification_activity_text">Ben je nog steeds bezig met: %s?</string>
     <string name="notification_goal_time_description">doel bereikt</string>
     <string name="notification_time_started">Gestart om %s</string>
+    <string name="notification_time_ended">Klaar om %s</string>
     <string name="notification_record_type_stop">Beëindigen</string>
     <string name="notification_pomodoro_subtitle">Beginnend: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Voorbeeld:<br/>
     <string name="pomodoro_state_break">Pauze</string>
     <string name="pomodoro_state_long_break">Lange pauze</string>
     <string name="pomodoro_settings_periods_until_long_break">Perioden tot lange pauze</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selecteer wat je hebt gedaan</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Emotie</string>

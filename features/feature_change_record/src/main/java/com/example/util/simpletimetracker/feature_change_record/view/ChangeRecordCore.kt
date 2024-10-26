@@ -115,7 +115,7 @@ class ChangeRecordCore(
             ),
             createChangeRecordTimeAdjustmentAdapterDelegate(viewModel::onTimeAdjustmentClick),
             createChangeRecordButtonAdapterDelegate(viewModel::onItemButtonClick),
-            createChangeRecordSliderAdapterDelegate(viewModel::onSliderValueChanged)
+            createChangeRecordSliderAdapterDelegate(viewModel::onSliderValueChanged),
         )
     }
 

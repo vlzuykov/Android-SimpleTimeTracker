@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +31,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.example.util.simpletimetracker.R
 import com.example.util.simpletimetracker.domain.model.WearActivityIcon
+import com.example.util.simpletimetracker.presentation.theme.ColorInactive
 import com.example.util.simpletimetracker.presentation.ui.layout.ScaffoldedScrollingColumn
 import com.example.util.simpletimetracker.utils.getString
 import com.example.util.simpletimetracker.utils.orZero
@@ -48,6 +50,7 @@ sealed interface ActivitiesListState {
     ) : ActivitiesListState
 
     data class Content(
+        val hint: String,
         val isCompact: Boolean,
         val items: List<ActivityChipState>,
     ) : ActivitiesListState
@@ -156,6 +159,11 @@ private fun ScalingLazyListScope.renderContentFull(
     state: ActivitiesListState.Content,
     onItemClick: (item: ActivityChipState) -> Unit,
 ) {
+    if (state.hint.isNotEmpty()) {
+        item {
+            Hint(HintState(state.hint))
+        }
+    }
     for (itemState in state.items) {
         item(key = itemState.id) {
             val onClick = remember(itemState) {
@@ -173,6 +181,11 @@ private fun ScalingLazyListScope.renderContentCompact(
     state: ActivitiesListState.Content,
     onItemClick: (item: ActivityChipState) -> Unit,
 ) {
+    if (state.hint.isNotEmpty()) {
+        item {
+            Hint(HintState(state.hint))
+        }
+    }
     state.items
         .withIndex()
         .groupBy { it.index / ACTIVITY_LIST_COMPACT_CHIP_COUNT }
@@ -197,7 +210,8 @@ private fun ScalingLazyListScope.renderContentCompact(
                                 icon = itemState.icon,
                                 color = itemState.color,
                                 type = itemState.type,
-                                startedAt = itemState.startedAt,
+                                timeHint = itemState.timeHint,
+                                timeHint2 = itemState.timeHint2,
                                 isLoading = itemState.isLoading,
                             ),
                             onClick = onClick,
@@ -257,13 +271,19 @@ private fun ContentFull() {
             name = "Sleep",
             icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
             color = 0xFF0000FA,
-            startedAt = Instant.now().toEpochMilli() - 36500000,
-            tagString = "",
+            timeHint = if (it == 1) {
+                ActivityChipState.TimeHint.Timer(
+                    Instant.now().toEpochMilli() - 36500000,
+                )
+            } else {
+                ActivityChipState.TimeHint.None
+            },
         )
     }
     ActivitiesList(
         state = ActivitiesListState.Content(
             isCompact = false,
+            hint = "",
             items = items,
         ),
     )
@@ -278,13 +298,109 @@ private fun ContentCompact() {
             name = "Sleep",
             icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
             color = 0xFF0000FA,
-            startedAt = Instant.now().toEpochMilli() - 36500000,
-            tagString = "",
+            timeHint = if (it == 1) {
+                ActivityChipState.TimeHint.Timer(
+                    Instant.now().toEpochMilli() - 36500000,
+                )
+            } else {
+                ActivityChipState.TimeHint.None
+            },
         )
     }
     ActivitiesList(
         state = ActivitiesListState.Content(
             isCompact = true,
+            hint = "",
+            items = items,
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+private fun ContentFullRetroactiveMode() {
+    val items = List(5) {
+        if (it == 0) {
+            ActivityChipState(
+                id = UUID.randomUUID().hashCode().toLong(),
+                name = "Untracked",
+                icon = WearActivityIcon.Image(R.drawable.app_unknown),
+                color = ColorInactive.toArgb().toLong(),
+                timeHint = ActivityChipState.TimeHint.Timer(
+                    Instant.now().toEpochMilli() - 3650000,
+                ),
+            )
+        } else {
+            ActivityChipState(
+                id = UUID.randomUUID().hashCode().toLong(),
+                name = "Sleep",
+                icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
+                color = 0xFF0000FA,
+                timeHint = if (it == 1) {
+                    ActivityChipState.TimeHint.Duration(
+                        36500000,
+                    )
+                } else {
+                    ActivityChipState.TimeHint.None
+                },
+                hint = if (it == 1) {
+                    "Last"
+                } else {
+                    ""
+                },
+            )
+        }
+    }
+    ActivitiesList(
+        state = ActivitiesListState.Content(
+            isCompact = false,
+            hint = "Retroactive mode hint",
+            items = items,
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+private fun ContentCompactRetroactiveMode() {
+    val items = List(5) {
+        if (it == 0) {
+            ActivityChipState(
+                id = UUID.randomUUID().hashCode().toLong(),
+                name = "Untracked",
+                icon = WearActivityIcon.Image(R.drawable.app_unknown),
+                color = ColorInactive.toArgb().toLong(),
+                timeHint = ActivityChipState.TimeHint.Timer(
+                    Instant.now().toEpochMilli() - 3650000,
+                ),
+            )
+        } else {
+            ActivityChipState(
+                id = UUID.randomUUID().hashCode().toLong(),
+                name = "Sleep",
+                icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
+                color = 0xFF0000FA,
+                timeHint = if (it == 1) {
+                    ActivityChipState.TimeHint.Timer(
+                        Instant.now().toEpochMilli() - 3650000,
+                    )
+                } else {
+                    ActivityChipState.TimeHint.None
+                },
+                timeHint2 = if (it == 1) {
+                    ActivityChipState.TimeHint.Duration(
+                        36500000,
+                    )
+                } else {
+                    ActivityChipState.TimeHint.None
+                },
+            )
+        }
+    }
+    ActivitiesList(
+        state = ActivitiesListState.Content(
+            isCompact = true,
+            hint = "Retroactive mode hint",
             items = items,
         ),
     )

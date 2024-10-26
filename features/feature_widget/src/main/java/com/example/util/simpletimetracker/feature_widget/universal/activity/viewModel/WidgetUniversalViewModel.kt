@@ -11,7 +11,6 @@ import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeek
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
-import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.interactor.ChangeSelectedActivityFilterMediator
@@ -29,7 +28,6 @@ import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerVi
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
-import com.example.util.simpletimetracker.feature_widget.R
 import com.example.util.simpletimetracker.feature_widget.universal.mapper.WidgetUniversalViewDataMapper
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.RecordTagSelectionParams
@@ -42,7 +40,6 @@ import javax.inject.Inject
 @HiltViewModel
 class WidgetUniversalViewModel @Inject constructor(
     private val router: Router,
-    private val resourceRepo: ResourceRepo,
     private val addRunningRecordMediator: AddRunningRecordMediator,
     private val removeRunningRecordMediator: RemoveRunningRecordMediator,
     private val recordTypeInteractor: RecordTypeInteractor,

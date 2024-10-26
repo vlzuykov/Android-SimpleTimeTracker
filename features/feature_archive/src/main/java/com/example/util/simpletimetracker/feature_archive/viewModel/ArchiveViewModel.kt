@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.NotificationActivitySwitchInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.RemoveRecordTagMediator
 import com.example.util.simpletimetracker.domain.interactor.RemoveRecordTypeMediator
 import com.example.util.simpletimetracker.domain.interactor.UpdateExternalViewsInteractor
-import com.example.util.simpletimetracker.domain.interactor.WearInteractor
 import com.example.util.simpletimetracker.feature_archive.R
 import com.example.util.simpletimetracker.feature_archive.interactor.ArchiveViewDataInteractor
 import com.example.util.simpletimetracker.feature_archive.viewData.ArchiveViewData

@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Amaga quan es mostri la notificació del temporitzador</string>
     <string name="settings_keep_statistics_range">Mantingues el rang d\'estadístiques</string>
     <string name="settings_keep_statistics_range_hint">Si és habilitat, les estadístiques detallades s\'obriran amb el mateix rang de temps seleccionat a les estadístiques</string>
+    <string name="settings_retroactive_tracking_mode">Activa el seguiment de temps retroactiu</string>
+    <string name="settings_retroactive_tracking_mode_hint">Feu un seguiment del temps seleccionant quina activitat s\'ha fet des de l\'última vegada en lloc de quina activitat es farà a partir d\'ara.</string>
     <string name="settings_start_of_day">Canvia l\'inici del dia</string>
     <string name="settings_start_of_day_hint">L\'inici del dia es desplaçarà per la quantitat de temps especificada, cap endavant o cap enrere segons el signe.</string>
     <string name="settings_start_of_day_hint_value">Avui comença a %s</string>
@@ -504,6 +506,7 @@ Exemple:<br/>
     <string name="notification_activity_text">Encara estàs fent: %s?</string>
     <string name="notification_goal_time_description">Heu assolit l\'objectiu</string>
     <string name="notification_time_started">Començat a %s</string>
+    <string name="notification_time_ended">S\'ha acabat a les %s</string>
     <string name="notification_record_type_stop">Atura</string>
     <string name="notification_pomodoro_subtitle">Inici: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Exemple:<br/>
     <string name="pomodoro_state_break">Pausa</string>
     <string name="pomodoro_state_long_break">Pausa llarga</string>
     <string name="pomodoro_settings_periods_until_long_break">Períodes fins a una pausa llarga</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Seleccioneu el que heu estat fent</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Emoticones i Emocions</string>

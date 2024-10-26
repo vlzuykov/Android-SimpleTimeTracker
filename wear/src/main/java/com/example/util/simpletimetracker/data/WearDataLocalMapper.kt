@@ -7,11 +7,15 @@ package com.example.util.simpletimetracker.data
 
 import com.example.util.simpletimetracker.domain.model.WearActivity
 import com.example.util.simpletimetracker.domain.model.WearCurrentActivity
+import com.example.util.simpletimetracker.domain.model.WearCurrentState
+import com.example.util.simpletimetracker.domain.model.WearLastRecord
 import com.example.util.simpletimetracker.domain.model.WearRecordRepeatResult
 import com.example.util.simpletimetracker.domain.model.WearSettings
 import com.example.util.simpletimetracker.domain.model.WearTag
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
 import com.example.util.simpletimetracker.wear_api.WearCurrentActivityDTO
+import com.example.util.simpletimetracker.wear_api.WearCurrentStateDTO
+import com.example.util.simpletimetracker.wear_api.WearLastRecordDTO
 import com.example.util.simpletimetracker.wear_api.WearRecordRepeatResponse
 import com.example.util.simpletimetracker.wear_api.WearSettingsDTO
 import com.example.util.simpletimetracker.wear_api.WearTagDTO
@@ -28,12 +32,32 @@ class WearDataLocalMapper @Inject constructor() {
         )
     }
 
-    fun map(dto: WearCurrentActivityDTO): WearCurrentActivity {
+    fun map(dto: WearCurrentStateDTO): WearCurrentState {
+        return WearCurrentState(
+            currentActivities = dto.currentActivities.map(::map),
+            lastRecord = map(dto.lastRecord),
+        )
+    }
+
+    private fun map(dto: WearCurrentActivityDTO): WearCurrentActivity {
         return WearCurrentActivity(
             id = dto.id,
             startedAt = dto.startedAt,
             tags = dto.tags.map(::map),
         )
+    }
+
+    private fun map(dto: WearLastRecordDTO): WearLastRecord {
+        return if (dto.isPresent) {
+            WearLastRecord.Present(
+                activityId = dto.activityId,
+                startedAt = dto.startedAt,
+                finishedAt = dto.finishedAt,
+                tags = dto.tags.map(::map),
+            )
+        } else {
+            WearLastRecord.None
+        }
     }
 
     fun map(dto: WearTagDTO): WearTag {
@@ -49,6 +73,7 @@ class WearDataLocalMapper @Inject constructor() {
             allowMultitasking = dto.allowMultitasking,
             recordTagSelectionCloseAfterOne = dto.recordTagSelectionCloseAfterOne,
             enableRepeatButton = dto.enableRepeatButton,
+            retroactiveTrackingMode = dto.retroactiveTrackingMode,
         )
     }
 
@@ -57,6 +82,7 @@ class WearDataLocalMapper @Inject constructor() {
             allowMultitasking = domain.allowMultitasking,
             recordTagSelectionCloseAfterOne = domain.recordTagSelectionCloseAfterOne,
             enableRepeatButton = domain.enableRepeatButton,
+            retroactiveTrackingMode = domain.retroactiveTrackingMode,
         )
     }
 

@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">هنگامی که اعلان تایمر نشان داده می شود پنهان شود</string>
     <string name="settings_keep_statistics_range">محدوده آماری را حفظ شود</string>
     <string name="settings_keep_statistics_range_hint">اگر فعال باشد آمار جزئی با همان محدوده آماری در صفحه آمارها باز می شود</string>
+    <string name="settings_retroactive_tracking_mode">ردیابی زمان عطف به ماسبق را فعال کنید</string>
+    <string name="settings_retroactive_tracking_mode_hint">با انتخاب اینکه کدام فعالیت از آخرین بار انجام شده است، نه اینکه کدام فعالیت از هم اکنون انجام شود، زمان را پیگیری کنید.</string>
     <string name="settings_start_of_day">تغییر زمان شروع روز</string>
     <string name="settings_start_of_day_hint">بسته به علامت، شروع روز با مقدار زمان مشخص، به جلو یا عقب جابه‌جا می‌شود.</string>
     <string name="settings_start_of_day_hint_value">امروز در %s شروع می شود</string>
@@ -504,6 +506,7 @@
     <string name="notification_activity_text">آیا هنوز درحال انجام: %s ?</string>
     <string name="notification_goal_time_description">به هدف خود رسیدید</string>
     <string name="notification_time_started">شروع شده در %s</string>
+    <string name="notification_time_ended">در %s به پایان رسید</string>
     <string name="notification_record_type_stop">توقف</string>
     <string name="notification_pomodoro_subtitle">شروع: %s (%s)</string>
 
@@ -552,6 +555,9 @@
     <string name="pomodoro_state_break">شکستن</string>
     <string name="pomodoro_state_long_break">وقفه طولانی</string>
     <string name="pomodoro_settings_periods_until_long_break">دوره های زمانی تا وقفه طولانی</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">کاری را که انجام می دادید انتخاب کنید</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">شکلک ها و احساسات</string>

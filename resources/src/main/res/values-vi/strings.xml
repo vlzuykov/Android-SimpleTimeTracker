@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Ẩn khi thông báo hẹn giờ được hiển thị</string>
     <string name="settings_keep_statistics_range">Giữ phạm vi thống kê</string>
     <string name="settings_keep_statistics_range_hint">Nếu bật thống kê chi tiết sẽ được mở với cùng khoảng thời gian được chọn trong thống kê.</string>
+    <string name="settings_retroactive_tracking_mode">Bật tính năng theo dõi thời gian hồi tố</string>
+    <string name="settings_retroactive_tracking_mode_hint">Theo dõi thời gian bằng cách chọn hoạt động nào đã được thực hiện kể từ lần trước thay vì hoạt động nào sẽ được thực hiện từ bây giờ.</string>
     <string name="settings_start_of_day">Thay đổi đầu ngày</string>
     <string name="settings_start_of_day_hint">Thời điểm bắt đầu ngày sẽ được dịch chuyển theo khoảng thời gian được chỉ định, tiến hoặc lùi tùy theo dấu hiệu.</string>
     <string name="settings_start_of_day_hint_value">Hôm nay bắt đầu lúc %s</string>
@@ -504,6 +506,7 @@ Ví dụ:<br/>
     <string name="notification_activity_text">Bạn vẫn đang làm: %s?</string>
     <string name="notification_goal_time_description">đã đạt mục tiêu</string>
     <string name="notification_time_started">Bắt đầu lúc %s</string>
+    <string name="notification_time_ended">Đã hoàn tất lúc %s</string>
     <string name="notification_record_type_stop">Dừng lại</string>
     <string name="notification_pomodoro_subtitle">Đang bắt đầu: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Ví dụ:<br/>
     <string name="pomodoro_state_break">Nghỉ</string>
     <string name="pomodoro_state_long_break">Nghỉ dài</string>
     <string name="pomodoro_settings_periods_until_long_break">Thời gian cho đến kỳ nghỉ dài</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Chọn những gì bạn đã và đang làm</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Mặt cười &amp; Cảm xúc</string>

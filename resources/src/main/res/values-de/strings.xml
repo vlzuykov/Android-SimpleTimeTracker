@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Ausblenden, wenn Timer-Benachrichtigung angezeigt wird</string>
     <string name="settings_keep_statistics_range">Behalten Sie den Statistikbereich bei</string>
     <string name="settings_keep_statistics_range_hint">Wenn aktiviert, werden detaillierte Statistiken mit dem gleichen Zeitraum geöffnet, der in den Statistiken ausgewählt wurde.</string>
+    <string name="settings_retroactive_tracking_mode">Aktivieren Sie die rückwirkende Zeiterfassung</string>
+    <string name="settings_retroactive_tracking_mode_hint">Verfolgen Sie die Zeit, indem Sie auswählen, welche Aktivitäten seit dem letzten Mal ausgeführt wurden, und nicht, welche Aktivität ab jetzt ausgeführt wird.</string>
     <string name="settings_start_of_day">Schichtstart in den Tag</string>
     <string name="settings_start_of_day_hint">Der Tagesbeginn wird je nach Vorzeichen um die angegebene Zeit nach vorne oder hinten verschoben.</string>
     <string name="settings_start_of_day_hint_value">Heute beginnt bei %s</string>
@@ -504,6 +506,7 @@ Beispiel:<br/>
     <string name="notification_activity_text">Machst du immer noch: %s?</string>
     <string name="notification_goal_time_description">ziel erreicht</string>
     <string name="notification_time_started">Gestartet bei %s</string>
+    <string name="notification_time_ended">Fertiggestellt um %s</string>
     <string name="notification_record_type_stop">Stoppen</string>
     <string name="notification_pomodoro_subtitle">Startet: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Beispiel:<br/>
     <string name="pomodoro_state_break">Pause</string>
     <string name="pomodoro_state_long_break">Lange Pause</string>
     <string name="pomodoro_settings_periods_until_long_break">Zeiträume bis zur langen Pause</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Wählen Sie aus, was Sie getan haben</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Lächeln &amp; Stimmung</string>

@@ -80,7 +80,7 @@ class WidgetStatisticsChartProvider : AppWidgetProvider() {
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        GlobalScope.launch( allowDiskRead { Dispatchers.Main }) {
+        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
             appWidgetIds?.forEach { prefsInteractor.removeStatisticsWidget(it) }
         }
     }

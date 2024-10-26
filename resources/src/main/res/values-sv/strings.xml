@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Dölj när timeravisering visas</string>
     <string name="settings_keep_statistics_range">Kom ihåg valt intervall för statistik</string>
     <string name="settings_keep_statistics_range_hint">Om aktiverat så öppnas detaljerad statistik med samma tidsintervall som valts i statistikvyn.</string>
+    <string name="settings_retroactive_tracking_mode">Aktivera retroaktiv tidsspårning</string>
+    <string name="settings_retroactive_tracking_mode_hint">Spåra tid genom att välja vilken aktivitet som har gjorts sedan förra gången snarare än vilken aktivitet som ska göras från och med nu.</string>
     <string name="settings_start_of_day">Tid för dagens skiftstart</string>
     <string name="settings_start_of_day_hint">Dagens början kommer att förskjutas med den angivna tidsperioden, framåt eller bakåt beroende på tecken.</string>
     <string name="settings_start_of_day_hint_value">Idag börjar på %s</string>
@@ -504,6 +506,7 @@ Exempel:<br/>
     <string name="notification_activity_text">Gör du fortfarande: %s?</string>
     <string name="notification_goal_time_description">mål uppnått</string>
     <string name="notification_time_started">Påbörjade %s</string>
+    <string name="notification_time_ended">Avslutade vid %s</string>
     <string name="notification_record_type_stop">Sluta</string>
     <string name="notification_pomodoro_subtitle">Startar: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Exempel:<br/>
     <string name="pomodoro_state_break">Paus</string>
     <string name="pomodoro_state_long_break">Lång paus</string>
     <string name="pomodoro_settings_periods_until_long_break">Perioder till lång paus</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Välj vad du har gjort</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Ansiktsuttryck &amp; Känslor</string>

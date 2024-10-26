@@ -61,15 +61,17 @@ class ActivitiesViewModel @Inject constructor(
     fun onItemClick(item: ActivityChipState) {
         when (item.type) {
             is ActivityChipType.Base -> {
-                val isRunning = item.startedAt != null
-                if (isRunning) {
+                if (item.isRunning) {
                     stopActivity(item.id)
                 } else {
                     tryStartActivity(item.id)
                 }
             }
             is ActivityChipType.Repeat -> {
-                repeatActivity()
+                repeatActivity(item.id)
+            }
+            is ActivityChipType.Untracked -> {
+                // Do nothing.
             }
         }
     }
@@ -87,16 +89,21 @@ class ActivitiesViewModel @Inject constructor(
         )
     }
 
-    private fun repeatActivity() = viewModelScope.launch {
+    private fun repeatActivity(itemId: Long) = viewModelScope.launch {
+        setLoading(itemId, isLoading = true)
         val result = startActivitiesMediator.repeat()
         when (result.getOrNull()?.result) {
             is WearRecordRepeatResult.ActionResult.Started -> {
                 // Do nothing
             }
-            is WearRecordRepeatResult.ActionResult.NoPreviousFound ->
+            is WearRecordRepeatResult.ActionResult.NoPreviousFound -> {
+                setLoading(itemId, isLoading = false)
                 showMessage(R.string.running_records_repeat_no_prev_record)
-            is WearRecordRepeatResult.ActionResult.AlreadyTracking ->
+            }
+            is WearRecordRepeatResult.ActionResult.AlreadyTracking -> {
+                setLoading(itemId, isLoading = false)
                 showMessage(R.string.running_records_repeat_already_tracking)
+            }
             null -> showError()
         }
     }
@@ -139,11 +146,11 @@ class ActivitiesViewModel @Inject constructor(
 
     private suspend fun loadData(forceReload: Boolean) {
         val activities = wearDataRepo.loadActivities(forceReload)
-        val currentActivities = wearDataRepo.loadCurrentActivities(forceReload)
+        val currentState = wearDataRepo.loadCurrentActivities(forceReload)
         val settings = wearDataRepo.loadSettings(forceReload)
 
         val loadError = activities.isFailure ||
-            currentActivities.isFailure ||
+            currentState.isFailure ||
             settings.isFailure
 
         when {
@@ -156,7 +163,8 @@ class ActivitiesViewModel @Inject constructor(
             else -> {
                 _state.value = activitiesViewDataMapper.mapContentState(
                     activities = activities.getOrNull().orEmpty(),
-                    currentActivities = currentActivities.getOrNull().orEmpty(),
+                    currentActivities = currentState.getOrNull()?.currentActivities.orEmpty(),
+                    lastRecord = currentState.getOrNull()?.lastRecord,
                     settings = settings.getOrNull(),
                     showCompactList = wearPrefsInteractor.getWearShowCompactList(),
                 )

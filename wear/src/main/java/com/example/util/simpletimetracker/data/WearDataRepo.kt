@@ -7,13 +7,13 @@ package com.example.util.simpletimetracker.data
 
 import com.example.util.simpletimetracker.complication.WearComplicationManager
 import com.example.util.simpletimetracker.domain.model.WearActivity
-import com.example.util.simpletimetracker.domain.model.WearCurrentActivity
+import com.example.util.simpletimetracker.domain.model.WearCurrentState
 import com.example.util.simpletimetracker.domain.model.WearRecordRepeatResult
 import com.example.util.simpletimetracker.domain.model.WearSettings
 import com.example.util.simpletimetracker.domain.model.WearTag
 import com.example.util.simpletimetracker.notification.WearNotificationManager
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
-import com.example.util.simpletimetracker.wear_api.WearCurrentActivityDTO
+import com.example.util.simpletimetracker.wear_api.WearCurrentStateDTO
 import com.example.util.simpletimetracker.wear_api.WearSettingsDTO
 import com.example.util.simpletimetracker.wear_api.WearShouldShowTagSelectionRequest
 import com.example.util.simpletimetracker.wear_api.WearStartActivityRequest
@@ -48,7 +48,7 @@ class WearDataRepo @Inject constructor(
     )
 
     private var activitiesCache: List<WearActivityDTO>? = null
-    private var currentActivitiesCache: List<WearCurrentActivityDTO>? = null
+    private var currentActivitiesCache: WearCurrentStateDTO? = null
     private var settingsCache: WearSettingsDTO? = null
     private val mutex: Mutex = Mutex()
 
@@ -80,12 +80,12 @@ class WearDataRepo @Inject constructor(
 
     suspend fun loadCurrentActivities(
         forceReload: Boolean,
-    ): Result<List<WearCurrentActivity>> = mutex.withLock {
+    ): Result<WearCurrentState> = mutex.withLock {
         return runCatching {
             val data = currentActivitiesCache.takeUnless { forceReload }
                 ?: wearRPCClient.queryCurrentActivities()
                     .also { currentActivitiesCache = it }
-            data.map(wearDataLocalMapper::map)
+            data.let(wearDataLocalMapper::map)
         }
     }
 

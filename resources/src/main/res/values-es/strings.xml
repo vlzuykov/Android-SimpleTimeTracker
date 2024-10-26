@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Ocultar cuando se muestra la notificación del temporizador</string>
     <string name="settings_keep_statistics_range">Mantener rango de estadísticas</string>
     <string name="settings_keep_statistics_range_hint">Si está habilitado, se abrirán estadísticas detalladas con el mismo rango de tiempo seleccionado en estadísticas.</string>
+    <string name="settings_retroactive_tracking_mode">Habilitar seguimiento de tiempo retroactivo</string>
+    <string name="settings_retroactive_tracking_mode_hint">Realice un seguimiento del tiempo seleccionando qué actividad se realizó desde la última vez en lugar de qué actividad se realizará a partir de ahora.</string>
     <string name="settings_start_of_day">Cambio de inicio del día</string>
     <string name="settings_start_of_day_hint">El inicio del día se desplazará la cantidad de tiempo especificada, hacia adelante o hacia atrás, según la señal.</string>
     <string name="settings_start_of_day_hint_value">Hoy empieza en %s</string>
@@ -504,6 +506,7 @@ Ejemplo:<br/>
     <string name="notification_activity_text">¿Sigues haciendo: %s?</string>
     <string name="notification_goal_time_description">objetivo alcanzado</string>
     <string name="notification_time_started">Comenzó en %s</string>
+    <string name="notification_time_ended">Terminado en %s</string>
     <string name="notification_record_type_stop">Detener</string>
     <string name="notification_pomodoro_subtitle">Inicio: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Ejemplo:<br/>
     <string name="pomodoro_state_break">Descanso</string>
     <string name="pomodoro_state_long_break">Largo descanso</string>
     <string name="pomodoro_settings_periods_until_long_break">Períodos hasta un descanso largo</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selecciona lo que has estado haciendo</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Emoticonos y Emociones</string>

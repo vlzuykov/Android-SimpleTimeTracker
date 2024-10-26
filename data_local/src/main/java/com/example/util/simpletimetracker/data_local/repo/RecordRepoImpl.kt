@@ -73,7 +73,7 @@ class RecordRepoImpl @Inject constructor(
         logMessage = "get",
         accessCache = { recordCache[id] },
         accessSource = { recordDao.get(id)?.let(::mapItem) },
-        afterSourceAccess = { it?.let { recordCache.put(id, it) } }
+        afterSourceAccess = { it?.let { recordCache.put(id, it) } },
     )
 
     override suspend fun getFromRange(range: Range): List<Record> {

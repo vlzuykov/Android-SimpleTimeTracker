@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Скрыть, когда отображается уведомление таймера</string>
     <string name="settings_keep_statistics_range">Сохранить диапазон статистики</string>
     <string name="settings_keep_statistics_range_hint">Если включено, подробная статистика будет открыта с тем же временным диапазоном, который выбран в статистике.</string>
+    <string name="settings_retroactive_tracking_mode">Включить ретроспективный учет времени</string>
+    <string name="settings_retroactive_tracking_mode_hint">Отслеживайте время, выбирая, какие действия были выполнены с прошлого раза, а не какие действия будут выполняться сейчас.</string>
     <string name="settings_start_of_day">Сдвинуть начало дня</string>
     <string name="settings_start_of_day_hint">Начало дня будет сдвинуто на указанное количество времени вперед или назад в зависимости от знака.</string>
     <string name="settings_start_of_day_hint_value">Сегодня начинается в %s</string>
@@ -504,6 +506,7 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="notification_activity_text">Вы все еще делаете: %s?</string>
     <string name="notification_goal_time_description">цель достигнута</string>
     <string name="notification_time_started">Начато в %s</string>
+    <string name="notification_time_ended">Завершено в %s</string>
     <string name="notification_record_type_stop">Стоп</string>
     <string name="notification_pomodoro_subtitle">Начинается: %s (%s)</string>
 
@@ -552,6 +555,9 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="pomodoro_state_break">Перерыв</string>
     <string name="pomodoro_state_long_break">Длинный перерыв</string>
     <string name="pomodoro_settings_periods_until_long_break">Периоды до длительного перерыва</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Выберите, чем вы занимались</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Смайлы и эмоции</string>

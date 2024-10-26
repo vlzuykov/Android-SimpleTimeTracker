@@ -5,12 +5,15 @@
  */
 package com.example.util.simpletimetracker.presentation.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
@@ -27,6 +30,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.example.util.simpletimetracker.R
 import com.example.util.simpletimetracker.domain.model.WearActivityIcon
+import com.example.util.simpletimetracker.presentation.theme.ColorInactive
 import com.example.util.simpletimetracker.presentation.ui.remember.rememberDurationSince
 import com.example.util.simpletimetracker.utils.durationToLabel
 import java.time.Instant
@@ -38,17 +42,27 @@ data class ActivityChipState(
     val icon: WearActivityIcon,
     val color: Long,
     val type: ActivityChipType = ActivityChipType.Base,
-    val startedAt: Long? = null,
+    val isRunning: Boolean = false,
+    val timeHint: TimeHint = TimeHint.None,
+    val timeHint2: TimeHint = TimeHint.None,
     val tagString: String = "",
     val isLoading: Boolean = false,
-)
+    val hint: String = "",
+) {
+
+    sealed interface TimeHint {
+        object None : TimeHint
+        data class Timer(val startedAt: Long) : TimeHint
+        data class Duration(val millis: Long) : TimeHint
+    }
+}
 
 @Composable
 fun ActivityChip(
     state: ActivityChipState,
     onClick: () -> Unit = {},
 ) {
-    val isRunning = state.startedAt != null
+    val isRunning = state.timeHint !is ActivityChipState.TimeHint.None
     val height = if (isRunning) {
         ACTIVITY_RUNNING_VIEW_HEIGHT
     } else {
@@ -90,11 +104,21 @@ fun ActivityChip(
                         fontSize = 10.sp,
                     )
                 }
-                if (state.startedAt != null) {
-                    val startedDiff = rememberDurationSince(state.startedAt)
-                    val text = durationToLabel(startedDiff)
+                when (val timeHint = state.timeHint) {
+                    is ActivityChipState.TimeHint.Timer -> {
+                        val startedDiff = rememberDurationSince(timeHint.startedAt)
+                        durationToLabel(startedDiff)
+                    }
+                    is ActivityChipState.TimeHint.Duration -> {
+                        val timestamp = java.time.Duration.ofMillis(timeHint.millis)
+                        durationToLabel(timestamp)
+                    }
+                    is ActivityChipState.TimeHint.None -> {
+                        null
+                    }
+                }?.let {
                     Text(
-                        text = text,
+                        text = it,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 10.sp,
@@ -107,6 +131,19 @@ fun ActivityChip(
         ),
         onClick = onClick,
     )
+    if (state.hint.isNotEmpty()) {
+        Text(
+            modifier = Modifier
+                .background(
+                    color = ColorInactive,
+                    shape = CircleShape,
+                )
+                .padding(horizontal = 8.dp),
+            text = state.hint,
+            fontSize = 11.sp,
+            lineHeight = 11.sp,
+        )
+    }
 }
 
 @Preview(device = WearDevices.LARGE_ROUND)
@@ -137,7 +174,7 @@ fun SampleFontScale() {
 @Composable
 fun SampleSleep() {
     ActivityChip(
-        ActivityChipState(0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF),
+        ActivityChipState(0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456),
     )
 }
 
@@ -145,7 +182,7 @@ fun SampleSleep() {
 @Composable
 fun SampleText() {
     ActivityChip(
-        ActivityChipState(0, "Sleeping", WearActivityIcon.Text("Zzzz"), 0xFFABCDEF),
+        ActivityChipState(0, "Sleeping", WearActivityIcon.Text("Zzzz"), 0xFF123456),
     )
 }
 
@@ -153,7 +190,7 @@ fun SampleText() {
 @Composable
 fun SampleIcon() {
     ActivityChip(
-        ActivityChipState(0, "Sleeping", WearActivityIcon.Image(R.drawable.ic_hotel_24px), 0xFFABCDEF),
+        ActivityChipState(0, "Sleeping", WearActivityIcon.Image(R.drawable.ic_hotel_24px), 0xFF123456),
     )
 }
 
@@ -162,7 +199,7 @@ fun SampleIcon() {
 fun SampleLoading() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Image(R.drawable.ic_hotel_24px), 0xFFABCDEF,
+            0, "Sleeping", WearActivityIcon.Image(R.drawable.ic_hotel_24px), 0xFF123456,
             isLoading = true,
         ),
     )
@@ -184,8 +221,10 @@ fun White() {
 fun CurrentlyRunning() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF,
-            startedAt = Instant.now().toEpochMilli() - 365000,
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 365000,
+            ),
         ),
     )
 }
@@ -195,8 +234,10 @@ fun CurrentlyRunning() {
 fun CurrentlyRunningFontScale() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF,
-            startedAt = Instant.now().toEpochMilli() - 365000,
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 365000,
+            ),
         ),
     )
 }
@@ -206,8 +247,10 @@ fun CurrentlyRunningFontScale() {
 fun CurrentlyRunningLoading() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF,
-            startedAt = Instant.now().toEpochMilli() - 365000,
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 365000,
+            ),
             isLoading = true,
         ),
     )
@@ -218,8 +261,10 @@ fun CurrentlyRunningLoading() {
 fun CurrentlyRunningWithTags() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF,
-            startedAt = Instant.now().toEpochMilli() - 365000,
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 365000,
+            ),
             tagString = "Work, Hotel",
         ),
     )
@@ -230,8 +275,10 @@ fun CurrentlyRunningWithTags() {
 fun CurrentlyRunningWithTagsFontScale() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF,
-            startedAt = Instant.now().toEpochMilli() - 365000,
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 365000,
+            ),
             tagString = "Work, Hotel",
         ),
     )
@@ -242,10 +289,83 @@ fun CurrentlyRunningWithTagsFontScale() {
 fun CurrentlyRunningWithTagsLoading() {
     ActivityChip(
         ActivityChipState(
-            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFFABCDEF,
-            startedAt = Instant.now().toEpochMilli() - 365000,
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 365000,
+            ),
             tagString = "Work, Hotel",
             isLoading = true,
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+fun Duration() {
+    ActivityChip(
+        ActivityChipState(
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Duration(
+                36500,
+            ),
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+fun WithHint() {
+    ActivityChip(
+        ActivityChipState(
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Duration(
+                36500,
+            ),
+            hint = "Last",
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND, fontScale = 2f)
+@Composable
+fun WithHintFontScale() {
+    ActivityChip(
+        ActivityChipState(
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Duration(
+                36500,
+            ),
+            hint = "Last",
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+fun WithHintTags() {
+    ActivityChip(
+        ActivityChipState(
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Duration(
+                36500,
+            ),
+            tagString = "Work, Hotel",
+            hint = "Last",
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND, fontScale = 2f)
+@Composable
+fun WithHintTagsFontScale() {
+    ActivityChip(
+        ActivityChipState(
+            0, "Sleeping", WearActivityIcon.Text("🛏️"), 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Duration(
+                36500,
+            ),
+            tagString = "Work, Hotel",
+            hint = "Last",
         ),
     )
 }

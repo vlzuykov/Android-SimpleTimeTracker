@@ -28,7 +28,7 @@ class RemoveRunningRecordMediator @Inject constructor(
             // No need to update widgets and notification because it will be done in running record remove.
             recordInteractor.addFromRunning(
                 runningRecord = runningRecord,
-                timeEnded = recordTimeEnded
+                timeEnded = recordTimeEnded,
             )
         }
         activityStartedStoppedBroadcastInteractor.onActivityStopped(
@@ -53,7 +53,7 @@ class RemoveRunningRecordMediator @Inject constructor(
         updateExternalViewsInteractor.onRunningRecordRemove(
             typeId = typeId,
             updateWidgets = updateWidgets,
-            updateNotificationSwitch = updateNotificationSwitch
+            updateNotificationSwitch = updateNotificationSwitch,
         )
     }
 }

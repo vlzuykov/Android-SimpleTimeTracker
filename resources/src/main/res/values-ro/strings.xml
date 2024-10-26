@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Ascundeți când este afișată notificarea temporizatorului</string>
     <string name="settings_keep_statistics_range">Pastreză intervalul în statistici</string>
     <string name="settings_keep_statistics_range_hint">Dacă este activat, statisticile detaliate vor fi deschise cu același interval în statistici.</string>
+    <string name="settings_retroactive_tracking_mode">Activați urmărirea timpului retroactiv</string>
+    <string name="settings_retroactive_tracking_mode_hint">Urmăriți timpul selectând ce activitate au fost efectuate de data trecută, mai degrabă decât ce activitate va fi efectuată de acum.</string>
     <string name="settings_start_of_day">Modifică începutul zilei</string>
     <string name="settings_start_of_day_hint">Începutul zilei va fi modificat cu intervalul de timp specificat, înainte sau înapoi în funcție de semn.</string>
     <string name="settings_start_of_day_hint_value">Azi începe la %s</string>
@@ -504,6 +506,7 @@ Examplu:<br/>
     <string name="notification_activity_text">Înca mai faci: %s?</string>
     <string name="notification_goal_time_description">Țel atins</string>
     <string name="notification_time_started">Început la %s</string>
+    <string name="notification_time_ended">Terminat la %s</string>
     <string name="notification_record_type_stop">Stop</string>
     <string name="notification_pomodoro_subtitle">Începând: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Examplu:<br/>
     <string name="pomodoro_state_break">Pauza</string>
     <string name="pomodoro_state_long_break">Pauză lungă</string>
     <string name="pomodoro_settings_periods_until_long_break">Perioade până la pauză lungă</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selectați ceea ce ați făcut</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Emoție</string>

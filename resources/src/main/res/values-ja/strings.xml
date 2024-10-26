@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">タイマー通知が表示される場合は非表示にします</string>
     <string name="settings_keep_statistics_range">統計値を保持する範囲</string>
     <string name="settings_keep_statistics_range_hint">有効にすると、統計で選択された同じ時間範囲で詳細な統計が開かれます。</string>
+    <string name="settings_retroactive_tracking_mode">遡及的な時間追跡を有効にする</string>
+    <string name="settings_retroactive_tracking_mode_hint">これから行うアクティビティではなく、前回以降に行ったアクティビティを選択して時間を追跡します。</string>
     <string name="settings_start_of_day">1日の開始時間</string>
     <string name="settings_start_of_day_hint">一日の始まりは、標識に応じて、指定した時間だけ前後に移動します。</string>
     <string name="settings_start_of_day_hint_value">今日は %s から始まります</string>
@@ -504,6 +506,7 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="notification_activity_text">まだやってますか: %s?</string>
     <string name="notification_goal_time_description">目標到達</string>
     <string name="notification_time_started">%s に開始</string>
+    <string name="notification_time_ended">%sに終了しました</string>
     <string name="notification_record_type_stop">ストップ</string>
     <string name="notification_pomodoro_subtitle">開始中: %s (%s)</string>
 
@@ -552,6 +555,9 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="pomodoro_state_break">休憩</string>
     <string name="pomodoro_state_long_break">長期休暇</string>
     <string name="pomodoro_settings_periods_until_long_break">長期休暇までの期間</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">何をしていたのかを選択してください</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">顔文字とエモート</string>

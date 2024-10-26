@@ -52,8 +52,7 @@ class RunningRecordsViewDataMapper @Inject constructor(
         )
     }
 
-    // TODO RETRO check first enter, main, widgets, notifs, wear.
-    // TODO RETRO add hint about how it works and limitations.
+    // TODO add hint about how it works and limitations?
     fun mapToRetroActiveMode(
         typesMap: Map<Long, RecordType>,
         recordTags: List<RecordTag>,
@@ -72,8 +71,8 @@ class RunningRecordsViewDataMapper @Inject constructor(
             )
         }
 
-        val type = prevRecord?.typeId?.let(typesMap::get)
-        if (prevRecord != null && type != null) {
+        val prevRecordType = prevRecord?.typeId?.let(typesMap::get)
+        if (prevRecord != null && prevRecordType != null) {
             result += runningRecordViewDataMapper.map(
                 runningRecord = RunningRecord(
                     id = UNTRACKED_ITEM_ID,
@@ -103,7 +102,7 @@ class RunningRecordsViewDataMapper @Inject constructor(
             )
             result += recordViewDataMapper.map(
                 record = prevRecord,
-                recordType = type,
+                recordType = prevRecordType,
                 recordTags = recordTags.filter { it.id in prevRecord.tagIds },
                 isDarkTheme = isDarkTheme,
                 useMilitaryTime = useMilitaryTime,

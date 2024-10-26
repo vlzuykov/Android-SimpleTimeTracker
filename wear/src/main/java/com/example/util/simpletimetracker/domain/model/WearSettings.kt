@@ -9,4 +9,5 @@ data class WearSettings(
     val allowMultitasking: Boolean,
     val recordTagSelectionCloseAfterOne: Boolean,
     val enableRepeatButton: Boolean,
+    val retroactiveTrackingMode: Boolean,
 )

@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Ocultar quando a notificação do cronômetro é mostrada</string>
     <string name="settings_keep_statistics_range">Manter intervalo de estatísticas</string>
     <string name="settings_keep_statistics_range_hint">Se ativado, as estatísticas detalhadas serão abertas com o mesmo intervalo de tempo selecionado nas estatísticas.</string>
+    <string name="settings_retroactive_tracking_mode">Habilitar rastreamento de tempo retroativo</string>
+    <string name="settings_retroactive_tracking_mode_hint">Acompanhe o tempo selecionando quais atividades foram realizadas desde a última vez, em vez de quais atividades serão realizadas a partir de agora.</string>
     <string name="settings_start_of_day">Mudar início do dia</string>
     <string name="settings_start_of_day_hint">O início do dia será deslocado pela quantidade de tempo especificada, para frente ou para trás, dependendo do sinal.</string>
     <string name="settings_start_of_day_hint_value">Hoje começa no %s</string>
@@ -504,6 +506,7 @@ Exemplo:<br/>
     <string name="notification_activity_text">Você ainda está fazendo: %s?</string>
     <string name="notification_goal_time_description">meta atingida</string>
     <string name="notification_time_started">Iniciado às %s</string>
+    <string name="notification_time_ended">Terminou em %s</string>
     <string name="notification_record_type_stop">Parar</string>
     <string name="notification_pomodoro_subtitle">Iniciando: %s (%s)</string>
 
@@ -552,6 +555,9 @@ Exemplo:<br/>
     <string name="pomodoro_state_break">Pausa</string>
     <string name="pomodoro_state_long_break">Pausa longa</string>
     <string name="pomodoro_settings_periods_until_long_break">Períodos até uma pausa longa</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selecione o que você tem feito</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Emoções</string>

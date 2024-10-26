@@ -129,7 +129,7 @@ class PrefsRepoImpl @Inject constructor(
     )
 
     override var retroactiveTrackingMode: Boolean by prefs.delegate(
-        KEY_RETROACTIVE_TRACKING_MODE, false
+        KEY_RETROACTIVE_TRACKING_MODE, false,
     )
 
     override var firstDayOfWeek: Int by prefs.delegate(

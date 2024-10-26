@@ -47,6 +47,7 @@ class TagsViewModel @Inject constructor(
         allowMultitasking = false,
         recordTagSelectionCloseAfterOne = false,
         enableRepeatButton = false,
+        retroactiveTrackingMode = false,
     )
 
     // TODO switch to savedStateHandle

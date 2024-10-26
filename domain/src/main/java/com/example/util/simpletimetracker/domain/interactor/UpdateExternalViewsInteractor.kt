@@ -32,7 +32,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.WidgetSingleTypes.takeIf { getRetroactiveTrackingMode() }
                 ?: Update.WidgetSingleType(typeId),
             Update.WidgetUniversal.takeIf { getRetroactiveTrackingMode() },
-            Update.Wear.takeIf { !fromArchive },
+            Update.Wear.takeIf { !fromArchive || getRetroactiveTrackingMode() },
             Update.NotificationTypes.takeIf { !fromArchive },
             Update.NotificationWithControls.takeIf { !fromArchive },
         )
@@ -139,6 +139,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.WidgetSingleTypes.takeIf { getRetroactiveTrackingMode() }
                 ?: Update.WidgetSingleType(typeId),
             Update.WidgetUniversal.takeIf { getRetroactiveTrackingMode() },
+            Update.Wear.takeIf { getRetroactiveTrackingMode() },
         )
     }
 
@@ -154,6 +155,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.WidgetSingleTypes.takeIf { getRetroactiveTrackingMode() }
                 ?: Update.WidgetSingleType(typeId),
             Update.WidgetUniversal.takeIf { getRetroactiveTrackingMode() },
+            Update.Wear.takeIf { getRetroactiveTrackingMode() },
         )
     }
 
@@ -320,7 +322,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
             Update.WidgetSingleTypes,
             Update.WidgetUniversal,
             Update.NotificationWithControls,
-            Update.Wear
+            Update.Wear,
         )
     }
 

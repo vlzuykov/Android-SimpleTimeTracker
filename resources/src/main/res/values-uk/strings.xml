@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">Приховати сповіщення таймера</string>
     <string name="settings_keep_statistics_range">Зберігайте діапазон статистики</string>
     <string name="settings_keep_statistics_range_hint">Якщо ввімкнено, буде відкрита детальна статистика з тим самим діапазоном часу, вибраним у статистиці.</string>
+    <string name="settings_retroactive_tracking_mode">Увімкнути ретроактивне відстеження часу</string>
+    <string name="settings_retroactive_tracking_mode_hint">Відстежуйте час, вибираючи, які дії були виконані з останнього разу, а не дії, які будуть виконані відтепер.</string>
     <string name="settings_start_of_day">Зміщення початку дня</string>
     <string name="settings_start_of_day_hint">Початок дня буде зміщено на вказану кількість часу вперед або назад залежно від знака.</string>
     <string name="settings_start_of_day_hint_value">Початок сьогоднішного дня: %s</string>
@@ -504,6 +506,7 @@
     <string name="notification_activity_text">Ви все ще робите: %s?</string>
     <string name="notification_goal_time_description">ціль досягнута</string>
     <string name="notification_time_started">Почато в %s</string>
+    <string name="notification_time_ended">Завершено о %s</string>
     <string name="notification_record_type_stop">Стоп</string>
     <string name="notification_pomodoro_subtitle">Починається: %s (%s)</string>
 
@@ -552,6 +555,9 @@
     <string name="pomodoro_state_break">Перерва</string>
     <string name="pomodoro_state_long_break">Тривала перерва</string>
     <string name="pomodoro_settings_periods_until_long_break">Циклів до тривалої перерви</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Виберіть те, що ви робили</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Смайли та емоції</string>

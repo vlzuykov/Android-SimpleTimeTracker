@@ -297,6 +297,8 @@
     <string name="settings_show_notification_with_switch_hide">הסתר כאשר מוצגת הודעת טיימר</string>
     <string name="settings_keep_statistics_range">השאר טווח סטטיסטיקה</string>
     <string name="settings_keep_statistics_range_hint">אם מופעל סטטיסטיקה מפורטת תפתח עם אותו טווח הזמן שנבחר בסטטיסטיקה.</string>
+    <string name="settings_retroactive_tracking_mode">אפשר מעקב אחר זמן רטרואקטיבי</string>
+    <string name="settings_retroactive_tracking_mode_hint">עקוב אחר זמן על ידי בחירת הפעילות שבוצעה מאז הפעם האחרונה ולא איזו פעילות תתבצע מעתה.</string>
     <string name="settings_start_of_day">הזז את תחילת היום</string>
     <string name="settings_start_of_day_hint">תחילת היום תוזז בכמות הזמן שצוינה, קדימה או אחורה בהתאם לסימן.</string>
     <string name="settings_start_of_day_hint_value">היום מתחיל ב%s</string>
@@ -504,6 +506,7 @@
     <string name="notification_activity_text">את/ה עדיין עושה: %s?</string>
     <string name="notification_goal_time_description">מטרה הושגה</string>
     <string name="notification_time_started">התחיל בשעה %s</string>
+    <string name="notification_time_ended">הסתיים ב-%s</string>
     <string name="notification_record_type_stop">עצור</string>
     <string name="notification_pomodoro_subtitle">מתחיל: %s (%s)</string>
 
@@ -552,6 +555,9 @@
     <string name="pomodoro_state_break">הפסקה</string>
     <string name="pomodoro_state_long_break">הפסקה ארוכה</string>
     <string name="pomodoro_settings_periods_until_long_break">פרקי זמן עד להפסקה ארוכה</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">בחר מה עשית</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">סמיילים &amp; רגש</string>
