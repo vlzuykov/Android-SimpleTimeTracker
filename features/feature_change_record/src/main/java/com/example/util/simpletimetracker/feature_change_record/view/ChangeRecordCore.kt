@@ -34,6 +34,7 @@ import com.example.util.simpletimetracker.feature_change_record.adapter.createCh
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordChangePreviewAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordCommentAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordCommentFieldAdapterDelegate
+import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordSliderAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordTimeAdjustmentAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordTimeDoublePreviewAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordTimePreviewAdapterDelegate
@@ -114,6 +115,7 @@ class ChangeRecordCore(
             ),
             createChangeRecordTimeAdjustmentAdapterDelegate(viewModel::onTimeAdjustmentClick),
             createChangeRecordButtonAdapterDelegate(viewModel::onItemButtonClick),
+            createChangeRecordSliderAdapterDelegate(viewModel::onSliderValueChanged)
         )
     }
 

@@ -8,6 +8,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
+import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordSliderViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeAdjustmentViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.interactor.ChangeRecordViewDataInteractor
@@ -15,7 +16,10 @@ import com.example.util.simpletimetracker.feature_change_record.mapper.ChangeRec
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordDateTimeFieldsState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordPreview
+import kotlinx.coroutines.coroutineScope
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.ensureActive
 
 class ChangeRecordActionsSplitDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
@@ -36,8 +40,11 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
     }
 
     override suspend fun updateViewData() {
-        viewData = loadViewData()
-        parent?.update()
+        coroutineScope {
+            viewData = loadViewData()
+            ensureActive()
+            parent?.update()
+        }
     }
 
     suspend fun onSplitClickDelegate() {
@@ -75,6 +82,12 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
         result += ChangeRecordTimeAdjustmentViewData(
             block = ChangeRecordActionsBlock.SplitTimeAdjustment,
             items = loadTimeSplitAdjustmentItems(),
+        )
+        result += ChangeRecordSliderViewData(
+            block = ChangeRecordActionsBlock.SplitSlider,
+            min = 0f,
+            max = TimeUnit.MILLISECONDS.toSeconds(newTimeEnded - newTimeStarted).toFloat(),
+            value = TimeUnit.MILLISECONDS.toSeconds(newTimeSplit - newTimeStarted).toFloat(),
         )
         val previewData = loadSplitPreviewViewData(
             newTypeId = newTypeId,

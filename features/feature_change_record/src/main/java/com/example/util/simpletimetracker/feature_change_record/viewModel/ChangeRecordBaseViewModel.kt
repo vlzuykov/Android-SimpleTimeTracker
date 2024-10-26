@@ -25,6 +25,7 @@ import com.example.util.simpletimetracker.feature_change_record.R
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordCommentViewData
+import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordSliderViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeAdjustmentViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeDoublePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimePreviewViewData
@@ -460,6 +461,16 @@ abstract class ChangeRecordBaseViewModel(
         }
     }
 
+    fun onSliderValueChanged(viewData: ChangeRecordSliderViewData, value: Float) {
+        when (viewData.block) {
+            ChangeRecordActionsBlock.SplitSlider ->
+                onSliderSplitValueChanged(value)
+            else -> {
+                // Do nothing.
+            }
+        }
+    }
+
     fun onAdjustTimeStartedItemClick(viewData: TimeAdjustmentView.ViewData) {
         onAdjustTimeItemClick(TimeAdjustmentState.TIME_STARTED, viewData)
     }
@@ -501,21 +512,24 @@ abstract class ChangeRecordBaseViewModel(
     }
 
     private fun onAdjustTimeSplitItemClick(viewData: TimeAdjustmentView.ViewData) {
-        viewModelScope.launch {
-            when (viewData) {
-                is TimeAdjustmentView.ViewData.Now -> {
-                    newTimeSplit = System.currentTimeMillis()
-                    onTimeSplitChanged()
-                }
-                is TimeAdjustmentView.ViewData.Zero -> {
-                    // Do nothing, shouldn't be there.
-                }
-                is TimeAdjustmentView.ViewData.Adjust -> {
-                    newTimeSplit += TimeUnit.MINUTES.toMillis(viewData.value)
-                    onTimeSplitChanged()
-                }
+        when (viewData) {
+            is TimeAdjustmentView.ViewData.Now -> {
+                newTimeSplit = System.currentTimeMillis()
+                onTimeSplitChanged()
+            }
+            is TimeAdjustmentView.ViewData.Zero -> {
+                // Do nothing, shouldn't be there.
+            }
+            is TimeAdjustmentView.ViewData.Adjust -> {
+                newTimeSplit += TimeUnit.MINUTES.toMillis(viewData.value)
+                onTimeSplitChanged()
             }
         }
+    }
+
+    private fun onSliderSplitValueChanged(value: Float) {
+        newTimeSplit = newTimeStarted + TimeUnit.SECONDS.toMillis(value.toLong())
+        onTimeSplitChanged()
     }
 
     private fun onRecordChangeButtonClick(

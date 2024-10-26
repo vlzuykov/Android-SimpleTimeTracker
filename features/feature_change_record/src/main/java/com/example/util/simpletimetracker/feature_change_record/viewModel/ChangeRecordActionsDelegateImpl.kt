@@ -10,6 +10,7 @@ import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRe
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeDoublePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +23,7 @@ class ChangeRecordActionsDelegateImpl @Inject constructor(
     val timeChangeAdjustmentState get() = delegateHolder.adjustDelegate.timeChangeAdjustmentState
 
     private var parent: ChangeRecordActionsDelegate.Parent? = null
+    private var updateJob: Job? = null
 
     fun attach(parent: ChangeRecordActionsDelegate.Parent) {
         this.parent = parent
@@ -36,8 +38,11 @@ class ChangeRecordActionsDelegateImpl @Inject constructor(
     }
 
     fun updateData() {
-        delegateHolder.delegatesList.forEach { delegate ->
-            delegateScope.launch { delegate.updateViewData() }
+        updateJob?.cancel()
+        updateJob = delegateScope.launch {
+            delegateHolder.delegatesList.forEach { delegate ->
+                launch { delegate.updateViewData() }
+            }
         }
     }
 

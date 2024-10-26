@@ -68,9 +68,7 @@ class ColorSelectionDialogFragment : BaseBottomSheetFragment<Binding>() {
 
     override fun initUx() = with(binding) {
         sliderColorSelectionHue.addOnChangeListener { _, value, fromUser ->
-            if (fromUser) {
-                viewModel.onHueChanged(value)
-            }
+            if (fromUser) viewModel.onHueChanged(value)
         }
         viewColorSelectionView.setListener(
             object : ColorSelectionView.ColorSelectedListener {
