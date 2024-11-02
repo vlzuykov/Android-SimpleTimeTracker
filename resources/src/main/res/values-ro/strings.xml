@@ -18,7 +18,7 @@
     <string name="select_all">Selectează toate</string>
     <string name="select_nothing">Nu selecta nimic</string>
     <string name="no_data">Nu există informații</string>
-    <string name="general_error">Ceva a mers prost. Vă rugăm să încercați din nou sau reporniți aplicația.</string>
+    <string name="general_error">Ceva a mers greşit. Vă rugăm să încercați din nou sau reporniți aplicația.</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ieri</string>
@@ -117,7 +117,7 @@
     <string name="change_record_split">Împarte</string>
     <string name="change_record_split_hint">Va împarți înregistrarea curentă în două părți la momentul specificat</string>
     <string name="change_record_continue">Continuă</string>
-    <string name="change_record_continue_hint">Va șterge înregistrarea curentă și va continua să urmărească această activitate</string>
+    <string name="change_record_continue_hint">Va șterge înregistrarea curentă și va continua să urmărească activitatea selectată</string>
     <string name="change_record_repeat">@string/running_records_repeat</string>
     <string name="change_record_repeat_hint">Va repeta urmărirea acestei activități</string>
     <string name="change_record_duplicate">Duplică</string>
@@ -183,7 +183,7 @@
     <string name="change_complex_starting_activity">Activitatea de inceput</string>
     <string name="change_complex_previous_activity">Activitatea anterioară</string>
     <string name="change_complex_rule_removed">Regulă stearsă</string>
-    <string name="change_complex_rule_choose_action">Alege ațiuneas</string>
+    <string name="change_complex_rule_choose_action">Alege ațiunea</string>
     <string name="change_complex_rule_choose_condition">Alege condițiile</string>
 
     <!--  Activity filters  -->
@@ -326,10 +326,10 @@
     <string name="settings_archive">Arhivă</string>
     <string name="settings_data_edit">Editează informațiile</string>
     <string name="settings_complex_rules">Reguli complexe</string>
-    <string name="settings_edit_categories">Editează categoriile si etichetele</string>
+    <string name="settings_edit_categories">Editează categoriile şi etichetele</string>
     <string name="settings_edit_categories_hint">Atribuiți categorii activităților și etichete înregistrărilor.</string>
     <string name="settings_show_record_tag_selection">Arată etichetele atașate</string>
-    <string name="settings_show_record_tag_selection_hint">Când este pornit un cronometru, dacă activitatea are etichete, un dailog de alegere va fi afișat.</string>
+    <string name="settings_show_record_tag_selection_hint">Când este pornit un cronometru, dacă activitatea are etichete, un dialog de alegere va fi afișat.</string>
     <string name="settings_show_record_tag_close_hint">Închide după alegerea unei etichete</string>
     <string name="settings_show_comment_input">Afișează introducerea comentariilor</string>
     <string name="settings_show_comment_input_hint">La pornirea unui temporizator - va fi afișat un dialog de introducere a comentariilor.</string>
@@ -419,7 +419,7 @@ Examplu:<br/>
     <string name="message_backup_saved">Backup salvat</string>
     <string name="message_backup_restored">Backup restaurat</string>
     <string name="message_save_error">Eroare la salvarea backup-ului</string>
-    <string name="message_restore_error">Eroare la restauarea backup-ului</string>
+    <string name="message_restore_error">Eroare la restaurarea backup-ului</string>
     <string name="message_app_not_found">Aplicația nu a fost găsită</string>
     <string name="message_export_complete">Export completat</string>
     <string name="message_export_error">Eroare de export</string>
@@ -537,7 +537,7 @@ Examplu:<br/>
     <string name="data_edit_button_change">Modifică</string>
     <string name="data_edit_button_delete_records">Ștergeți toate înregistrările</string>
     <string name="data_edit_button_delete_data">Ștergeți toate datele</string>
-    <string name="data_edit_success_message">informații modificate</string>
+    <string name="data_edit_success_message">Informații modificate</string>
 
     <!--  Records filter  -->
     <string name="records_filter_select_tags">Alege etichetele</string>
