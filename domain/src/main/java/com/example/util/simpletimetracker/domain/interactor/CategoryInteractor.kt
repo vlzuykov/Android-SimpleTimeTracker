@@ -27,7 +27,7 @@ class CategoryInteractor @Inject constructor(
         return categoryRepo.get(id)
     }
 
-    suspend fun get(name: String): Category? {
+    suspend fun get(name: String): List<Category> {
         return categoryRepo.get(name)
     }
 

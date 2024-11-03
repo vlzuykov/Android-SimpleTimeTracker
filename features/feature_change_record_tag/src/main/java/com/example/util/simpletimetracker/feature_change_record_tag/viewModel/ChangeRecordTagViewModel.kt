@@ -15,8 +15,6 @@ import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.NotificationActivitySwitchInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
@@ -51,8 +49,6 @@ class ChangeRecordTagViewModel @Inject constructor(
     private val recordTypeToTagInteractor: RecordTypeToTagInteractor,
     private val recordTypeToDefaultTagInteractor: RecordTypeToDefaultTagInteractor,
     private val prefsInteractor: PrefsInteractor,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
-    private val notificationActivitySwitchInteractor: NotificationActivitySwitchInteractor,
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val snackBarMessageNavigationInteractor: SnackBarMessageNavigationInteractor,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
@@ -147,8 +143,8 @@ class ChangeRecordTagViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val type = recordTagInteractor.get(name)
-            val error = if (type != null && type.id != recordTagId) {
+            val items = recordTagInteractor.get(name).filter { it.id != recordTagId }
+            val error = if (items.isNotEmpty()) {
                 resourceRepo.getString(R.string.change_record_message_name_exist)
             } else {
                 ""

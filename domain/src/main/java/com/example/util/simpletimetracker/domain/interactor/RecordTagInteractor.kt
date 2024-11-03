@@ -57,7 +57,7 @@ class RecordTagInteractor @Inject constructor(
         return repo.get(id)
     }
 
-    suspend fun get(name: String): RecordTag? {
+    suspend fun get(name: String): List<RecordTag> {
         return repo.get(name)
     }
 

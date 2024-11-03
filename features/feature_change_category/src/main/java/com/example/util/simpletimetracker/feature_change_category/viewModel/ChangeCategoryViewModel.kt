@@ -15,11 +15,9 @@ import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalTimeInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeCategoryInteractor
 import com.example.util.simpletimetracker.domain.interactor.UpdateExternalViewsInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.domain.model.Category
 import com.example.util.simpletimetracker.domain.model.ChartFilterType
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
@@ -47,8 +45,6 @@ class ChangeCategoryViewModel @Inject constructor(
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val snackBarMessageNavigationInteractor: SnackBarMessageNavigationInteractor,
     private val goalsViewModelDelegate: GoalsViewModelDelegate,
-    private val widgetInteractor: WidgetInteractor,
-    private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
     private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val colorSelectionViewModelDelegateImpl: ColorSelectionViewModelDelegateImpl,
@@ -127,8 +123,8 @@ class ChangeCategoryViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val type = categoryInteractor.get(name)
-            val error = if (type != null && type.id != categoryId) {
+            val items = categoryInteractor.get(name).filter { it.id != categoryId }
+            val error = if (items.isNotEmpty()) {
                 resourceRepo.getString(R.string.change_record_message_name_exist)
             } else {
                 ""

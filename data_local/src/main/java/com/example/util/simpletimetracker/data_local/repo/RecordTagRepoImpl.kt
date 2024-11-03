@@ -38,10 +38,10 @@ class RecordTagRepoImpl @Inject constructor(
         accessSource = { dao.get(id)?.let(mapper::map) },
     )
 
-    override suspend fun get(name: String): RecordTag? = mutex.withLockedCache(
+    override suspend fun get(name: String): List<RecordTag> = mutex.withLockedCache(
         logMessage = "get name",
-        accessCache = { cache?.firstOrNull { it.name == name } },
-        accessSource = { dao.get(name)?.let(mapper::map) },
+        accessCache = { cache?.filter { it.name == name } },
+        accessSource = { dao.get(name).map(mapper::map) },
     )
 
     override suspend fun getByType(typeId: Long): List<RecordTag> = mutex.withLockedCache(

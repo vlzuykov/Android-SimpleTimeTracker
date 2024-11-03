@@ -32,10 +32,10 @@ class CategoryRepoImpl @Inject constructor(
         accessSource = { categoryDao.get(id)?.let(categoryDataLocalMapper::map) },
     )
 
-    override suspend fun get(name: String): Category? = mutex.withLockedCache(
+    override suspend fun get(name: String): List<Category> = mutex.withLockedCache(
         logMessage = "get name",
-        accessCache = { cache?.firstOrNull { it.name == name } },
-        accessSource = { categoryDao.get(name)?.let(categoryDataLocalMapper::map) },
+        accessCache = { cache?.filter { it.name == name } },
+        accessSource = { categoryDao.get(name).map(categoryDataLocalMapper::map) },
     )
 
     override suspend fun add(category: Category): Long = mutex.withLockedCache(

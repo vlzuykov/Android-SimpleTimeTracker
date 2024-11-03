@@ -167,8 +167,8 @@ class ChangeRecordTypeViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val type = recordTypeInteractor.get(name)
-            val error = if (type != null && type.id != recordTypeId) {
+            val items = recordTypeInteractor.get(name).filter { it.id != recordTypeId }
+            val error = if (items.isNotEmpty()) {
                 resourceRepo.getString(R.string.change_record_message_name_exist)
             } else {
                 ""

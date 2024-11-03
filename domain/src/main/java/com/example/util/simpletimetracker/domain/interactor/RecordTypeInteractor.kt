@@ -41,7 +41,7 @@ class RecordTypeInteractor @Inject constructor(
         return recordTypeRepo.get(id)
     }
 
-    suspend fun get(name: String): RecordType? {
+    suspend fun get(name: String): List<RecordType> {
         return recordTypeRepo.get(name)
     }
 

@@ -15,8 +15,8 @@ interface RecordTypeDao {
     @Query("SELECT * FROM recordTypes WHERE id = :id LIMIT 1")
     suspend fun get(id: Long): RecordTypeDBO?
 
-    @Query("SELECT * FROM recordTypes WHERE name = :name LIMIT 1")
-    suspend fun get(name: String): RecordTypeDBO?
+    @Query("SELECT * FROM recordTypes WHERE name = :name")
+    suspend fun get(name: String): List<RecordTypeDBO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(record: RecordTypeDBO): Long

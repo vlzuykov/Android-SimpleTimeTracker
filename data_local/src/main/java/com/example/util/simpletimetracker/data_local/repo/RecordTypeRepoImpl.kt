@@ -32,10 +32,10 @@ class RecordTypeRepoImpl @Inject constructor(
         accessSource = { recordTypeDao.get(id)?.let(recordTypeDataLocalMapper::map) },
     )
 
-    override suspend fun get(name: String): RecordType? = mutex.withLockedCache(
+    override suspend fun get(name: String): List<RecordType> = mutex.withLockedCache(
         logMessage = "get name",
-        accessCache = { cache?.firstOrNull { it.name == name } },
-        accessSource = { recordTypeDao.get(name)?.let(recordTypeDataLocalMapper::map) },
+        accessCache = { cache?.filter { it.name == name } },
+        accessSource = { recordTypeDao.get(name).map(recordTypeDataLocalMapper::map) },
     )
 
     override suspend fun add(recordType: RecordType): Long = mutex.withLockedCache(

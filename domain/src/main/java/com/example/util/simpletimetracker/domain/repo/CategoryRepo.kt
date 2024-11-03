@@ -8,7 +8,7 @@ interface CategoryRepo {
 
     suspend fun get(id: Long): Category?
 
-    suspend fun get(name: String): Category?
+    suspend fun get(name: String): List<Category>
 
     suspend fun add(category: Category): Long
 

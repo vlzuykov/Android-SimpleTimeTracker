@@ -15,8 +15,8 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE id = :id LIMIT 1")
     suspend fun get(id: Long): CategoryDBO?
 
-    @Query("SELECT * FROM categories WHERE name = :name LIMIT 1")
-    suspend fun get(name: String): CategoryDBO?
+    @Query("SELECT * FROM categories WHERE name = :name")
+    suspend fun get(name: String): List<CategoryDBO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(category: CategoryDBO): Long

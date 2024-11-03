@@ -10,7 +10,7 @@ interface RecordTagRepo {
 
     suspend fun get(id: Long): RecordTag?
 
-    suspend fun get(name: String): RecordTag?
+    suspend fun get(name: String): List<RecordTag>
 
     suspend fun getByType(typeId: Long): List<RecordTag>
 
