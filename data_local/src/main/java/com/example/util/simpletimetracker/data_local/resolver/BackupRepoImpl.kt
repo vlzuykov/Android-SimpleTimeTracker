@@ -19,7 +19,6 @@ import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.model.FavouriteColor
 import com.example.util.simpletimetracker.domain.model.FavouriteComment
 import com.example.util.simpletimetracker.domain.model.FavouriteIcon
-import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordToRecordTag
@@ -216,218 +215,7 @@ class BackupRepoImpl @Inject constructor(
         )
     }
 
-    // Replace original id with 0 to add instead of replacing.
-    // Replace original ids in other data with actual id after adding.
-    override suspend fun partialRestoreBackupFile(
-        params: BackupOptionsData.Custom,
-    ): ResultCode = withContext(Dispatchers.IO) {
-        val originalTypeIdToAddedId: MutableMap<Long, Long> = mutableMapOf()
-        val originalCategoryIdToAddedId: MutableMap<Long, Long> = mutableMapOf()
-        val originalTagIdToAddedId: MutableMap<Long, Long> = mutableMapOf()
-        val originalRecordIdToAddedId: MutableMap<Long, Long> = mutableMapOf()
-
-        params.data.types.values.forEach { type ->
-            val originalId = type.id
-            val addedId = type.copy(
-                id = 0,
-            ).let { recordTypeRepo.add(it) }
-            originalTypeIdToAddedId[originalId] = addedId
-        }
-        params.data.records.values.forEach { record ->
-            val originalId = record.id
-            val newTypeId = originalTypeIdToAddedId[record.typeId]
-                ?: return@forEach
-            val addedId = record.copy(
-                id = 0,
-                typeId = newTypeId,
-            ).let { recordRepo.add(it) }
-            originalRecordIdToAddedId[originalId] = addedId
-        }
-        params.data.categories.values.forEach {
-            val originalId = it.id
-            val addedId = it.copy(
-                id = 0,
-            ).let { categoryRepo.add(it) }
-            originalCategoryIdToAddedId[originalId] = addedId
-        }
-        params.data.typeToCategory.forEach { typeToCategory ->
-            val newTypeId = originalTypeIdToAddedId[typeToCategory.recordTypeId]
-                ?: return@forEach
-            val newCategoryId = originalCategoryIdToAddedId[typeToCategory.categoryId]
-                ?: return@forEach
-            typeToCategory.copy(
-                recordTypeId = newTypeId,
-                categoryId = newCategoryId,
-            ).let { recordTypeCategoryRepo.add(it) }
-        }
-        params.data.tags.values.forEach { tag ->
-            val originalId = tag.id
-            val newColorSource = originalTypeIdToAddedId[tag.iconColorSource].orZero()
-            val addedId = tag.copy(
-                id = 0,
-                iconColorSource = newColorSource,
-            ).let { recordTagRepo.add(it) }
-            originalTagIdToAddedId[originalId] = addedId
-        }
-        params.data.recordToTag.forEach { recordToTag ->
-            val newRecordId = originalRecordIdToAddedId[recordToTag.recordId]
-                ?: return@forEach
-            val newTagId = originalTagIdToAddedId[recordToTag.recordTagId]
-                ?: return@forEach
-            recordToTag.copy(
-                recordId = newRecordId,
-                recordTagId = newTagId,
-            ).let { recordToRecordTagRepo.add(it) }
-        }
-        params.data.typeToTag.forEach { typeToTag ->
-            val newTypeId = originalTypeIdToAddedId[typeToTag.recordTypeId]
-                ?: return@forEach
-            val newTagId = originalTagIdToAddedId[typeToTag.tagId]
-                ?: return@forEach
-            typeToTag.copy(
-                recordTypeId = newTypeId,
-                tagId = newTagId,
-            ).let { recordTypeToTagRepo.add(it) }
-        }
-        params.data.typeToDefaultTag.forEach { typeToDefaultTag ->
-            val newTypeId = originalTypeIdToAddedId[typeToDefaultTag.recordTypeId]
-                ?: return@forEach
-            val newTagId = originalTagIdToAddedId[typeToDefaultTag.tagId]
-                ?: return@forEach
-            typeToDefaultTag.copy(
-                recordTypeId = newTypeId,
-                tagId = newTagId,
-            ).let { recordTypeToDefaultTagRepo.add(it) }
-        }
-        params.data.activityFilters.values.forEach { activityFilter ->
-            val newTypeIds = activityFilter.selectedIds
-                .mapNotNull { originalTypeIdToAddedId[it] }
-            activityFilter.copy(
-                id = 0,
-                selectedIds = newTypeIds,
-            ).let { activityFilterRepo.add(it) }
-        }
-        params.data.favouriteComments.values.forEach { favComment ->
-            favComment.copy(
-                id = 0,
-            ).let { favouriteCommentRepo.add(it) }
-        }
-        params.data.favouriteColors.values.forEach { favColor ->
-            favColor.copy(
-                id = 0,
-            ).let { favouriteColorRepo.add(it) }
-        }
-        params.data.favouriteIcon.values.forEach { favIcon ->
-            favIcon.copy(
-                id = 0,
-            ).let { favouriteIconRepo.add(it) }
-        }
-        params.data.goals.values.forEach { goal ->
-            val newId = when (val idData = goal.idData) {
-                is RecordTypeGoal.IdData.Type -> originalTypeIdToAddedId[idData.value]
-                    ?.let(RecordTypeGoal.IdData::Type)
-                is RecordTypeGoal.IdData.Category -> originalCategoryIdToAddedId[idData.value]
-                    ?.let(RecordTypeGoal.IdData::Category)
-            } ?: return@forEach
-            goal.copy(
-                id = 0,
-                idData = newId,
-            ).let { recordTypeGoalRepo.add(it) }
-        }
-        params.data.rules.values.forEach { rule ->
-            val newStartingTypeIds = rule.conditionStartingTypeIds
-                .mapNotNull { originalTypeIdToAddedId[it] }.toSet()
-            val newCurrentTypeIds = rule.conditionCurrentTypeIds
-                .mapNotNull { originalTypeIdToAddedId[it] }.toSet()
-            val newAssignTagIds = rule.actionAssignTagIds
-                .mapNotNull { originalTagIdToAddedId[it] }.toSet()
-            rule.copy(
-                id = 0,
-                actionAssignTagIds = newAssignTagIds,
-                conditionStartingTypeIds = newStartingTypeIds,
-                conditionCurrentTypeIds = newCurrentTypeIds,
-            ).let { complexRuleRepo.add(it) }
-        }
-        return@withContext ResultCode.Success(
-            resourceRepo.getString(R.string.message_import_complete),
-        )
-    }
-
-    override suspend fun readBackupFile(
-        uriString: String,
-    ): Pair<ResultCode, PartialBackupRestoreData?> = withContext(Dispatchers.IO) {
-        // Result data
-        val types: MutableList<RecordType> = mutableListOf()
-        val records: MutableList<Record> = mutableListOf()
-        val categories: MutableList<Category> = mutableListOf()
-        val typeToCategory: MutableList<RecordTypeCategory> = mutableListOf()
-        val tags: MutableList<RecordTag> = mutableListOf()
-        val recordToTag: MutableList<RecordToRecordTag> = mutableListOf()
-        val typeToTag: MutableList<RecordTypeToTag> = mutableListOf()
-        val typeToDefaultTag: MutableList<RecordTypeToDefaultTag> = mutableListOf()
-        val activityFilters: MutableList<ActivityFilter> = mutableListOf()
-        val favouriteComments: MutableList<FavouriteComment> = mutableListOf()
-        val favouriteColors: MutableList<FavouriteColor> = mutableListOf()
-        val favouriteIcon: MutableList<FavouriteIcon> = mutableListOf()
-        val goals: MutableList<RecordTypeGoal> = mutableListOf()
-        val rules: MutableList<ComplexRule> = mutableListOf()
-        val settings: MutableList<List<String>> = mutableListOf()
-
-        val result = readBackup(
-            uriString = uriString,
-            successCodeMessage = null,
-            errorCodeMessage = R.string.settings_file_open_error,
-            clearData = false,
-            migrateTags = {
-                tags += migrateTags(
-                    types = types,
-                    data = it,
-                )
-            },
-            dataHandler = DataHandler(
-                types = types::add,
-                records = records::add,
-                categories = categories::add,
-                typeToCategory = typeToCategory::add,
-                tags = tags::add,
-                recordToTag = recordToTag::add,
-                typeToTag = typeToTag::add,
-                typeToDefaultTag = typeToDefaultTag::add,
-                activityFilters = activityFilters::add,
-                favouriteComments = favouriteComments::add,
-                favouriteColors = favouriteColors::add,
-                favouriteIcon = favouriteIcon::add,
-                goals = goals::add,
-                rules = rules::add,
-                settings = settings::add,
-            ),
-        )
-
-        val recordToTagIds = recordToTag.groupBy { it.recordId }
-        val processedRecords = records.map {
-            val thisTags = recordToTagIds[it.id].orEmpty()
-            it.copy(tagIds = thisTags.map(RecordToRecordTag::recordTagId))
-        }
-
-        result to PartialBackupRestoreData(
-            types = types.associateBy { it.id },
-            records = processedRecords.associateBy { it.id },
-            categories = categories.associateBy { it.id },
-            typeToCategory = typeToCategory,
-            tags = tags.associateBy { it.id },
-            recordToTag = recordToTag,
-            typeToTag = typeToTag,
-            typeToDefaultTag = typeToDefaultTag,
-            activityFilters = activityFilters.associateBy { it.id },
-            favouriteComments = favouriteComments.associateBy { it.id },
-            favouriteColors = favouriteColors.associateBy { it.id },
-            favouriteIcon = favouriteIcon.associateBy { it.id },
-            goals = goals.associateBy { it.id },
-            rules = rules.associateBy { it.id },
-        )
-    }
-
-    private suspend fun readBackup(
+    suspend fun readBackup(
         uriString: String,
         @StringRes successCodeMessage: Int?,
         @StringRes errorCodeMessage: Int,
@@ -993,7 +781,7 @@ class BackupRepoImpl @Inject constructor(
         )
     }
 
-    private fun migrateTags(
+    fun migrateTags(
         types: List<RecordType>,
         data: List<Pair<RecordTag, Long>>,
     ): List<RecordTag> {
@@ -1025,7 +813,7 @@ class BackupRepoImpl @Inject constructor(
     private fun String.restoreNewline() =
         replace("␤", "\n")
 
-    private data class DataHandler(
+    data class DataHandler(
         val types: suspend (RecordType) -> Unit,
         val records: suspend (Record) -> Unit,
         val categories: suspend (Category) -> Unit,

@@ -19,6 +19,7 @@ import com.example.util.simpletimetracker.domain.interactor.SortCardsInteractor
 import com.example.util.simpletimetracker.domain.model.CardOrder
 import com.example.util.simpletimetracker.domain.model.CardTagOrder
 import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
+import com.example.util.simpletimetracker.domain.model.getNotExistingValues
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.color.ColorViewData
@@ -58,7 +59,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
 
         return when (extra.type) {
             is PartialRestoreFilterType.Activities -> {
-                data.types.values.let {
+                data.types.values.getNotExistingValues().let {
                     sortCardsInteractor.sort(
                         cardOrder = CardOrder.NAME,
                         manualOrderProvider = { emptyMap() },
@@ -76,7 +77,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             PartialRestoreFilterType.Categories -> {
-                data.categories.values.let {
+                data.categories.values.getNotExistingValues().let {
                     sortCardsInteractor.sort(
                         cardOrder = CardOrder.NAME,
                         manualOrderProvider = { emptyMap() },
@@ -91,15 +92,15 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             PartialRestoreFilterType.Tags -> {
-                val types = data.types
+                val types = data.types.mapValues { it.value.data }
                 val activityOrderProvider = {
                     recordTagInteractor.getActivityOrderProvider(
-                        tags = data.tags.values.toList(),
+                        tags = data.tags.values.getNotExistingValues(),
                         typesMap = types,
-                        typesToTags = data.typeToTag,
+                        typesToTags = data.typeToTag.map { it.data },
                     )
                 }
-                data.tags.values.let {
+                data.tags.values.getNotExistingValues().let {
                     sortCardsInteractor.sortTags(
                         cardTagOrder = CardTagOrder.ACTIVITY,
                         manualOrderProvider = { emptyMap() },
@@ -121,9 +122,9 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             PartialRestoreFilterType.Records -> {
-                val typesMap = data.types
-                val tags = data.tags.values.toList()
-                data.records.values.mapNotNull {
+                val typesMap = data.types.mapValues { it.value.data }
+                val tags = data.tags.values.map { it.data }
+                data.records.values.getNotExistingValues().mapNotNull {
                     val viewData = recordViewDataMapper.mapFilteredRecord(
                         record = it,
                         recordTypes = typesMap,
@@ -140,7 +141,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }.let(dateDividerViewDataMapper::addDateViewData)
             }
             PartialRestoreFilterType.ActivityFilters -> {
-                data.activityFilters.values.toList().let {
+                data.activityFilters.values.getNotExistingValues().let {
                     activityFilterInteractor.sort(it)
                 }.map {
                     activityFilterViewDataMapper.mapFiltered(
@@ -151,7 +152,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             PartialRestoreFilterType.FavouriteComments -> {
-                data.favouriteComments.values.toList().let {
+                data.favouriteComments.values.getNotExistingValues().let {
                     favouriteCommentInteractor.sort(it)
                 }.map {
                     val filtered = it.id in dataIdsFiltered
@@ -170,7 +171,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             PartialRestoreFilterType.FavouriteColors -> {
-                data.favouriteColors.values.toList().let {
+                data.favouriteColors.values.getNotExistingValues().let {
                     favouriteColorInteractor.sort(it)
                 }.map {
                     val filtered = it.id in dataIdsFiltered
@@ -184,11 +185,11 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             PartialRestoreFilterType.FavouriteIcons -> {
-                val icons = data.favouriteIcon
+                val icons = data.favouriteIcon.values.getNotExistingValues()
                 val iconImages = iconSelectionMapper.mapFavouriteIconImages(
-                    icons.values.toList(),
+                    icons,
                 ).mapNotNull { icon ->
-                    val favIcon = icons.values.firstOrNull { it.icon == icon.iconName }
+                    val favIcon = icons.firstOrNull { it.icon == icon.iconName }
                         ?: return@mapNotNull null
                     iconSelectionMapper.mapImageViewData(
                         iconName = icon.iconName,
@@ -200,9 +201,9 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                     )
                 }
                 val iconEmojis = iconSelectionMapper.mapFavouriteIconEmojis(
-                    icons.values.toList(),
+                    icons,
                 ).mapNotNull { icon ->
-                    val favIcon = icons.values.firstOrNull { it.icon == icon.emojiCode }
+                    val favIcon = icons.firstOrNull { it.icon == icon.emojiCode }
                         ?: return@mapNotNull null
                     iconSelectionMapper.mapEmojiViewData(
                         codes = icon.emojiCode,
@@ -215,19 +216,19 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 iconImages + iconEmojis
             }
             PartialRestoreFilterType.ComplexRules -> {
-                val typesMap = data.types
+                val typesMap = data.types.mapValues { it.value.data }
                 val typesOrder = data.types.keys.toList()
-                val tagsMap = data.tags
+                val tagsMap = data.tags.mapValues { it.value.data }
                 val tagsOrder = data.tags.keys.toList()
-                data.rules.values.map {
+                data.rules.values.getNotExistingValues().map { rule ->
                     complexRulesViewDataMapper.mapRuleFiltered(
-                        rule = it,
+                        rule = rule,
                         isDarkTheme = isDarkTheme,
                         typesMap = typesMap,
                         tagsMap = tagsMap,
                         typesOrder = typesOrder,
                         tagsOrder = tagsOrder,
-                        isFiltered = it.id in dataIdsFiltered,
+                        isFiltered = rule.id in dataIdsFiltered,
                         disableButtonVisible = false,
                     )
                 }

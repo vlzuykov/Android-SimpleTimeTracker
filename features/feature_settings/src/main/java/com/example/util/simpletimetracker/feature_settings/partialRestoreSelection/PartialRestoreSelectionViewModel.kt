@@ -65,15 +65,15 @@ class PartialRestoreSelectionViewModel @Inject constructor(
 
     fun onIconClick(item: IconSelectionViewData) {
         val iconId = getData()?.favouriteIcon?.values?.firstOrNull {
-            it.icon == item.iconName
-        }?.id ?: return
+            it.data.icon == item.iconName
+        }?.data?.id ?: return
         addOrRemoveId(iconId)
     }
 
     fun onEmojiClick(item: EmojiViewData) {
         val iconId = getData()?.favouriteIcon?.values?.firstOrNull {
-            it.icon == item.emojiCodes
-        }?.id ?: return
+            it.data.icon == item.emojiCodes
+        }?.data?.id ?: return
         addOrRemoveId(iconId)
     }
 
@@ -93,7 +93,7 @@ class PartialRestoreSelectionViewModel @Inject constructor(
     }
 
     fun onHideAllClick() {
-        val allIds = getData()?.getIds(extra.type).orEmpty()
+        val allIds = getData()?.getIds(extra.type, existing = false).orEmpty()
         dataIdsFiltered.addAll(allIds)
         updateViewData()
     }

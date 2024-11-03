@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.util.simpletimetracker.core.base.BaseBottomSheetFragment
+import com.example.util.simpletimetracker.core.dialog.StandardDialogListener
 import com.example.util.simpletimetracker.core.extension.setSkipCollapsed
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
+import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.createFilterAdapterDelegate
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
 import com.example.util.simpletimetracker.feature_settings.partialRestore.viewModel.PartialRestoreViewModel
@@ -21,7 +23,8 @@ import com.example.util.simpletimetracker.feature_settings.databinding.SettingsP
 @AndroidEntryPoint
 class PartialRestoreFragment :
     BaseBottomSheetFragment<Binding>(),
-    PartialRestoreSelectionDialogListener {
+    PartialRestoreSelectionDialogListener,
+    StandardDialogListener {
 
     override val inflater: (LayoutInflater, ViewGroup?, Boolean) -> Binding =
         Binding::inflate
@@ -30,6 +33,7 @@ class PartialRestoreFragment :
 
     private val filtersAdapter: BaseRecyclerAdapter by lazy {
         BaseRecyclerAdapter(
+            createHintAdapterDelegate(),
             createFilterAdapterDelegate(
                 onClick = viewModel::onFilterClick,
                 onRemoveClick = {
@@ -69,5 +73,9 @@ class PartialRestoreFragment :
         dataIds: Set<Long>,
     ) {
         viewModel.onDataSelected(type, dataIds, tag)
+    }
+
+    override fun onPositiveClick(tag: String?, data: Any?) {
+        viewModel.onPositiveDialogClick(tag)
     }
 }

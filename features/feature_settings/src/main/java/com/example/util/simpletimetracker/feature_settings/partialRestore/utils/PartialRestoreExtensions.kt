@@ -5,6 +5,7 @@ import com.example.util.simpletimetracker.feature_settings.partialRestore.model.
 
 fun PartialBackupRestoreData.getIds(
     filter: PartialRestoreFilterType,
+    existing: Boolean,
 ): Set<Long> {
     return when (filter) {
         is PartialRestoreFilterType.Activities -> types
@@ -16,5 +17,7 @@ fun PartialBackupRestoreData.getIds(
         is PartialRestoreFilterType.FavouriteColors -> favouriteColors
         is PartialRestoreFilterType.FavouriteIcons -> favouriteIcon
         is PartialRestoreFilterType.ComplexRules -> rules
+    }.filter {
+        if (existing) it.value.exist else !it.value.exist
     }.keys
 }

@@ -1,10 +1,13 @@
 package com.example.util.simpletimetracker.feature_settings.partialRestore.interactor
 
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
+import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
+import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.partialRestore.mapper.PartialRestoreViewDataMapper
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
 import com.example.util.simpletimetracker.feature_settings.partialRestore.utils.getIds
@@ -14,13 +17,14 @@ class PartialRestoreViewDataInteractor @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val mapper: PartialRestoreViewDataMapper,
     private val colorMapper: ColorMapper,
+    private val resourceRepo: ResourceRepo,
 ) {
 
     fun getInitialFilters(
         data: PartialBackupRestoreData,
     ): Map<PartialRestoreFilterType, Set<Long>> {
         return availableFilters.filter {
-            data.getIds(it).isNotEmpty()
+            data.getIds(it, existing = false).isNotEmpty()
         }.associateWith {
             emptySet()
         }
@@ -33,7 +37,7 @@ class PartialRestoreViewDataInteractor @Inject constructor(
         val isDarkTheme = prefsInteractor.getDarkMode()
 
         return filters.toList().mapIndexed { index, (type, ids) ->
-            val allIds = data.getIds(type)
+            val allIds = data.getIds(type, existing = false)
             val selectedIds = allIds.filter { it !in ids }
             val selected = selectedIds.isNotEmpty()
             val name = mapper.mapFilterName(
@@ -53,6 +57,10 @@ class PartialRestoreViewDataInteractor @Inject constructor(
                 removeBtnVisible = selected,
                 selected = selected,
             )
+        }.ifEmpty {
+            HintViewData(
+                resourceRepo.getString(R.string.no_data),
+            ).let(::listOf)
         }
     }
 

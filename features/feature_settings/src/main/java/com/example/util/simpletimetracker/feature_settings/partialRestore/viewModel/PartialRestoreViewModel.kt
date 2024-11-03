@@ -6,11 +6,13 @@ import com.example.util.simpletimetracker.core.base.BaseViewModel
 import com.example.util.simpletimetracker.core.base.SingleLiveEvent
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.model.ActivityFilter
 import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
+import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.partialRestore.interactor.PartialRestoreViewDataInteractor
 import com.example.util.simpletimetracker.feature_settings.partialRestore.mapper.PartialRestoreViewDataMapper
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
@@ -18,6 +20,7 @@ import com.example.util.simpletimetracker.feature_settings.partialRestore.utils.
 import com.example.util.simpletimetracker.feature_settings.partialRestoreSelection.model.PartialRestoreSelectionDialogParams
 import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.SettingsFileWorkDelegate
 import com.example.util.simpletimetracker.navigation.Router
+import com.example.util.simpletimetracker.navigation.params.screen.StandardDialogParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PartialRestoreViewModel @Inject constructor(
     private val router: Router,
+    private val resourceRepo: ResourceRepo,
     private val partialRestoreViewDataInteractor: PartialRestoreViewDataInteractor,
     private val settingsFileWorkDelegate: SettingsFileWorkDelegate,
     private val partialRestoreViewDataMapper: PartialRestoreViewDataMapper,
@@ -60,7 +64,9 @@ class PartialRestoreViewModel @Inject constructor(
     fun onFilterRemoveClick(data: FilterViewData) {
         val itemType = data.type as? PartialRestoreFilterType ?: return
         val currentData = settingsFileWorkDelegate.partialBackupRestoreData ?: return
-        filters = filters.toMutableMap().apply { put(itemType, currentData.getIds(itemType)) }
+        filters = filters.toMutableMap().apply {
+            put(itemType, currentData.getIds(itemType, existing = false))
+        }
         updateFilters()
     }
 
@@ -75,6 +81,23 @@ class PartialRestoreViewModel @Inject constructor(
     }
 
     fun onRestoreClick() {
+        router.navigate(
+            StandardDialogParams(
+                tag = PARTIAL_RESTORE_ALERT_DIALOG_TAG,
+                message = resourceRepo.getString(R.string.archive_deletion_alert),
+                btnPositive = resourceRepo.getString(R.string.ok),
+                btnNegative = resourceRepo.getString(R.string.cancel),
+            ),
+        )
+    }
+
+    fun onPositiveDialogClick(tag: String?) {
+        when (tag) {
+            PARTIAL_RESTORE_ALERT_DIALOG_TAG -> onRestore()
+        }
+    }
+
+    private fun onRestore() {
         val data = settingsFileWorkDelegate.partialBackupRestoreDataSelectable ?: return
         val filteredData = partialRestoreViewDataMapper.mapFilteredData(filters, data)
         settingsFileWorkDelegate.onPartialRestoreConfirmed(filteredData)
@@ -90,73 +113,82 @@ class PartialRestoreViewModel @Inject constructor(
         val categoriesIds = categories.keys
 
         // Check tags
-        val tags = data.tags.mapValues {
-            if (it.value.iconColorSource != 0L && it.value.iconColorSource !in typesIds) {
-                it.value.copy(
-                    icon = types[it.value.iconColorSource]?.icon ?: it.value.icon,
-                    color = types[it.value.iconColorSource]?.color ?: it.value.color,
+        val tags = data.tags.mapValues { (_, item) ->
+            if (item.data.iconColorSource != 0L &&
+                item.data.iconColorSource !in typesIds
+            ) {
+                val newData = item.data.copy(
+                    icon = types[item.data.iconColorSource]?.data?.icon
+                        ?: item.data.icon,
+                    color = types[item.data.iconColorSource]?.data?.color
+                        ?: item.data.color,
                 )
+                item.copy(data = newData)
             } else {
-                it.value
+                item
             }
         }
         val typeToTag = data.typeToTag.filter {
-            it.recordTypeId in typesIds && it.tagId in tags
+            it.data.recordTypeId in typesIds && it.data.tagId in tags
         }
         val typeToDefaultTag = data.typeToDefaultTag.filter {
-            it.recordTypeId in typesIds && it.tagId in tags
+            it.data.recordTypeId in typesIds && it.data.tagId in tags
         }
 
         // Check records
         val records = data.records.filter {
-            it.value.typeId in typesIds
-        }.mapValues { record ->
-            record.value.copy(tagIds = record.value.tagIds.filter { it in tags })
+            it.value.data.typeId in typesIds
+        }.mapValues { (_, item) ->
+            val newData = item.data.copy(
+                tagIds = item.data.tagIds.filter { it in tags },
+            )
+            item.copy(data = newData)
         }
         val recordsIds = records.keys
 
         // Check record to tag relation
         val recordToTag = data.recordToTag.filter {
-            it.recordId in recordsIds && it.recordTagId in tags
+            it.data.recordId in recordsIds && it.data.recordTagId in tags
         }
 
         // Check type to category relation
         val typeToCategory = data.typeToCategory.filter {
-            it.recordTypeId in typesIds && it.categoryId in categoriesIds
+            it.data.recordTypeId in typesIds && it.data.categoryId in categoriesIds
         }
 
         // Check filters
-        val activityFilters = data.activityFilters.mapValues { filter ->
-            val newIds = filter.value.selectedIds.filter {
-                when (filter.value.type) {
+        val activityFilters = data.activityFilters.mapValues { (_, item) ->
+            val newIds = item.data.selectedIds.filter {
+                when (item.data.type) {
                     is ActivityFilter.Type.Activity -> it in typesIds
                     is ActivityFilter.Type.Category -> it in categoriesIds
                 }
             }
-            filter.value.copy(selectedIds = newIds)
+            val newData = item.data.copy(selectedIds = newIds)
+            item.copy(data = newData)
         }
 
         // Check goals
         val goals = data.goals.filter {
-            when (val id = it.value.idData) {
+            when (val id = it.value.data.idData) {
                 is RecordTypeGoal.IdData.Type -> id.value in typesIds
                 is RecordTypeGoal.IdData.Category -> id.value in categoriesIds
             }
         }
 
         // Check rules
-        val rules = data.rules.mapNotNull { rule ->
-            val new = rule.value.copy(
-                actionAssignTagIds = rule.value.actionAssignTagIds
+        val rules = data.rules.mapNotNull { (id, item) ->
+            val newData = item.data.copy(
+                actionAssignTagIds = item.data.actionAssignTagIds
                     .filter { it in tags }.toSet(),
-                conditionStartingTypeIds = rule.value.conditionStartingTypeIds
+                conditionStartingTypeIds = item.data.conditionStartingTypeIds
                     .filter { it in typesIds }.toSet(),
-                conditionCurrentTypeIds = rule.value.conditionCurrentTypeIds
+                conditionCurrentTypeIds = item.data.conditionCurrentTypeIds
                     .filter { it in typesIds }.toSet(),
             ).takeIf {
                 it.hasActions && it.hasConditions
             } ?: return@mapNotNull null
-            rule.key to new
+            id to item.copy(data = newData)
         }.toMap()
 
         return@withContext PartialBackupRestoreData(
@@ -199,7 +231,9 @@ class PartialRestoreViewModel @Inject constructor(
             )
         settingsFileWorkDelegate.partialBackupRestoreDataSelectable = newSelectableData
         filters = filters.mapValues { (filter, ids) ->
-            ids.filter { it in newSelectableData.getIds(filter) }.toSet()
+            ids.filter {
+                it in newSelectableData.getIds(filter, existing = false)
+            }.toSet()
         }
     }
 
@@ -229,5 +263,6 @@ class PartialRestoreViewModel @Inject constructor(
 
     companion object {
         private const val PARTIAL_RESTORE_SELECTION_TAG = "PARTIAL_RESTORE_SELECTION_TAG"
+        private const val PARTIAL_RESTORE_ALERT_DIALOG_TAG = "PARTIAL_RESTORE_ALERT_DIALOG_TAG"
     }
 }

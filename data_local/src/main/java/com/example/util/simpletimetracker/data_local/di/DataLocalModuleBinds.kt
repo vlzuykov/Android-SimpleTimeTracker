@@ -21,6 +21,7 @@ import com.example.util.simpletimetracker.data_local.repo.RecordTypeToDefaultTag
 import com.example.util.simpletimetracker.data_local.repo.RecordTypeToTagRepoImpl
 import com.example.util.simpletimetracker.data_local.repo.RunningRecordRepoImpl
 import com.example.util.simpletimetracker.data_local.repo.RunningRecordToRecordTagRepoImpl
+import com.example.util.simpletimetracker.data_local.resolver.BackupPartialRepoImpl
 import com.example.util.simpletimetracker.data_local.resolver.BackupRepoImpl
 import com.example.util.simpletimetracker.data_local.resolver.CsvRepoImpl
 import com.example.util.simpletimetracker.data_local.resolver.IcsRepoImpl
@@ -42,6 +43,7 @@ import com.example.util.simpletimetracker.domain.repo.RecordTypeToDefaultTagRepo
 import com.example.util.simpletimetracker.domain.repo.RecordTypeToTagRepo
 import com.example.util.simpletimetracker.domain.repo.RunningRecordRepo
 import com.example.util.simpletimetracker.domain.repo.RunningRecordToRecordTagRepo
+import com.example.util.simpletimetracker.domain.resolver.BackupPartialRepo
 import com.example.util.simpletimetracker.domain.resolver.BackupRepo
 import com.example.util.simpletimetracker.domain.resolver.CsvRepo
 import com.example.util.simpletimetracker.domain.resolver.IcsRepo
@@ -75,6 +77,10 @@ interface DataLocalModuleBinds {
     @Binds
     @Singleton
     fun bindBackupRepo(impl: BackupRepoImpl): BackupRepo
+
+    @Binds
+    @Singleton
+    fun bindBackupPartialRepo(impl: BackupPartialRepoImpl): BackupPartialRepo
 
     @Binds
     @Singleton
