@@ -6,6 +6,7 @@ import com.example.util.simpletimetracker.data_local.utils.logDataAccess
 import com.example.util.simpletimetracker.data_local.utils.removeIf
 import com.example.util.simpletimetracker.data_local.utils.replaceWith
 import com.example.util.simpletimetracker.data_local.utils.withLockedCache
+import com.example.util.simpletimetracker.domain.extension.dropMillis
 import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.domain.repo.RunningRecordRepo
 import kotlinx.coroutines.sync.Mutex
@@ -51,7 +52,11 @@ class RunningRecordRepoImpl @Inject constructor(
         logMessage = "add",
         accessSource = { dao.insert(runningRecord.let(mapper::map)) },
         afterSourceAccess = { id ->
-            cache = cache?.replaceWith(runningRecord.copy(id = id)) { it.id == id }
+            val new = runningRecord.copy(
+                id = id,
+                timeStarted = runningRecord.timeStarted.dropMillis(),
+            )
+            cache = cache?.replaceWith(new) { it.id == id }
         },
     )
 
