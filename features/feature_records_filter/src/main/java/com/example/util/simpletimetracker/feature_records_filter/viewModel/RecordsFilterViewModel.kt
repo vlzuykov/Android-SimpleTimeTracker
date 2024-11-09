@@ -24,6 +24,7 @@ import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInter
 import com.example.util.simpletimetracker.domain.model.Category
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.model.Range
+import com.example.util.simpletimetracker.domain.model.RangeLength
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RecordTypeCategory
@@ -222,7 +223,7 @@ class RecordsFilterViewModel @Inject constructor(
         updateViewDataOnFiltersChanged()
     }
 
-    fun onInnerFilterClick(item: FilterViewData) {
+    fun onInnerFilterClick(item: FilterViewData) = viewModelScope.launch {
         when (item.type) {
             is RecordFilterCommentType -> handleCommentFilterClick(item)
             is RecordFilterDateType -> onDateRangeClick(item)
@@ -313,10 +314,11 @@ class RecordsFilterViewModel @Inject constructor(
         updateViewDataOnFiltersChanged()
     }
 
-    private fun onDateRangeClick(viewData: FilterViewData) {
+    private suspend fun onDateRangeClick(viewData: FilterViewData) {
         filters = recordsFilterUpdateInteractor.handleRangeSet(
             currentFilters = filters,
             itemType = viewData.type,
+            currentRange = getCurrentRange(),
         )
     }
 
@@ -441,9 +443,7 @@ class RecordsFilterViewModel @Inject constructor(
     }
 
     private suspend fun handleDateFieldClick(fieldType: RecordsFilterRangeViewData.FieldType) {
-        val range = filters.getDate()
-            ?.let { recordFilterInteractor.getRange(it) }
-            ?: defaultRange
+        val range = getCurrentRange()
 
         when (fieldType) {
             RecordsFilterRangeViewData.FieldType.TIME_STARTED -> {
@@ -504,9 +504,7 @@ class RecordsFilterViewModel @Inject constructor(
     }
 
     private suspend fun handleDateSet(timestamp: Long, tag: String?) {
-        var (rangeStart, rangeEnd) = filters.getDate()
-            ?.let { recordFilterInteractor.getRange(it) }
-            ?: defaultRange
+        var (rangeStart, rangeEnd) = getCurrentRange()
 
         when (tag) {
             TIME_STARTED_TAG -> {
@@ -556,6 +554,16 @@ class RecordsFilterViewModel @Inject constructor(
         updateFilters()
         updateFilterSelectionViewData()
         updateRecords()
+    }
+
+    private suspend fun getCurrentRange(): Range {
+        val filter = filters.getDate() ?: return defaultRange
+
+        return if (filter.range is RangeLength.All) {
+            Range(0, System.currentTimeMillis())
+        } else {
+            recordFilterInteractor.getRange(filter)
+        }
     }
 
     private suspend fun getTypesCache(): List<RecordType> {
@@ -688,7 +696,7 @@ class RecordsFilterViewModel @Inject constructor(
             RecordFilterType.Date -> {
                 viewDataInteractor.getDateFilterSelectionViewData(
                     filters = filters,
-                    defaultRange = defaultRange,
+                    currentRange = getCurrentRange(),
                     extra = extra,
                 )
             }

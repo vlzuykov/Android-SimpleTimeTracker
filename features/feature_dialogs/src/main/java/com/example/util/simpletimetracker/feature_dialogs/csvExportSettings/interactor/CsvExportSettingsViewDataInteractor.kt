@@ -5,6 +5,7 @@ import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.RangeViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.extension.orEmpty
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.model.Range
@@ -72,6 +73,7 @@ class CsvExportSettingsViewDataInteractor @Inject constructor(
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val lastDays = prefsInteractor.getFileExportLastDays()
+        val customRange = (currentRange as? RangeLength.Custom)?.range.orEmpty()
 
         return listOf(
             RangeLength.Day,
@@ -80,6 +82,7 @@ class CsvExportSettingsViewDataInteractor @Inject constructor(
             RangeLength.Year,
             RangeLength.All,
             RangeLength.Last(lastDays),
+            RangeLength.Custom(customRange),
         ).mapIndexed { index, rangeLength ->
             mapDateRangeFilter(
                 rangeLength = rangeLength,
@@ -110,6 +113,7 @@ class CsvExportSettingsViewDataInteractor @Inject constructor(
                 position = 0,
                 startOfDayShift = startOfDayShift,
                 firstDayOfWeek = firstDayOfWeek,
+                useShortCustomRange = true,
             ),
             color = if (selected) {
                 colorMapper.toActiveColor(isDarkTheme)

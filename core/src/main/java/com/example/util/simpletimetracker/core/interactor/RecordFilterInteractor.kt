@@ -61,6 +61,7 @@ class RecordFilterInteractor @Inject constructor(
         return RecordsFilter.Date(rangeLength, rangePosition)
     }
 
+    // RangeLength.All return empty range, need to check separately.
     suspend fun getRange(
         filter: RecordsFilter.Date,
     ): Range {

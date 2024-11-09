@@ -246,12 +246,19 @@ class RecordsFilterUpdateInteractor @Inject constructor(
     fun handleRangeSet(
         currentFilters: List<RecordsFilter>,
         itemType: FilterViewData.Type,
+        currentRange: Range,
     ): List<RecordsFilter> {
         val rangeLength = (itemType as? RecordFilterDateType)?.rangeLength
             ?: return currentFilters
+        val newRange = if (rangeLength is RangeLength.Custom) {
+            val newCustomRange = Range(currentRange.timeStarted, currentRange.timeEnded)
+            RangeLength.Custom(newCustomRange)
+        } else {
+            rangeLength
+        }
         val filters = currentFilters.toMutableList()
         filters.removeAll { it is RecordsFilter.Date }
-        filters.add(RecordsFilter.Date(rangeLength, 0))
+        filters.add(RecordsFilter.Date(newRange, 0))
         return filters
     }
 

@@ -56,7 +56,14 @@ class CsvExportSettingsViewModel @Inject constructor(
 
     fun onFilterClick(item: FilterViewData) = viewModelScope.launch {
         val itemType = item.type as? CsvExportSettingsFilterType ?: return@launch
-        onNewRangeSelected(itemType.rangeLength)
+        val rangeLength = itemType.rangeLength
+        if (rangeLength is RangeLength.Custom) {
+            val currentRange = getRange()
+            val newRange = Range(currentRange.timeStarted, currentRange.timeEnded)
+            onNewRangeSelected(RangeLength.Custom(newRange))
+        } else {
+            onNewRangeSelected(itemType.rangeLength)
+        }
     }
 
     fun onRangeStartClick() = viewModelScope.launch {
@@ -126,17 +133,14 @@ class CsvExportSettingsViewModel @Inject constructor(
     }
 
     private suspend fun getRange(): Range {
-        val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
-        val startOfDayShift = prefsInteractor.getStartOfDayShift()
-
         return if (rangeLength is RangeLength.All) {
             return Range(0, System.currentTimeMillis())
         } else {
             timeMapper.getRangeStartAndEnd(
                 rangeLength = rangeLength,
                 shift = 0,
-                firstDayOfWeek = firstDayOfWeek,
-                startOfDayShift = startOfDayShift,
+                firstDayOfWeek = prefsInteractor.getFirstDayOfWeek(),
+                startOfDayShift = prefsInteractor.getStartOfDayShift(),
             )
         }
     }

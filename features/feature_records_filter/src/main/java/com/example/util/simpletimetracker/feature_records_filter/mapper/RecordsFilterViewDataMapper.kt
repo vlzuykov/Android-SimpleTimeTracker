@@ -223,6 +223,7 @@ class RecordsFilterViewDataMapper @Inject constructor(
                 position = 0,
                 startOfDayShift = startOfDayShift,
                 firstDayOfWeek = firstDayOfWeek,
+                useShortCustomRange = true,
             ),
             color = if (selected) {
                 colorMapper.toActiveColor(isDarkTheme)

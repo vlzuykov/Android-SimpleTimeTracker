@@ -32,6 +32,7 @@ import com.example.util.simpletimetracker.domain.extension.hasMultitaskFilter
 import com.example.util.simpletimetracker.domain.extension.hasUncategorizedItem
 import com.example.util.simpletimetracker.domain.extension.hasUntaggedItem
 import com.example.util.simpletimetracker.domain.extension.hasUntrackedFilter
+import com.example.util.simpletimetracker.domain.extension.orEmpty
 import com.example.util.simpletimetracker.domain.interactor.FilterSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
@@ -497,7 +498,7 @@ class RecordsFilterViewDataInteractor @Inject constructor(
 
     suspend fun getDateFilterSelectionViewData(
         filters: List<RecordsFilter>,
-        defaultRange: Range,
+        currentRange: Range,
         extra: RecordsFilterParams,
     ): List<ViewHolderType> = withContext(Dispatchers.Default) {
         val result: MutableList<ViewHolderType> = mutableListOf()
@@ -512,10 +513,7 @@ class RecordsFilterViewDataInteractor @Inject constructor(
         } else {
             extra.defaultLastDaysNumber
         }
-        val range = filter
-            ?.takeUnless { it.range is RangeLength.All }
-            ?.let { recordFilterInteractor.getRange(it) }
-            ?: defaultRange
+        val customRange = (filterRange as? RangeLength.Custom)?.range.orEmpty()
 
         result += EmptySpaceViewData(
             id = 1,
@@ -529,6 +527,7 @@ class RecordsFilterViewDataInteractor @Inject constructor(
             RangeLength.Year,
             RangeLength.All,
             RangeLength.Last(lastDays),
+            RangeLength.Custom(customRange),
         ).mapIndexed { index, rangeLength ->
             mapper.mapDateRangeFilter(
                 rangeLength = rangeLength,
@@ -544,12 +543,12 @@ class RecordsFilterViewDataInteractor @Inject constructor(
         result += RecordsFilterRangeViewData(
             id = 1L, // Only one at the time.
             timeStarted = timeMapper.formatDateTimeYear(
-                time = range.timeStarted,
+                time = currentRange.timeStarted,
                 useMilitaryTime = useMilitaryTime,
             ),
             timeStartedHint = resourceRepo.getString(R.string.change_record_date_time_start),
             timeEnded = timeMapper.formatDateTimeYear(
-                time = range.timeEnded,
+                time = currentRange.timeEnded,
                 useMilitaryTime = useMilitaryTime,
             ),
             timeEndedHint = resourceRepo.getString(R.string.change_record_date_time_end),

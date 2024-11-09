@@ -52,6 +52,7 @@ class RangeViewDataMapper @Inject constructor(
         position: Int,
         startOfDayShift: Long,
         firstDayOfWeek: DayOfWeek,
+        useShortCustomRange: Boolean = false,
     ): String {
         return when (rangeLength) {
             is RangeLength.Day -> timeMapper.toDayTitle(position, startOfDayShift)
@@ -59,8 +60,12 @@ class RangeViewDataMapper @Inject constructor(
             is RangeLength.Month -> timeMapper.toMonthTitle(position, startOfDayShift)
             is RangeLength.Year -> timeMapper.toYearTitle(position, startOfDayShift)
             is RangeLength.All -> resourceRepo.getString(R.string.range_overall)
-            is RangeLength.Custom -> mapToCustomRangeTitle(rangeLength.range)
             is RangeLength.Last -> mapToLastDaysTitle(rangeLength.days)
+            is RangeLength.Custom -> if (useShortCustomRange) {
+                mapToSelectRangeName()
+            } else {
+                mapToCustomRangeTitle(rangeLength.range)
+            }
         }
     }
 

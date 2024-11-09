@@ -40,7 +40,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputCsvExportSettingsFileName"
-                style="@style/ChangeItemInputField"
+                style="@style/ChangeItemInputFieldDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/edit_screen_margin_horizontal"
