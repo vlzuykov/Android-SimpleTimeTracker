@@ -204,15 +204,16 @@ class RecordQuickActionsViewModel @Inject constructor(
 
     private suspend fun loadState(): RecordQuickActionsState {
         val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
+        val canContinue = !retroactiveTrackingModeEnabled
 
         val buttons = when (extra.type) {
             is Type.RecordTracked -> listOfNotNull(
                 RecordQuickActionsState.Button.Statistics(false),
                 RecordQuickActionsState.Button.Delete(false),
                 RecordQuickActionsState.Button.Continue(false)
-                    .takeIf { !retroactiveTrackingModeEnabled },
+                    .takeIf { canContinue },
                 RecordQuickActionsState.Button.Repeat(false),
-                RecordQuickActionsState.Button.Duplicate(!retroactiveTrackingModeEnabled),
+                RecordQuickActionsState.Button.Duplicate(canContinue),
             )
             is Type.RecordUntracked -> listOf(
                 RecordQuickActionsState.Button.Statistics(false),

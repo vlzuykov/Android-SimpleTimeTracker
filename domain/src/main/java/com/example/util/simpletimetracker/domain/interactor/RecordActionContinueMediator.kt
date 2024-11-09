@@ -33,6 +33,7 @@ class RecordActionContinueMediator @Inject constructor(
             timeStarted = timeStarted,
             comment = comment,
             tagIds = tagIds,
+            checkDefaultDuration = false,
         )
     }
 }

@@ -61,6 +61,7 @@ class AddRunningRecordMediator @Inject constructor(
         comment: String,
         timeStarted: Long? = null,
         updateNotificationSwitch: Boolean = true,
+        checkDefaultDuration: Boolean = true,
     ) {
         val actualTimeStarted = timeStarted ?: System.currentTimeMillis()
         val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
@@ -108,7 +109,7 @@ class AddRunningRecordMediator @Inject constructor(
         if (retroactiveTrackingMode) {
             addRetroactiveModeInternal(startParams, prevRecord)
         } else {
-            addInternal(startParams)
+            addInternal(startParams, checkDefaultDuration)
         }
         // Show goal count only on timer start, otherwise it would show on change also.
         notificationGoalCountInteractor.checkAndShow(typeId)
@@ -125,19 +126,23 @@ class AddRunningRecordMediator @Inject constructor(
         tagIds: List<Long>,
     ) {
         addInternal(
-            StartParams(
+            params = StartParams(
                 typeId = typeId,
                 timeStarted = timeStarted,
                 comment = comment,
                 tagIds = tagIds,
                 updateNotificationSwitch = true,
             ),
+            checkDefaultDuration = false,
         )
     }
 
-    private suspend fun addInternal(params: StartParams) {
+    private suspend fun addInternal(
+        params: StartParams,
+        checkDefaultDuration: Boolean,
+    ) {
         val type = recordTypeInteractor.get(params.typeId) ?: return
-        if (type.defaultDuration > 0L) {
+        if (type.defaultDuration > 0L && checkDefaultDuration) {
             addInstantRecord(params, type)
         } else {
             addRunningRecord(params)
