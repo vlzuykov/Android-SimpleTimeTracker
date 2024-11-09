@@ -14,8 +14,6 @@ import com.example.util.simpletimetracker.core.base.BaseFragment
 import com.example.util.simpletimetracker.core.delegates.iconSelection.adapter.createIconSelectionAdapterDelegate
 import com.example.util.simpletimetracker.core.delegates.iconSelection.adapter.createIconSelectionCategoryAdapterDelegate
 import com.example.util.simpletimetracker.core.delegates.iconSelection.adapter.createIconSelectionCategoryInfoAdapterDelegate
-import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionSelectorStateViewData
-import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionStateViewData
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewDelegate.IconSelectionViewDelegate
 import com.example.util.simpletimetracker.core.dialog.ColorSelectionDialogListener
 import com.example.util.simpletimetracker.core.dialog.EmojiSelectionDialogListener
@@ -34,7 +32,6 @@ import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
-import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.color.createColorAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.color.createColorFavouriteAdapterDelegate
@@ -219,11 +216,6 @@ class ChangeRecordTagFragment :
             preview.observeOnce(viewLifecycleOwner, ::updateUi)
             preview.observe(::updatePreview)
             colors.observe(colorsAdapter::replace)
-            icons.observe(::updateIconsState)
-            iconCategories.observe(::updateIconCategories)
-            iconsTypeViewData.observe(::updateIconsTypeViewData)
-            iconSelectorViewData.observe(::updateIconSelectorViewData)
-            expandIconTypeSwitch.observe { updateBarExpanded() }
             types.observe(::updateTypes)
             defaultTypes.observe(::updateDefaultTypes)
             chooserState.observe(::updateChooserState)
@@ -232,6 +224,14 @@ class ChangeRecordTagFragment :
             keyboardVisibility.observe { visible ->
                 if (visible) showKeyboard(etChangeRecordTagName) else hideKeyboard()
             }
+            IconSelectionViewDelegate.initViewModel(
+                fragment = this@ChangeRecordTagFragment,
+                viewModel = viewModel,
+                layout = containerChangeRecordTypeIcon,
+                iconsAdapter = iconsAdapter,
+                iconCategoriesAdapter = iconCategoriesAdapter,
+                iconsLayoutManager = iconsLayoutManager,
+            )
         }
     }
 
@@ -397,43 +397,6 @@ class ChangeRecordTagFragment :
         defaultTypesAdapter.replace(data.viewData)
         layoutChangeRecordTagDefaultTypePreview.isVisible = data.selectedCount > 0
         tvChangeRecordTagDefaultTypePreview.text = data.selectedCount.toString()
-    }
-
-    private fun updateBarExpanded() {
-        IconSelectionViewDelegate.updateBarExpanded(
-            layout = binding.containerChangeRecordTypeIcon,
-        )
-    }
-
-    private fun updateIconsState(state: IconSelectionStateViewData) {
-        IconSelectionViewDelegate.updateIconsState(
-            state = state,
-            layout = binding.containerChangeRecordTypeIcon,
-            iconsAdapter = iconsAdapter,
-        )
-    }
-
-    private fun updateIconCategories(data: List<ViewHolderType>) {
-        IconSelectionViewDelegate.updateIconCategories(
-            data = data,
-            iconCategoriesAdapter = iconCategoriesAdapter,
-        )
-    }
-
-    private fun updateIconSelectorViewData(
-        data: IconSelectionSelectorStateViewData,
-    ) {
-        IconSelectionViewDelegate.updateIconSelectorViewData(
-            data = data,
-            layout = binding.containerChangeRecordTypeIcon,
-        )
-    }
-
-    private fun updateIconsTypeViewData(data: List<ViewHolderType>) {
-        IconSelectionViewDelegate.updateIconsTypeViewData(
-            data = data,
-            layout = binding.containerChangeRecordTypeIcon,
-        )
     }
 
     private fun updateNameErrorMessage(error: String) = with(binding) {
