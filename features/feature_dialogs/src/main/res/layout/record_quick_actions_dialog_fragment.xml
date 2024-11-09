@@ -256,6 +256,42 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btnRecordQuickActionsStop"
+            style="@style/RecordQuickActionButton"
+            android:layout_width="0dp"
+            app:layout_flexGrow="1"
+            tools:layout_wrapBefore="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="16dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivRecordQuickActionsStop"
+                    style="@style/RecordQuickActionButtonImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/action_stop"
+                    app:layout_constraintEnd_toStartOf="@id/tvRecordQuickActionsStop"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRecordQuickActionsStop"
+                    style="@style/RecordQuickActionButtonText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/notification_record_type_stop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivRecordQuickActionsStop" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
     </com.google.android.flexbox.FlexboxLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

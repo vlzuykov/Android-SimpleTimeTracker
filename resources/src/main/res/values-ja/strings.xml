@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">追跡を開始するには、%s ボタンをクリックしてアクティビティを追加するか、%s ボタンをクリックしてデフォルトのプリセットを使用します。</string>
     <string name="running_records_empty">計測を開始するアクティビティをタップ</string>
-    <string name="running_records_has_timers">カードをクリックして追跡を停止します</string>
+    <string name="running_records_has_timers">長押しして追跡を停止します</string>
     <string name="running_records_empty_hint">長押しで編集</string>
     <string name="running_records_add_type">追加</string>
     <string name="running_records_add_filter">フィルタを追加</string>

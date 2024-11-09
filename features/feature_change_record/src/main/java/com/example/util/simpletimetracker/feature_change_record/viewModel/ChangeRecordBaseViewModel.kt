@@ -114,6 +114,7 @@ abstract class ChangeRecordBaseViewModel(
     val timeEndedVisibility: LiveData<Boolean> by lazy { MutableLiveData(isTimeEndedAvailable) }
     val deleteIconVisibility: LiveData<Boolean> by lazy { MutableLiveData(isDeleteButtonVisible) }
     val statsIconVisibility: LiveData<Boolean> by lazy { MutableLiveData(isStatisticsButtonVisible) }
+    val stopButtonVisibility: LiveData<Boolean> by lazy { MutableLiveData(isStopButtonVisible) }
 
     protected var newTypeId: Long = 0
     protected var newTimeEnded: Long = 0
@@ -133,6 +134,7 @@ abstract class ChangeRecordBaseViewModel(
     protected abstract suspend fun updatePreview()
     protected abstract fun getChangeCategoryParams(data: ChangeTagData): ChangeRecordTagFromScreen
     protected abstract suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit = {})
+    protected open suspend fun onStopClickDelegate() {}
     protected open suspend fun sendPreviewUpdate(fullUpdate: Boolean) {}
     protected abstract val forceSecondsInDurationDialog: Boolean
     protected abstract val mergeAvailable: Boolean
@@ -144,6 +146,7 @@ abstract class ChangeRecordBaseViewModel(
     protected abstract val adjustNextRecordAvailable: Boolean
     protected abstract val isTimeEndedAvailable: Boolean
     protected abstract val isAdditionalActionsAvailable: Boolean
+    protected abstract val isStopButtonVisible: Boolean
     protected abstract val isDeleteButtonVisible: Boolean
     protected abstract val isStatisticsButtonVisible: Boolean
 
@@ -277,6 +280,12 @@ abstract class ChangeRecordBaseViewModel(
     fun onSaveClick() {
         onRecordChangeButtonClick(
             onProceed = ::onSaveClickDelegate,
+        )
+    }
+
+    fun onStopClick() {
+        onRecordChangeButtonClick(
+            onProceed = ::onStopClickDelegate,
         )
     }
 

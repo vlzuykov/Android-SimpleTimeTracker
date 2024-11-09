@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">لبدء التتبع ، أضف الأنشطة بالنقر فوق الزر %s أو استخدم الإعدادات المسبقة الافتراضية بالنقر فوق الزر %s</string>
     <string name="running_records_empty">انقر على النشاط لبدء التتبع</string>
-    <string name="running_records_has_timers">انقر على البطاقة لإيقاف التتبع</string>
+    <string name="running_records_has_timers">انقر لفترة طويلة لإيقاف التتبع</string>
     <string name="running_records_empty_hint">انقر طويلا للتعديل</string>
     <string name="running_records_add_type">يضيف</string>
     <string name="running_records_add_filter">أضف عامل تصفية</string>

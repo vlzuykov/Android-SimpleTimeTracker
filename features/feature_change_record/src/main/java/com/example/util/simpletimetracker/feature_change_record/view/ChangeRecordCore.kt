@@ -180,6 +180,7 @@ class ChangeRecordCore(
         containerChangeRecordTimeStartedAdjust.listener = viewModel::onAdjustTimeStartedItemClick
         containerChangeRecordTimeEndedAdjust.listener = viewModel::onAdjustTimeEndedItemClick
         btnChangeRecordSave.setOnClick(viewModel::onSaveClick)
+        btnChangeRecordStop.setOnClick(viewModel::onStopClick)
         fragment.addOnBackPressedListener(action = viewModel::onBackPressed)
     }
 
@@ -205,6 +206,10 @@ class ChangeRecordCore(
             timeEndedVisibility.observeOnce(
                 owner = viewLifecycleOwner,
                 observer = { setTimeEndedVisibility(it, binding) },
+            )
+            stopButtonVisibility.observeOnce(
+                owner = viewLifecycleOwner,
+                observer = btnChangeRecordStop::visible::set,
             )
             types.observe(typesAdapter::replace)
             categories.observe { updateCategories(it, binding) }
@@ -318,6 +323,7 @@ class ChangeRecordCore(
         binding: ChangeRecordCoreLayoutBinding,
     ) = with(binding) {
         btnChangeRecordSave.isEnabled = isEnabled
+        btnChangeRecordStop.isEnabled = isEnabled
     }
 
     private fun setActionsViewData(data: List<ViewHolderType>) {

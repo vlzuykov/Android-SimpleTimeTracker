@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Щоб розпочати відстеження, додайте дії, натиснувши кнопку %s, або використайте стандартні налаштування, натиснувши кнопку %s</string>
     <string name="running_records_empty">Натисніть на активність, щоб почати відстеження</string>
-    <string name="running_records_has_timers">Натисніть картку, щоб припинити відстеження</string>
+    <string name="running_records_has_timers">Натисність та утримуйте, щоб припинити відстеження</string>
     <string name="running_records_empty_hint">Натисність та утримуйте для редагування</string>
     <string name="running_records_add_type">Додати</string>
     <string name="running_records_add_filter">Додати фільтр</string>

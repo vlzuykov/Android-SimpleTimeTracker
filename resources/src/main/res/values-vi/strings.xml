@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Để bắt đầu theo dõi, hãy thêm hoạt động bằng cách nhấp vào nút %s hoặc sử dụng thiết đặt trước mặc định bằng cách nhấp vào nút %s</string>
     <string name="running_records_empty">Nhấp vào hoạt động để bắt đầu theo dõi</string>
-    <string name="running_records_has_timers">Bấm vào thẻ để ngừng theo dõi</string>
+    <string name="running_records_has_timers">Nhấp chuột dài để dừng theo dõi</string>
     <string name="running_records_empty_hint">Nhấn lâu để chỉnh sửa</string>
     <string name="running_records_add_type">Thêm</string>
     <string name="running_records_add_filter">Thêm bộ lọc</string>

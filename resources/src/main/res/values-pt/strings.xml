@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Para iniciar o rastreamento, adicione atividades clicando no botão %s ou use as predefinições padrão clicando no botão %s</string>
     <string name="running_records_empty">Clique na atividade para começar a monitorar</string>
-    <string name="running_records_has_timers">Clique no cartão para parar de rastrear</string>
+    <string name="running_records_has_timers">Clique longo para parar de rastrear</string>
     <string name="running_records_empty_hint">Clique e segure para editar</string>
     <string name="running_records_add_type">Adicionar</string>
     <string name="running_records_add_filter">Adicionar filtro</string>

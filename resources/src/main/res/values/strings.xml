@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">To start tracking, add activities by clicking on %s button or use default presets by clicking on %s button</string>
     <string name="running_records_empty">Click on activity to start tracking</string>
-    <string name="running_records_has_timers">Click on card to stop tracking</string>
+    <string name="running_records_has_timers">Long click to stop tracking</string>
     <string name="running_records_empty_hint">Long click to edit</string>
     <string name="running_records_add_type">Add</string>
     <string name="running_records_add_filter">Add filter</string>

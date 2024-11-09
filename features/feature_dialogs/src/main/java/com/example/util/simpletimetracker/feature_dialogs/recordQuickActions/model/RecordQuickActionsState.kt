@@ -30,5 +30,9 @@ data class RecordQuickActionsState(
         data class Merge(
             override val wrapBefore: Boolean,
         ) : Button
+
+        data class Stop(
+            override val wrapBefore: Boolean,
+        ) : Button
     }
 }

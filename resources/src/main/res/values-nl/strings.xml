@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Om het volgen te starten, voegt u activiteiten toe door op de %s-knop te klikken of gebruikt u standaardinstellingen door op de %s-knop te klikken</string>
     <string name="running_records_empty">Klik op activiteit om het volgen te starten</string>
-    <string name="running_records_has_timers">Klik op de kaart om het volgen te stoppen</string>
+    <string name="running_records_has_timers">Klik lang om het volgen te stoppen</string>
     <string name="running_records_empty_hint">Lang klikken om te bewerken</string>
     <string name="running_records_add_type">Toevoegen</string>
     <string name="running_records_add_filter">Filter toevoegen</string>

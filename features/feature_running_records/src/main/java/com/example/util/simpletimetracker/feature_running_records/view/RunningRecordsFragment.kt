@@ -94,7 +94,7 @@ class RunningRecordsFragment :
         }
     }
 
-    override fun initViewModel() = with(binding) {
+    override fun initViewModel() {
         with(viewModel) {
             runningRecords.observe(runningRecordsAdapter::replace)
             resetScreen.observe { resetScreen() }

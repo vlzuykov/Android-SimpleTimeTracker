@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">För att börja spåra, lägg till aktiviteter genom att klicka på %s-knappen eller använd standardförinställningar genom att klicka på %s-knappen</string>
     <string name="running_records_empty">Tryck på en aktivitet för att påbörja tidtagning</string>
-    <string name="running_records_has_timers">Klicka på kortet för att sluta spåra</string>
+    <string name="running_records_has_timers">Långklicka för att sluta spåra</string>
     <string name="running_records_empty_hint">Håll intryckt för att redigera</string>
     <string name="running_records_add_type">Lägg till</string>
     <string name="running_records_add_filter">Lägg till filter</string>

@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Um mit der Verfolgung zu beginnen, fügen Sie Aktivitäten hinzu, indem Sie auf die Schaltfläche %s klicken, oder verwenden Sie Standardvoreinstellungen, indem Sie auf die Schaltfläche %s klicken</string>
     <string name="running_records_empty">Klicke auf Aktivität, um die Erfassung zu starten</string>
-    <string name="running_records_has_timers">Klicken Sie auf die Karte, um die Verfolgung zu beenden</string>
+    <string name="running_records_has_timers">Klicken Sie lange, um die Verfolgung zu beenden</string>
     <string name="running_records_empty_hint">Zum Bearbeiten lange klicken</string>
     <string name="running_records_add_type">Hinz.</string>
     <string name="running_records_add_filter">Filter hinzufügen</string>

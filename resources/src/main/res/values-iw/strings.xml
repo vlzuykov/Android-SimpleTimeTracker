@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">כדי להתחיל מעקב, הוסף פעילויות על ידי לחיצה על כפתור %s או השתמש בקביעות ברירת מחדל על ידי לחיצה על כפתור %s</string>
     <string name="running_records_empty">לחץ על פעילות כדי להתחיל מעקב</string>
-    <string name="running_records_has_timers">לחץ על כרטיס כדי לעצור מעקב</string>
+    <string name="running_records_has_timers">לחץ לחיצה ארוכה כדי להפסיק את המעקב</string>
     <string name="running_records_empty_hint">לחץ לחיצה ארוכה כדי לערוך</string>
     <string name="running_records_add_type">הוסף</string>
     <string name="running_records_add_filter">הוסף מסנן</string>

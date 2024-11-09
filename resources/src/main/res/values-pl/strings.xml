@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Aby rozpocząć śledzenie, dodaj aktywność, klikając przycisk %s lub użyj domyślnych, klikając przycisk %s</string>
     <string name="running_records_empty">Kliknij aktywność, aby rozpocząć śledzenie</string>
-    <string name="running_records_has_timers">Kliknij kartę, aby zatrzymać śledzenie</string>
+    <string name="running_records_has_timers">Długie kliknięcie, aby zatrzymać śledzenie</string>
     <string name="running_records_empty_hint">Przytrzymaj, aby edytować</string>
     <string name="running_records_add_type">Dodaj</string>
     <string name="running_records_add_filter">Dodaj filtr</string>

@@ -143,8 +143,12 @@ class RunningRecordsViewModel @Inject constructor(
         }
     }
 
+    // TODO change strings
     @Suppress("UNUSED_PARAMETER")
-    fun onRunningRecordClick(item: RunningRecordViewData, sharedElements: Pair<Any, String>) {
+    fun onRunningRecordLongClick(
+        item: RunningRecordViewData,
+        sharedElements: Pair<Any, String>,
+    ) {
         viewModelScope.launch {
             runningRecordInteractor.get(item.id)
                 ?.let { removeRunningRecordMediator.removeWithRecordAdd(it) }
@@ -152,7 +156,7 @@ class RunningRecordsViewModel @Inject constructor(
         }
     }
 
-    fun onRunningRecordLongClick(
+    fun onRunningRecordClick(
         item: RunningRecordViewData,
         sharedElements: Pair<Any, String>,
     ) = viewModelScope.launch {

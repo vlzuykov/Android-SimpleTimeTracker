@@ -64,6 +64,7 @@ class RecordQuickActionsDialogFragment : BaseBottomSheetFragment<Binding>() {
         btnRecordQuickActionsRepeat.setOnClick(viewModel::onRepeatClicked)
         btnRecordQuickActionsDuplicate.setOnClick(viewModel::onDuplicateClicked)
         btnRecordQuickActionsMerge.setOnClick(viewModel::onMergeClicked)
+        btnRecordQuickActionsStop.setOnClick(viewModel::onStopClick)
     }
 
     override fun initViewModel(): Unit = with(viewModel) {
@@ -114,6 +115,7 @@ class RecordQuickActionsDialogFragment : BaseBottomSheetFragment<Binding>() {
             btnRecordQuickActionsRepeat to RecordQuickActionsState.Button.Repeat::class.java,
             btnRecordQuickActionsDuplicate to RecordQuickActionsState.Button.Duplicate::class.java,
             btnRecordQuickActionsMerge to RecordQuickActionsState.Button.Merge::class.java,
+            btnRecordQuickActionsStop to RecordQuickActionsState.Button.Stop::class.java,
         )
     }
 

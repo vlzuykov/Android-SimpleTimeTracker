@@ -18,6 +18,7 @@ import com.example.util.simpletimetracker.domain.interactor.RecordActionMergeMed
 import com.example.util.simpletimetracker.domain.interactor.RecordActionRepeatMediator
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.model.ChartFilterType
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.feature_dialogs.R
@@ -42,6 +43,7 @@ class RecordQuickActionsViewModel @Inject constructor(
     private val recordActionContinueMediator: RecordActionContinueMediator,
     private val recordActionMergeMediator: RecordActionMergeMediator,
     private val removeRunningRecordMediator: RemoveRunningRecordMediator,
+    private val runningRecordInteractor: RunningRecordInteractor,
 ) : BaseViewModel() {
 
     lateinit var extra: RecordQuickActionsParams
@@ -72,6 +74,10 @@ class RecordQuickActionsViewModel @Inject constructor(
 
     fun onMergeClicked() {
         onButtonClick(onProceed = ::onMerge)
+    }
+
+    fun onStopClick() {
+        onButtonClick(onProceed = ::onStop)
     }
 
     private suspend fun goToStatistics() {
@@ -161,14 +167,20 @@ class RecordQuickActionsViewModel @Inject constructor(
     }
 
     private suspend fun onMerge() {
-        val record = extra.type as? Type.RecordUntracked
-            ?: return
+        val record = extra.type as? Type.RecordUntracked ?: return
         val prevRecord = recordInteractor.getPrev(timeStarted = record.timeStarted).firstOrNull()
         recordActionMergeMediator.execute(
             prevRecord = prevRecord,
             newTimeEnded = record.timeEnded,
             onMergeComplete = ::exit,
         )
+    }
+
+    private suspend fun onStop() {
+        val record = extra.type as? Type.RecordRunning ?: return
+        runningRecordInteractor.get(record.id)
+            ?.let { removeRunningRecordMediator.removeWithRecordAdd(it) }
+        exit()
     }
 
     private suspend fun getTrackedRecord(): Record? {
@@ -222,6 +234,7 @@ class RecordQuickActionsViewModel @Inject constructor(
             is Type.RecordRunning -> listOf(
                 RecordQuickActionsState.Button.Statistics(false),
                 RecordQuickActionsState.Button.Delete(false),
+                RecordQuickActionsState.Button.Stop(true)
             )
             null -> emptyList()
         }

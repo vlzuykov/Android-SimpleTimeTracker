@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Untuk memulai pelacakan, tambahkan aktivitas dengan mengklik tombol %s atau gunakan preset default dengan mengklik tombol %s</string>
     <string name="running_records_empty">Ketuk pada kegiatan untuk mulai melacak</string>
-    <string name="running_records_has_timers">Klik pada kartu untuk menghentikan pelacakan</string>
+    <string name="running_records_has_timers">Klik panjang untuk menghentikan pelacakan</string>
     <string name="running_records_empty_hint">Ketuk lama untuk menyunting</string>
     <string name="running_records_add_type">Tambah</string>
     <string name="running_records_add_filter">Tambahkan filter</string>
