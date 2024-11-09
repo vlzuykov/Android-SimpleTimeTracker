@@ -59,11 +59,16 @@ class AddRunningRecordMediator @Inject constructor(
         typeId: Long,
         tagIds: List<Long>,
         comment: String,
-        timeStarted: Long? = null,
+        timeStarted: StartTime = StartTime.TakeCurrent,
         updateNotificationSwitch: Boolean = true,
         checkDefaultDuration: Boolean = true,
     ) {
-        val actualTimeStarted = timeStarted ?: System.currentTimeMillis()
+        val currentTime = System.currentTimeMillis()
+        val actualTimeStarted = when (timeStarted) {
+            is StartTime.Current -> timeStarted.currentTimeStampMs
+            is StartTime.TakeCurrent -> currentTime
+            is StartTime.Timestamp -> timeStarted.timestampMs
+        }
         val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
         val prevRecord = if (retroactiveTrackingMode) {
             recordInteractor.getPrev(actualTimeStarted).firstOrNull()
@@ -87,7 +92,11 @@ class AddRunningRecordMediator @Inject constructor(
         processMultitasking(
             typeId = typeId,
             isMultitaskingAllowedByRules = rulesResult.isMultitaskingAllowed,
-            timeEnded = actualTimeStarted,
+            splitTime = when (timeStarted) {
+                is StartTime.Current -> timeStarted.currentTimeStampMs
+                is StartTime.TakeCurrent -> currentTime
+                is StartTime.Timestamp -> currentTime
+            },
         )
         val actualTags = getAllTags(
             typeId = typeId,
@@ -279,7 +288,7 @@ class AddRunningRecordMediator @Inject constructor(
     private suspend fun processMultitasking(
         typeId: Long,
         isMultitaskingAllowedByRules: ResultContainer<Boolean>,
-        timeEnded: Long,
+        splitTime: Long,
     ) {
         val isMultitaskingAllowedByDefault = prefsInteractor.getAllowMultitasking()
         val isMultitaskingAllowed = isMultitaskingAllowedByRules.getValueOrNull()
@@ -294,7 +303,7 @@ class AddRunningRecordMediator @Inject constructor(
                     removeRunningRecordMediator.removeWithRecordAdd(
                         runningRecord = it,
                         updateWidgets = false,
-                        timeEnded = timeEnded,
+                        timeEnded = splitTime,
                     )
                 }
         }
@@ -323,4 +332,10 @@ class AddRunningRecordMediator @Inject constructor(
         val tagIds: List<Long>,
         val updateNotificationSwitch: Boolean,
     )
+
+    sealed interface StartTime {
+        data class Current(val currentTimeStampMs: Long) : StartTime
+        data class Timestamp(val timestampMs: Long) : StartTime
+        object TakeCurrent : StartTime
+    }
 }

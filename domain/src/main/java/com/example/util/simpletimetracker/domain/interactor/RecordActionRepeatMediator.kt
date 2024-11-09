@@ -28,7 +28,7 @@ class RecordActionRepeatMediator @Inject constructor(
             typeId = typeId,
             comment = comment,
             tagIds = tagIds,
-            timeStarted = currentTime,
+            timeStarted = AddRunningRecordMediator.StartTime.Current(currentTime),
         )
     }
 }

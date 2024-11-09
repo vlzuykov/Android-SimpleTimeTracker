@@ -30,9 +30,9 @@ class RecordActionContinueMediator @Inject constructor(
         // Add new running record.
         addRunningRecordMediator.startTimer(
             typeId = typeId,
-            timeStarted = timeStarted,
             comment = comment,
             tagIds = tagIds,
+            timeStarted = AddRunningRecordMediator.StartTime.Timestamp(timeStarted),
             checkDefaultDuration = false,
         )
     }
