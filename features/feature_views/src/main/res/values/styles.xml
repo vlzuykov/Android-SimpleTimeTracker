@@ -198,6 +198,8 @@
         <item name="endIconMode">clear_text</item>
         <item name="cursorColor">?colorPrimary</item>
         <item name="cursorErrorColor">?colorPrimary</item>
+        <item name="errorTextColor">@color/blue_grey_300</item>
+        <item name="boxStrokeErrorColor">@color/blue_grey_300</item>
     </style>
 
     <style name="ChangeItemInputFieldDialog" parent="ChangeItemInputField">
@@ -218,7 +220,6 @@
     </style>
 
     <style name="ChangeItemErrorStyle">
-        <item name="android:textColor">@color/red_600</item>
         <item name="android:textSize">12sp</item>
     </style>
 
