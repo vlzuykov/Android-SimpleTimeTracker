@@ -42,5 +42,4 @@ dependencies {
 
     testImplementation(Deps.Test.junit)
     testImplementation(Deps.Test.mockito)
-    testImplementation(Deps.Test.mockitoInline)
 }

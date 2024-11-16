@@ -112,8 +112,6 @@ object Deps {
             "junit:junit:${Versions.junit}"
         const val mockito =
             "org.mockito:mockito-core:${Versions.mockito}"
-        const val mockitoInline =
-            "org.mockito:mockito-inline:${Versions.mockito}"
         const val coroutines =
             "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
     }

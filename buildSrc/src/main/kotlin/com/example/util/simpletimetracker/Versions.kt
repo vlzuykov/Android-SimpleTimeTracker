@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker
 
 object Versions {
-    const val gradle = "8.2.0"
-    const val kotlin = "1.8.22"
+    const val gradle = "8.4.0"
+    const val kotlin = "1.9.25"
     const val ktlint = "12.1.0"
 
     const val coroutines = "1.6.4"
@@ -12,7 +12,7 @@ object Versions {
     const val appcompat = "1.7.0"
     const val constraintLayout = "2.1.4"
     const val recyclerView = "1.1.0"
-    const val room = "2.4.3"
+    const val room = "2.6.1"
     const val dagger = "2.52"
     const val viewpager2 = "1.0.0"
     const val flexBox = "3.0.0"
@@ -36,7 +36,7 @@ object Versions {
     const val compose_icons = "1.6.1"
     const val wear_compose_tooling_preview = "1.0.0"
     const val horologist = "0.2.7"
-    const val compose_kotlin_compiler = "1.4.8"
+    const val compose_kotlin_compiler = "1.5.15"
     const val compose_hilt = "1.0.0"
     const val wear_complications = "1.2.1"
     const val wear_ongoing = "1.0.0"
@@ -45,6 +45,6 @@ object Versions {
     const val junit = "4.13"
     const val junitUi = "1.1.4"
     const val espresso = "3.5.0"
-    const val mockito = "5.2.0"
+    const val mockito = "5.14.2"
     const val coroutinesTest = "1.7.1"
 }
