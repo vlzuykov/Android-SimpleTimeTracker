@@ -10,13 +10,13 @@ import com.example.util.simpletimetracker.core.manager.ClipboardManager
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.provider.ApplicationDataProvider
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.core.utils.ACTION_ADD_RECORD
-import com.example.util.simpletimetracker.core.utils.ACTION_RESTART_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_START_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_ALL_ACTIVITIES
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_LONGEST_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_SHORTEST_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_ADD_RECORD
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_RESTART_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_START_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ALL_ACTIVITIES
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EVENT_STARTED_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EVENT_STOPPED_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
@@ -123,17 +123,17 @@ class SettingsMapper @Inject constructor(
             R.string.settings_automated_tracking_text,
             isDarkTheme,
             listOf(
-                HelpText(ACTION_START_ACTIVITY, canCopy = true),
-                HelpText(ACTION_STOP_ACTIVITY, canCopy = true),
+                HelpText(ACTION_EXTERNAL_START_ACTIVITY, canCopy = true),
+                HelpText(ACTION_EXTERNAL_STOP_ACTIVITY, canCopy = true),
                 HelpText(EXTRA_ACTIVITY_NAME, canCopy = true),
                 HelpText(applicationDataProvider.getPackageName(), canCopy = true),
                 HelpText(EXTRA_RECORD_COMMENT, canCopy = true),
                 HelpText(EXTRA_RECORD_TAG_NAME, canCopy = true),
-                HelpText(ACTION_STOP_ALL_ACTIVITIES, canCopy = true),
-                HelpText(ACTION_STOP_SHORTEST_ACTIVITY, canCopy = true),
-                HelpText(ACTION_STOP_LONGEST_ACTIVITY, canCopy = true),
-                HelpText(ACTION_RESTART_ACTIVITY, canCopy = true),
-                HelpText(ACTION_ADD_RECORD, canCopy = true),
+                HelpText(ACTION_EXTERNAL_STOP_ALL_ACTIVITIES, canCopy = true),
+                HelpText(ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY, canCopy = true),
+                HelpText(ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY, canCopy = true),
+                HelpText(ACTION_EXTERNAL_RESTART_ACTIVITY, canCopy = true),
+                HelpText(ACTION_EXTERNAL_ADD_RECORD, canCopy = true),
                 HelpText(EXTRA_ACTIVITY_NAME, canCopy = true),
                 HelpText(EXTRA_RECORD_COMMENT, canCopy = true),
                 HelpText(EXTRA_RECORD_TAG_NAME, canCopy = true),

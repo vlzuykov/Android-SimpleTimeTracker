@@ -15,7 +15,6 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.util.simpletimetracker.core.extension.allowVmViolations
-import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.utils.PendingIntents
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.recordType.customView.NotificationIconView
@@ -30,7 +29,6 @@ import javax.inject.Singleton
 @Singleton
 class NotificationActivitySwitchManager @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val colorMapper: ColorMapper,
     private val router: Router,
     private val controlsManager: NotificationControlsManager,
 ) {

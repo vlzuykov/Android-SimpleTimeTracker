@@ -7,9 +7,13 @@ import com.example.util.simpletimetracker.feature_notification.recordType.intera
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @OptIn(DelicateCoroutinesApi::class)
+@Singleton
 class NotificationTypeBroadcastController @Inject constructor(
     private val notificationTypeInteractor: NotificationTypeInteractor,
     private val notificationActivitySwitchInteractor: NotificationActivitySwitchInteractor,
@@ -17,24 +21,26 @@ class NotificationTypeBroadcastController @Inject constructor(
     private val notificationControlsMapper: NotificationControlsMapper,
 ) {
 
-    fun onActionActivityStart(
+    private val mutex = Mutex()
+
+    fun onActionExternalActivityStart(
         name: String?,
         comment: String?,
         tagNames: List<String>,
-    ) {
-        name ?: return
-        GlobalScope.launch {
+    ) = GlobalScope.launch {
+        name ?: return@launch
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityStart(
                 name = name, comment = comment, tagNames = tagNames,
             )
         }
     }
 
-    fun onActionActivityStop(
+    fun onActionExternalActivityStop(
         name: String?,
-    ) {
-        name ?: return
-        GlobalScope.launch {
+    ) = GlobalScope.launch {
+        name ?: return@launch
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityStop(name)
         }
     }
@@ -48,46 +54,46 @@ class NotificationTypeBroadcastController @Inject constructor(
         }
     }
 
-    fun onActionActivityStopAll() {
-        GlobalScope.launch {
+    fun onActionExternalActivityStopAll() = GlobalScope.launch {
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityStopAll()
         }
     }
 
-    fun onActionActivityStopShortest() {
-        GlobalScope.launch {
+    fun onActionExternalActivityStopShortest() = GlobalScope.launch {
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityStopShortest()
         }
     }
 
-    fun onActionActivityStopLongest() {
-        GlobalScope.launch {
+    fun onActionExternalActivityStopLongest() = GlobalScope.launch {
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityStopLongest()
         }
     }
 
-    fun onActionActivityRestart(
+    fun onActionExternalActivityRestart(
         comment: String?,
         tagNames: List<String>,
-    ) {
-        GlobalScope.launch {
+    ) = GlobalScope.launch {
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityRestart(
                 comment = comment, tagNames = tagNames,
             )
         }
     }
 
-    fun onActionRecordAdd(
+    fun onActionExternalRecordAdd(
         name: String?,
         timeStarted: String?,
         timeEnded: String?,
         comment: String?,
         tagNames: List<String>,
-    ) {
-        name ?: return
-        timeStarted ?: return
-        timeEnded ?: return
-        GlobalScope.launch {
+    ) = GlobalScope.launch {
+        name ?: return@launch
+        timeStarted ?: return@launch
+        timeEnded ?: return@launch
+        mutex.withLock {
             activityStartStopFromBroadcastInteractor.onRecordAdd(
                 name = name,
                 timeStarted = timeStarted,

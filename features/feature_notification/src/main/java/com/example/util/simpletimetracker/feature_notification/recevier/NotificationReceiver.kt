@@ -5,13 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.example.util.simpletimetracker.core.extension.goAsync
-import com.example.util.simpletimetracker.core.utils.ACTION_ADD_RECORD
-import com.example.util.simpletimetracker.core.utils.ACTION_RESTART_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_START_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_ALL_ACTIVITIES
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_LONGEST_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_SHORTEST_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_ADD_RECORD
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_RESTART_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_START_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ALL_ACTIVITIES
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
@@ -128,47 +128,47 @@ class NotificationReceiver : BroadcastReceiver() {
                 finally = { automaticExportController.onFinished() },
                 block = { automaticExportController.onReminder() },
             )
-            ACTION_START_ACTIVITY -> {
+            ACTION_EXTERNAL_START_ACTIVITY -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
                     ?.slipTagNames().orEmpty()
-                typeController.onActionActivityStart(
+                typeController.onActionExternalActivityStart(
                     name = name,
                     comment = comment,
                     tagNames = tagNames,
                 )
             }
-            ACTION_STOP_ACTIVITY -> {
+            ACTION_EXTERNAL_STOP_ACTIVITY -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
-                typeController.onActionActivityStop(name)
+                typeController.onActionExternalActivityStop(name)
             }
-            ACTION_STOP_ALL_ACTIVITIES -> {
-                typeController.onActionActivityStopAll()
+            ACTION_EXTERNAL_STOP_ALL_ACTIVITIES -> {
+                typeController.onActionExternalActivityStopAll()
             }
-            ACTION_STOP_SHORTEST_ACTIVITY -> {
-                typeController.onActionActivityStopShortest()
+            ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY -> {
+                typeController.onActionExternalActivityStopShortest()
             }
-            ACTION_STOP_LONGEST_ACTIVITY -> {
-                typeController.onActionActivityStopLongest()
+            ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY -> {
+                typeController.onActionExternalActivityStopLongest()
             }
-            ACTION_RESTART_ACTIVITY -> {
+            ACTION_EXTERNAL_RESTART_ACTIVITY -> {
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
                     ?.slipTagNames().orEmpty()
-                typeController.onActionActivityRestart(
+                typeController.onActionExternalActivityRestart(
                     comment = comment,
                     tagNames = tagNames,
                 )
             }
-            ACTION_ADD_RECORD -> {
+            ACTION_EXTERNAL_ADD_RECORD -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
                 val timeStarted = intent.getStringExtra(EXTRA_TIME_STARTED)
                 val timeEnded = intent.getStringExtra(EXTRA_TIME_ENDED)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
                     ?.slipTagNames().orEmpty()
-                typeController.onActionRecordAdd(
+                typeController.onActionExternalRecordAdd(
                     name = name,
                     timeStarted = timeStarted,
                     timeEnded = timeEnded,
