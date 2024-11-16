@@ -209,8 +209,8 @@ class PartialRestoreViewModel @Inject constructor(
         )
     }
 
-    private suspend fun onFilterChange() {
-        val originalData = settingsFileWorkDelegate.partialBackupRestoreData ?: return
+    private suspend fun onFilterChange() = withContext(Dispatchers.Default) {
+        val originalData = settingsFileWorkDelegate.partialBackupRestoreData ?: return@withContext
         val newSelectableData = originalData
             .copy(
                 types = originalData.types.filter {
@@ -231,9 +231,8 @@ class PartialRestoreViewModel @Inject constructor(
             )
         settingsFileWorkDelegate.partialBackupRestoreDataSelectable = newSelectableData
         filters = filters.mapValues { (filter, ids) ->
-            ids.filter {
-                it in newSelectableData.getIds(filter, existing = false)
-            }.toSet()
+            val newIds = newSelectableData.getIds(filter, existing = false)
+            ids.filter { it in newIds }.toSet()
         }
     }
 

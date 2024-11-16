@@ -145,7 +145,7 @@ class RunningRecordsViewModel @Inject constructor(
 
     // TODO change strings
     @Suppress("UNUSED_PARAMETER")
-    fun onRunningRecordLongClick(
+    fun onRunningRecordClick(
         item: RunningRecordViewData,
         sharedElements: Pair<Any, String>,
     ) {
@@ -156,7 +156,7 @@ class RunningRecordsViewModel @Inject constructor(
         }
     }
 
-    fun onRunningRecordClick(
+    fun onRunningRecordLongClick(
         item: RunningRecordViewData,
         sharedElements: Pair<Any, String>,
     ) = viewModelScope.launch {

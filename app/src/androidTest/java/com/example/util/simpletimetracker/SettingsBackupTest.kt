@@ -514,6 +514,7 @@ class SettingsBackupTest : BaseUiTest() {
         activityList.take(3).forEach { clickOnViewWithText(it.name) }
         clickOnViewWithText(R.string.duration_dialog_save)
         clickOnViewWithText(R.string.backup_options_import)
+        clickOnViewWithText(R.string.ok)
 
         // Check message
         tryAction { checkViewIsDisplayed(withText(R.string.message_import_complete)) }

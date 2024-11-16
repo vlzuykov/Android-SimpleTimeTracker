@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">기록을 시작하기 위해 %s 버튼을 눌러 활동을 추가하거나 %s 버튼을 눌러 기본 템플릿을 사용하세요</string>
     <string name="running_records_empty">활동을 눌러 기록을 시작하세요</string>
-    <string name="running_records_has_timers">추적을 중지하려면 길게 클릭하세요</string>
+    <string name="running_records_has_timers">카드를 눌러 기록을 멈추세요</string>
     <string name="running_records_empty_hint">길게 눌러 수정하세요</string>
     <string name="running_records_add_type">추가</string>
     <string name="running_records_add_filter">필터 추가</string>

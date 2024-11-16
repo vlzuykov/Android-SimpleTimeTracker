@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Pentru a începe urmărirea, adaugă activitatea prin apăsarea butonului %s sau folosește setările de bază apăsând butonul %s</string>
     <string name="running_records_empty">Apasă pe activitate pentru a începe urmărirea</string>
-    <string name="running_records_has_timers">Faceți clic lung pentru a înceta urmărirea</string>
+    <string name="running_records_has_timers">Apasă pe o carte pentru a înceta urmărirea</string>
     <string name="running_records_empty_hint">Apasă lung pentru a edita</string>
     <string name="running_records_add_type">Adaugă</string>
     <string name="running_records_add_filter">Adaugă filtru</string>

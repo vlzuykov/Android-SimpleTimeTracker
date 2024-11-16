@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Para comenzar a rastrear, agregue actividades haciendo clic en el botón %s o use los ajustes preestablecidos predeterminados haciendo clic en el botón %s</string>
     <string name="running_records_empty">Haga clic en una actividad para iniciar el temporizador</string>
-    <string name="running_records_has_timers">Haga clic largo para detener el seguimiento</string>
+    <string name="running_records_has_timers">Haga clic en la tarjeta para detener el seguimiento</string>
     <string name="running_records_empty_hint">Mantenga pulsado para editar</string>
     <string name="running_records_add_type">Añadir</string>
     <string name="running_records_add_filter">Añadir filtro</string>

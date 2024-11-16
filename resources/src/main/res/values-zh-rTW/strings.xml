@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">要開始跟踪，請單擊 %s 按鈕添加活動，或單擊 %s 按鈕使用默認預設</string>
     <string name="running_records_empty">點擊於活動來開始追蹤</string>
-    <string name="running_records_has_timers">長按停止跟蹤</string>
+    <string name="running_records_has_timers">單擊卡片以停止跟踪</string>
     <string name="running_records_empty_hint">長按編輯</string>
     <string name="running_records_add_type">新增</string>
     <string name="running_records_add_filter">新增過濾</string>

@@ -242,7 +242,7 @@
     <!--  Running records  -->
     <string name="running_records_types_empty">Pour commencer le suivi, ajoutez des activités en cliquant sur le bouton %s ou utilisez les préréglages par défaut en cliquant sur le bouton %s</string>
     <string name="running_records_empty">Cliquez longuement pour éditer</string>
-    <string name="running_records_has_timers">Cliquez longuement pour arrêter le suivi</string>
+    <string name="running_records_has_timers">Cliquez sur la carte pour arrêter le suivi</string>
     <string name="running_records_empty_hint">Cliquez longuement pour éditer</string>
     <string name="running_records_add_type">Ajouter</string>
     <string name="running_records_add_filter">Ajouter un filtre</string>
