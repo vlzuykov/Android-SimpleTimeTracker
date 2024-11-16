@@ -181,9 +181,8 @@ class NotificationReceiver : BroadcastReceiver() {
                 typeController.onActionActivityStop(typeId)
             }
             ACTION_NOTIFICATION_CONTROLS_STOP -> {
-                val from = intent.getIntExtra(ARGS_CONTROLS_FROM, 0)
                 val typeId = intent.getLongExtra(ARGS_TYPE_ID, 0)
-                typeController.onActionActivityStop(from, typeId)
+                typeController.onActionActivityStop(typeId)
             }
             ACTION_NOTIFICATION_CONTROLS_TYPE_CLICK -> {
                 val from = intent.getIntExtra(ARGS_CONTROLS_FROM, 0)

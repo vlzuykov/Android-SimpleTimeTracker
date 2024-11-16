@@ -2,7 +2,6 @@ package com.example.util.simpletimetracker.feature_notification.recordType.contr
 
 import com.example.util.simpletimetracker.domain.interactor.NotificationActivitySwitchInteractor
 import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.mapper.NotificationControlsMapper
 import com.example.util.simpletimetracker.feature_notification.recordType.interactor.ActivityStartStopFromBroadcastInteractor
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -45,27 +44,7 @@ class NotificationTypeBroadcastController @Inject constructor(
     ) {
         if (typeId == 0L) return
         GlobalScope.launch {
-            activityStartStopFromBroadcastInteractor.onActionActivityStop(
-                typeId = typeId,
-                fromControls = false,
-            )
-        }
-    }
-
-    fun onActionActivityStop(
-        from: Int,
-        typeId: Long,
-    ) {
-        if (typeId == 0L) return
-        val fromData = notificationControlsMapper.mapExtraToFrom(
-            extra = from,
-            recordTypeId = typeId,
-        )
-        GlobalScope.launch {
-            activityStartStopFromBroadcastInteractor.onActionActivityStop(
-                typeId = typeId,
-                fromControls = fromData is NotificationControlsManager.From.ActivitySwitch,
-            )
+            activityStartStopFromBroadcastInteractor.onActionActivityStop(typeId)
         }
     }
 

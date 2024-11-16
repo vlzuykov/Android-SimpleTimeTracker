@@ -234,7 +234,7 @@ class RecordQuickActionsViewModel @Inject constructor(
             is Type.RecordRunning -> listOf(
                 RecordQuickActionsState.Button.Statistics(false),
                 RecordQuickActionsState.Button.Delete(false),
-                RecordQuickActionsState.Button.Stop(true)
+                RecordQuickActionsState.Button.Stop(true),
             )
             null -> emptyList()
         }

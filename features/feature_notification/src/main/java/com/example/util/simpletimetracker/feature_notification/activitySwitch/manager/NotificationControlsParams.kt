@@ -14,6 +14,7 @@ sealed interface NotificationControlsParams {
         val controlIconPrev: RecordTypeIcon,
         val controlIconNext: RecordTypeIcon,
         val controlIconColor: Int,
+        val filteredTypeColor: Int,
         val selectedTypeId: Long?,
     ) : NotificationControlsParams
 

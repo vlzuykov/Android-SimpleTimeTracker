@@ -132,7 +132,11 @@ class ChangeRunningRecordViewModel @Inject constructor(
         doAfter: suspend () -> Unit,
     ) {
         // Widgets will update on adding.
-        removeRunningRecordMediator.remove(extra.id, updateWidgets = false)
+        removeRunningRecordMediator.remove(
+            typeId = extra.id,
+            updateWidgets = false,
+            updateNotificationSwitch = false,
+        )
         addRunningRecordMediator.addAfterChange(
             typeId = newTypeId,
             timeStarted = newTimeStarted,

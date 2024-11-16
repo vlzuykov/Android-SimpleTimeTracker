@@ -11,7 +11,6 @@ import com.example.util.simpletimetracker.domain.REPEAT_BUTTON_ITEM_ID
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsParams
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
@@ -30,7 +29,6 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
         hint: String,
         isDarkTheme: Boolean,
         types: List<RecordType>,
-        runningRecords: List<RunningRecord> = emptyList(),
         showRepeatButton: Boolean,
         typesShift: Int = 0,
         tags: List<RecordTag> = emptyList(),
@@ -40,7 +38,6 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
         allDailyCurrents: Map<Long, GetCurrentRecordsDurationInteractor.Result>,
     ): NotificationControlsParams {
         val typesMap = types.associateBy { it.id }
-        val runningRecordsIds = runningRecords.map { it.id }
 
         val repeatButtonViewData = if (showRepeatButton) {
             val viewData = recordTypeViewDataMapper.mapToRepeatItem(
@@ -64,11 +61,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
                 NotificationControlsParams.Type(
                     id = type.id,
                     icon = type.icon.let(iconMapper::mapIcon),
-                    color = if (type.id in runningRecordsIds) {
-                        colorMapper.toFilteredColor(isDarkTheme)
-                    } else {
-                        type.color.let { colorMapper.mapToColorInt(it, isDarkTheme) }
-                    },
+                    color = type.color.let { colorMapper.mapToColorInt(it, isDarkTheme) },
                     isChecked = recordTypeViewDataMapper.mapGoalCheckmark(
                         type = type,
                         goals = goals,
@@ -111,6 +104,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
             controlIconPrev = RecordTypeIcon.Image(R.drawable.arrow_left),
             controlIconNext = RecordTypeIcon.Image(R.drawable.arrow_right),
             controlIconColor = colorMapper.toInactiveColor(isDarkTheme),
+            filteredTypeColor = colorMapper.toInactiveColor(isDarkTheme),
             selectedTypeId = selectedTypeId,
         )
     }

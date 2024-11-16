@@ -58,19 +58,17 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
         name: String,
     ) {
         val typeId = getTypeIdByName(name) ?: return
-        onActionActivityStop(typeId = typeId, fromControls = false)
+        onActionActivityStop(typeId)
     }
 
     suspend fun onActionActivityStop(
         typeId: Long,
-        fromControls: Boolean,
     ) {
         val runningRecord = runningRecordInteractor.get(typeId)
             ?: return // Not running.
 
         removeRunningRecordMediator.removeWithRecordAdd(
             runningRecord = runningRecord,
-            updateNotificationSwitch = !fromControls,
         )
     }
 
@@ -146,22 +144,11 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
             return
         }
 
-        // Switch controls are updated separately right from here,
-        // so no need to update after record change.
-        if (from is NotificationControlsManager.From.ActivitySwitch) {
-            if (runningRecordInteractor.get(selectedTypeId) != null) {
-                onActionActivityStop(
-                    typeId = selectedTypeId,
-                    fromControls = true,
-                )
-                update(from, typesShift)
-                return
-            }
-        }
-        val updateNotificationSwitch = from !is NotificationControlsManager.From.ActivitySwitch
         val started = addRunningRecordMediator.tryStartTimer(
             typeId = selectedTypeId,
-            updateNotificationSwitch = updateNotificationSwitch,
+            // Switch controls are updated separately right from here,
+            // so no need to update after record change.
+            updateNotificationSwitch = false,
             commentInputAvailable = false, // TODO open activity?
         ) {
             // Update to show tag selection.
@@ -196,9 +183,12 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
             typeId = selectedTypeId,
             comment = "",
             tagIds = listOfNotNull(tagId.takeUnless { it == 0L }),
-            updateNotificationSwitch = from !is NotificationControlsManager.From.ActivitySwitch,
         )
-        update(from, typesShift)
+        if (from !is NotificationControlsManager.From.ActivitySwitch) {
+            // Hide tag selection on current notification.
+            // Switch would be hidden on start timer.
+            update(from, typesShift)
+        }
     }
 
     suspend fun onRequestUpdate(

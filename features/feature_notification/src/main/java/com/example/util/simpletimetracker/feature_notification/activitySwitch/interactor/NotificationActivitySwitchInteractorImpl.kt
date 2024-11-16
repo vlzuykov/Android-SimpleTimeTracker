@@ -69,7 +69,6 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
         val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
-        val runningRecords = runningRecordInteractor.getAll()
         val range = timeMapper.getRangeStartAndEnd(
             rangeLength = RangeLength.Day,
             shift = 0,
@@ -97,7 +96,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         val allDailyCurrents = if (goals.isNotEmpty()) {
             getCurrentRecordsDurationInteractor.getAllDailyCurrents(
                 typeIds = recordTypes.keys.toList(),
-                runningRecords = runningRecords,
+                runningRecords = runningRecordInteractor.getAll(),
             )
         } else {
             // No goals - no need to calculate durations.
@@ -107,7 +106,6 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             hint = "", // Replaced later.
             isDarkTheme = isDarkTheme,
             types = recordTypes.values.toList(),
-            runningRecords = runningRecords,
             showRepeatButton = showRepeatButton,
             typesShift = typesShift,
             tags = viewedTags,

@@ -81,9 +81,9 @@ class NotificationControlsManager @Inject constructor(
         // Types buttons
         val currentTypes = params.types.drop(params.typesShift).take(TYPES_LIST_SIZE)
         currentTypes.forEach {
+            val recordTypeId = (from as? From.ActivityNotification)?.recordTypeId
             val action = when (from) {
                 is From.ActivityNotification -> {
-                    val recordTypeId = (from as? From.ActivityNotification)?.recordTypeId
                     if (it.id == recordTypeId) {
                         ACTION_NOTIFICATION_CONTROLS_STOP
                     } else {
@@ -94,9 +94,14 @@ class NotificationControlsManager @Inject constructor(
                     ACTION_NOTIFICATION_CONTROLS_TYPE_CLICK
                 }
             }
+            val color = if (recordTypeId == it.id) {
+                params.filteredTypeColor
+            } else {
+                it.color
+            }
             getTypeControlView(
                 icon = it.icon,
-                color = it.color,
+                color = color,
                 isChecked = it.isChecked,
                 isComplete = it.isComplete,
                 intent = getPendingSelfIntent(
