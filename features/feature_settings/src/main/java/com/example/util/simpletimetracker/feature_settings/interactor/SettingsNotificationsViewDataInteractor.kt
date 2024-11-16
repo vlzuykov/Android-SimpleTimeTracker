@@ -48,7 +48,8 @@ class SettingsNotificationsViewDataInteractor @Inject constructor(
             result += SettingsCheckboxViewData(
                 block = SettingsBlock.NotificationsShow,
                 title = resourceRepo.getString(R.string.settings_show_notifications),
-                subtitle = resourceRepo.getString(R.string.settings_show_notifications_hint),
+                subtitle = resourceRepo.getString(R.string.settings_show_notifications_hint) + "\n" +
+                    resourceRepo.getString(R.string.settings_show_notifications_controls_hint),
                 isChecked = showNotifications,
                 bottomSpaceIsVisible = !showNotifications,
                 dividerIsVisible = !showNotifications,
@@ -60,32 +61,16 @@ class SettingsNotificationsViewDataInteractor @Inject constructor(
                     title = resourceRepo.getString(R.string.settings_show_notifications_controls),
                     subtitle = "",
                     isChecked = showNotificationsControls,
+                    bottomSpaceIsVisible = false,
+                    dividerIsVisible = false,
                 )
-            }
-
-            val showNotificationWithSwitch = prefsInteractor.getShowNotificationWithSwitch()
-            // Allows to avoid duplication of controls,
-            // when both separate notification with controls is shown
-            // and also timers with controls are shown.
-            // In this case separate notification will be hidden.
-            val showNotificationWithSwitchHide = showNotificationWithSwitch &&
-                showNotifications &&
-                showNotificationsControls
-            result += SettingsCheckboxViewData(
-                block = SettingsBlock.NotificationsWithSwitch,
-                title = resourceRepo.getString(R.string.settings_show_notification_with_switch),
-                subtitle = resourceRepo.getString(R.string.settings_show_notification_with_switch_hint),
-                isChecked = showNotificationWithSwitch,
-                bottomSpaceIsVisible = !showNotificationWithSwitchHide,
-                dividerIsVisible = !showNotificationWithSwitchHide,
-                forceBind = true,
-            )
-            if (showNotificationWithSwitchHide) {
                 result += SettingsCheckboxViewData(
-                    block = SettingsBlock.NotificationsWithSwitchHide,
-                    title = resourceRepo.getString(R.string.settings_show_notification_with_switch_hide),
+                    block = SettingsBlock.NotificationsShowEvenWithNoTimers,
+                    title = resourceRepo.getString(R.string.settings_show_notification_even_with_no_timers),
                     subtitle = "",
-                    isChecked = prefsInteractor.getShowNotificationWithSwitchHide(),
+                    isChecked = prefsInteractor.getShowNotificationEvenWithNoTimers(),
+                    bottomSpaceIsVisible = true,
+                    dividerIsVisible = true,
                 )
             }
 

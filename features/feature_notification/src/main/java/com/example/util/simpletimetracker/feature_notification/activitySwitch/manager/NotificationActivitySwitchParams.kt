@@ -7,7 +7,6 @@ data class NotificationActivitySwitchParams(
     val color: Int,
     val title: String,
     val subtitle: String,
-    val isDarkTheme: Boolean,
     val untrackedStartedTimeStamp: Long?,
     val prevRecordDuration: Long?,
     val controls: NotificationControlsParams,

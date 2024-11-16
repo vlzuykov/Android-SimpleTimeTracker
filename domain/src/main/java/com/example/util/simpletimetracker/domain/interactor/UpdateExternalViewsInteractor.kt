@@ -297,7 +297,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
         )
     }
 
-    suspend fun onShowNotificationWithSwitchChange() {
+    suspend fun onShowNotificationsEvenWithNoTimersChange() {
         runUpdates(
             Update.NotificationWithControls,
         )

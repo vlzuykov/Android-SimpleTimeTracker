@@ -56,8 +56,7 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
             SettingsBlock.NotificationsSystemSettings -> onSystemSettingsClicked()
             SettingsBlock.NotificationsShow -> onShowNotificationsClicked()
             SettingsBlock.NotificationsShowControls -> onShowNotificationsControlsClicked()
-            SettingsBlock.NotificationsWithSwitch -> onShowNotificationWithSwitchClicked()
-            SettingsBlock.NotificationsWithSwitchHide -> onShowNotificationWithSwitchHideClicked()
+            SettingsBlock.NotificationsShowEvenWithNoTimers -> onShowNotificationsEvenWithNoTimersClicked()
             SettingsBlock.NotificationsInactivityRecurrent -> onInactivityReminderRecurrentClicked()
             SettingsBlock.NotificationsActivityRecurrent -> onActivityReminderRecurrentClicked()
             else -> {
@@ -111,31 +110,12 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
         }
     }
 
-    private fun onShowNotificationWithSwitchClicked() {
-        fun updateValue(newValue: Boolean) = delegateScope.launch {
-            prefsInteractor.setShowNotificationWithSwitch(newValue)
-            parent?.updateContent()
-            externalViewsInteractor.onShowNotificationWithSwitchChange()
-        }
-
+    private fun onShowNotificationsEvenWithNoTimersClicked() {
         delegateScope.launch {
-            if (prefsInteractor.getShowNotificationWithSwitch()) {
-                updateValue(false)
-            } else {
-                checkNotificationsPermissionInteractor.execute(
-                    onEnabled = { updateValue(true) },
-                    onDisabled = { updateValue(false) },
-                )
-            }
-        }
-    }
-
-    private fun onShowNotificationWithSwitchHideClicked() {
-        delegateScope.launch {
-            val newValue = !prefsInteractor.getShowNotificationWithSwitchHide()
-            prefsInteractor.setShowNotificationWithSwitchHide(newValue)
+            val newValue = !prefsInteractor.getShowNotificationEvenWithNoTimers()
+            prefsInteractor.setShowNotificationEvenWithNoTimers(newValue)
             parent?.updateContent()
-            externalViewsInteractor.onShowNotificationWithSwitchChange()
+            externalViewsInteractor.onShowNotificationsEvenWithNoTimersChange()
         }
     }
 

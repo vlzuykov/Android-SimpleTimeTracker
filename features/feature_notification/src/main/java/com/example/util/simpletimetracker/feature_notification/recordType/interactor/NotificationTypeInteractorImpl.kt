@@ -47,6 +47,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
     private val getNotificationActivitySwitchControlsInteractor: GetNotificationActivitySwitchControlsInteractor,
 ) : NotificationTypeInteractor {
 
+    // TODO SWITCH merge with update function?
     override suspend fun checkAndShow(
         typeId: Long,
         typesShift: Int,

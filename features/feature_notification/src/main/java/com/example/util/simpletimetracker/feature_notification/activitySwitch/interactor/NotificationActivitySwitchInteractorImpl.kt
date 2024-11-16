@@ -44,16 +44,16 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         tagsShift: Int,
         selectedTypeId: Long,
     ) {
-        if (prefsInteractor.getShowNotificationWithSwitch()) {
-            if (shouldCancel()) {
-                cancel()
-            } else {
-                show(
-                    typesShift = typesShift,
-                    tagsShift = tagsShift,
-                    selectedTypeId = selectedTypeId,
-                )
-            }
+        val shouldShow = prefsInteractor.getShowNotifications() &&
+            prefsInteractor.getShowNotificationEvenWithNoTimers() &&
+            runningRecordInteractor.isEmpty()
+
+        if (shouldShow) {
+            show(
+                typesShift = typesShift,
+                tagsShift = tagsShift,
+                selectedTypeId = selectedTypeId,
+            )
         } else {
             cancel()
         }
@@ -164,7 +164,6 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             color = color,
             title = title,
             subtitle = subtitle,
-            isDarkTheme = prefsInteractor.getDarkMode(),
             untrackedStartedTimeStamp = untrackedTimeStarted,
             prevRecordDuration = prevRecordDuration,
             controls = when (controls) {
@@ -176,12 +175,5 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
 
     private fun cancel() {
         manager.hide()
-    }
-
-    private suspend fun shouldCancel(): Boolean {
-        return prefsInteractor.getShowNotificationWithSwitchHide() &&
-            prefsInteractor.getShowNotifications() &&
-            prefsInteractor.getShowNotificationsControls() &&
-            !runningRecordInteractor.isEmpty()
     }
 }

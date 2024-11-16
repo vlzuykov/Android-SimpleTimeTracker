@@ -216,12 +216,8 @@ class PrefsRepoImpl @Inject constructor(
         KEY_SHOW_NOTIFICATIONS_CONTROLS, true,
     )
 
-    override var showNotificationWithSwitch: Boolean by prefs.delegate(
-        KEY_SHOW_NOTIFICATION_WITH_SWITCH, false,
-    )
-
-    override var showNotificationWithSwitchHide: Boolean by prefs.delegate(
-        KEY_SHOW_NOTIFICATION_WITH_SWITCH_HIDE, false,
+    override var showNotificationEvenWithNoTimers: Boolean by prefs.delegate(
+        KEY_SHOW_NOTIFICATION_EVEN_WITH_NO_TIMERS, false,
     )
 
     override var inactivityReminderDuration: Long by prefs.delegate(
@@ -581,8 +577,7 @@ class PrefsRepoImpl @Inject constructor(
         const val KEY_ALLOW_MULTITASKING = "allowMultitasking"
         const val KEY_SHOW_NOTIFICATIONS = "showNotifications"
         const val KEY_SHOW_NOTIFICATIONS_CONTROLS = "showNotificationsControls"
-        const val KEY_SHOW_NOTIFICATION_WITH_SWITCH = "showNotificationWithSwitch"
-        const val KEY_SHOW_NOTIFICATION_WITH_SWITCH_HIDE = "showNotificationWithSwitchHide"
+        const val KEY_SHOW_NOTIFICATION_EVEN_WITH_NO_TIMERS = "showNotificationEvenWithNoTimers"
         const val KEY_INACTIVITY_REMINDER_DURATION = "inactivityReminderDuration"
         const val KEY_INACTIVITY_REMINDER_RECURRENT = "inactivityReminderRecurrent"
         const val KEY_INACTIVITY_REMINDER_DND_START = "inactivityReminderDndStart"
@@ -638,5 +633,7 @@ class PrefsRepoImpl @Inject constructor(
         private const val KEY_SORT_RECORD_TYPES_BY_COLOR = "sortRecordTypesByColor" // Boolean
         private const val KEY_DARK_MODE = "darkMode"
         private const val KEY_RECORD_TAG_SELECTION_EVEN_FOR_GENERAL_TAGS = "recordTagSelectionEvenForGeneralTags"
+        private const val KEY_SHOW_NOTIFICATION_WITH_SWITCH = "showNotificationWithSwitch" // Boolean
+        private const val KEY_SHOW_NOTIFICATION_WITH_SWITCH_HIDE = "showNotificationWithSwitchHide" // Boolean
     }
 }

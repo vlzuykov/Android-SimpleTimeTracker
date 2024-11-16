@@ -88,9 +88,7 @@ interface PrefsRepo {
 
     var showNotificationsControls: Boolean
 
-    var showNotificationWithSwitch: Boolean
-
-    var showNotificationWithSwitchHide: Boolean
+    var showNotificationEvenWithNoTimers: Boolean
 
     var inactivityReminderDuration: Long // in seconds
 

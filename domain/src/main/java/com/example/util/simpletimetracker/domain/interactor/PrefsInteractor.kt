@@ -411,20 +411,12 @@ class PrefsInteractor @Inject constructor(
         prefsRepo.showNotificationsControls = isEnabled
     }
 
-    suspend fun getShowNotificationWithSwitch(): Boolean = withContext(Dispatchers.IO) {
-        prefsRepo.showNotificationWithSwitch
+    suspend fun getShowNotificationEvenWithNoTimers(): Boolean = withContext(Dispatchers.IO) {
+        prefsRepo.showNotificationEvenWithNoTimers
     }
 
-    suspend fun setShowNotificationWithSwitch(isEnabled: Boolean) = withContext(Dispatchers.IO) {
-        prefsRepo.showNotificationWithSwitch = isEnabled
-    }
-
-    suspend fun getShowNotificationWithSwitchHide(): Boolean = withContext(Dispatchers.IO) {
-        prefsRepo.showNotificationWithSwitchHide
-    }
-
-    suspend fun setShowNotificationWithSwitchHide(isEnabled: Boolean) = withContext(Dispatchers.IO) {
-        prefsRepo.showNotificationWithSwitchHide = isEnabled
+    suspend fun setShowNotificationEvenWithNoTimers(isEnabled: Boolean) = withContext(Dispatchers.IO) {
+        prefsRepo.showNotificationEvenWithNoTimers = isEnabled
     }
 
     suspend fun getInactivityReminderDuration(): Long = withContext(Dispatchers.IO) {
