@@ -12,6 +12,7 @@ import com.example.util.simpletimetracker.navigation.params.notification.SnackBa
 import com.example.util.simpletimetracker.navigation.params.notification.ToastParams
 import javax.inject.Inject
 
+// Repeats previous record, if any.
 class RecordRepeatInteractor @Inject constructor(
     private val recordInteractor: RecordInteractor,
     private val runningRecordInteractor: RunningRecordInteractor,

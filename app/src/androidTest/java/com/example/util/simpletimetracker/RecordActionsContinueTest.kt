@@ -355,12 +355,49 @@ class RecordActionsContinueTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.change_record_continue)
 
         // Running record stopped
-        checkViewIsDisplayed(allOf(withText(name1), isCompletelyDisplayed()))
+        checkViewIsDisplayed(
+            allOf(
+                withId(baseR.id.viewRecordItem),
+                hasDescendant(withText(name1)),
+                hasDescendant(withText("0$minuteString")),
+                isCompletelyDisplayed(),
+            ),
+        )
 
         // New running record
         NavUtils.openRunningRecordsScreen()
         checkViewIsDisplayed(
-            allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name2)), isCompletelyDisplayed()),
+            allOf(
+                withId(baseR.id.viewRunningRecordItem),
+                hasDescendant(withText(name2)),
+                isCompletelyDisplayed(),
+            ),
+        )
+    }
+
+    @Test
+    fun continueDefaultDuration() {
+        val name = "name"
+
+        // Setup
+        testUtils.addActivity(
+            name = name,
+            defaultDuration = TimeUnit.MINUTES.toMillis(5),
+        )
+        Thread.sleep(1000)
+        tryAction { clickOnViewWithText(name) }
+
+        // Continue
+        NavUtils.openRecordsScreen()
+        clickOnView(allOf(withText(name), isCompletelyDisplayed()))
+        clickOnViewWithText(coreR.string.change_record_actions_hint)
+        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        clickOnViewWithText(coreR.string.change_record_continue)
+
+        // New running record
+        NavUtils.openRunningRecordsScreen()
+        checkViewIsDisplayed(
+            allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)), isCompletelyDisplayed()),
         )
     }
 

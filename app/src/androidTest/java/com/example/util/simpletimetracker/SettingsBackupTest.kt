@@ -21,6 +21,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
+import com.example.util.simpletimetracker.domain.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.model.ComplexRule
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.feature_dialogs.dateTime.CustomDatePicker
 import com.example.util.simpletimetracker.utils.BaseUiTest
@@ -253,7 +255,7 @@ class SettingsBackupTest : BaseUiTest() {
         clickOnViewWithId(R.id.btnRecordAdd)
         onView(withText(R.string.change_record_comment_field)).perform(nestedScrollTo())
         clickOnViewWithText(R.string.change_record_comment_field)
-        checkViewIsDisplayed(withText(com.example.util.simpletimetracker.core.R.string.change_record_favourite_comments_hint))
+        checkViewIsDisplayed(withText(R.string.change_record_favourite_comments_hint))
         commentList.forEach {
             checkViewIsDisplayed(
                 allOf(withId(changeRecordR.id.tvChangeRecordItemComment), withText(it.comment)),
@@ -315,7 +317,7 @@ class SettingsBackupTest : BaseUiTest() {
         checkViewIsNotDisplayed(withId(changeRecordTypeR.id.layoutChangeRecordTypeGoalPreview))
         pressBack()
         longClickOnView(allOf(withText("type3"), isCompletelyDisplayed()))
-        clickOnViewWithText(com.example.util.simpletimetracker.core.R.string.change_record_type_goal_time_hint)
+        clickOnViewWithText(R.string.change_record_type_goal_time_hint)
         onView(
             allOf(
                 isDescendantOfA(withId(changeRecordTypeR.id.layoutChangeRecordTypeGoalSession)),
@@ -524,6 +526,159 @@ class SettingsBackupTest : BaseUiTest() {
         NavUtils.openRunningRecordsScreen()
         activityList.take(3).forEach { checkViewIsDisplayed(withText(it.name)) }
         activityList.drop(3).forEach { checkViewDoesNotExist(withText(it.name)) }
+    }
+
+    @Suppress("ReplaceGetOrSet", "ComplexRedundantLet")
+    @Test
+    fun partialRestoreWithExistingData() {
+        val colors = ColorMapper.getAvailableColors()
+
+        // Add data
+        activityList.take(2).forEach {
+            testUtils.addActivity(
+                name = it.name,
+                color = (it.color as ColorTestData.Position).value.let(colors::get),
+                text = it.icon,
+            )
+        }
+        categoryList.first().let {
+            testUtils.addCategory(
+                tagName = it.name,
+                color = (it.color as ColorTestData.Position).value.let(colors::get),
+            )
+        }
+        tagList.first().let {
+            testUtils.addRecordTag(
+                tagName = it.name,
+                typeName = "type1",
+                color = (it.color as ColorTestData.Position).value.let(colors::get),
+                icon = R.drawable.ic_360_24px,
+            )
+        }
+        recordList.first().let {
+            testUtils.addRecord(
+                typeName = "type1",
+                timeStarted = 1727096400000,
+                timeEnded = 1727100000000,
+            )
+        }
+        activityFilterList.first().let {
+            testUtils.addActivityFilter(
+                name = it.name,
+                type = ActivityFilter.Type.Activity,
+                color = (it.color as ColorTestData.Position).value.let(colors::get),
+                names = listOf("type1", "type2"),
+            )
+        }
+        commentList.first().let {
+            testUtils.addFavouriteComment(it.comment)
+        }
+        iconsList.first().let {
+            testUtils.addFavouriteIcon(it.icon)
+        }
+        colorsList.first().let {
+            testUtils.addFavouriteColor(it.colorInt)
+        }
+        ruleList.first().let {
+            testUtils.addComplexRule(
+                action = ComplexRule.Action.AllowMultitasking,
+                startingTypeNames = listOf("type1"),
+                currentTypeNames = listOf("type2"),
+                daysOfWeek = listOf(DayOfWeek.SUNDAY, DayOfWeek.MONDAY),
+            )
+        }
+
+        // Restore
+        NavUtils.openSettingsScreen()
+        NavUtils.openSettingsBackup()
+        scrollSettingsRecyclerToText(R.string.settings_backup_options)
+        clickOnSettingsRecyclerText(R.string.settings_backup_options)
+        clickOnViewWithText(R.string.backup_options_partial_restore)
+
+        // Check data counts
+        checkViewIsDisplayed(withText("${getString(R.string.activity_hint)}(2)"))
+        checkViewIsDisplayed(withText("${getString(R.string.category_hint)}(2)"))
+        checkViewIsDisplayed(withText("${getString(R.string.record_tag_hint_short)}(3)"))
+        checkViewIsDisplayed(withText("${getString(R.string.shortcut_navigation_records)}(3)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_activity_filters_hint)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_record_favourite_comments_hint_long)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_record_favourite_icons_hint)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_record_favourite_colors_hint)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.settings_complex_rules)}(2)"))
+
+        // Check filtering
+        // Activities
+        clickOnViewWithText("${getString(R.string.activity_hint)}(2)")
+        checkActivities(activityList.drop(2))
+        pressBack()
+        // Categories
+        clickOnViewWithText("${getString(R.string.category_hint)}(2)")
+        checkCategories(categoryList.drop(1))
+        pressBack()
+        // Tags
+        clickOnViewWithText("${getString(R.string.record_tag_hint_short)}(3)")
+        checkTags(tagList.drop(1))
+        pressBack()
+        // Records
+        clickOnViewWithText("${getString(R.string.shortcut_navigation_records)}(3)")
+        checkRecords(recordList.drop(1), settingsR.id.rvSettingsPartialRestoreSelectionContainer)
+        pressBack()
+        // Activity filters
+        clickOnViewWithText("${getString(R.string.change_activity_filters_hint)}(1)")
+        checkActivityFilters(activityFilterList.drop(1))
+        pressBack()
+        // Favourite comments
+        clickOnViewWithText("${getString(R.string.change_record_favourite_comments_hint_long)}(1)")
+        checkComments(commentList.drop(1))
+        pressBack()
+        // Favourite icons
+        clickOnViewWithText("${getString(R.string.change_record_favourite_icons_hint)}(1)")
+        checkIcons(iconsList.drop(1))
+        pressBack()
+        // Favourite colors
+        clickOnViewWithText("${getString(R.string.change_record_favourite_colors_hint)}(1)")
+        checkColors(colorsList.drop(1))
+        pressBack()
+        // Complex rules
+        clickOnViewWithText("${getString(R.string.settings_complex_rules)}(2)")
+        checkRules(ruleList.drop(1))
+        pressBack()
+
+        // Check consistency
+        removeFilter(R.string.activity_hint)
+        removeFilter(R.string.category_hint)
+        removeFilter(R.string.record_tag_hint_short)
+        checkViewIsDisplayed(withText(getString(R.string.activity_hint)))
+        checkViewIsDisplayed(withText(getString(R.string.category_hint)))
+        checkViewIsDisplayed(withText(getString(R.string.record_tag_hint_short)))
+        checkViewIsDisplayed(withText("${getString(R.string.shortcut_navigation_records)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_activity_filters_hint)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_record_favourite_comments_hint_long)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_record_favourite_icons_hint)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.change_record_favourite_colors_hint)}(1)"))
+        checkViewIsDisplayed(withText("${getString(R.string.settings_complex_rules)}(1)"))
+
+        // Restore only activities
+        removeFilter(R.string.shortcut_navigation_records)
+        removeFilter(R.string.change_activity_filters_hint)
+        removeFilter(R.string.change_record_favourite_comments_hint_long)
+        removeFilter(R.string.change_record_favourite_icons_hint)
+        removeFilter(R.string.change_record_favourite_colors_hint)
+        removeFilter(R.string.settings_complex_rules)
+        clickOnViewWithText(getString(R.string.activity_hint))
+        activityList.get(2).let { clickOnViewWithText(it.name) }
+        clickOnViewWithText(R.string.duration_dialog_save)
+        clickOnViewWithText(R.string.backup_options_import)
+        clickOnViewWithText(R.string.ok)
+
+        // Check message
+        tryAction { checkViewIsDisplayed(withText(R.string.message_import_complete)) }
+        clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
+
+        // Check data
+        NavUtils.openRunningRecordsScreen()
+        activityList.take(3).forEach { checkViewIsDisplayed(withText(it.name)) }
+        activityList.last().let { checkViewDoesNotExist(withText(it.name)) }
     }
 
     private fun getIconResIdByName(name: String): Int {

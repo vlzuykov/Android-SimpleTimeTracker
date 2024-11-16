@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.action.GeneralLocation
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
@@ -13,6 +14,7 @@ import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
 import com.example.util.simpletimetracker.utils.checkViewDoesNotExist
 import com.example.util.simpletimetracker.utils.checkViewIsDisplayed
+import com.example.util.simpletimetracker.utils.clickLocation
 import com.example.util.simpletimetracker.utils.clickOnRecyclerItem
 import com.example.util.simpletimetracker.utils.clickOnView
 import com.example.util.simpletimetracker.utils.clickOnViewWithId
@@ -75,6 +77,17 @@ class RecordActionsSplitTest : BaseUiTest() {
 
         clickOnAdjustment("+5")
         timePreview = calendar.apply { add(Calendar.MINUTE, +5) }.timeInMillis.formatDateTime()
+        checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
+
+        // Check slider
+        onView(withId(changeRecordR.id.sliderChangeRecordItem)).perform(clickLocation(GeneralLocation.CENTER_LEFT))
+        timePreview = timeStartedTimestamp.formatDateTime()
+        checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
+        onView(withId(changeRecordR.id.sliderChangeRecordItem)).perform(clickLocation(GeneralLocation.CENTER_RIGHT))
+        timePreview = timeEndedTimestamp.formatDateTime()
+        checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
+        onView(withId(changeRecordR.id.sliderChangeRecordItem)).perform(clickLocation(GeneralLocation.CENTER))
+        timePreview = calendar.getMillis(16, 17).formatDateTime()
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
     }
 

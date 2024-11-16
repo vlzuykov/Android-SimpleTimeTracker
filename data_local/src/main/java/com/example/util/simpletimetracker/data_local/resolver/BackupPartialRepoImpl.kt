@@ -353,8 +353,13 @@ class BackupPartialRepoImpl @Inject constructor(
         }.list
 
         val newActivityFilters = activityFilters.map { item ->
-            val newTypeIds = item.selectedIds
-                .mapNotNull { originalTypeIdToExistingId[it] }
+            val newTypeIds = item.selectedIds.mapNotNull {
+                if (item.type is ActivityFilter.Type.Activity) {
+                    originalTypeIdToExistingId[it]
+                } else {
+                    it
+                }
+            }
             item.copy(
                 selectedIds = newTypeIds,
             )

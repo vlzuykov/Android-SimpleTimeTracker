@@ -11,6 +11,7 @@ import com.example.util.simpletimetracker.domain.model.IconEmojiType
 import com.example.util.simpletimetracker.domain.model.IconImageType
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
+import com.example.util.simpletimetracker.utils.checkViewDoesNotExist
 import com.example.util.simpletimetracker.utils.checkViewIsDisplayed
 import com.example.util.simpletimetracker.utils.clickOnRecyclerItem
 import com.example.util.simpletimetracker.utils.clickOnView
@@ -18,6 +19,7 @@ import com.example.util.simpletimetracker.utils.clickOnViewWithId
 import com.example.util.simpletimetracker.utils.clickOnViewWithText
 import com.example.util.simpletimetracker.utils.collapseToolbar
 import com.example.util.simpletimetracker.utils.longClickOnView
+import com.example.util.simpletimetracker.utils.nthChildOf
 import com.example.util.simpletimetracker.utils.recyclerItemCount
 import com.example.util.simpletimetracker.utils.scrollRecyclerToView
 import com.example.util.simpletimetracker.utils.swipeUp
@@ -382,6 +384,102 @@ class IconTest : BaseUiTest() {
                 withId(baseR.id.viewRecordTypeItem),
                 hasDescendant(withText(name)),
                 hasDescendant(withText(emojiSkinTone)),
+            ),
+        )
+    }
+
+    @Test
+    fun favouriteIcons() {
+        tryAction { clickOnViewWithText(coreR.string.running_records_add_type) }
+
+        // Check icons
+        clickOnViewWithText(coreR.string.change_record_type_icon_image_hint)
+
+        // Check first category
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 0),
+                withText(R.string.imageGroupMaps),
+            ),
+        )
+
+        // Add to favourites
+        val (category, images) = iconImageMapper.getAvailableImages(loadSearchHints = false)
+            .toList().dropLast(1).last()
+        clickOnView(withTag(category.categoryIcon))
+        val firstImage = images.first().iconResId
+        checkViewIsDisplayed(withText(category.name))
+        clickOnView(withTag(firstImage))
+        clickOnViewWithId(R.id.btnIconSelectionFavourite)
+        clickOnView(withTag(R.drawable.icon_category_image_favourite))
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 0),
+                withText(R.string.change_record_favourite_comments_hint),
+            ),
+        )
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 1),
+                hasDescendant(withTag(firstImage)),
+            ),
+        )
+
+        // Remove from favourites
+        clickOnViewWithId(R.id.btnIconSelectionFavourite)
+        checkViewDoesNotExist(withTag(R.drawable.icon_category_image_favourite))
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 0),
+                withText(R.string.imageGroupMaps),
+            ),
+        )
+
+        // Check emojis
+        clickOnView(
+            allOf(
+                isDescendantOfA(withId(changeRecordTypeR.id.btnIconSelectionSwitch)),
+                withText(coreR.string.change_record_type_icon_emoji_hint),
+            ),
+        )
+
+        // Check first category
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 0),
+                withText(R.string.emojiGroupSmileys),
+            ),
+        )
+
+        // Add to favourites
+        val (emojiCategory, emojis) = iconEmojiMapper.getAvailableEmojis(loadSearchHints = false)
+            .toList().last()
+        clickOnView(withTag(emojiCategory.categoryIcon))
+        val firstEmoji = emojis.first().emojiCode
+        checkViewIsDisplayed(withText(emojiCategory.name))
+        clickOnView(withText(firstEmoji))
+        clickOnViewWithId(R.id.btnIconSelectionFavourite)
+        clickOnView(withTag(R.drawable.icon_category_image_favourite))
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 0),
+                withText(R.string.change_record_favourite_comments_hint),
+            ),
+        )
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 1),
+                hasDescendant(withText(firstEmoji)),
+            ),
+        )
+
+        // Remove from favourites
+        clickOnViewWithId(R.id.btnIconSelectionFavourite)
+        checkViewDoesNotExist(withTag(R.drawable.icon_category_image_favourite))
+        checkViewIsDisplayed(
+            allOf(
+                nthChildOf(withId(R.id.rvIconSelection), 0),
+                withText(R.string.emojiGroupSmileys),
             ),
         )
     }

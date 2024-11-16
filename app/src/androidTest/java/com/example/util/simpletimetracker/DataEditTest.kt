@@ -16,6 +16,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.util.simpletimetracker.core.extension.setToStartOfDay
+import com.example.util.simpletimetracker.core.extension.setWeekToFirstDay
 import com.example.util.simpletimetracker.feature_base_adapter.R
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
@@ -34,10 +36,13 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 import com.example.util.simpletimetracker.core.R as coreR
 import com.example.util.simpletimetracker.feature_base_adapter.R as baseR
 import com.example.util.simpletimetracker.feature_data_edit.R as dataEditR
 import com.example.util.simpletimetracker.feature_records.R as recordsR
+import com.example.util.simpletimetracker.feature_records_filter.R as recordsFilterR
 
 @Suppress("SameParameterValue")
 @HiltAndroidTest
@@ -698,6 +703,90 @@ class DataEditTest : BaseUiTest() {
         )
         NavUtils.openRecordsScreen()
         checkViewIsDisplayed(withText(R.string.no_records_exist))
+    }
+
+    @Test
+    fun selectByDate() {
+        NavUtils.openSettingsScreen()
+        NavUtils.openDataEditScreen()
+        clickOnViewWithText(coreR.string.data_edit_select_records)
+        clickOnViewWithText(coreR.string.date_time_dialog_date)
+
+        // Check ranges
+        clickOnViewWithText(R.string.title_today)
+        var calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            setToStartOfDay()
+        }
+        var timeStarted = calendar.timeInMillis.formatDateTimeYear()
+        var timeEnded = (calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)).formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
+
+        clickOnViewWithText(R.string.title_this_week)
+        calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            setToStartOfDay()
+            setWeekToFirstDay()
+        }
+        timeStarted = calendar.timeInMillis.formatDateTimeYear()
+        timeEnded = (calendar.timeInMillis + TimeUnit.DAYS.toMillis(7)).formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
+
+        clickOnViewWithText(R.string.title_this_month)
+        calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            setToStartOfDay()
+            set(Calendar.DAY_OF_MONTH, 1)
+        }
+        timeStarted = calendar.timeInMillis.formatDateTimeYear()
+        calendar.apply {
+            add(Calendar.MONTH, 1)
+        }
+        timeEnded = calendar.timeInMillis.formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
+
+        clickOnViewWithText(R.string.title_this_year)
+        calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            setToStartOfDay()
+            set(Calendar.DAY_OF_YEAR, 1)
+        }
+        timeStarted = calendar.timeInMillis.formatDateTimeYear()
+        calendar.apply {
+            add(Calendar.YEAR, 1)
+        }
+        timeEnded = calendar.timeInMillis.formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
+
+        clickOnViewWithText(R.string.range_overall)
+        calendar = Calendar.getInstance().apply {
+            timeInMillis = 0
+        }
+        timeStarted = calendar.timeInMillis.formatDateTimeYear()
+        calendar.apply {
+            timeInMillis = System.currentTimeMillis()
+        }
+        timeEnded = calendar.timeInMillis.formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
+
+        clickOnViewWithText(getQuantityString(R.plurals.range_last, 7, 7))
+        calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            setToStartOfDay()
+        }
+        timeStarted = (calendar.timeInMillis - TimeUnit.DAYS.toMillis(6)).formatDateTimeYear()
+        timeEnded = (calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)).formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
+
+        clickOnView(allOf(isDescendantOfA(withId(R.id.viewFilterItem)), withText(R.string.range_custom)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(recordsFilterR.id.tvRecordsFilterRangeTimeEnded), withText(timeEnded)))
     }
 
     private fun checkRecord(

@@ -7,6 +7,9 @@ import com.example.util.simpletimetracker.domain.interactor.ActivityFilterIntera
 import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
 import com.example.util.simpletimetracker.domain.interactor.ClearDataInteractor
 import com.example.util.simpletimetracker.domain.interactor.ComplexRuleInteractor
+import com.example.util.simpletimetracker.domain.interactor.FavouriteColorInteractor
+import com.example.util.simpletimetracker.domain.interactor.FavouriteCommentInteractor
+import com.example.util.simpletimetracker.domain.interactor.FavouriteIconInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
@@ -21,6 +24,9 @@ import com.example.util.simpletimetracker.domain.model.AppColor
 import com.example.util.simpletimetracker.domain.model.Category
 import com.example.util.simpletimetracker.domain.model.ComplexRule
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.model.FavouriteColor
+import com.example.util.simpletimetracker.domain.model.FavouriteComment
+import com.example.util.simpletimetracker.domain.model.FavouriteIcon
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
@@ -41,6 +47,9 @@ class TestUtils @Inject constructor(
     private val recordTypeToDefaultTagInteractor: RecordTypeToDefaultTagInteractor,
     private val activityFilterInteractor: ActivityFilterInteractor,
     private val recordTypeGoalInteractor: RecordTypeGoalInteractor,
+    private val favouriteCommentInteractor: FavouriteCommentInteractor,
+    private val favouriteIconInteractor: FavouriteIconInteractor,
+    private val favouriteColorInteractor: FavouriteColorInteractor,
     private val complexRuleInteractor: ComplexRuleInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val iconImageMapper: IconImageMapper,
@@ -185,6 +194,7 @@ class TestUtils @Inject constructor(
         typeName: String? = null,
         archived: Boolean = false,
         color: Int? = null,
+        icon: Int? = null,
         note: String = "",
         defaultTypes: List<String> = emptyList(),
     ) = runBlocking {
@@ -194,9 +204,14 @@ class TestUtils @Inject constructor(
         val colorId = colors.indexOf(color).takeUnless { it == -1 }
             ?: (0..colors.size).random()
 
+        val icons = iconImageMapper
+            .getAvailableImages(loadSearchHints = false).values
+            .flatten().associateBy { it.iconName }.mapValues { it.value.iconResId }
+        val iconId = icons.filterValues { it == icon }.keys.firstOrNull()
+
         val data = RecordTag(
             name = tagName,
-            icon = "",
+            icon = iconId.orEmpty(),
             color = AppColor(colorId = colorId, colorInt = ""),
             iconColorSource = type?.id.orZero(),
             note = note,
@@ -253,6 +268,24 @@ class TestUtils @Inject constructor(
         )
 
         activityFilterInteractor.add(data)
+    }
+
+    fun addFavouriteComment(
+        text: String,
+    ) = runBlocking {
+        favouriteCommentInteractor.add(FavouriteComment(comment = text))
+    }
+
+    fun addFavouriteIcon(
+        text: String,
+    ) = runBlocking {
+        favouriteIconInteractor.add(FavouriteIcon(icon = text))
+    }
+
+    fun addFavouriteColor(
+        colorInt: Int,
+    ) = runBlocking {
+        favouriteColorInteractor.add(FavouriteColor(colorInt = colorInt.toString()))
     }
 
     fun addComplexRule(

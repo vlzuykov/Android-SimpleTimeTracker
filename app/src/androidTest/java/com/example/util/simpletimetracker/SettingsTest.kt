@@ -38,6 +38,7 @@ import com.example.util.simpletimetracker.utils.getMillis
 import com.example.util.simpletimetracker.utils.longClickOnViewWithId
 import com.example.util.simpletimetracker.utils.recyclerItemCount
 import com.example.util.simpletimetracker.utils.tryAction
+import com.example.util.simpletimetracker.utils.typeTextIntoView
 import com.example.util.simpletimetracker.utils.withPluralText
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
@@ -56,6 +57,7 @@ import com.example.util.simpletimetracker.feature_dialogs.R as dialogsR
 import com.example.util.simpletimetracker.feature_records.R as recordsR
 import com.example.util.simpletimetracker.feature_statistics.R as statisticsR
 import com.example.util.simpletimetracker.feature_statistics_detail.R as statisticsDetailR
+import com.example.util.simpletimetracker.feature_tag_selection.R as tagSelectionR
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -537,6 +539,30 @@ class SettingsTest : BaseUiTest() {
         scrollSettingsRecyclerToText(coreR.string.settings_show_notifications)
         clickOnSettingsCheckboxBesideText(coreR.string.settings_show_notifications)
         checkViewDoesNotExist(withText(coreR.string.settings_show_notifications_controls))
+    }
+
+    @Test
+    fun showNotificationEvenWithNoTimers() {
+        NavUtils.openSettingsScreen()
+        NavUtils.openSettingsNotifications()
+
+        // Check settings
+        scrollSettingsRecyclerToText(coreR.string.settings_show_notifications)
+        checkViewDoesNotExist(withText(coreR.string.settings_show_notification_even_with_no_timers))
+
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_notifications)
+        scrollSettingsRecyclerToText(coreR.string.settings_show_notification_even_with_no_timers)
+        checkViewIsDisplayed(withText(coreR.string.settings_show_notification_even_with_no_timers))
+        checkCheckboxIsNotChecked(settingsCheckboxBesideText(coreR.string.settings_show_notification_even_with_no_timers))
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_notification_even_with_no_timers)
+        checkCheckboxIsChecked(settingsCheckboxBesideText(coreR.string.settings_show_notification_even_with_no_timers))
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_notification_even_with_no_timers)
+        checkCheckboxIsNotChecked(settingsCheckboxBesideText(coreR.string.settings_show_notification_even_with_no_timers))
+
+        // Change settings
+        scrollSettingsRecyclerToText(coreR.string.settings_show_notifications)
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_notifications)
+        checkViewDoesNotExist(withText(coreR.string.settings_show_notification_even_with_no_timers))
     }
 
     @Test
@@ -1415,6 +1441,8 @@ class SettingsTest : BaseUiTest() {
 
         // Add data
         testUtils.addActivity(name)
+
+        // Started right away
         Thread.sleep(1000)
         tryAction { clickOnViewWithText(name) }
         tryAction { clickOnView(allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)))) }
@@ -1478,6 +1506,8 @@ class SettingsTest : BaseUiTest() {
 
         // Add data
         testUtils.addActivity(name)
+
+        // Started right away
         Thread.sleep(1000)
         tryAction { clickOnViewWithText(name) }
         tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
@@ -1540,6 +1570,8 @@ class SettingsTest : BaseUiTest() {
 
         // Add data
         testUtils.addActivity(name)
+
+        // Started right away
         Thread.sleep(1000)
         tryAction { clickOnViewWithText(name) }
         tryAction { clickOnView(allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)))) }
@@ -1548,10 +1580,7 @@ class SettingsTest : BaseUiTest() {
         NavUtils.openSettingsScreen()
         NavUtils.openSettingsAdditional()
         scrollSettingsRecyclerToText(coreR.string.settings_show_record_tag_selection)
-        checkViewIsNotDisplayed(settingsButtonBesideText(coreR.string.settings_show_record_tag_selection))
-
         clickOnSettingsCheckboxBesideText(coreR.string.settings_show_record_tag_selection)
-        checkViewIsDisplayed(settingsButtonBesideText(coreR.string.settings_show_record_tag_selection))
 
         // No tags - started right away
         NavUtils.openRunningRecordsScreen()
@@ -1576,6 +1605,214 @@ class SettingsTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.duration_dialog_save)
 
         // Has a tag but excluded - no dialog
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
+    }
+
+    @Test
+    fun commentSelection() {
+        val name = "TypeName"
+        val comment = "comment"
+
+        // Add data
+        testUtils.addActivity(name)
+
+        // Started right away
+        Thread.sleep(1000)
+        tryAction { clickOnViewWithText(name) }
+        tryAction { clickOnView(allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)))) }
+
+        // Change setting
+        NavUtils.openSettingsScreen()
+        NavUtils.openSettingsAdditional()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        checkCheckboxIsNotChecked(settingsCheckboxBesideText(coreR.string.settings_show_comment_input))
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_comment_input)
+        checkCheckboxIsChecked(settingsCheckboxBesideText(coreR.string.settings_show_comment_input))
+
+        // Dialog shown
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { checkViewIsDisplayed(withId(tagSelectionR.id.inputRecordTagSelectionComment)) }
+        pressBack()
+
+        // Start without comment
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+        tryAction { checkViewIsNotDisplayed(withId(R.id.tvRunningRecordItemComment)) }
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
+
+        // Start with comment
+        clickOnViewWithText(name)
+        tryAction { typeTextIntoView(tagSelectionR.id.etRecordTagSelectionCommentItem, comment) }
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(comment))) }
+
+        // Change setting
+        NavUtils.openSettingsScreen()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        checkCheckboxIsChecked(settingsCheckboxBesideText(coreR.string.settings_show_comment_input))
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_comment_input)
+        checkCheckboxIsNotChecked(settingsCheckboxBesideText(coreR.string.settings_show_comment_input))
+
+        // No dialog
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
+    }
+
+    @Test
+    fun commentSelectionExcludeActivities() {
+        val name = "TypeName"
+
+        // Add data
+        testUtils.addActivity(name)
+
+        // Started right away
+        Thread.sleep(1000)
+        tryAction { clickOnViewWithText(name) }
+        tryAction { clickOnView(allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)))) }
+
+        // Change setting
+        NavUtils.openSettingsScreen()
+        NavUtils.openSettingsAdditional()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_comment_input)
+
+        // Not excluded - show dialog
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { checkViewIsDisplayed(withId(tagSelectionR.id.inputRecordTagSelectionComment)) }
+        pressBack()
+
+        // Change setting
+        NavUtils.openSettingsScreen()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        clickOnSettingsButtonBesideText(coreR.string.settings_show_comment_input)
+        Thread.sleep(1000)
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+
+        // Excluded - no dialog
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
+    }
+
+    @Test
+    fun tagAndCommentSelection() {
+        val name = "TypeName"
+        val tag = "TagGeneral"
+        val comment = "comment"
+        val fullName = "$name - $tag"
+
+        // Add data
+        testUtils.addActivity(name)
+        testUtils.addRecordTag(tag)
+
+        // Started right away
+        Thread.sleep(1000)
+        tryAction { clickOnViewWithText(name) }
+        tryAction { clickOnView(allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)))) }
+
+        // Change settings
+        NavUtils.openSettingsScreen()
+        NavUtils.openSettingsAdditional()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_record_tag_selection)
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_record_tag_selection)
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_comment_input)
+
+        // Dialog shown
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { checkViewIsDisplayed(withText(tag)) }
+        tryAction { checkViewIsDisplayed(withId(tagSelectionR.id.inputRecordTagSelectionComment)) }
+        pressBack()
+
+        // Start untagged, no comment
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+        tryAction { checkViewIsNotDisplayed(withId(R.id.tvRunningRecordItemComment)) }
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
+
+        // Start untagged, with comment
+        clickOnViewWithText(name)
+        tryAction { typeTextIntoView(tagSelectionR.id.etRecordTagSelectionCommentItem, comment) }
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+        tryAction { checkViewIsDisplayed(allOf(withId(R.id.tvRunningRecordItemComment), withText(comment))) }
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
+
+        // Start tagged, without comment
+        clickOnViewWithText(name)
+        clickOnViewWithText(tag)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+        tryAction { checkViewIsNotDisplayed(withId(R.id.tvRunningRecordItemComment)) }
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(fullName))) }
+
+        // Start tagged, with comment
+        clickOnViewWithText(name)
+        tryAction { typeTextIntoView(tagSelectionR.id.etRecordTagSelectionCommentItem, comment) }
+        clickOnViewWithText(tag)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+        tryAction { checkViewIsDisplayed(allOf(withId(R.id.tvRunningRecordItemComment), withText(comment))) }
+        tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(fullName))) }
+
+        // Exclude for tags
+        NavUtils.openSettingsScreen()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_record_tag_selection)
+        clickOnSettingsButtonBesideText(coreR.string.settings_show_record_tag_selection)
+        Thread.sleep(1000)
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { checkViewDoesNotExist(withText(tag)) }
+        tryAction { checkViewIsDisplayed(withId(tagSelectionR.id.inputRecordTagSelectionComment)) }
+        pressBack()
+
+        // Exclude for comments
+        NavUtils.openSettingsScreen()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_record_tag_selection)
+        clickOnSettingsButtonBesideText(coreR.string.settings_show_record_tag_selection)
+        Thread.sleep(1000)
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        clickOnSettingsButtonBesideText(coreR.string.settings_show_comment_input)
+        Thread.sleep(1000)
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { checkViewIsDisplayed(withText(tag)) }
+        tryAction { checkViewIsNotDisplayed(withId(tagSelectionR.id.inputRecordTagSelectionComment)) }
+        pressBack()
+
+        // Exclude both
+        NavUtils.openSettingsScreen()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_record_tag_selection)
+        clickOnSettingsButtonBesideText(coreR.string.settings_show_record_tag_selection)
+        Thread.sleep(1000)
+        clickOnViewWithText(name)
+        clickOnViewWithText(coreR.string.duration_dialog_save)
+
+        NavUtils.openRunningRecordsScreen()
+        clickOnViewWithText(name)
+        tryAction { clickOnView(allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)))) }
+
+        // Change setting
+        NavUtils.openSettingsScreen()
+        scrollSettingsRecyclerToText(coreR.string.settings_show_record_tag_selection)
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_record_tag_selection)
+        scrollSettingsRecyclerToText(coreR.string.settings_show_comment_input)
+        clickOnSettingsCheckboxBesideText(coreR.string.settings_show_comment_input)
+
+        // No dialog
         NavUtils.openRunningRecordsScreen()
         clickOnViewWithText(name)
         tryAction { clickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name))) }
@@ -1736,6 +1973,40 @@ class SettingsTest : BaseUiTest() {
         }
         timeStarted = (calendar.timeInMillis - TimeUnit.DAYS.toMillis(6)).formatDateTimeYear()
         timeEnded = (calendar.timeInMillis + TimeUnit.DAYS.toMillis(1)).formatDateTimeYear()
+        checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeEnded), withText(timeEnded)))
+
+        clickOnViewWithText(R.string.range_custom)
+        checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeEnded), withText(timeEnded)))
+
+        // Selected filter saved
+        pressBack()
+        clickOnSettingsRecyclerText(coreR.string.settings_export_csv)
+        checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeStarted), withText(timeStarted)))
+        checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeEnded), withText(timeEnded)))
+    }
+
+    @Test
+    fun icsExportSettings() {
+        NavUtils.openSettingsScreen()
+        NavUtils.openSettingsExportImport()
+        scrollSettingsRecyclerToText(coreR.string.settings_export_ics)
+        clickOnSettingsRecyclerText(coreR.string.settings_export_ics)
+
+        // View is set up
+        checkViewIsDisplayed(
+            allOf(
+                withId(dialogsR.id.etCsvExportSettingsFileName),
+                withText("stt_events_{date}.ics"),
+            ),
+        )
+        val currentTime = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            setToStartOfDay()
+        }.timeInMillis
+        val timeStarted = currentTime.formatDateTimeYear()
+        val timeEnded = (currentTime + TimeUnit.DAYS.toMillis(1)).formatDateTimeYear()
         checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeStarted), withText(timeStarted)))
         checkViewIsDisplayed(allOf(withId(dialogsR.id.tvCsvExportSettingsTimeEnded), withText(timeEnded)))
     }

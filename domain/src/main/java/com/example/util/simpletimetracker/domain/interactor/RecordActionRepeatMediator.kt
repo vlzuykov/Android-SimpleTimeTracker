@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.domain.interactor
 
 import javax.inject.Inject
 
+// Repeats concrete record.
 class RecordActionRepeatMediator @Inject constructor(
     private val runningRecordInteractor: RunningRecordInteractor,
     private val addRunningRecordMediator: AddRunningRecordMediator,
