@@ -80,7 +80,6 @@ class ColorViewDataInteractor @Inject constructor(
                     colorId = favouriteColor.id,
                     type = ColorViewData.Type.Favourite,
                     colorInt = favouriteColor.colorInt.toIntOrNull()
-                        ?.let { if (isDarkTheme) colorMapper.darkenColor(it) else it }
                         ?: colorMapper.toInactiveColor(isDarkTheme),
                     selected = false,
                 )
