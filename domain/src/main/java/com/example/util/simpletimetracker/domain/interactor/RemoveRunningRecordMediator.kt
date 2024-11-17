@@ -16,6 +16,7 @@ class RemoveRunningRecordMediator @Inject constructor(
     suspend fun removeWithRecordAdd(
         runningRecord: RunningRecord,
         updateWidgets: Boolean = true,
+        updateNotificationSwitch: Boolean = true,
         timeEnded: Long? = null, // null - take current time.
     ) {
         val recordTimeEnded = timeEnded ?: System.currentTimeMillis()
@@ -38,6 +39,7 @@ class RemoveRunningRecordMediator @Inject constructor(
         remove(
             typeId = runningRecord.id,
             updateWidgets = updateWidgets,
+            updateNotificationSwitch = updateNotificationSwitch,
         )
         pomodoroStopInteractor.checkAndStop(runningRecord.id)
     }

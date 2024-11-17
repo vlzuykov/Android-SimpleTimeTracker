@@ -167,9 +167,9 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
                 delay(500)
                 completeTypesStateInteractor.notificationTypeIds -= selectedTypeId
                 update(from, typesShift)
+            } else {
+                update(from, typesShift)
             }
-
-            update(from, typesShift)
         }
     }
 

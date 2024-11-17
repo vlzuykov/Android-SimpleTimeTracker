@@ -303,6 +303,7 @@ class AddRunningRecordMediator @Inject constructor(
                     removeRunningRecordMediator.removeWithRecordAdd(
                         runningRecord = it,
                         updateWidgets = false,
+                        updateNotificationSwitch = false,
                         timeEnded = splitTime,
                     )
                 }
