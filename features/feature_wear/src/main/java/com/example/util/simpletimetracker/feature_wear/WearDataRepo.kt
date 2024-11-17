@@ -6,6 +6,7 @@
 package com.example.util.simpletimetracker.feature_wear
 
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
+import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.interactor.GetSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
@@ -16,6 +17,7 @@ import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordM
 import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.SettingsDataUpdateInteractor
 import com.example.util.simpletimetracker.domain.interactor.ShouldShowRecordDataSelectionInteractor
+import com.example.util.simpletimetracker.domain.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.domain.model.RecordDataSelectionDialogResult
 import com.example.util.simpletimetracker.domain.model.WidgetType
@@ -44,6 +46,7 @@ class WearDataRepo @Inject constructor(
     private val removeRunningRecordMediator: Lazy<RemoveRunningRecordMediator>,
     private val addRunningRecordMediator: Lazy<AddRunningRecordMediator>,
     private val recordRepeatInteractor: Lazy<RecordRepeatInteractor>,
+    private val updateExternalViewsInteractor: Lazy<UpdateExternalViewsInteractor>,
     private val router: Router,
     private val widgetInteractor: WidgetInteractor,
     private val settingsDataUpdateInteractor: SettingsDataUpdateInteractor,
@@ -89,6 +92,9 @@ class WearDataRepo @Inject constructor(
             tagIds = request.tagIds,
             comment = "",
         )
+        if (recordTypeInteractor.get(request.id)?.defaultDuration.orZero() > 0) {
+            updateExternalViewsInteractor.get().onInstantRecordAdd()
+        }
     }
 
     override suspend fun stopActivity(request: WearStopActivityRequest) {

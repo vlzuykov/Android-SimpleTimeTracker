@@ -159,6 +159,12 @@ class UpdateExternalViewsInteractor @Inject constructor(
         )
     }
 
+    suspend fun onInstantRecordAdd() {
+        runUpdates(
+            Update.Wear,
+        )
+    }
+
     // Called after record add.
     suspend fun onRecordChangeType(
         originalTypeId: Long,
