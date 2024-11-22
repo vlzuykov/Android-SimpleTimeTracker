@@ -159,6 +159,14 @@ class UpdateExternalViewsInteractor @Inject constructor(
         )
     }
 
+    suspend fun onRecordTimeEndedChange(
+        typeIds: List<Long>,
+    ) {
+        runUpdates(
+            Update.GoalReschedule(typeIds),
+        )
+    }
+
     suspend fun onInstantRecordAdd() {
         runUpdates(
             Update.Wear,

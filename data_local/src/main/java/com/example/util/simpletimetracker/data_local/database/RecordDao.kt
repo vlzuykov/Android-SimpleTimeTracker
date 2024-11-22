@@ -93,6 +93,9 @@ interface RecordDao {
         comment: String,
     )
 
+    @Query("UPDATE records SET time_ended = :timeEnded WHERE id = :recordId")
+    suspend fun updateTimeEnded(recordId: Long, timeEnded: Long)
+
     @Query("DELETE FROM records WHERE id = :id")
     suspend fun delete(id: Long)
 

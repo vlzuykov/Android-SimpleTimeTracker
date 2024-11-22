@@ -12,14 +12,11 @@ import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
-import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.empty.EmptyViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hintBig.HintBigViewData
-import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordWithHint.RecordWithHintViewData
 import com.example.util.simpletimetracker.feature_running_records.R
-import com.example.util.simpletimetracker.feature_running_records.model.RunningRecordsFilterType
 import javax.inject.Inject
 
 class RunningRecordsViewDataMapper @Inject constructor(
@@ -65,9 +62,6 @@ class RunningRecordsViewDataMapper @Inject constructor(
         useProportionalMinutes: Boolean,
         useMilitaryTime: Boolean,
         showSeconds: Boolean,
-        allowMultitasking: Boolean,
-        multitaskingSelectionEnabled: Boolean,
-        multiSelectedActivityIds: Set<Long>,
     ): List<ViewHolderType> {
         val result = mutableListOf<ViewHolderType>()
 
@@ -125,42 +119,6 @@ class RunningRecordsViewDataMapper @Inject constructor(
                 paddingTop = 0,
                 paddingBottom = 0,
             )
-            if (allowMultitasking) {
-                // TODO test retroactive mode
-                // TODO test several prev records at the same time, merge accordingly.
-                // TODO test retroactive multitask
-                //  enable, go to other screen
-                //  enable, go to edit type
-                //  disable by clicking
-                //  disable by removing
-                result += DividerViewData(3)
-                result += FilterViewData(
-                    id = 0,
-                    type = RunningRecordsFilterType.EnableMultitaskingSelection,
-                    name = resourceRepo.getString(R.string.multitask_time_name),
-                    color = if (multitaskingSelectionEnabled) {
-                        colorMapper.toActiveColor(isDarkTheme)
-                    } else {
-                        colorMapper.toInactiveColor(isDarkTheme)
-                    },
-                    selected = multitaskingSelectionEnabled,
-                    removeBtnVisible = multitaskingSelectionEnabled,
-                )
-                if (multitaskingSelectionEnabled) {
-                    result += FilterViewData(
-                        id = 1,
-                        type = RunningRecordsFilterType.FinishMultitaskingSelection,
-                        name = resourceRepo.getString(R.string.records_filter_select),
-                        color = if (multiSelectedActivityIds.isNotEmpty()) {
-                            colorMapper.toActiveColor(isDarkTheme)
-                        } else {
-                            colorMapper.toInactiveColor(isDarkTheme)
-                        },
-                        selected = false,
-                        removeBtnVisible = false,
-                    )
-                }
-            }
         }
 
         return result

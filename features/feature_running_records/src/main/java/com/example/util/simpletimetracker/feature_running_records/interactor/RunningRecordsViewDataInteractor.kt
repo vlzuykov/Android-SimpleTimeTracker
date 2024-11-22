@@ -35,8 +35,6 @@ class RunningRecordsViewDataInteractor @Inject constructor(
 
     suspend fun getViewData(
         completeTypeIds: Set<Long>,
-        multitaskingSelectionEnabled: Boolean,
-        multiSelectedActivityIds: Set<Long>,
     ): List<ViewHolderType> {
         val recordTypes = recordTypeInteractor.getAll()
         val recordTypesMap = recordTypes.associateBy(RecordType::id)
@@ -54,7 +52,6 @@ class RunningRecordsViewDataInteractor @Inject constructor(
         val showRepeatButton = prefsInteractor.getEnableRepeatButton()
         val isPomodoroStarted = prefsInteractor.getPomodoroModeStartedTimestampMs() != 0L
         val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
-        val allowMultitasking = prefsInteractor.getAllowMultitasking()
         val goals = filterGoalsByDayOfWeekInteractor
             .execute(recordTypeGoalInteractor.getAllTypeGoals())
             .groupBy { it.idData.value }
@@ -84,9 +81,6 @@ class RunningRecordsViewDataInteractor @Inject constructor(
                     useProportionalMinutes = useProportionalMinutes,
                     useMilitaryTime = useMilitaryTime,
                     showSeconds = showSeconds,
-                    allowMultitasking = allowMultitasking,
-                    multitaskingSelectionEnabled = multitaskingSelectionEnabled,
-                    multiSelectedActivityIds = multiSelectedActivityIds,
                 )
             }
             runningRecords.isEmpty() -> {
@@ -145,17 +139,6 @@ class RunningRecordsViewDataInteractor @Inject constructor(
                     ),
                     isComplete = it.id in completeTypeIds,
                 )
-            }
-            .map {
-                if (multitaskingSelectionEnabled) {
-                    val isSelected = it.id in multiSelectedActivityIds
-                    it.copy(
-                        isComplete = isSelected,
-                        isSelected = isSelected,
-                    )
-                } else {
-                    it
-                }
             }
             .let { data ->
                 mutableListOf<ViewHolderType>().apply {

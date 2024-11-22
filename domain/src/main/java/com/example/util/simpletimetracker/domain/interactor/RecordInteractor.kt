@@ -122,6 +122,13 @@ class RecordInteractor @Inject constructor(
         updateTags(recordId, tagIds)
     }
 
+    suspend fun updateTimeEnded(recordId: Long, timeEnded: Long) {
+        recordRepo.updateTimeEnded(
+            recordId = recordId,
+            timeEnded = timeEnded,
+        )
+    }
+
     suspend fun remove(id: Long) {
         recordToRecordTagRepo.removeAllByRecordId(id)
         recordRepo.remove(id)

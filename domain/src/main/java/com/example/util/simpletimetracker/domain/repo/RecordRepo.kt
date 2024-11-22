@@ -49,6 +49,8 @@ interface RecordRepo {
         comment: String,
     )
 
+    suspend fun updateTimeEnded(recordId: Long, timeEnded: Long)
+
     suspend fun remove(id: Long)
 
     suspend fun removeByType(typeId: Long)

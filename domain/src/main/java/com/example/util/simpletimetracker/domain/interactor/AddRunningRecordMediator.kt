@@ -54,31 +54,14 @@ class AddRunningRecordMediator @Inject constructor(
         }
     }
 
-    suspend fun startTimers(
-        typeIds: Set<Long>,
-    ) {
-        val current = System.currentTimeMillis()
-        val timeStarted = StartTime.Current(current)
-        val prevRecords = recordInteractor.getAllPrev(current)
-        typeIds.forEachIndexed { index, id ->
-            startTimer(
-                typeId = id,
-                tagIds = emptyList(),
-                comment = "",
-                timeStarted = timeStarted,
-                prevRecords = PrevRecords.Records(prevRecords),
-                // Update only on last.
-                updateNotificationSwitch = index == typeIds.size - 1,
-            )
-        }
-    }
-
+    // TODO test retroactive mode
+    // TODO test several prev records at the same time, merge accordingly.
+    // TODO test retroactive multitask
     suspend fun startTimer(
         typeId: Long,
         tagIds: List<Long>,
         comment: String,
         timeStarted: StartTime = StartTime.TakeCurrent,
-        prevRecords: PrevRecords = PrevRecords.Load,
         updateNotificationSwitch: Boolean = true,
         checkDefaultDuration: Boolean = true,
     ) {
@@ -90,10 +73,7 @@ class AddRunningRecordMediator @Inject constructor(
         }
         val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
         val actualPrevRecords = if (retroactiveTrackingMode) {
-            when (prevRecords) {
-                is PrevRecords.Load -> recordInteractor.getAllPrev(actualTimeStarted)
-                is PrevRecords.Records -> prevRecords.records
-            }
+            recordInteractor.getAllPrev(actualTimeStarted)
         } else {
             emptyList()
         }
@@ -113,9 +93,12 @@ class AddRunningRecordMediator @Inject constructor(
                 prevRecords = actualPrevRecords,
             )
         }
+        val isMultitaskingAllowedByDefault = prefsInteractor.getAllowMultitasking()
+        val isMultitaskingAllowed = rulesResult.isMultitaskingAllowed.getValueOrNull()
+            ?: isMultitaskingAllowedByDefault
         processMultitasking(
             typeId = typeId,
-            isMultitaskingAllowedByRules = rulesResult.isMultitaskingAllowed,
+            isMultitaskingAllowed = isMultitaskingAllowed,
             splitTime = when (timeStarted) {
                 is StartTime.Current -> timeStarted.currentTimeStampMs
                 is StartTime.TakeCurrent -> currentTime
@@ -138,6 +121,7 @@ class AddRunningRecordMediator @Inject constructor(
             tagIds = actualTags,
             timeStarted = actualTimeStarted,
             updateNotificationSwitch = updateNotificationSwitch,
+            isMultitaskingAllowed = isMultitaskingAllowed,
         )
         if (retroactiveTrackingMode) {
             addRetroactiveModeInternal(startParams, actualPrevRecords)
@@ -165,6 +149,7 @@ class AddRunningRecordMediator @Inject constructor(
                 comment = comment,
                 tagIds = tagIds,
                 updateNotificationSwitch = true,
+                isMultitaskingAllowed = true,
             ),
             checkDefaultDuration = false,
         )
@@ -188,9 +173,13 @@ class AddRunningRecordMediator @Inject constructor(
     ) {
         val type = recordTypeInteractor.get(params.typeId) ?: return
 
+        processRetroactiveMultitasking(
+            params = params,
+            prevRecords = prevRecords,
+        )
+
         if (type.defaultDuration > 0L) {
-            val newTimeStarted = prevRecords.firstOrNull()?.timeEnded
-                ?: (params.timeStarted - type.defaultDuration * 1000)
+            val newTimeStarted = params.timeStarted - type.defaultDuration * 1000
             addInstantRecord(
                 params = params.copy(timeStarted = newTimeStarted),
                 type = type,
@@ -307,13 +296,9 @@ class AddRunningRecordMediator @Inject constructor(
 
     private suspend fun processMultitasking(
         typeId: Long,
-        isMultitaskingAllowedByRules: ResultContainer<Boolean>,
+        isMultitaskingAllowed: Boolean,
         splitTime: Long,
     ) {
-        val isMultitaskingAllowedByDefault = prefsInteractor.getAllowMultitasking()
-        val isMultitaskingAllowed = isMultitaskingAllowedByRules.getValueOrNull()
-            ?: isMultitaskingAllowedByDefault
-
         // Stop running records if multitasking is disabled.
         if (!isMultitaskingAllowed) {
             // Widgets will update on adding.
@@ -327,6 +312,36 @@ class AddRunningRecordMediator @Inject constructor(
                         timeEnded = splitTime,
                     )
                 }
+        }
+    }
+
+    private suspend fun processRetroactiveMultitasking(
+        params: StartParams,
+        prevRecords: List<Record>,
+    ) {
+        if (!params.isMultitaskingAllowed) return
+
+        val recordTypesMap = recordTypeInteractor.getAll().associateBy(RecordType::id)
+        val mergedRecord = getPrevRecordToMergeWith(params.typeId, prevRecords)
+
+        // Extend prev records to current time.
+        prevRecords.filter {
+            // Skip record that would be merge.
+            it.id != mergedRecord?.id
+        }.filter {
+            // Skip records with default duration.
+            val thisType = recordTypesMap[it.typeId]
+            thisType != null && thisType.defaultDuration == 0L
+        }.map { prevRecord ->
+            recordInteractor.updateTimeEnded(
+                recordId = prevRecord.id,
+                timeEnded = params.timeStarted,
+            )
+            prevRecord.typeId
+        }.let {
+            updateExternalViewsInteractor.onRecordTimeEndedChange(
+                typeIds = it,
+            )
         }
     }
 
@@ -352,16 +367,12 @@ class AddRunningRecordMediator @Inject constructor(
         val comment: String,
         val tagIds: List<Long>,
         val updateNotificationSwitch: Boolean,
+        val isMultitaskingAllowed: Boolean,
     )
 
     sealed interface StartTime {
         data class Current(val currentTimeStampMs: Long) : StartTime
         data class Timestamp(val timestampMs: Long) : StartTime
         object TakeCurrent : StartTime
-    }
-
-    sealed interface PrevRecords {
-        data class Records(val records: List<Record>) : PrevRecords
-        object Load : PrevRecords
     }
 }

@@ -11,7 +11,6 @@ import com.example.util.simpletimetracker.core.extension.toRecordParams
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.ChangeRecordDateTimeMapper
 import com.example.util.simpletimetracker.core.model.NavigationTab
-import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.interactor.ChangeSelectedActivityFilterMediator
@@ -24,12 +23,10 @@ import com.example.util.simpletimetracker.domain.model.RecordDataSelectionDialog
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
-import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.RunningRecordViewData
 import com.example.util.simpletimetracker.feature_running_records.interactor.RunningRecordsViewDataInteractor
-import com.example.util.simpletimetracker.feature_running_records.model.RunningRecordsFilterType
 import com.example.util.simpletimetracker.feature_views.TransitionNames
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeActivityFilterParams
@@ -73,8 +70,6 @@ class RunningRecordsViewModel @Inject constructor(
     private var timerJob: Job? = null
     private var completeTypeJob: Job? = null
     private var completeTypeIds: Set<Long> = emptySet()
-    private var multitaskingSelectionEnabled: Boolean = false
-    private var multiSelectedActivityIds: Set<Long> = emptySet()
 
     init {
         subscribeToUpdates()
@@ -82,13 +77,6 @@ class RunningRecordsViewModel @Inject constructor(
 
     fun onRecordTypeClick(item: RecordTypeViewData) {
         viewModelScope.launch {
-            if (isMultiSelectionEnabled()) {
-                multiSelectedActivityIds = multiSelectedActivityIds.toMutableSet()
-                    .apply { addOrRemove(item.id) }
-                updateRunningRecords()
-                return@launch
-            }
-
             val runningRecord = runningRecordInteractor.get(item.id)
 
             if (runningRecord != null) {
@@ -229,23 +217,6 @@ class RunningRecordsViewModel @Inject constructor(
         )
     }
 
-    fun onFilterClick(data: FilterViewData) {
-        when (data.type) {
-            is RunningRecordsFilterType.EnableMultitaskingSelection -> changeMultiSelection()
-            is RunningRecordsFilterType.FinishMultitaskingSelection -> finishMultiSelection()
-        }
-        updateRunningRecords()
-    }
-
-    fun onFilterRemoveClick(data: FilterViewData) {
-        when (data.type) {
-            is RunningRecordsFilterType.EnableMultitaskingSelection -> {
-                disableMultiSelection()
-            }
-        }
-        updateRunningRecords()
-    }
-
     fun onVisible() {
         startUpdate()
     }
@@ -284,34 +255,6 @@ class RunningRecordsViewModel @Inject constructor(
         router.navigate(RecordTagSelectionParams(typeId, result.toParams()))
     }
 
-    private suspend fun isMultiSelectionEnabled(): Boolean {
-        return multitaskingSelectionEnabled &&
-            prefsInteractor.getAllowMultitasking() &&
-            prefsInteractor.getRetroactiveTrackingMode()
-    }
-
-    private fun disableMultiSelection() {
-        multitaskingSelectionEnabled = false
-        multiSelectedActivityIds = emptySet()
-    }
-
-    private fun changeMultiSelection() {
-        if (multitaskingSelectionEnabled) {
-            disableMultiSelection()
-        } else {
-            multitaskingSelectionEnabled = true
-        }
-    }
-
-    private fun finishMultiSelection() = viewModelScope.launch {
-        val ids = multiSelectedActivityIds
-        if (ids.isEmpty()) return@launch
-        disableMultiSelection()
-        // TODO Tag selection is not supported yet.
-        // Currently multi selection is only for retroactive mode, so no need to stop timers.
-        addRunningRecordMediator.startTimers(typeIds = ids)
-    }
-
     private fun subscribeToUpdates() {
         viewModelScope.launch {
             updateRunningRecordFromChangeScreenInteractor.dataUpdated.collect {
@@ -334,8 +277,6 @@ class RunningRecordsViewModel @Inject constructor(
     private suspend fun loadRunningRecordsViewData(): List<ViewHolderType> {
         return runningRecordsViewDataInteractor.getViewData(
             completeTypeIds = completeTypeIds,
-            multitaskingSelectionEnabled = isMultiSelectionEnabled(),
-            multiSelectedActivityIds = multiSelectedActivityIds,
         )
     }
 

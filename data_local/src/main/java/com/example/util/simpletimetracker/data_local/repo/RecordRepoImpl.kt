@@ -6,6 +6,7 @@ import com.example.util.simpletimetracker.data_local.mapper.RecordDataLocalMappe
 import com.example.util.simpletimetracker.data_local.model.RecordWithRecordTagsDBO
 import com.example.util.simpletimetracker.data_local.utils.logDataAccess
 import com.example.util.simpletimetracker.data_local.utils.withLockedCache
+import com.example.util.simpletimetracker.domain.extension.dropMillis
 import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.repo.RecordRepo
@@ -25,6 +26,7 @@ class RecordRepoImpl @Inject constructor(
     private var getFromRangeByTypeCache = LruCache<GetFromRangeByTypeKey, List<Record>>(1)
     private var recordCache = LruCache<Long, Record>(1)
     private var isEmpty: Boolean? = null
+
     private val mutex: Mutex = Mutex()
 
     override suspend fun isEmpty(): Boolean = mutex.withLockedCache(
@@ -166,6 +168,20 @@ class RecordRepoImpl @Inject constructor(
                 recordId = recordId,
                 typeId = typeId,
                 comment = comment,
+            )
+        },
+        afterSourceAccess = { clearCache() },
+    )
+
+    override suspend fun updateTimeEnded(
+        recordId: Long,
+        timeEnded: Long,
+    ) = mutex.withLockedCache(
+        logMessage = "updateTimeEnded",
+        accessSource = {
+            recordDao.updateTimeEnded(
+                recordId = recordId,
+                timeEnded = timeEnded.dropMillis(),
             )
         },
         afterSourceAccess = { clearCache() },
