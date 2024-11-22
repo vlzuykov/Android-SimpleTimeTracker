@@ -46,5 +46,6 @@ object Versions {
     const val junitUi = "1.1.4"
     const val espresso = "3.5.0"
     const val mockito = "5.14.2"
+    const val mockitoKotlin = "5.4.0"
     const val coroutinesTest = "1.7.1"
 }

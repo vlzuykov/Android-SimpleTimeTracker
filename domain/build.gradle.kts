@@ -17,5 +17,5 @@ dependencies {
     api(Deps.kotlin)
 
     testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.mockito)
+    testImplementation(Deps.Test.mockitoKotlin)
 }

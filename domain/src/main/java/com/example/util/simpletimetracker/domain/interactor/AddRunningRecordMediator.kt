@@ -5,6 +5,7 @@ import com.example.util.simpletimetracker.domain.model.RecordDataSelectionDialog
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.ResultContainer
 import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.provider.CurrentTimestampProvider
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -22,6 +23,7 @@ class AddRunningRecordMediator @Inject constructor(
     private val pomodoroStartInteractor: PomodoroStartInteractor,
     private val complexRuleProcessActionInteractor: ComplexRuleProcessActionInteractor,
     private val updateExternalViewsInteractor: UpdateExternalViewsInteractor,
+    private val currentTimestampProvider: CurrentTimestampProvider,
 ) {
 
     /**
@@ -54,9 +56,6 @@ class AddRunningRecordMediator @Inject constructor(
         }
     }
 
-    // TODO test retroactive mode
-    // TODO test several prev records at the same time, merge accordingly.
-    // TODO test retroactive multitask
     suspend fun startTimer(
         typeId: Long,
         tagIds: List<Long>,
@@ -65,14 +64,17 @@ class AddRunningRecordMediator @Inject constructor(
         updateNotificationSwitch: Boolean = true,
         checkDefaultDuration: Boolean = true,
     ) {
-        val currentTime = System.currentTimeMillis()
+        val currentTime = currentTimestampProvider.get()
         val actualTimeStarted = when (timeStarted) {
             is StartTime.Current -> timeStarted.currentTimeStampMs
             is StartTime.TakeCurrent -> currentTime
             is StartTime.Timestamp -> timeStarted.timestampMs
         }
         val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
-        val actualPrevRecords = if (retroactiveTrackingMode) {
+        val actualPrevRecords = if (
+            retroactiveTrackingMode ||
+            complexRuleProcessActionInteractor.hasRules()
+        ) {
             recordInteractor.getAllPrev(actualTimeStarted)
         } else {
             emptyList()
