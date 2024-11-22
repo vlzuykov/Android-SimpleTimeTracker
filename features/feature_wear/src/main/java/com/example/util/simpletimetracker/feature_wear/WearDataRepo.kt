@@ -20,6 +20,7 @@ import com.example.util.simpletimetracker.domain.interactor.ShouldShowRecordData
 import com.example.util.simpletimetracker.domain.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.domain.model.RecordDataSelectionDialogResult
+import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.WidgetType
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
@@ -60,29 +61,28 @@ class WearDataRepo @Inject constructor(
     }
 
     override suspend fun queryCurrentActivities(): WearCurrentStateDTO {
-        suspend fun mapTags(tagIds: List<Long>): List<WearTagDTO> {
+        val tags = recordTagInteractor.getAll().associateBy(RecordTag::id)
+
+        fun mapTags(tagIds: List<Long>): List<WearTagDTO> {
             return tagIds.mapNotNull { tagId ->
-                recordTagInteractor.get(tagId)?.let {
-                    wearDataLocalMapper.map(
-                        recordTag = it,
-                        types = emptyMap(), // Color is not needed.
-                    )
-                }
+                wearDataLocalMapper.map(
+                    recordTag = tags[tagId] ?: return@mapNotNull null,
+                    types = emptyMap(), // Color is not needed.
+                )
             }
         }
 
         val runningRecords = runningRecordInteractor.getAll().map { record ->
             wearDataLocalMapper.map(record, mapTags(record.tagIds))
         }
-        val prevRecord = recordInteractor
-            .getPrev(timeStarted = System.currentTimeMillis())
-            .firstOrNull()
-            .let { record ->
-                wearDataLocalMapper.map(record, mapTags(record?.tagIds.orEmpty()))
+        val prevRecords = recordInteractor
+            .getAllPrev(timeStarted = System.currentTimeMillis())
+            .map { record ->
+                wearDataLocalMapper.map(record, mapTags(record.tagIds))
             }
         return WearCurrentStateDTO(
             currentActivities = runningRecords,
-            lastRecord = prevRecord,
+            lastRecords = prevRecords,
         )
     }
 

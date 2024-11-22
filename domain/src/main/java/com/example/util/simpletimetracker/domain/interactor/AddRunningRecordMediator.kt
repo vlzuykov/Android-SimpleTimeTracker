@@ -1,6 +1,5 @@
 package com.example.util.simpletimetracker.domain.interactor
 
-import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordDataSelectionDialogResult
 import com.example.util.simpletimetracker.domain.model.RecordType
@@ -55,11 +54,31 @@ class AddRunningRecordMediator @Inject constructor(
         }
     }
 
+    suspend fun startTimers(
+        typeIds: Set<Long>,
+    ) {
+        val current = System.currentTimeMillis()
+        val timeStarted = StartTime.Current(current)
+        val prevRecords = recordInteractor.getAllPrev(current)
+        typeIds.forEachIndexed { index, id ->
+            startTimer(
+                typeId = id,
+                tagIds = emptyList(),
+                comment = "",
+                timeStarted = timeStarted,
+                prevRecords = PrevRecords.Records(prevRecords),
+                // Update only on last.
+                updateNotificationSwitch = index == typeIds.size - 1,
+            )
+        }
+    }
+
     suspend fun startTimer(
         typeId: Long,
         tagIds: List<Long>,
         comment: String,
         timeStarted: StartTime = StartTime.TakeCurrent,
+        prevRecords: PrevRecords = PrevRecords.Load,
         updateNotificationSwitch: Boolean = true,
         checkDefaultDuration: Boolean = true,
     ) {
@@ -70,25 +89,30 @@ class AddRunningRecordMediator @Inject constructor(
             is StartTime.Timestamp -> timeStarted.timestampMs
         }
         val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
-        val prevRecord = if (retroactiveTrackingMode) {
-            recordInteractor.getPrev(actualTimeStarted).firstOrNull()
+        val actualPrevRecords = if (retroactiveTrackingMode) {
+            when (prevRecords) {
+                is PrevRecords.Load -> recordInteractor.getAllPrev(actualTimeStarted)
+                is PrevRecords.Records -> prevRecords.records
+            }
         } else {
-            null
+            emptyList()
         }
-        val rulesResult = processRules(
-            typeId = typeId,
-            timeStarted = if (
-                retroactiveTrackingMode &&
-                prevRecord != null &&
-                shouldMergeWithPrevRecord(typeId, prevRecord)
-            ) {
-                // If will merge - it will be one record,
-                // so need to check rules from original start.
-                prevRecord.timeStarted
-            } else {
-                actualTimeStarted
-            },
-        )
+        val rulesResult = if (
+            retroactiveTrackingMode &&
+            getPrevRecordToMergeWith(typeId, actualPrevRecords) != null
+        ) {
+            // No need to check rules on merge.
+            ComplexRuleProcessActionInteractor.Result(
+                isMultitaskingAllowed = ResultContainer.Undefined,
+                tagsIds = emptySet(),
+            )
+        } else {
+            processRules(
+                typeId = typeId,
+                timeStarted = actualTimeStarted,
+                prevRecords = actualPrevRecords,
+            )
+        }
         processMultitasking(
             typeId = typeId,
             isMultitaskingAllowedByRules = rulesResult.isMultitaskingAllowed,
@@ -116,7 +140,7 @@ class AddRunningRecordMediator @Inject constructor(
             updateNotificationSwitch = updateNotificationSwitch,
         )
         if (retroactiveTrackingMode) {
-            addRetroactiveModeInternal(startParams, prevRecord)
+            addRetroactiveModeInternal(startParams, actualPrevRecords)
         } else {
             addInternal(startParams, checkDefaultDuration)
         }
@@ -160,12 +184,12 @@ class AddRunningRecordMediator @Inject constructor(
 
     private suspend fun addRetroactiveModeInternal(
         params: StartParams,
-        prevRecord: Record?,
+        prevRecords: List<Record>,
     ) {
         val type = recordTypeInteractor.get(params.typeId) ?: return
 
         if (type.defaultDuration > 0L) {
-            val newTimeStarted = prevRecord?.timeEnded
+            val newTimeStarted = prevRecords.firstOrNull()?.timeEnded
                 ?: (params.timeStarted - type.defaultDuration * 1000)
             addInstantRecord(
                 params = params.copy(timeStarted = newTimeStarted),
@@ -174,7 +198,7 @@ class AddRunningRecordMediator @Inject constructor(
         } else {
             addRecordRetroactively(
                 params = params,
-                prevRecord = prevRecord,
+                prevRecords = prevRecords,
             )
         }
     }
@@ -218,10 +242,10 @@ class AddRunningRecordMediator @Inject constructor(
 
     private suspend fun addRecordRetroactively(
         params: StartParams,
-        prevRecord: Record?,
+        prevRecords: List<Record>,
     ) {
-        val shouldMerge = shouldMergeWithPrevRecord(params.typeId, prevRecord)
-        val record = if (prevRecord != null && shouldMerge) {
+        val prevRecord = getPrevRecordToMergeWith(params.typeId, prevRecords)
+        val record = if (prevRecord != null) {
             Record(
                 id = prevRecord.id, // Updates existing record.
                 typeId = params.typeId,
@@ -233,7 +257,7 @@ class AddRunningRecordMediator @Inject constructor(
                     ?: prevRecord.tagIds,
             )
         } else {
-            val newTimeStarted = prevRecord?.timeEnded
+            val newTimeStarted = prevRecords.firstOrNull()?.timeEnded
                 ?: (params.timeStarted - TimeUnit.MINUTES.toMillis(5))
             Record(
                 id = 0L, // Creates new record.
@@ -253,21 +277,17 @@ class AddRunningRecordMediator @Inject constructor(
     private suspend fun processRules(
         typeId: Long,
         timeStarted: Long,
+        prevRecords: List<Record>,
     ): ComplexRuleProcessActionInteractor.Result {
         // If no rules - no need to check them.
         return if (complexRuleProcessActionInteractor.hasRules()) {
-            // Check running records but also record that are recorded for this time.
-            val currentRecords = runningRecordInteractor.getAll() +
-                recordInteractor.getFromRange(Range(timeStarted, timeStarted))
+            // TODO do not check current records for Continue action?
+            val currentRecords = runningRecordInteractor.getAll()
 
             // If no current records - check closest previous.
-            val prevRecord = if (currentRecords.isEmpty()) {
-                recordInteractor.getPrev(timeStarted = timeStarted, limit = 1)
-            } else {
-                emptySet()
-            }
+            val records = currentRecords.ifEmpty { prevRecords }
 
-            val currentTypeIds = (currentRecords + prevRecord)
+            val currentTypeIds = records
                 .map { it.typeIds }
                 .flatten()
                 .toSet()
@@ -319,11 +339,11 @@ class AddRunningRecordMediator @Inject constructor(
         return (tagIds + defaultTags + tagIdsFromRules).toSet().toList()
     }
 
-    private fun shouldMergeWithPrevRecord(
+    private fun getPrevRecordToMergeWith(
         typeId: Long,
-        prevRecord: Record?,
-    ): Boolean {
-        return prevRecord != null && prevRecord.typeId == typeId
+        prevRecords: List<Record>,
+    ): Record? {
+        return prevRecords.firstOrNull { it.typeId == typeId }
     }
 
     private data class StartParams(
@@ -338,5 +358,10 @@ class AddRunningRecordMediator @Inject constructor(
         data class Current(val currentTimeStampMs: Long) : StartTime
         data class Timestamp(val timestampMs: Long) : StartTime
         object TakeCurrent : StartTime
+    }
+
+    sealed interface PrevRecords {
+        data class Records(val records: List<Record>) : PrevRecords
+        object Load : PrevRecords
     }
 }

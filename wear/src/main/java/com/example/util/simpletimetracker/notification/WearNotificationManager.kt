@@ -18,7 +18,6 @@ import com.example.util.simpletimetracker.data.WearDataRepo
 import com.example.util.simpletimetracker.data.WearIconMapper
 import com.example.util.simpletimetracker.data.WearPermissionRepo
 import com.example.util.simpletimetracker.domain.model.WearActivityIcon
-import com.example.util.simpletimetracker.domain.model.WearLastRecord
 import com.example.util.simpletimetracker.utils.getMainStartIntent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -47,7 +46,7 @@ class WearNotificationManager @Inject constructor(
         val startedAt: Long?
 
         if (retroactiveModeEnabled) {
-            val lastRecord = currentState?.lastRecord as? WearLastRecord.Present
+            val lastRecord = currentState?.lastRecords?.maxByOrNull { it.startedAt }
             val lastRecordActivity = activities.firstOrNull { it.id == lastRecord?.activityId }
             activityName = lastRecordActivity?.name
             activityIcon = lastRecordActivity?.icon?.let(wearIconMapper::mapIcon)

@@ -179,10 +179,7 @@ class ChangeRecordViewModel @Inject constructor(
         val default = newTimeEnded - ONE_HOUR
 
         return if (daysFromToday == 0) {
-            recordInteractor.getPrev(newTimeEnded)
-                .firstOrNull()
-                ?.timeEnded
-                ?: default
+            recordInteractor.getPrev(newTimeEnded)?.timeEnded ?: default
         } else {
             default
         }

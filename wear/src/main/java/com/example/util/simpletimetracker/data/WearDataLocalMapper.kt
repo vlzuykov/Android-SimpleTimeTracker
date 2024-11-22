@@ -35,7 +35,7 @@ class WearDataLocalMapper @Inject constructor() {
     fun map(dto: WearCurrentStateDTO): WearCurrentState {
         return WearCurrentState(
             currentActivities = dto.currentActivities.map(::map),
-            lastRecord = map(dto.lastRecord),
+            lastRecords = dto.lastRecords.map(::map),
         )
     }
 
@@ -48,16 +48,12 @@ class WearDataLocalMapper @Inject constructor() {
     }
 
     private fun map(dto: WearLastRecordDTO): WearLastRecord {
-        return if (dto.isPresent) {
-            WearLastRecord.Present(
-                activityId = dto.activityId,
-                startedAt = dto.startedAt,
-                finishedAt = dto.finishedAt,
-                tags = dto.tags.map(::map),
-            )
-        } else {
-            WearLastRecord.None
-        }
+        return WearLastRecord(
+            activityId = dto.activityId,
+            startedAt = dto.startedAt,
+            finishedAt = dto.finishedAt,
+            tags = dto.tags.map(::map),
+        )
     }
 
     fun map(dto: WearTagDTO): WearTag {

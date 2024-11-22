@@ -37,6 +37,9 @@ fun createRecordTypeAdapterDelegate(
         itemIsChecked = item.isChecked.orFalse()
         itemCompleteIsAnimated = true
         itemIsComplete = item.isComplete
+        val newItemScale = if (item.isSelected) 1.1f else 1.0f
+        scaleX = newItemScale
+        scaleY = newItemScale
         getCheckmarkOutline().itemIsFiltered = item.itemIsFiltered
         onItemClick?.let { setOnClickWith(item, it) }
         onItemLongClick?.let { setOnLongClick { it(item, mapOf(this to transitionName)) } }

@@ -44,15 +44,24 @@ class RecordInteractor @Inject constructor(
         return recordRepo.get(id)
     }
 
-    suspend fun getPrev(timeStarted: Long, limit: Long = 1): List<Record> {
-        return recordRepo.getPrev(
-            timeStarted = timeStarted,
-            limit = limit,
-        )
+    suspend fun getPrev(timeStarted: Long): Record? {
+        return recordRepo.getPrev(timeStarted)
+    }
+
+    // Can return several records ended at the same time.
+    suspend fun getAllPrev(timeStarted: Long): List<Record> {
+        val prev = recordRepo.getPrev(timeStarted) ?: return emptyList()
+        return recordRepo.getByTimeEnded(prev.timeEnded)
     }
 
     suspend fun getNext(timeEnded: Long): Record? {
         return recordRepo.getNext(timeEnded)
+    }
+
+    // Can return several records ended at the same time.
+    suspend fun getAllNext(timeStarted: Long): List<Record> {
+        val prev = recordRepo.getNext(timeStarted) ?: return emptyList()
+        return recordRepo.getByTimeStarted(prev.timeStarted)
     }
 
     suspend fun getPrevTimeStarted(fromTimestamp: Long): Long? {

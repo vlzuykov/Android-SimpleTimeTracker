@@ -155,11 +155,11 @@ class WidgetSingleProvider : AppWidgetProvider() {
                 null
             }
             val prevRecord = if (retroactiveTrackingModeEnabled) {
-                recordInteractor.getPrev(timeStarted = System.currentTimeMillis()).firstOrNull()
+                recordInteractor.getAllPrev(timeStarted = System.currentTimeMillis())
+                    .firstOrNull { it.typeId == recordTypeId }
             } else {
                 null
             }
-            val isCurrentTypeLast = prevRecord?.typeId == recordTypeId
             val isDarkTheme: Boolean = prefsInteractor.getDarkMode()
 
             if (recordTypeId == REPEAT_BUTTON_ITEM_ID) {
@@ -200,7 +200,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
                 }
                 val isColored = when {
                     runningRecord != null -> recordType != null
-                    prevRecord != null -> isCurrentTypeLast
+                    prevRecord != null -> true
                     else -> false
                 }
                 view = prepareView(
@@ -228,7 +228,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     setChronometer(base, R.id.timerWidget, views, true)
                     views.setViewVisibility(R.id.timerWidget2, View.GONE)
                 }
-                prevRecord != null && isCurrentTypeLast -> {
+                prevRecord != null -> {
                     val base1 = System.currentTimeMillis() - prevRecord.timeEnded
                     val base2 = prevRecord.timeEnded - prevRecord.timeStarted
                     setChronometer(base1, R.id.timerWidget, views, true)

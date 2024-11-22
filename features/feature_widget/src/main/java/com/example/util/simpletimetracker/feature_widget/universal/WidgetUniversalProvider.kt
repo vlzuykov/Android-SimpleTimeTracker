@@ -75,7 +75,9 @@ class WidgetUniversalProvider : AppWidgetProvider() {
             val backgroundTransparency = prefsInteractor.getWidgetBackgroundTransparencyPercent()
             val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
             val prevRecord = if (retroactiveTrackingModeEnabled) {
-                recordInteractor.getPrev(timeStarted = System.currentTimeMillis()).firstOrNull()
+                // TODO several previous?
+                recordInteractor.getAllPrev(timeStarted = System.currentTimeMillis())
+                    .maxByOrNull { it.timeStarted }
             } else {
                 null
             }

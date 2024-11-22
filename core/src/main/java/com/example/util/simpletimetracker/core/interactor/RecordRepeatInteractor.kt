@@ -49,13 +49,17 @@ class RecordRepeatInteractor @Inject constructor(
     ): ActionResult {
         val type = prefsInteractor.getRepeatButtonType()
 
+        // TODO repeat several records?
         val prevRecord = recordInteractor.getPrev(
             timeStarted = System.currentTimeMillis(),
-            limit = 2,
         ).let {
             when (type) {
-                is RepeatButtonType.RepeatLast -> it.getOrNull(0)
-                is RepeatButtonType.RepeatBeforeLast -> it.getOrNull(1)
+                is RepeatButtonType.RepeatLast -> it
+                is RepeatButtonType.RepeatBeforeLast -> if (it != null) {
+                    recordInteractor.getPrev(timeStarted = it.timeEnded - 1)
+                } else {
+                    null
+                }
             }
         } ?: run {
             messageShower(R.string.running_records_repeat_no_prev_record)

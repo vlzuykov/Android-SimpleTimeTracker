@@ -25,9 +25,13 @@ interface RecordRepo {
 
     suspend fun getFromRangeByType(typeIds: List<Long>, range: Range): List<Record>
 
-    suspend fun getPrev(timeStarted: Long, limit: Long): List<Record>
+    suspend fun getPrev(timeStarted: Long): Record?
 
     suspend fun getNext(timeEnded: Long): Record?
+
+    suspend fun getByTimeStarted(timeStarted: Long): List<Record>
+
+    suspend fun getByTimeEnded(timeEnded: Long): List<Record>
 
     suspend fun getPrevTimeStarted(fromTimestamp: Long): Long?
 

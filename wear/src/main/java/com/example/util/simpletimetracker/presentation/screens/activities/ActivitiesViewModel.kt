@@ -164,7 +164,7 @@ class ActivitiesViewModel @Inject constructor(
                 _state.value = activitiesViewDataMapper.mapContentState(
                     activities = activities.getOrNull().orEmpty(),
                     currentActivities = currentState.getOrNull()?.currentActivities.orEmpty(),
-                    lastRecord = currentState.getOrNull()?.lastRecord,
+                    lastRecords = currentState.getOrNull()?.lastRecords.orEmpty(),
                     settings = settings.getOrNull(),
                     showCompactList = wearPrefsInteractor.getWearShowCompactList(),
                 )

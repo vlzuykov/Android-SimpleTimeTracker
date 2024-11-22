@@ -5,17 +5,21 @@ import com.example.util.simpletimetracker.core.mapper.RecordViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RunningRecordViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.model.AppColor
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.empty.EmptyViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hintBig.HintBigViewData
+import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordWithHint.RecordWithHintViewData
 import com.example.util.simpletimetracker.feature_running_records.R
+import com.example.util.simpletimetracker.feature_running_records.model.RunningRecordsFilterType
 import javax.inject.Inject
 
 class RunningRecordsViewDataMapper @Inject constructor(
@@ -56,27 +60,29 @@ class RunningRecordsViewDataMapper @Inject constructor(
     fun mapToRetroActiveMode(
         typesMap: Map<Long, RecordType>,
         recordTags: List<RecordTag>,
-        prevRecord: Record?,
+        prevRecords: List<Record>,
         isDarkTheme: Boolean,
         useProportionalMinutes: Boolean,
         useMilitaryTime: Boolean,
         showSeconds: Boolean,
+        allowMultitasking: Boolean,
+        multitaskingSelectionEnabled: Boolean,
+        multiSelectedActivityIds: Set<Long>,
     ): List<ViewHolderType> {
         val result = mutableListOf<ViewHolderType>()
 
-        if (prevRecord == null) {
+        if (prevRecords.isEmpty()) {
             result += EmptyViewData(
                 message = resourceRepo.getString(R.string.retroactive_tracking_mode_hint),
                 hint = R.string.running_records_empty_hint.let(resourceRepo::getString),
             )
         }
 
-        val prevRecordType = prevRecord?.typeId?.let(typesMap::get)
-        if (prevRecord != null && prevRecordType != null) {
+        if (prevRecords.isNotEmpty()) {
             result += runningRecordViewDataMapper.map(
                 runningRecord = RunningRecord(
                     id = UNTRACKED_ITEM_ID,
-                    timeStarted = prevRecord.timeEnded,
+                    timeStarted = prevRecords.firstOrNull()?.timeEnded.orZero(),
                     comment = "",
                 ),
                 dailyCurrent = null,
@@ -100,22 +106,61 @@ class RunningRecordsViewDataMapper @Inject constructor(
                 goalsVisible = false,
                 totalDurationVisible = false,
             )
-            result += recordViewDataMapper.map(
-                record = prevRecord,
-                recordType = prevRecordType,
-                recordTags = recordTags.filter { it.id in prevRecord.tagIds },
-                isDarkTheme = isDarkTheme,
-                useMilitaryTime = useMilitaryTime,
-                useProportionalMinutes = useProportionalMinutes,
-                showSeconds = showSeconds,
-            ).let {
-                RecordWithHintViewData(it)
+            result += prevRecords.mapNotNull { record ->
+                val prevRecordType = typesMap[record.typeId]
+                    ?: return@mapNotNull null
+                val data = recordViewDataMapper.map(
+                    record = record,
+                    recordType = prevRecordType,
+                    recordTags = recordTags.filter { it.id in record.tagIds },
+                    isDarkTheme = isDarkTheme,
+                    useMilitaryTime = useMilitaryTime,
+                    useProportionalMinutes = useProportionalMinutes,
+                    showSeconds = showSeconds,
+                )
+                RecordWithHintViewData(data)
             }
             result += HintViewData(
                 text = resourceRepo.getString(R.string.retroactive_tracking_mode_hint),
                 paddingTop = 0,
                 paddingBottom = 0,
             )
+            if (allowMultitasking) {
+                // TODO test retroactive mode
+                // TODO test several prev records at the same time, merge accordingly.
+                // TODO test retroactive multitask
+                //  enable, go to other screen
+                //  enable, go to edit type
+                //  disable by clicking
+                //  disable by removing
+                result += DividerViewData(3)
+                result += FilterViewData(
+                    id = 0,
+                    type = RunningRecordsFilterType.EnableMultitaskingSelection,
+                    name = resourceRepo.getString(R.string.multitask_time_name),
+                    color = if (multitaskingSelectionEnabled) {
+                        colorMapper.toActiveColor(isDarkTheme)
+                    } else {
+                        colorMapper.toInactiveColor(isDarkTheme)
+                    },
+                    selected = multitaskingSelectionEnabled,
+                    removeBtnVisible = multitaskingSelectionEnabled,
+                )
+                if (multitaskingSelectionEnabled) {
+                    result += FilterViewData(
+                        id = 1,
+                        type = RunningRecordsFilterType.FinishMultitaskingSelection,
+                        name = resourceRepo.getString(R.string.records_filter_select),
+                        color = if (multiSelectedActivityIds.isNotEmpty()) {
+                            colorMapper.toActiveColor(isDarkTheme)
+                        } else {
+                            colorMapper.toInactiveColor(isDarkTheme)
+                        },
+                        selected = false,
+                        removeBtnVisible = false,
+                    )
+                }
+            }
         }
 
         return result

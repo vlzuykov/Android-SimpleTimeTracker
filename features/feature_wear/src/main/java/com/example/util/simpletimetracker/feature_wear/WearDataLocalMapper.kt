@@ -7,7 +7,6 @@ package com.example.util.simpletimetracker.feature_wear
 
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
-import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.mapper.AppColorMapper
 import com.example.util.simpletimetracker.domain.model.AppColor
 import com.example.util.simpletimetracker.domain.model.Record
@@ -50,14 +49,13 @@ class WearDataLocalMapper @Inject constructor(
     }
 
     fun map(
-        record: Record?,
+        record: Record,
         tags: List<WearTagDTO>,
     ): WearLastRecordDTO {
         return WearLastRecordDTO(
-            isPresent = record != null,
-            activityId = record?.typeId.orZero(),
-            startedAt = record?.timeStarted.orZero(),
-            finishedAt = record?.timeEnded.orZero(),
+            activityId = record.typeId,
+            startedAt = record.timeStarted,
+            finishedAt = record.timeEnded,
             tags = tags,
         )
     }

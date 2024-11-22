@@ -318,8 +318,8 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
         newTimeEnded: Long,
         adjustNextRecordAvailable: Boolean,
     ): AdjacentRecords {
-        suspend fun getNext(): Record? {
-            return recordInteractor.getNext(newTimeEnded)
+        suspend fun getNext(): List<Record> {
+            return recordInteractor.getAllNext(newTimeEnded)
         }
 
         val recordRange = Range(timeStarted = newTimeStarted, timeEnded = newTimeEnded)
@@ -328,14 +328,14 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
 
         val previousRecords = adjacentRecords
             .filter { it.timeStarted < newTimeStarted && it.timeEnded <= newTimeEnded }
-            .ifEmpty { recordInteractor.getPrev(newTimeStarted) }
+            .ifEmpty { recordInteractor.getAllPrev(newTimeStarted) }
             .filter { it.id != recordId }
         val overlappedRecords = adjacentRecords
             .filter { it.timeStarted >= newTimeStarted && it.timeEnded <= newTimeEnded }
             .filter { it.id != recordId }
         val nextRecords = adjacentRecords
             .filter { it.timeStarted >= newTimeStarted && it.timeEnded > newTimeEnded }
-            .ifEmpty { listOfNotNull(if (adjustNextRecordAvailable) getNext() else null) }
+            .ifEmpty { if (adjustNextRecordAvailable) getNext() else emptyList() }
             .takeIf { adjustNextRecordAvailable }
             .orEmpty()
             .filter { it.id != recordId }

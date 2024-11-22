@@ -168,7 +168,7 @@ class RecordQuickActionsViewModel @Inject constructor(
 
     private suspend fun onMerge() {
         val record = extra.type as? Type.RecordUntracked ?: return
-        val prevRecord = recordInteractor.getPrev(timeStarted = record.timeStarted).firstOrNull()
+        val prevRecord = recordInteractor.getPrev(timeStarted = record.timeStarted)
         recordActionMergeMediator.execute(
             prevRecord = prevRecord,
             newTimeEnded = record.timeEnded,

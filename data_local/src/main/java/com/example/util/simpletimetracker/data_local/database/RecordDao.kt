@@ -52,8 +52,8 @@ interface RecordDao {
     suspend fun getFromRangeByType(typesIds: List<Long>, start: Long, end: Long): List<RecordWithRecordTagsDBO>
 
     @Transaction
-    @Query("SELECT * FROM records WHERE time_ended <= :timeStarted ORDER BY time_ended DESC LIMIT :limit")
-    suspend fun getPrev(timeStarted: Long, limit: Long): List<RecordWithRecordTagsDBO>
+    @Query("SELECT * FROM records WHERE time_ended <= :timeStarted ORDER BY time_ended DESC LIMIT 1")
+    suspend fun getPrev(timeStarted: Long): RecordWithRecordTagsDBO?
 
     @Transaction
     @Query("SELECT * FROM records WHERE time_started >= :timeEnded ORDER BY time_started ASC LIMIT 1")
@@ -74,6 +74,14 @@ interface RecordDao {
     @Transaction
     @Query("SELECT time_ended FROM records WHERE time_ended > :fromTimestamp ORDER BY time_ended ASC LIMIT 1")
     suspend fun getNextTimeEnded(fromTimestamp: Long): Long?
+
+    @Transaction
+    @Query("SELECT * FROM records WHERE time_started = :timeStarted")
+    suspend fun getByTimeStarted(timeStarted: Long): List<RecordWithRecordTagsDBO>
+
+    @Transaction
+    @Query("SELECT * FROM records WHERE time_ended = :timeEnded")
+    suspend fun getByTimeEnded(timeEnded: Long): List<RecordWithRecordTagsDBO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(record: RecordDBO): Long

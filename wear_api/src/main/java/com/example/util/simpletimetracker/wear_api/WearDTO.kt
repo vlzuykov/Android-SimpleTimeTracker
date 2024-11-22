@@ -31,8 +31,8 @@ data class WearActivityDTO(
 data class WearCurrentStateDTO(
     @SerializedName("currentActivities")
     val currentActivities: List<WearCurrentActivityDTO>,
-    @SerializedName("lastRecord")
-    val lastRecord: WearLastRecordDTO,
+    @SerializedName("lastRecords")
+    val lastRecords: List<WearLastRecordDTO>,
 ) : Parcelable
 
 @Parcelize
@@ -47,8 +47,6 @@ data class WearCurrentActivityDTO(
 
 @Parcelize
 data class WearLastRecordDTO(
-    @SerializedName("isPresent")
-    val isPresent: Boolean,
     @SerializedName("activityId")
     val activityId: Long,
     @SerializedName("startedAt")

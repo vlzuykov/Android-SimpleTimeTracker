@@ -19,6 +19,7 @@ import com.example.util.simpletimetracker.presentation.theme.ColorInactive
 import com.example.util.simpletimetracker.presentation.ui.components.ActivitiesListState
 import com.example.util.simpletimetracker.presentation.ui.components.ActivityChipState
 import com.example.util.simpletimetracker.presentation.ui.components.ActivityChipType
+import com.example.util.simpletimetracker.utils.orZero
 import javax.inject.Inject
 
 class ActivitiesViewDataMapper @Inject constructor(
@@ -37,7 +38,7 @@ class ActivitiesViewDataMapper @Inject constructor(
     fun mapContentState(
         activities: List<WearActivity>,
         currentActivities: List<WearCurrentActivity>,
-        lastRecord: WearLastRecord?,
+        lastRecords: List<WearLastRecord>,
         settings: WearSettings?,
         showCompactList: Boolean,
     ): ActivitiesListState.Content {
@@ -51,9 +52,9 @@ class ActivitiesViewDataMapper @Inject constructor(
             ""
         }
         if (retroactiveModeEnabled &&
-            lastRecord is WearLastRecord.Present
+            lastRecords.isNotEmpty()
         ) {
-            items += mapUntrackedItem(lastRecord)
+            items += mapUntrackedItem(lastRecords)
         }
         if (settings?.enableRepeatButton == true) {
             items += mapRepeatItem()
@@ -63,7 +64,9 @@ class ActivitiesViewDataMapper @Inject constructor(
                 activity = activity,
                 currentActivity = currentActivitiesMap[activity.id],
                 lastRecord = if (retroactiveModeEnabled) {
-                    lastRecord as? WearLastRecord.Present
+                    lastRecords.firstOrNull {
+                        it.activityId == activity.id
+                    }
                 } else {
                     null
                 },
@@ -81,7 +84,7 @@ class ActivitiesViewDataMapper @Inject constructor(
     private fun mapItem(
         activity: WearActivity,
         currentActivity: WearCurrentActivity?,
-        lastRecord: WearLastRecord.Present?,
+        lastRecord: WearLastRecord?,
         showCompactList: Boolean,
     ): ActivityChipState {
         val isCurrentTypeLast = lastRecord?.activityId == activity.id
@@ -141,15 +144,17 @@ class ActivitiesViewDataMapper @Inject constructor(
     }
 
     private fun mapUntrackedItem(
-        lastRecord: WearLastRecord.Present,
+        lastRecords: List<WearLastRecord>,
     ): ActivityChipState {
+        val lastRecord = lastRecords.firstOrNull()
+        val finishedAt = lastRecord?.finishedAt.orZero()
         return ActivityChipState(
             id = UNTRACKED_ITEM_ID,
             name = resourceRepo.getString(R.string.untracked_time_name),
             icon = WearActivityIcon.Image(R.drawable.app_unknown),
             color = ColorInactive.toArgb().toLong(),
             type = ActivityChipType.Untracked,
-            timeHint = ActivityChipState.TimeHint.Timer(lastRecord.finishedAt),
+            timeHint = ActivityChipState.TimeHint.Timer(finishedAt),
         )
     }
 

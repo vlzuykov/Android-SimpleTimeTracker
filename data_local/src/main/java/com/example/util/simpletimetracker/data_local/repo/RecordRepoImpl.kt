@@ -107,9 +107,9 @@ class RecordRepoImpl @Inject constructor(
         )
     }
 
-    override suspend fun getPrev(timeStarted: Long, limit: Long): List<Record> = withContext(Dispatchers.IO) {
+    override suspend fun getPrev(timeStarted: Long): Record? = withContext(Dispatchers.IO) {
         logDataAccess("getPrev")
-        recordDao.getPrev(timeStarted, limit).map(::mapItem)
+        recordDao.getPrev(timeStarted)?.let(::mapItem)
     }
 
     override suspend fun getNext(timeEnded: Long): Record? = withContext(Dispatchers.IO) {
@@ -135,6 +135,16 @@ class RecordRepoImpl @Inject constructor(
     override suspend fun getNextTimeEnded(fromTimestamp: Long): Long? = withContext(Dispatchers.IO) {
         logDataAccess("getNextTimeEnded")
         recordDao.getNextTimeEnded(fromTimestamp)
+    }
+
+    override suspend fun getByTimeStarted(timeStarted: Long): List<Record> = withContext(Dispatchers.IO) {
+        logDataAccess("getByTimeStarted")
+        recordDao.getByTimeStarted(timeStarted).map(::mapItem)
+    }
+
+    override suspend fun getByTimeEnded(timeEnded: Long): List<Record> = withContext(Dispatchers.IO) {
+        logDataAccess("getByTimeEnded")
+        recordDao.getByTimeEnded(timeEnded).map(::mapItem)
     }
 
     override suspend fun add(record: Record): Long = mutex.withLockedCache(
