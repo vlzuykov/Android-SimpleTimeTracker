@@ -10,6 +10,7 @@ import com.example.util.simpletimetracker.domain.interactor.GetSelectableTagsInt
 import com.example.util.simpletimetracker.domain.interactor.NotificationActivitySwitchInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
@@ -19,6 +20,7 @@ import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationActivitySwitchManager
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationActivitySwitchParams
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsParams
+import com.example.util.simpletimetracker.feature_notification.core.NotificationCommonMapper
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
@@ -31,12 +33,14 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
     private val recordTypeInteractor: RecordTypeInteractor,
     private val recordTypeGoalInteractor: RecordTypeGoalInteractor,
     private val runningRecordInteractor: RunningRecordInteractor,
+    private val recordTagInteractor: RecordTagInteractor,
     private val getCurrentRecordsDurationInteractor: GetCurrentRecordsDurationInteractor,
     private val timeMapper: TimeMapper,
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
     private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val getNotificationActivitySwitchControlsInteractor: GetNotificationActivitySwitchControlsInteractor,
     private val recordInteractor: RecordInteractor,
+    private val notificationCommonMapper: NotificationCommonMapper,
 ) : NotificationActivitySwitchInteractor {
 
     override suspend fun updateNotification(
@@ -82,6 +86,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             emptyList()
         }
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
+        val recordTags = recordTagInteractor.getAll()
         val prevRecord = if (retroactiveTrackingModeEnabled) {
             // TODO several previous?
             recordInteractor.getAllPrev(timeStarted = System.currentTimeMillis())
@@ -128,9 +133,12 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
                 hint = resourceRepo.getString(R.string.retroactive_tracking_mode_hint)
                 icon = prevRecordType.icon.let(iconMapper::mapIcon)
                 color = colorMapper.mapToColorInt(prevRecordType.color, isDarkTheme)
-                title = resourceRepo.getString(R.string.statistics_detail_last_record) +
-                    " - " +
-                    prevRecordType.name
+                val namePrefix = resourceRepo.getString(R.string.statistics_detail_last_record)
+                val fullName = notificationCommonMapper.getNotificationText(
+                    recordType = prevRecordType,
+                    recordTags = recordTags.filter { it.id in prevRecord.tagIds },
+                )
+                title = "$namePrefix - $fullName"
                 subtitle = timeMapper.formatTime(
                     time = prevRecord.timeEnded,
                     useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat(),

@@ -321,7 +321,6 @@ class AddRunningRecordMediatorTest {
         )
     }
 
-
     @Test
     fun defaultTag(): Unit = runBlocking {
         // Given

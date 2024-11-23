@@ -7,7 +7,6 @@ import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.getDailyDuration
-import com.example.util.simpletimetracker.domain.extension.getFullName
 import com.example.util.simpletimetracker.domain.extension.getSessionDuration
 import com.example.util.simpletimetracker.domain.extension.hasDailyDuration
 import com.example.util.simpletimetracker.domain.extension.value
@@ -26,6 +25,7 @@ import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.interactor.GetNotificationActivitySwitchControlsInteractor
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsParams
+import com.example.util.simpletimetracker.feature_notification.core.NotificationCommonMapper
 import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager
 import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeParams
 import javax.inject.Inject
@@ -45,6 +45,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
     private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val getNotificationActivitySwitchControlsInteractor: GetNotificationActivitySwitchControlsInteractor,
+    private val notificationCommonMapper: NotificationCommonMapper,
 ) : NotificationTypeInteractor {
 
     // TODO merge with update function?
@@ -226,7 +227,10 @@ class NotificationTypeInteractorImpl @Inject constructor(
             id = recordType.id,
             icon = recordType.icon.let(iconMapper::mapIcon),
             color = colorMapper.mapToColorInt(recordType.color, isDarkTheme),
-            text = getNotificationText(recordType, recordTags),
+            text = notificationCommonMapper.getNotificationText(
+                recordType = recordType,
+                recordTags = recordTags,
+            ),
             timeStarted = timeMapper.formatTime(
                 time = runningRecord.timeStarted,
                 useMilitaryTime = useMilitaryTime,
@@ -244,19 +248,6 @@ class NotificationTypeInteractorImpl @Inject constructor(
             stopButton = resourceRepo.getString(R.string.notification_record_type_stop),
             controls = controls,
         ).let(notificationTypeManager::show)
-    }
-
-    private fun getNotificationText(
-        recordType: RecordType,
-        recordTags: List<RecordTag>,
-    ): String {
-        val tag = recordTags.getFullName()
-
-        return if (tag.isEmpty()) {
-            recordType.name
-        } else {
-            "${recordType.name} - $tag"
-        }
     }
 
     private fun hide(typeId: Long) {

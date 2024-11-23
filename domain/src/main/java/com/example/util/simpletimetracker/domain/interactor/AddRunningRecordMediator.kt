@@ -132,7 +132,9 @@ class AddRunningRecordMediator @Inject constructor(
         }
         // Show goal count only on timer start, otherwise it would show on change also.
         notificationGoalCountInteractor.checkAndShow(typeId)
-        pomodoroStartInteractor.checkAndStart(typeId)
+        if (!retroactiveTrackingMode) {
+            pomodoroStartInteractor.checkAndStart(typeId)
+        }
     }
 
     // Used separately only for changing running activity,
