@@ -21,56 +21,36 @@ class StatisticsCategoryInteractor @Inject constructor(
     ): List<Statistics> = withContext(Dispatchers.IO) {
         val records = statisticsInteractor.getRecords(range)
 
-        getCategoryRecords(records)
+        getCategoryRecords(records, addUncategorized)
             .let {
                 statisticsInteractor.getStatistics(range, it)
             }
             .plus(
                 statisticsInteractor.getUntracked(range, records, addUntracked),
             )
-            .plus(
-                getUncategorized(range, records, addUncategorized),
-            )
     }
 
     suspend fun getCategoryRecords(
         allRecords: List<RecordBase>,
+        addUncategorized: Boolean,
     ): Map<Long, List<RecordBase>> {
         val recordTypeCategories = recordTypeCategoryInteractor.getAll()
-            .groupBy(RecordTypeCategory::categoryId)
-            .mapValues { it.value.map(RecordTypeCategory::recordTypeId) }
+            .groupBy(RecordTypeCategory::recordTypeId)
+            .mapValues { it.value.map(RecordTypeCategory::categoryId) }
 
-        return recordTypeCategories
-            .mapValues { (_, typeIds) -> allRecords.filter { it.typeIds.any { it in typeIds } } }
-            .filterValues(List<RecordBase>::isNotEmpty)
-    }
+        val categories: MutableMap<Long, MutableList<RecordBase>> = mutableMapOf()
 
-    suspend fun getUncategorized(
-        allRecords: List<RecordBase>,
-    ): List<RecordBase> {
-        val recordTypeCategories = recordTypeCategoryInteractor.getAll().map { it.recordTypeId }
-
-        return allRecords.filter { it.typeIds.all { it !in recordTypeCategories } }
-    }
-
-    private suspend fun getUncategorized(
-        range: Range,
-        records: List<RecordBase>,
-        addUncategorized: Boolean,
-    ): List<Statistics> {
-        if (addUncategorized) {
-            val uncategorizedTime = statisticsInteractor.getStatisticsData(
-                range = range,
-                records = getUncategorized(records),
-            )
-            if (uncategorizedTime.duration > 0L) {
-                return Statistics(
-                    id = UNCATEGORIZED_ITEM_ID,
-                    data = uncategorizedTime,
-                ).let(::listOf)
+        allRecords.forEach { record ->
+            record.typeIds.forEach { typeId ->
+                recordTypeCategories[typeId]?.forEach { category ->
+                    categories.getOrPut(category) { mutableListOf() }.add(record)
+                }
+            }
+            if (addUncategorized && record.typeIds.all { it !in recordTypeCategories }) {
+                categories.getOrPut(UNCATEGORIZED_ITEM_ID) { mutableListOf() }.add(record)
             }
         }
 
-        return emptyList()
+        return categories
     }
 }

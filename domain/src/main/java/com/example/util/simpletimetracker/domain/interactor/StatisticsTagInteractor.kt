@@ -3,14 +3,12 @@ package com.example.util.simpletimetracker.domain.interactor
 import com.example.util.simpletimetracker.domain.UNCATEGORIZED_ITEM_ID
 import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.Statistics
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class StatisticsTagInteractor @Inject constructor(
-    private val recordTagInteractor: RecordTagInteractor,
     private val statisticsInteractor: StatisticsInteractor,
 ) {
 
@@ -21,52 +19,30 @@ class StatisticsTagInteractor @Inject constructor(
     ): List<Statistics> = withContext(Dispatchers.IO) {
         val records = statisticsInteractor.getRecords(range)
 
-        getTagRecords(records)
+        getTagRecords(records, addUncategorized)
             .let {
                 statisticsInteractor.getStatistics(range, it)
             }
             .plus(
                 statisticsInteractor.getUntracked(range, records, addUntracked),
             )
-            .plus(
-                getUntagged(range, records, addUncategorized),
-            )
     }
 
-    suspend fun getTagRecords(
+    fun getTagRecords(
         allRecords: List<RecordBase>,
-    ): Map<Long, List<RecordBase>> {
-        val recordTags = recordTagInteractor.getAll().map(RecordTag::id)
-
-        return recordTags
-            .associateWith { tagId -> allRecords.filter { tagId in it.tagIds } }
-            .filterValues(List<RecordBase>::isNotEmpty)
-    }
-
-    private fun getUntagged(
-        range: Range,
-        records: List<RecordBase>,
         addUncategorized: Boolean,
-    ): List<Statistics> {
-        if (addUncategorized) {
-            val uncategorizedTime = statisticsInteractor.getStatisticsData(
-                range = range,
-                records = getUntagged(records),
-            )
-            if (uncategorizedTime.duration > 0L) {
-                return Statistics(
-                    id = UNCATEGORIZED_ITEM_ID,
-                    data = uncategorizedTime,
-                ).let(::listOf)
+    ): Map<Long, List<RecordBase>> {
+        val tags: MutableMap<Long, MutableList<RecordBase>> = mutableMapOf()
+
+        allRecords.forEach { record ->
+            record.tagIds.forEach { tagId ->
+                tags.getOrPut(tagId) { mutableListOf() }.add(record)
+            }
+            if (addUncategorized && record.tagIds.isEmpty()) {
+                tags.getOrPut(UNCATEGORIZED_ITEM_ID) { mutableListOf() }.add(record)
             }
         }
 
-        return emptyList()
-    }
-
-    fun getUntagged(
-        allRecords: List<RecordBase>,
-    ): List<RecordBase> {
-        return allRecords.filter { it.tagIds.isEmpty() }
+        return tags
     }
 }

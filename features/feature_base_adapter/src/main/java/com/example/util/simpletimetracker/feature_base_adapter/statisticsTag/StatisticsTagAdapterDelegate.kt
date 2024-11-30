@@ -15,7 +15,12 @@ fun createStatisticsTagAdapterDelegate() = createRecyclerBindingAdapterDelegate<
         itemName = item.name
         itemDuration = item.duration
         itemPercent = item.percent
-        itemIconVisible = true
-        itemIcon = item.icon
+
+        if (item.icon != null) {
+            itemIconVisible = true
+            itemIcon = item.icon
+        } else {
+            itemIconVisible = false
+        }
     }
 }

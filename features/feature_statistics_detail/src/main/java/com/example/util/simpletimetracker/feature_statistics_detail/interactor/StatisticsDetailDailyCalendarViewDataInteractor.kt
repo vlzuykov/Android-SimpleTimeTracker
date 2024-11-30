@@ -200,8 +200,10 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
     ): List<RecordHolder> {
         val categories = categoryInteractor.getAll()
             .associateBy(Category::id)
-        val categoriesData = statisticsCategoryInteractor.getCategoryRecords(
-            records,
+
+        return statisticsCategoryInteractor.getCategoryRecords(
+            allRecords = records,
+            addUncategorized = filter.getCategoryItems().hasUncategorizedItem(),
         ).flatMap { (categoryId, records) ->
             records.map { record ->
                 val color = categories[categoryId]?.color
@@ -210,18 +212,6 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
                 mapper.mapRecordHolder(record, color)
             }
         }
-        val uncategorizedRecords = if (
-            filter.getCategoryItems().hasUncategorizedItem()
-        ) {
-            statisticsCategoryInteractor.getUncategorized(records)
-        } else {
-            emptyList()
-        }
-        val uncategorizedData = uncategorizedRecords.map { record ->
-            mapper.mapRecordHolder(record, untrackedColor)
-        }
-
-        return categoriesData + uncategorizedData
     }
 
     private suspend fun getTagsData(
@@ -234,8 +224,10 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
             .associateBy(RecordTag::id)
         val types = recordTypeInteractor.getAll()
             .associateBy(RecordType::id)
-        val tagsData = statisticsTagInteractor.getTagRecords(
-            records,
+
+        return statisticsTagInteractor.getTagRecords(
+            allRecords = records,
+            addUncategorized = filter.getSelectedTags().hasUntaggedItem(),
         ).flatMap { (tagId, records) ->
             records.map { record ->
                 val color = tags[tagId]
@@ -245,18 +237,6 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
                 mapper.mapRecordHolder(record, color)
             }
         }
-        val untaggedRecords = if (
-            filter.getSelectedTags().hasUntaggedItem()
-        ) {
-            statisticsTagInteractor.getUntagged(records)
-        } else {
-            emptyList()
-        }
-        val untaggedData = untaggedRecords.map { record ->
-            mapper.mapRecordHolder(record, untrackedColor)
-        }
-
-        return tagsData + untaggedData
     }
 
     data class RecordHolder(

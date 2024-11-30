@@ -5,13 +5,16 @@ import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.UNCATEGORIZED_ITEM_ID
 import com.example.util.simpletimetracker.domain.extension.orZero
+import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.interactor.StatisticsCategoryInteractor
+import com.example.util.simpletimetracker.domain.interactor.StatisticsTagInteractor
 import com.example.util.simpletimetracker.domain.mapper.RangeMapper
 import com.example.util.simpletimetracker.domain.mapper.StatisticsMapper
+import com.example.util.simpletimetracker.domain.model.Category
 import com.example.util.simpletimetracker.domain.model.RangeLength
 import com.example.util.simpletimetracker.domain.model.RecordBase
 import com.example.util.simpletimetracker.domain.model.RecordTag
@@ -33,9 +36,12 @@ import kotlinx.coroutines.withContext
 class StatisticsDetailStatsInteractor @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val recordTypeInteractor: RecordTypeInteractor,
+    private val categoryInteractor: CategoryInteractor,
     private val recordTagInteractor: RecordTagInteractor,
     private val timeMapper: TimeMapper,
     private val statisticsMapper: StatisticsMapper,
+    private val statisticsTagInteractor: StatisticsTagInteractor,
+    private val statisticsCategoryInteractor: StatisticsCategoryInteractor,
     private val recordTagViewDataMapper: RecordTagViewDataMapper,
     private val iconMapper: IconMapper,
     private val colorMapper: ColorMapper,
@@ -58,6 +64,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         val showSeconds = prefsInteractor.getShowSeconds()
         val types = recordTypeInteractor.getAll()
         val tags = recordTagInteractor.getAll()
+        val categories = categoryInteractor.getAll()
 
         val range = timeMapper.getRangeStartAndEnd(
             rangeLength = rangeLength,
@@ -82,6 +89,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             showComparison = showComparison,
             types = types,
             tags = tags,
+            categories = categories,
             isDarkTheme = isDarkTheme,
             useMilitaryTime = useMilitaryTime,
             useProportionalMinutes = useProportionalMinutes,
@@ -112,12 +120,13 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         )
     }
 
-    private fun mapStatsData(
+    private suspend fun mapStatsData(
         records: List<RecordBase>,
         compareRecords: List<RecordBase>,
         showComparison: Boolean,
         types: List<RecordType>,
         tags: List<RecordTag>,
+        categories: List<Category>,
         isDarkTheme: Boolean,
         useMilitaryTime: Boolean,
         useProportionalMinutes: Boolean,
@@ -147,6 +156,13 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         val activitySplitData = mapActivities(
             records = records,
             typesMap = typesMap,
+            isDarkTheme = isDarkTheme,
+            useProportionalMinutes = useProportionalMinutes,
+            showSeconds = showSeconds,
+        )
+        val categorySplitData = mapCategories(
+            records = records,
+            categoriesMap = categories.associateBy { it.id },
             isDarkTheme = isDarkTheme,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
@@ -248,7 +264,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             compareLastRecord = compareRecordsSorted.lastOrNull()?.timeEnded
                 .let(::formatDateTimeYear)
                 .let(::processComparisonString),
-            splitData = activitySplitData + tagSplitData,
+            splitData = activitySplitData + categorySplitData + tagSplitData,
         )
     }
 
@@ -384,6 +400,52 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             .map { (statistics, _) -> statistics }
     }
 
+    private suspend fun mapCategories(
+        records: List<RecordBase>,
+        categoriesMap: Map<Long, Category>,
+        isDarkTheme: Boolean,
+        useProportionalMinutes: Boolean,
+        showSeconds: Boolean,
+    ): List<ViewHolderType> {
+        val categories = statisticsCategoryInteractor.getCategoryRecords(
+            allRecords = records,
+            addUncategorized = true,
+        )
+
+        val durations = categories
+            .takeUnless { it.isEmpty() }
+            ?.mapValues { (_, records) -> records.let(rangeMapper::mapRecordsToDuration) }
+            ?: return emptyList()
+        val categoriesSize = categories.size
+        val sumDuration = durations.map { (_, duration) -> duration }.sum()
+        val hint = resourceRepo.getString(R.string.statistics_detail_category_split_hint)
+            .let(::HintViewData).let(::listOf)
+
+        return hint + durations
+            .mapNotNull { (categoryId, duration) ->
+                val category = categoriesMap[categoryId]
+                val color = category?.color
+                    ?.let { colorMapper.mapToColorInt(it, isDarkTheme) }
+                    ?: colorMapper.toUntrackedColor(isDarkTheme)
+                val name = category?.name
+                    ?: R.string.uncategorized_time_name.let(resourceRepo::getString)
+
+                mapTag(
+                    id = "category_${category?.id.orZero()}".hashCode().toLong(),
+                    name = name,
+                    icon = null,
+                    color = color,
+                    duration = duration,
+                    sumDuration = sumDuration,
+                    statisticsSize = categoriesSize,
+                    useProportionalMinutes = useProportionalMinutes,
+                    showSeconds = showSeconds,
+                ) to duration
+            }
+            .sortedByDescending { (_, duration) -> duration }
+            .map { (statistics, _) -> statistics }
+    }
+
     private fun mapTags(
         records: List<RecordBase>,
         typesMap: Map<Long, RecordType>,
@@ -392,16 +454,10 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
     ): List<ViewHolderType> {
-        val tags: MutableMap<Long, MutableList<RecordBase>> = mutableMapOf()
-
-        records.forEach { record ->
-            record.tagIds.forEach { tagId ->
-                tags.getOrPut(tagId) { mutableListOf() }.add(record)
-            }
-            if (record.tagIds.isEmpty()) {
-                tags.getOrPut(UNCATEGORIZED_ITEM_ID) { mutableListOf() }.add(record)
-            }
-        }
+        val tags = statisticsTagInteractor.getTagRecords(
+            allRecords = records,
+            addUncategorized = true,
+        )
 
         val durations = tags
             .takeUnless { it.isEmpty() }
@@ -428,10 +484,12 @@ class StatisticsDetailStatsInteractor @Inject constructor(
                 } else {
                     colorMapper.toUntrackedColor(isDarkTheme)
                 }
+                val name = tag?.name
+                    ?: R.string.change_record_untagged.let(resourceRepo::getString)
 
                 mapTag(
                     id = "tag_${tag?.id.orZero()}".hashCode().toLong(),
-                    name = tag?.name ?: R.string.change_record_untagged.let(resourceRepo::getString),
+                    name = name,
                     icon = icon,
                     color = color,
                     duration = duration,
@@ -448,7 +506,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
     private fun mapTag(
         id: Long,
         name: String,
-        icon: RecordTypeIcon,
+        icon: RecordTypeIcon?,
         color: Int,
         duration: Long,
         sumDuration: Long,
