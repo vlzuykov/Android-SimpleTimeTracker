@@ -7,6 +7,8 @@ enum class StatisticsDetailBlock {
     DailyCalendarHint,
     ChartGrouping,
     ChartLength,
+    ChartSplitByActivity,
+    ChartSplitByActivitySort,
     RangeAverages,
     Total,
     Average,

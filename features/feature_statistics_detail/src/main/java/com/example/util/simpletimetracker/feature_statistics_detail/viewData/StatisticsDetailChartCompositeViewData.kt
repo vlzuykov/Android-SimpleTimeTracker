@@ -16,4 +16,7 @@ data class StatisticsDetailChartCompositeViewData(
     val appliedChartLength: ChartLength,
     val chartLengthViewData: List<ViewHolderType>,
     val chartLengthVisible: Boolean,
+    val useSingleColor: Boolean,
+    val useSingleColorComparison: Boolean,
+    val splitActivitiesItems: List<ViewHolderType>,
 )

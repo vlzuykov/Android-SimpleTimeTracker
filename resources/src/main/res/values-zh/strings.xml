@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">名称</string>
     <string name="settings_sort_by_color">颜色</string>
     <string name="settings_sort_manually">手动</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">活动顺序</string>
     <string name="settings_first_day_of_week">一周的第一天</string>
     <string name="settings_show_repeat_button">在主屏幕上显示重复按钮</string>
     <string name="settings_repeat_button_type">模式</string>
@@ -453,6 +453,7 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">按活动划分</string>
 
     <string name="statistics_detail_range_averages_title">期间平均: %s</string>
     <string name="statistics_detail_range_averages">对于整个范围</string>

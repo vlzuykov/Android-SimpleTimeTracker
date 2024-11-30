@@ -76,7 +76,8 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.chartData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.ChartData,
-                    color = getPreviewColor(),
+                    singleColor = getPreviewColor()
+                        .takeIf { viewData.useSingleColor },
                     marginTopDp = 16,
                     data = viewData.chartData,
                 )
@@ -85,7 +86,8 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.compareChartData.visible && comparisonChartIsVisible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.ChartDataComparison,
-                    color = getPreviewColorComparison(),
+                    singleColor = getPreviewColorComparison()
+                        .takeIf { viewData.useSingleColorComparison },
                     marginTopDp = 16,
                     data = viewData.compareChartData,
                 )
@@ -105,6 +107,10 @@ class StatisticsDetailContentInteractor @Inject constructor(
                     marginTopDp = -10,
                     data = viewData.chartLengthViewData,
                 )
+            }
+
+            if (viewData.chartData.visible) {
+                result += viewData.splitActivitiesItems
             }
 
             val rangeAveragesData = viewData.rangeAverages
@@ -219,7 +225,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 )
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.SplitChart,
-                    color = getPreviewColor(),
+                    singleColor = getPreviewColor(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -230,7 +236,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.SplitChartComparison,
-                    color = getPreviewColorComparison(),
+                    singleColor = getPreviewColorComparison(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -255,7 +261,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 )
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.DurationSplitChart,
-                    color = getPreviewColor(),
+                    singleColor = getPreviewColor(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -266,7 +272,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.DurationSplitChartComparison,
-                    color = getPreviewColorComparison(),
+                    singleColor = getPreviewColorComparison(),
                     marginTopDp = 0,
                     data = viewData,
                 )

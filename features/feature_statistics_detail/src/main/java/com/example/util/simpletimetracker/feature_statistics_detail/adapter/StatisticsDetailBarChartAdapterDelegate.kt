@@ -17,13 +17,15 @@ fun createStatisticsDetailBarChartAdapterDelegate() = createRecyclerBindingAdapt
     with(binding.root) {
         item as ViewData
 
-        setBarColor(item.color)
-
         tag = item.block
         setMargins(top = marginTop)
         val viewData = item.data
         showSelectedBarOnStart(viewData.showSelectedBarOnStart)
-        setBars(data = viewData.data, animate = viewData.animate.getValue().orFalse())
+        setBars(
+            data = viewData.data,
+            singleColor = item.singleColor,
+            animate = viewData.animate.getValue().orFalse(),
+        )
         setLegendTextSuffix(viewData.legendSuffix)
         shouldAddLegendToSelectedBar(viewData.addLegendToSelectedBar)
         shouldDrawHorizontalLegends(viewData.shouldDrawHorizontalLegends)
@@ -33,7 +35,7 @@ fun createStatisticsDetailBarChartAdapterDelegate() = createRecyclerBindingAdapt
 
 data class StatisticsDetailBarChartViewData(
     val block: StatisticsDetailBlock,
-    @ColorInt val color: Int,
+    @ColorInt val singleColor: Int?,
     val marginTopDp: Int,
     val data: StatisticsDetailChartViewData,
 ) : ViewHolderType {

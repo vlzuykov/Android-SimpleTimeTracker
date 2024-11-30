@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">Nome</string>
     <string name="settings_sort_by_color">Colore</string>
     <string name="settings_sort_manually">Manualmente</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Ordine delle attività</string>
     <string name="settings_first_day_of_week">Primo giorno della settimana</string>
     <string name="settings_show_repeat_button">Mostra il pulsante Ripeti sulla schermata principale</string>
     <string name="settings_repeat_button_type">Modalità</string>
@@ -453,6 +453,7 @@ Esempio:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Suddiviso per attività</string>
 
     <string name="statistics_detail_range_averages_title">Media per periodo: %s</string>
     <string name="statistics_detail_range_averages">Per tutta la gamma</string>

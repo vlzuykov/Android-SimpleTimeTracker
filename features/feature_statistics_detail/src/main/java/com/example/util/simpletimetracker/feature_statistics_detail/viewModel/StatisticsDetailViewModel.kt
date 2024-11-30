@@ -138,6 +138,18 @@ class StatisticsDetailViewModel @Inject constructor(
         }
     }
 
+    fun onButtonClick(block: StatisticsDetailBlock) {
+        when (block) {
+            StatisticsDetailBlock.ChartSplitByActivity ->
+                chartDelegate.onSplitByActivityClick()
+            StatisticsDetailBlock.ChartSplitByActivitySort ->
+                chartDelegate.onSplitByActivitySortClick()
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
     fun onCardClick(
         type: StatisticsDetailCardInternalViewData.ClickableType,
         coordinates: Coordinates,

@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">Nom</string>
     <string name="settings_sort_by_color">Color</string>
     <string name="settings_sort_manually">Manual</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Ordre de l\'activitat</string>
     <string name="settings_first_day_of_week">Primer dia de la setmana</string>
     <string name="settings_show_repeat_button">Mostra el botó de repetició a la pantalla principal</string>
     <string name="settings_repeat_button_type">Mode</string>
@@ -453,6 +453,7 @@ Exemple:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Dividit per activitat</string>
 
     <string name="statistics_detail_range_averages_title">Mitjana per període: %s</string>
     <string name="statistics_detail_range_averages">Per a tot el rang</string>

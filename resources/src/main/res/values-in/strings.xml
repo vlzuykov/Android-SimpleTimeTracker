@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">Nama</string>
     <string name="settings_sort_by_color">Warna</string>
     <string name="settings_sort_manually">Secara manual</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Urutan aktivitas</string>
     <string name="settings_first_day_of_week">Hari pertama dalam seminggu</string>
     <string name="settings_show_repeat_button">Tampilkan tombol ulangi di layar utama</string>
     <string name="settings_repeat_button_type">Mode</string>
@@ -453,6 +453,7 @@ Contoh:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Pisahkan berdasarkan aktivitas</string>
 
     <string name="statistics_detail_range_averages_title">Rata-rata untuk periode: %s</string>
     <string name="statistics_detail_range_averages">Untuk seluruh rentang</string>

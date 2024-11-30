@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">İsim</string>
     <string name="settings_sort_by_color">Renk</string>
     <string name="settings_sort_manually">Elle</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Etkinlik sırası</string>
     <string name="settings_first_day_of_week">Haftanın ilk günü</string>
     <string name="settings_show_repeat_button">Ana ekranda tekrarla düğmesini göster</string>
     <string name="settings_repeat_button_type">Mod</string>
@@ -453,6 +453,7 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">dk</string>
     <string name="statistics_detail_legend_hour_suffix">sa</string>
+    <string name="statistics_detail_chart_split">Etkinliğe göre böl</string>
 
     <string name="statistics_detail_range_averages_title">%s ortalama</string>
     <string name="statistics_detail_range_averages">Tüm tarih aralığı</string>

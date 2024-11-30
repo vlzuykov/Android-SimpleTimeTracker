@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.mapper
 
+import android.graphics.Color
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconMapper
@@ -19,11 +20,14 @@ import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.R
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.customView.BarChartView
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataDuration
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataRange
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.model.SplitChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
@@ -202,6 +206,10 @@ class StatisticsDetailViewDataMapper @Inject constructor(
     fun mapToChartViewData(
         data: List<ChartBarDataDuration>,
         prevData: List<ChartBarDataDuration>,
+        splitByActivity: Boolean,
+        canSplitByActivity: Boolean,
+        canComparisonSplitByActivity: Boolean,
+        splitSortMode: ChartSplitSortMode,
         goalValue: Long,
         compareData: List<ChartBarDataDuration>,
         compareGoalValue: Long,
@@ -246,6 +254,15 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             availableChartLengths = availableChartLengths,
             appliedChartLength = appliedChartLength,
         )
+        val splitByActivityItems = if (canSplitByActivity) {
+            mapSplitByActivityItems(
+                splitByActivity = splitByActivity,
+                splitSortMode = splitSortMode,
+                isDarkTheme = isDarkTheme,
+            )
+        } else {
+            emptyList()
+        }
 
         return StatisticsDetailChartCompositeViewData(
             chartData = chartData,
@@ -259,6 +276,9 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             appliedChartLength = appliedChartLength,
             chartLengthViewData = chartLengthViewData,
             chartLengthVisible = chartLengthViewData.isNotEmpty(),
+            useSingleColor = !splitByActivity || !canSplitByActivity,
+            useSingleColorComparison = !splitByActivity || !canComparisonSplitByActivity,
+            splitActivitiesItems = splitByActivityItems,
         )
     }
 
@@ -301,6 +321,9 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             appliedChartLength = ChartLength.TEN,
             chartLengthViewData = emptyList(),
             chartLengthVisible = availableChartLengths.isNotEmpty(),
+            useSingleColor = true,
+            useSingleColorComparison = true,
+            splitActivitiesItems = emptyList(),
         )
     }
 
@@ -326,7 +349,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         val viewData = days.map { day ->
             val calendarDay = timeMapper.toCalendarDayOfWeek(day)
             BarChartView.ViewData(
-                value = data[calendarDay].orZero(),
+                value = listOf(data[calendarDay].orZero() to Color.TRANSPARENT),
                 legend = timeMapper.toShortDayOfWeekName(day),
             )
         }
@@ -354,7 +377,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         val viewData = hourLegends
             .map { (hour, legend) ->
                 BarChartView.ViewData(
-                    value = data[hour].orZero(),
+                    value = listOf(data[hour].orZero() to Color.TRANSPARENT),
                     legend = legend,
                 )
             }
@@ -401,7 +424,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 val started = timeMapper.formatDuration(range.timeStarted / 1000)
                 val ended = timeMapper.formatDuration(range.timeEnded / 1000)
                 range to BarChartView.ViewData(
-                    value = percent,
+                    value = listOf(percent to Color.TRANSPARENT),
                     legend = ended,
                     selectedBarLegend = "$started - $ended",
                 )
@@ -439,19 +462,19 @@ class StatisticsDetailViewDataMapper @Inject constructor(
 
         fun getAverage(data: List<ChartBarDataDuration>): Long {
             if (data.isEmpty()) return 0L
-            return data.sumOf { it.duration } / data.size
+            return data.sumOf { it.durations.map { it.first }.sum() } / data.size
         }
 
         val average = getAverage(data)
-        val nonEmptyData = data.filter { it.duration > 0 }
+        val nonEmptyData = data.filter { it.durations.sumOf { it.first } > 0 }
         val averageByNonEmpty = getAverage(nonEmptyData)
 
         val comparisonAverage = getAverage(compareData)
-        val comparisonNonEmptyData = compareData.filter { it.duration > 0 }
+        val comparisonNonEmptyData = compareData.filter { it.durations.sumOf { it.first } > 0 }
         val comparisonAverageByNonEmpty = getAverage(comparisonNonEmptyData)
 
         val prevAverage = getAverage(prevData)
-        val prevNonEmptyData = prevData.filter { it.duration > 0 }
+        val prevNonEmptyData = prevData.filter { it.durations.sumOf { it.first } > 0 }
         val prevAverageByNonEmpty = getAverage(prevNonEmptyData)
 
         val title = resourceRepo.getString(
@@ -594,7 +617,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         rangeLength: RangeLength,
         showSelectedBarOnStart: Boolean,
     ): StatisticsDetailChartViewData {
-        val isMinutes = data.maxOfOrNull(ChartBarDataDuration::duration)
+        val isMinutes = data.maxOfOrNull { it.durations.sumOf { it.first } }
             .orZero()
             .let(TimeUnit.MILLISECONDS::toHours) == 0L
 
@@ -608,7 +631,9 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             visible = data.size > 1,
             data = data.map {
                 BarChartView.ViewData(
-                    value = formatInterval(it.duration, isMinutes),
+                    value = it.durations.map {
+                        formatInterval(it.first, isMinutes) to it.second
+                    },
                     legend = it.legend,
                 )
             },
@@ -646,6 +671,38 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         } else {
             hr + min / 60f
         }
+    }
+
+    private fun mapSplitByActivityItems(
+        splitByActivity: Boolean,
+        splitSortMode: ChartSplitSortMode,
+        isDarkTheme: Boolean,
+    ): List<ViewHolderType> {
+        return StatisticsDetailButtonViewData(
+            data = StatisticsDetailButtonViewData.Button(
+                block = StatisticsDetailBlock.ChartSplitByActivity,
+                text = resourceRepo.getString(R.string.statistics_detail_chart_split),
+                color = if (splitByActivity) {
+                    resourceRepo.getThemedAttr(R.attr.appActiveColor, isDarkTheme)
+                } else {
+                    resourceRepo.getThemedAttr(R.attr.appInactiveColor, isDarkTheme)
+                },
+            ),
+            dataSecond = if (splitByActivity) {
+                StatisticsDetailButtonViewData.Button(
+                    block = StatisticsDetailBlock.ChartSplitByActivitySort,
+                    text = when (splitSortMode) {
+                        ChartSplitSortMode.ACTIVITY_ORDER ->
+                            resourceRepo.getString(R.string.settings_sort_activity)
+                        ChartSplitSortMode.DURATION ->
+                            resourceRepo.getString(R.string.records_all_sort_duration)
+                    },
+                    color = resourceRepo.getThemedAttr(R.attr.appInactiveColor, isDarkTheme),
+                )
+            } else {
+                null
+            },
+        ).let(::listOf)
     }
 
     private fun mapToChartGroupingViewData(

@@ -2,23 +2,29 @@ package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
 import com.example.util.simpletimetracker.core.extension.setToStartOfDay
 import com.example.util.simpletimetracker.core.extension.setWeekToFirstDay
+import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.domain.extension.getDailyDuration
 import com.example.util.simpletimetracker.domain.extension.getMonthlyDuration
+import com.example.util.simpletimetracker.domain.extension.getTypeIds
 import com.example.util.simpletimetracker.domain.extension.getWeeklyDuration
+import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.extension.value
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.mapper.RangeMapper
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.domain.model.RangeLength
 import com.example.util.simpletimetracker.domain.model.RecordBase
+import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_statistics_detail.mapper.StatisticsDetailViewDataMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataDuration
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataRange
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,9 +35,12 @@ import kotlin.math.abs
 class StatisticsDetailChartInteractor @Inject constructor(
     private val timeMapper: TimeMapper,
     private val rangeMapper: RangeMapper,
+    private val colorMapper: ColorMapper,
     private val statisticsDetailViewDataMapper: StatisticsDetailViewDataMapper,
     private val prefsInteractor: PrefsInteractor,
     private val statisticsDetailGetGoalFromFilterInteractor: StatisticsDetailGetGoalFromFilterInteractor,
+    private val statisticsDetailPreviewInteractor: StatisticsDetailPreviewInteractor,
+    private val recordTypeInteractor: RecordTypeInteractor,
 ) {
 
     // Shouldn't be suspend to avoid blocks jumping on screen open.
@@ -66,6 +75,8 @@ class StatisticsDetailChartInteractor @Inject constructor(
         currentChartLength: ChartLength,
         rangeLength: RangeLength,
         rangePosition: Int,
+        splitByActivity: Boolean,
+        splitSortMode: ChartSplitSortMode,
     ): StatisticsDetailChartCompositeViewData = withContext(Dispatchers.Default) {
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
@@ -73,6 +84,11 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val useMonthDayTimeFormat = prefsInteractor.getUseMonthDayTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
         val isDarkTheme = prefsInteractor.getDarkMode()
+        val types = recordTypeInteractor.getAll()
+        val typesMap = types.associateBy(RecordType::id)
+        val typesOrder = types.map(RecordType::id)
+        val canSplitByActivity = canSplitByActivity(filter)
+        val canComparisonSplitByActivity = canSplitByActivity(compare)
 
         val (ranges, compositeData) = getRanges(
             currentChartGrouping = currentChartGrouping,
@@ -86,6 +102,11 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val data = getChartData(
             allRecords = records,
             ranges = ranges,
+            typesOrder = typesOrder,
+            typesMap = typesMap,
+            isDarkTheme = isDarkTheme,
+            splitByActivity = splitByActivity && canSplitByActivity,
+            splitSortMode = splitSortMode,
         )
         val prevData = if (rangeLength != RangeLength.All) {
             val (prevRanges, _) = getRanges(
@@ -100,6 +121,11 @@ class StatisticsDetailChartInteractor @Inject constructor(
             getChartData(
                 allRecords = records,
                 ranges = prevRanges,
+                typesOrder = typesOrder,
+                typesMap = typesMap,
+                isDarkTheme = isDarkTheme,
+                splitByActivity = false,
+                splitSortMode = splitSortMode,
             )
         } else {
             emptyList()
@@ -107,11 +133,20 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val compareData = getChartData(
             allRecords = compareRecords,
             ranges = ranges,
+            typesOrder = typesOrder,
+            typesMap = typesMap,
+            isDarkTheme = isDarkTheme,
+            splitByActivity = splitByActivity && canComparisonSplitByActivity,
+            splitSortMode = splitSortMode,
         )
 
         return@withContext statisticsDetailViewDataMapper.mapToChartViewData(
             data = data,
             prevData = prevData,
+            splitByActivity = splitByActivity,
+            canSplitByActivity = canSplitByActivity,
+            canComparisonSplitByActivity = canComparisonSplitByActivity,
+            splitSortMode = splitSortMode,
             goalValue = getGoalValue(filter, compositeData.appliedChartGrouping),
             compareData = compareData,
             compareGoalValue = getGoalValue(compare, compositeData.appliedChartGrouping),
@@ -144,10 +179,17 @@ class StatisticsDetailChartInteractor @Inject constructor(
     private fun getChartData(
         allRecords: List<RecordBase>,
         ranges: List<ChartBarDataRange>,
+        typesOrder: List<Long>,
+        typesMap: Map<Long, RecordType>,
+        isDarkTheme: Boolean,
+        splitByActivity: Boolean,
+        splitSortMode: ChartSplitSortMode,
     ): List<ChartBarDataDuration> {
         fun mapEmpty(): List<ChartBarDataDuration> {
-            return ranges.map { ChartBarDataDuration(legend = it.legend, duration = 0L) }
+            return ranges.map { ChartBarDataDuration(legend = it.legend, durations = listOf(0L to 0)) }
         }
+
+        val unknownColor = colorMapper.toUntrackedColor(isDarkTheme)
 
         val records = rangeMapper.getRecordsFromRange(
             records = allRecords,
@@ -162,13 +204,40 @@ class StatisticsDetailChartInteractor @Inject constructor(
         return ranges
             .map { data ->
                 val range = Range(data.rangeStart, data.rangeEnd)
-                val duration = rangeMapper.getRecordsFromRange(records, range)
-                    .map { record -> rangeMapper.clampToRange(record, range) }
-                    .let(rangeMapper::mapToDuration)
+                val durations = if (!splitByActivity) {
+                    rangeMapper.getRecordsFromRange(records, range)
+                        .map { record -> rangeMapper.clampToRange(record, range) }
+                        .let(rangeMapper::mapToDuration)
+                        .let { listOf(it to 0) }
+                } else {
+                    rangeMapper.getRecordsFromRange(records, range)
+                        .groupBy { it.typeIds.firstOrNull().orZero() }
+                        .toList()
+                        .map { (id, records) ->
+                            val value = records.map { record -> rangeMapper.clampToRange(record, range) }
+                                .let(rangeMapper::mapToDuration)
+                            value to id
+                        }
+                        .run {
+                            when (splitSortMode) {
+                                ChartSplitSortMode.DURATION -> sortedByDescending { (duration, _) ->
+                                    duration
+                                }
+                                ChartSplitSortMode.ACTIVITY_ORDER -> sortedBy { (_, typeId) ->
+                                    typesOrder.indexOf(typeId).toLong()
+                                }
+                            }
+                        }.map { (duration, typeId) ->
+                            val color = typesMap[typeId]?.color
+                                ?.let { colorMapper.mapToColorInt(it, isDarkTheme) }
+                                ?: unknownColor
+                            duration to color
+                        }
+                }
 
                 ChartBarDataDuration(
                     legend = data.legend,
-                    duration = duration,
+                    durations = durations,
                 )
             }
     }
@@ -419,6 +488,14 @@ class StatisticsDetailChartInteractor @Inject constructor(
         }
 
         return result
+    }
+
+    private fun canSplitByActivity(
+        filter: List<RecordsFilter>,
+    ): Boolean {
+        val previewType = statisticsDetailPreviewInteractor.getPreviewType(filter)
+        return previewType is StatisticsDetailPreviewInteractor.PreviewType.Activities &&
+            filter.getTypeIds().size > 1
     }
 
     private data class CompositeChartData(

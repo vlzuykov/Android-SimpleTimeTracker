@@ -14,8 +14,8 @@
     app:legendTextSize="14sp"
     app:selectedBarBackgroundColor="?appInactiveColor"
     app:selectedBarTextColor="?appLightTextColor"
+    app:selectedBarColor="?appContrastColor"
     app:showSelectedBarOnStart="false"
-    tools:barColor="@color/black"
     tools:barCount="14"
     tools:goalValue="12"
     tools:legendTextSuffix="h" />

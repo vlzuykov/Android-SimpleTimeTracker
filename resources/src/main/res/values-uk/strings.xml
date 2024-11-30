@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">Ім\'я</string>
     <string name="settings_sort_by_color">Колір</string>
     <string name="settings_sort_manually">Вручну</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Порядок діяльності</string>
     <string name="settings_first_day_of_week">Перший день тижня</string>
     <string name="settings_show_repeat_button">Показувати кнопку повтору на головному екрані</string>
     <string name="settings_repeat_button_type">Режим</string>
@@ -453,6 +453,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">хв</string>
     <string name="statistics_detail_legend_hour_suffix">г</string>
+    <string name="statistics_detail_chart_split">Розділ за діяльністю</string>
 
     <string name="statistics_detail_range_averages_title">Середнє за період: %s</string>
     <string name="statistics_detail_range_averages">За весь діапазон</string>

@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">שם</string>
     <string name="settings_sort_by_color">צבע</string>
     <string name="settings_sort_manually">ידנית</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">סדר פעילות</string>
     <string name="settings_first_day_of_week">היום הראשון בשבוע</string>
     <string name="settings_show_repeat_button">הצג כפתור חזרה במסך ראשי</string>
     <string name="settings_repeat_button_type">מצב</string>
@@ -453,6 +453,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">דק\'</string>
     <string name="statistics_detail_legend_hour_suffix">שע\'</string>
+    <string name="statistics_detail_chart_split">חלוקה לפי פעילות</string>
 
     <string name="statistics_detail_range_averages_title">ממוצע לתקופה: %s</string>
     <string name="statistics_detail_range_averages">לכל הטווח</string>

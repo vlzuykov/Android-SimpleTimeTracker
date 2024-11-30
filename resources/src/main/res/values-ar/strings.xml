@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">الاسم</string>
     <string name="settings_sort_by_color">اللون</string>
     <string name="settings_sort_manually">يدويا</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">ترتيب النشاط</string>
     <string name="settings_first_day_of_week">اليوم الأول من الأسبوع</string>
     <string name="settings_show_repeat_button">إظهار زر التكرار على الشاشة الرئيسية</string>
     <string name="settings_repeat_button_type">وضع</string>
@@ -453,6 +453,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">د</string>
     <string name="statistics_detail_legend_hour_suffix">س</string>
+    <string name="statistics_detail_chart_split">مقسمة حسب النشاط</string>
 
     <string name="statistics_detail_range_averages_title">متوسط الفترة الزمنية: %s</string>
     <string name="statistics_detail_range_averages">كامل النطاق</string>

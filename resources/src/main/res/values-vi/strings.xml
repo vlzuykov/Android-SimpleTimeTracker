@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">Tên</string>
     <string name="settings_sort_by_color">Màu</string>
     <string name="settings_sort_manually">Thủ công</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Thứ tự hoạt động</string>
     <string name="settings_first_day_of_week">Ngày đầu tuần</string>
     <string name="settings_show_repeat_button">Hiển thị nút lặp lại trên màn hình chính</string>
     <string name="settings_repeat_button_type">Cách thức</string>
@@ -453,6 +453,7 @@ Ví dụ:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Chia theo hoạt động</string>
 
     <string name="statistics_detail_range_averages_title">Trung bình giai đoạn: %s</string>
     <string name="statistics_detail_range_averages">Cho toàn bộ phạm vi</string>

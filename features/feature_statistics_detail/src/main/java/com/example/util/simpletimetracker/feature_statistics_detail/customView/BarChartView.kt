@@ -14,6 +14,7 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.core.utils.SingleTapDetector
 import com.example.util.simpletimetracker.core.utils.SwipeDetector
 import com.example.util.simpletimetracker.core.utils.isHorizontal
@@ -41,13 +42,13 @@ class BarChartView @JvmOverloads constructor(
     private var barCountInEdit: Int = 0
     private var barDividerMaxWidth: Int = 0
     private var barCornerRadius: Float = 0f
-    private var barColor: Int = 0
     private var legendTextSuffix = ""
     private var legendTextSize: Float = 0f
     private var legendTextColor: Int = 0
     private var legendLineColor: Int = 0
     private var selectedBarBackgroundColor: Int = 0
     private var selectedBarTextColor: Int = 0
+    private var selectedBarColor: Int = 0
     private var showSelectedBarOnStart: Boolean = false
     private var addLegendToSelectedBar: Boolean = false
     private var shouldDrawHorizontalLegends: Boolean = true
@@ -82,6 +83,7 @@ class BarChartView @JvmOverloads constructor(
     private var barAnimationScale: Float = 1f
     private val barAnimationDuration: Long = 300L // ms
     private var selectedBarWasShownOnStart: Boolean = false
+    private var singleColor: Int? = null
 
     private val barPaint: Paint = Paint()
     private val selectedBarPaint: Paint = Paint()
@@ -90,6 +92,7 @@ class BarChartView @JvmOverloads constructor(
     private val selectedBarTextPaint: Paint = Paint()
     private val linePaint: Paint = Paint()
     private val goalLinePaint: Paint = Paint()
+    private val barPartsDividerPaint: Paint = Paint()
 
     private val singleTapDetector = SingleTapDetector(
         context = context,
@@ -156,24 +159,23 @@ class BarChartView @JvmOverloads constructor(
 
     fun setBars(
         data: List<ViewData>,
+        @ColorInt singleColor: Int?,
         animate: Boolean,
     ) {
-        bars = data.takeUnless { it.isEmpty() } ?: listOf(ViewData(0f, "", ""))
-        maxValue = data.maxOfOrNull(ViewData::value) ?: 1f
+        bars = data.takeUnless { it.isEmpty() }
+            ?: listOf(ViewData(listOf(0f to Color.BLACK), "", ""))
+        maxValue = data.maxOfOrNull {
+            it.value.map { it.first }.sum()
+        } ?: 1f
         if (data.isNotEmpty() && showSelectedBarOnStart && !selectedBarWasShownOnStart) {
             selectedBar = bars.size - 1
             selectedBarWasShownOnStart = true
         } else {
             selectedBar = -1
         }
+        this.singleColor = singleColor
         invalidate()
         if (!isInEditMode && animate) animateBars()
-    }
-
-    fun setBarColor(color: Int) {
-        barColor = color
-        initPaint()
-        invalidate()
     }
 
     fun setLegendTextSuffix(suffix: String) {
@@ -217,8 +219,6 @@ class BarChartView @JvmOverloads constructor(
                     getDimensionPixelSize(R.styleable.BarChartView_dividerMaxWidth, 0)
                 barCornerRadius =
                     getDimensionPixelSize(R.styleable.BarChartView_barCornerRadius, 0).toFloat()
-                barColor =
-                    getColor(R.styleable.BarChartView_barColor, Color.BLACK)
                 legendTextSuffix =
                     getString(R.styleable.BarChartView_legendTextSuffix).orEmpty()
                 legendTextSize =
@@ -231,6 +231,8 @@ class BarChartView @JvmOverloads constructor(
                     getColor(R.styleable.BarChartView_selectedBarBackgroundColor, Color.WHITE)
                 selectedBarTextColor =
                     getColor(R.styleable.BarChartView_selectedBarTextColor, Color.BLACK)
+                selectedBarColor =
+                    getColor(R.styleable.BarChartView_selectedBarColor, Color.BLACK)
                 showSelectedBarOnStart =
                     getBoolean(R.styleable.BarChartView_showSelectedBarOnStart, false)
                 addLegendToSelectedBar =
@@ -246,12 +248,11 @@ class BarChartView @JvmOverloads constructor(
     private fun initPaint() {
         barPaint.apply {
             isAntiAlias = true
-            color = barColor
             style = Paint.Style.FILL
         }
         selectedBarPaint.apply {
             isAntiAlias = true
-            color = ColorUtils.darkenColor(barColor)
+            color = ColorUtils.changeAlpha(selectedBarColor, 0.10f)
             style = Paint.Style.FILL
         }
         selectedBarBackgroundPaint.apply {
@@ -275,7 +276,11 @@ class BarChartView @JvmOverloads constructor(
         }
         goalLinePaint.apply {
             isAntiAlias = true
-            color = ColorUtils.darkenColor(barColor)
+            style = Paint.Style.STROKE
+            strokeWidth = 1.dpToPx().toFloat()
+        }
+        barPartsDividerPaint.apply {
+            isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = 1.dpToPx().toFloat()
         }
@@ -342,15 +347,20 @@ class BarChartView @JvmOverloads constructor(
         }
         if (horizontalLegendsSkipCount == 0) horizontalLegendsSkipCount = 1
 
-        barPaint.shader = LinearGradient(
-            0f,
-            chartHeight,
-            0f,
-            chartHeight / 2,
-            ColorUtils.changeAlpha(barColor, 0.75f),
-            barColor,
-            Shader.TileMode.CLAMP,
-        )
+        val gradientColor = singleColor
+        if (gradientColor != null) {
+            barPaint.shader = LinearGradient(
+                0f,
+                chartHeight,
+                0f,
+                chartHeight / 2,
+                ColorUtils.changeAlpha(gradientColor, 0.75f),
+                gradientColor,
+                Shader.TileMode.CLAMP,
+            )
+        } else {
+            barPaint.shader = null
+        }
     }
 
     private fun drawText(canvas: Canvas, w: Float) {
@@ -387,28 +397,71 @@ class BarChartView @JvmOverloads constructor(
     }
 
     private fun drawBars(canvas: Canvas) {
+        var prevColor = 0
         radiusArr = floatArrayOf(
             barCornerRadius, barCornerRadius,
             barCornerRadius, barCornerRadius,
             0f, 0f,
             0f, 0f,
         )
+        if (singleColor != null) barPaint.color = singleColor.orZero()
 
         canvas.save()
 
         bars.forEachIndexed { index, bar ->
-            // Normalize bar values to max legend line value
-            val scaled = bar.value * barAnimationScale / valueUpperBound
-            bounds.set(
-                0f + barDividerWidth / 2,
-                pixelTopBound + chartHeight * (1f - scaled),
-                barWidth - barDividerWidth / 2,
-                pixelBottomBound,
-            )
-            barPath = Path().apply {
-                addRoundRect(bounds, radiusArr, Path.Direction.CW)
+            var totalBarValue = 0f
+            val size = bar.value.size
+            bar.value.forEachIndexed { partIndex, (value, color) ->
+                if (singleColor == null) barPaint.color = color
+                // Normalize bar values to max legend line value
+                val scaled = value * barAnimationScale / valueUpperBound
+                bounds.set(
+                    0f + barDividerWidth / 2,
+                    pixelBottomBound - totalBarValue - chartHeight * scaled,
+                    barWidth - barDividerWidth / 2,
+                    pixelBottomBound - totalBarValue,
+                )
+                barPath = Path().apply {
+                    // Draw round caps only if single colored,
+                    // otherwise it wouldn't be visible on some small bar parts.
+                    if (partIndex == size - 1 && singleColor != null) {
+                        addRoundRect(bounds, radiusArr, Path.Direction.CW)
+                    } else {
+                        addRect(bounds, Path.Direction.CW)
+                    }
+                }
+                canvas.drawPath(barPath, barPaint)
+
+                // Draw divider
+                if (partIndex != 0 && prevColor == color) {
+                    barPartsDividerPaint.color = ColorUtils.darkenColor(color)
+                    canvas.drawLine(
+                        0f + barDividerWidth / 2,
+                        pixelBottomBound - totalBarValue,
+                        barWidth - barDividerWidth / 2,
+                        pixelBottomBound - totalBarValue,
+                        barPartsDividerPaint,
+                    )
+                }
+
+                prevColor = color
+                totalBarValue += chartHeight * scaled
             }
-            canvas.drawPath(barPath, if (index == selectedBar) selectedBarPaint else barPaint)
+
+            // Draw selected bar
+            if (index == selectedBar) {
+                bounds.set(
+                    0f + barDividerWidth / 2,
+                    pixelTopBound,
+                    barWidth - barDividerWidth / 2,
+                    pixelBottomBound,
+                )
+                barPath = Path().apply {
+                    addRect(bounds, Path.Direction.CW)
+                }
+                canvas.drawPath(barPath, selectedBarPaint)
+            }
+
             canvas.translate(barWidth, 0f)
         }
 
@@ -431,6 +484,9 @@ class BarChartView @JvmOverloads constructor(
     private fun drawGoalValue(canvas: Canvas) {
         if (goalValue == 0f) return
 
+        goalLinePaint.color = singleColor
+            ?.let(ColorUtils::darkenColor)
+            ?: Color.BLACK
         val scaled = goalValue / valueUpperBound
         canvas.drawLine(
             0f,
@@ -443,7 +499,7 @@ class BarChartView @JvmOverloads constructor(
 
     private fun drawSelectedBarIcon(canvas: Canvas) {
         val bar = bars.getOrNull(selectedBar) ?: return
-        val barValue = bar.value
+        val barValue = bar.value.map { it.first }.sum()
 
         val scaled = barValue / valueUpperBound
         val barTop = pixelTopBound + chartHeight * (1f - scaled)
@@ -525,9 +581,22 @@ class BarChartView @JvmOverloads constructor(
         if (isInEditMode) {
             val segments = barCountInEdit.takeIf { it != 0 } ?: 5
             (segments downTo 1).toList()
-                .map { ViewData(it.toFloat(), it.toString(), it.toString()) }
-                .let { setBars(it, animate = false) }
+                .map {
+                    ViewData(
+                        value = listOf(it.toFloat() to Color.BLACK),
+                        legend = it.toString(),
+                        selectedBarLegend = it.toString(),
+                    )
+                }
+                .let {
+                    setBars(
+                        data = it,
+                        singleColor = null,
+                        animate = false,
+                    )
+                }
             selectedBar = barCountInEdit / 2
+            singleColor = Color.BLACK
         }
     }
 
@@ -576,7 +645,7 @@ class BarChartView @JvmOverloads constructor(
     }
 
     private fun getSelectedBarText(bar: ViewData): String {
-        val barValue = bar.value
+        val barValue = bar.value.map { it.first }.sum()
         val barLegend = bar.selectedBarLegend
 
         return "%.1f".format(barValue).let {
@@ -589,7 +658,7 @@ class BarChartView @JvmOverloads constructor(
     }
 
     data class ViewData(
-        val value: Float,
+        val value: List<Pair<Float, Int>>,
         val legend: String,
         val selectedBarLegend: String = legend,
     )

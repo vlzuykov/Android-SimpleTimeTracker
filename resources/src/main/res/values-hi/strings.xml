@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">नाम</string>
     <string name="settings_sort_by_color">रंग</string>
     <string name="settings_sort_manually">हस्तचालन से</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">गतिविधि क्रम</string>
     <string name="settings_first_day_of_week">सप्ताह का पहला दिन</string>
     <string name="settings_show_repeat_button">मुख्य स्क्रीन पर रिपीट बटन दिखाएँ</string>
     <string name="settings_repeat_button_type">तरीका</string>
@@ -453,6 +453,7 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">गतिविधि द्वारा विभाजित</string>
 
     <string name="statistics_detail_range_averages_title">अवधि के लिए औसत: %s</string>
     <string name="statistics_detail_range_averages">पूरी सीमा के लिए</string>

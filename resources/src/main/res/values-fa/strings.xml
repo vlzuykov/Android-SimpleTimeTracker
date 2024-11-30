@@ -263,7 +263,7 @@
     <string name="settings_sort_by_name">نام</string>
     <string name="settings_sort_by_color">رنگ</string>
     <string name="settings_sort_manually">دستی</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">دستور فعالیت</string>
     <string name="settings_first_day_of_week">اولین روز هفته</string>
     <string name="settings_show_repeat_button">نمایش دکمه تکرار در صفحه اصلی</string>
     <string name="settings_repeat_button_type">حالت</string>
@@ -453,6 +453,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">د</string>
     <string name="statistics_detail_legend_hour_suffix">س</string>
+    <string name="statistics_detail_chart_split">تقسیم بر اساس فعالیت</string>
 
     <string name="statistics_detail_range_averages_title">گردش متوسط: %s</string>
     <string name="statistics_detail_range_averages">برای کل محدوده</string>
