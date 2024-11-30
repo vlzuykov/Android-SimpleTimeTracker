@@ -17,7 +17,7 @@ import com.example.util.simpletimetracker.core.viewData.RangesViewData
 import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
-import com.example.util.simpletimetracker.feature_base_adapter.statisticsTag.createStatisticsTagAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.statistics.createStatisticsAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailBarChartAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailButtonsRowAdapterDelegate
@@ -83,7 +83,9 @@ class StatisticsDetailFragment :
             createStatisticsDetailHintAdapterDelegate(),
             createStatisticsDetailNextActivitiesAdapterDelegate(),
             createHintAdapterDelegate(),
-            createStatisticsTagAdapterDelegate(),
+            createStatisticsAdapterDelegate(
+                onItemClick = null,
+            ),
         )
     }
     private val params: StatisticsDetailParams by fragmentArgumentDelegate(

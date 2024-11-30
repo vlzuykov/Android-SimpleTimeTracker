@@ -25,6 +25,7 @@ import com.example.util.simpletimetracker.feature_views.pieChart.PiePortion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.example.util.simpletimetracker.core.mapper.StatisticsViewDataMapper as CoreStatisticsViewDataMapper
 
 class StatisticsViewDataInteractor @Inject constructor(
     private val recordTypeInteractor: RecordTypeInteractor,
@@ -33,6 +34,7 @@ class StatisticsViewDataInteractor @Inject constructor(
     private val statisticsChartViewDataInteractor: StatisticsChartViewDataInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val statisticsViewDataMapper: StatisticsViewDataMapper,
+    private val coreStatisticsViewDataMapper: CoreStatisticsViewDataMapper,
     private val rangeViewDataMapper: RangeViewDataMapper,
     private val colorMapper: ColorMapper,
     private val timeMapper: TimeMapper,
@@ -101,7 +103,7 @@ class StatisticsViewDataInteractor @Inject constructor(
                 buttonsVisible = !forSharing,
             )
         }
-        val list = statisticsViewDataMapper.mapItemsList(
+        val list = coreStatisticsViewDataMapper.mapItemsList(
             shift = shift,
             filterType = filterType,
             statistics = statistics,

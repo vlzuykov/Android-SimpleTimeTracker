@@ -1392,7 +1392,7 @@ class StatisticsDetailTest : BaseUiTest() {
         // If scroll is not possible - view is not displayed.
         scrollStatDetailRecycler(
             allOf(
-                withId(baseR.id.viewStatisticsTagItem),
+                withId(baseR.id.viewStatisticsItem),
                 withCardColor(color),
                 hasDescendant(withText(name)),
                 hasDescendant(withText(duration)),
@@ -1404,7 +1404,7 @@ class StatisticsDetailTest : BaseUiTest() {
     private fun checkNoTagItem(name: String) {
         checkViewDoesNotExist(
             allOf(
-                withId(baseR.id.viewStatisticsTagItem),
+                withId(baseR.id.viewStatisticsItem),
                 hasDescendant(withText(name)),
             ),
         )

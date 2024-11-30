@@ -23,17 +23,11 @@ class StatisticsInteractor @Inject constructor(
         addUntracked: Boolean,
     ): List<Statistics> = withContext(Dispatchers.IO) {
         val records = getRecords(range)
+        val activityToRecords = getActivityRecords(records)
 
-        records
-            .groupBy {
-                it.typeIds.firstOrNull().orZero() // Multitask is not available in statistics.
-            }
-            .let {
-                getStatistics(range, it)
-            }
-            .plus(
-                getUntracked(range, records, addUntracked),
-            )
+        getStatistics(range, activityToRecords).plus(
+            getUntracked(range, records, addUntracked),
+        )
     }
 
     suspend fun getRecords(range: Range): List<RecordBase> {
@@ -45,6 +39,28 @@ class StatisticsInteractor @Inject constructor(
             recordInteractor.getFromRange(range) +
                 rangeMapper.getRunningRecordsFromRange(runningRecords, range)
         }
+    }
+
+    private fun getActivityRecords(
+        allRecords: List<RecordBase>,
+    ): Map<Long, List<RecordBase>> {
+        return allRecords.groupBy {
+            it.typeIds.firstOrNull().orZero() // Multitask is not available in statistics.
+        }
+    }
+
+    fun getActivityRecordsFull(
+        allRecords: List<RecordBase>,
+    ): Map<Long, List<RecordBase>> {
+        val activities: MutableMap<Long, MutableList<RecordBase>> = mutableMapOf()
+
+        allRecords.forEach { record ->
+            record.typeIds.forEach { typeId ->
+                activities.getOrPut(typeId) { mutableListOf() }.add(record)
+            }
+        }
+
+        return activities
     }
 
     fun getStatistics(
@@ -60,15 +76,23 @@ class StatisticsInteractor @Inject constructor(
     }
 
     fun getStatisticsData(
+        allRecords: Map<Long, List<RecordBase>>,
+    ): List<Statistics> {
+        return allRecords.map { (id, records) ->
+            Statistics(
+                id = id,
+                data = mapStatisticsItem(records),
+            )
+        }
+    }
+
+    private fun getStatisticsData(
         range: Range,
         records: List<RecordBase>,
     ): Statistics.Data {
         // If range is all records - do not clamp to range.
         return if (rangeIsAllRecords(range)) {
-            Statistics.Data(
-                duration = records.sumOf(RecordBase::duration),
-                count = records.size.toLong(),
-            )
+            mapStatisticsItem(records)
         } else {
             // Remove parts of the record that is not in the range
             rangeMapper.getRecordsFromRange(records, range)
@@ -111,5 +135,14 @@ class StatisticsInteractor @Inject constructor(
 
     private fun rangeIsAllRecords(range: Range): Boolean {
         return range.timeStarted == 0L && range.timeEnded == 0L
+    }
+
+    private fun mapStatisticsItem(
+        records: List<RecordBase>,
+    ): Statistics.Data {
+        return Statistics.Data(
+            duration = records.sumOf(RecordBase::duration),
+            count = records.size.toLong(),
+        )
     }
 }
