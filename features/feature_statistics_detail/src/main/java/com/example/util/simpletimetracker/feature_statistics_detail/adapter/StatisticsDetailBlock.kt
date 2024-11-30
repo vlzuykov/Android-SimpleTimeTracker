@@ -29,4 +29,6 @@ enum class StatisticsDetailBlock {
     DurationSplitChart,
     DurationSplitChartComparison,
     NextActivities,
+    DataDistributionHint,
+    DataDistributionMode,
 }

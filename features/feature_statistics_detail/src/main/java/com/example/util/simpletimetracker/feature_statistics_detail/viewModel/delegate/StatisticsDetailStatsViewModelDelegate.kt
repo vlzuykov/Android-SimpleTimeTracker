@@ -4,7 +4,11 @@ import androidx.lifecycle.LiveData
 import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.interactor.StatisticsDetailStatsInteractor
+import com.example.util.simpletimetracker.feature_statistics_detail.model.DataDistributionMode
+import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailDataDistributionModeViewData
+import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailSplitGroupingViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailStatsViewData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,9 +22,16 @@ class StatisticsDetailStatsViewModelDelegate @Inject constructor(
     }
 
     private var parent: StatisticsDetailViewModelDelegate.Parent? = null
+    private var dataDistributionMode = DataDistributionMode.ACTIVITY
 
     override fun attach(parent: StatisticsDetailViewModelDelegate.Parent) {
         this.parent = parent
+    }
+
+    fun onDataDistributionModeClick(viewData: ButtonsRowViewData) {
+        if (viewData !is StatisticsDetailDataDistributionModeViewData) return
+        this.dataDistributionMode = viewData.mode
+        updateViewData()
     }
 
     fun updateViewData() = delegateScope.launch {
@@ -41,6 +52,7 @@ class StatisticsDetailStatsViewModelDelegate @Inject constructor(
             showComparison = parent.comparisonFilter.isNotEmpty(),
             rangeLength = parent.rangeLength,
             rangePosition = parent.rangePosition,
+            dataDistributionMode = dataDistributionMode,
         )
     }
 }

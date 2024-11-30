@@ -1378,8 +1378,7 @@ class StatisticsDetailTest : BaseUiTest() {
         checkCard(coreR.string.statistics_detail_first_record, "-")
         checkCard(coreR.string.statistics_detail_last_record, "-")
 
-        checkViewDoesNotExist(withText(R.string.statistics_detail_activity_split_hint))
-        checkViewDoesNotExist(withText(R.string.statistics_detail_tag_split_hint))
+        checkViewDoesNotExist(withText(R.string.statistics_detail_data_split_hint))
     }
 
     private fun checkAllRecords(count: Int) {

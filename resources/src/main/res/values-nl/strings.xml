@@ -476,8 +476,6 @@ Voorbeeld:<br/>
     <string name="statistics_detail_streaks_latest">Laatste</string>
     <string name="statistics_detail_streaks_any">Elke duur</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Activiteitsverdeling</string>
-    <string name="statistics_detail_tag_split_hint">Label verdeling</string>
     <string name="statistics_detail_day_split_hint">Dagelijkse verdeling</string>
     <string name="statistics_detail_duration_split_hint">Verdeling opname duur</string>
     <string name="statistics_detail_next_activities_hint">Top volgende activiteiten</string>

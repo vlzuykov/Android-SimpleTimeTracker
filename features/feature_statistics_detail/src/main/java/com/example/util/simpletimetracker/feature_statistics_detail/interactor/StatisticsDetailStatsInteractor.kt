@@ -23,15 +23,20 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_base_adapter.statisticsTag.StatisticsTagViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.R
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonsRowViewData
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailHintViewData
+import com.example.util.simpletimetracker.feature_statistics_detail.model.DataDistributionMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailClickableLongest
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailClickableShortest
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailClickableTracked
+import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailDataDistributionModeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailStatsViewData
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class StatisticsDetailStatsInteractor @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
@@ -55,6 +60,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         showComparison: Boolean,
         rangeLength: RangeLength,
         rangePosition: Int,
+        dataDistributionMode: DataDistributionMode,
     ): StatisticsDetailStatsViewData = withContext(Dispatchers.Default) {
         val isDarkTheme = prefsInteractor.getDarkMode()
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
@@ -90,6 +96,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             types = types,
             tags = tags,
             categories = categories,
+            dataDistributionMode = dataDistributionMode,
             isDarkTheme = isDarkTheme,
             useMilitaryTime = useMilitaryTime,
             useProportionalMinutes = useProportionalMinutes,
@@ -127,6 +134,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         types: List<RecordType>,
         tags: List<RecordTag>,
         categories: List<Category>,
+        dataDistributionMode: DataDistributionMode,
         isDarkTheme: Boolean,
         useMilitaryTime: Boolean,
         useProportionalMinutes: Boolean,
@@ -153,24 +161,12 @@ class StatisticsDetailStatsInteractor @Inject constructor(
                 R.color.colorInactive
             }.let(resourceRepo::getColor),
         )
-        val activitySplitData = mapActivities(
+        val splitData = mapDataDistribution(
+            mode = dataDistributionMode,
             records = records,
             typesMap = typesMap,
-            isDarkTheme = isDarkTheme,
-            useProportionalMinutes = useProportionalMinutes,
-            showSeconds = showSeconds,
-        )
-        val categorySplitData = mapCategories(
-            records = records,
-            categoriesMap = categories.associateBy { it.id },
-            isDarkTheme = isDarkTheme,
-            useProportionalMinutes = useProportionalMinutes,
-            showSeconds = showSeconds,
-        )
-        val tagSplitData = mapTags(
-            records = records,
-            typesMap = typesMap,
-            tagsMap = tags.associateBy { it.id },
+            tags = tags,
+            categories = categories,
             isDarkTheme = isDarkTheme,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
@@ -264,7 +260,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             compareLastRecord = compareRecordsSorted.lastOrNull()?.timeEnded
                 .let(::formatDateTimeYear)
                 .let(::processComparisonString),
-            splitData = activitySplitData + categorySplitData + tagSplitData,
+            splitData = splitData,
         )
     }
 
@@ -353,6 +349,65 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         )
     }
 
+    private suspend fun mapDataDistribution(
+        mode: DataDistributionMode,
+        records: List<RecordBase>,
+        typesMap: Map<Long, RecordType>,
+        tags: List<RecordTag>,
+        categories: List<Category>,
+        isDarkTheme: Boolean,
+        useProportionalMinutes: Boolean,
+        showSeconds: Boolean,
+    ): List<ViewHolderType> {
+        val hint = StatisticsDetailHintViewData(
+            block = StatisticsDetailBlock.DataDistributionHint,
+            text = resourceRepo.getString(R.string.statistics_detail_data_split_hint)
+        ).let(::listOf)
+
+        val control = StatisticsDetailButtonsRowViewData(
+            block = StatisticsDetailBlock.DataDistributionMode,
+            marginTopDp = 0,
+            data = DataDistributionMode.entries.map {
+                StatisticsDetailDataDistributionModeViewData(
+                    mode = it,
+                    name = when (it) {
+                        DataDistributionMode.ACTIVITY -> R.string.activity_hint
+                        DataDistributionMode.CATEGORY -> R.string.category_hint
+                        DataDistributionMode.TAG -> R.string.record_tag_hint_short
+                    }.let(resourceRepo::getString),
+                    isSelected = it == mode,
+                )
+            },
+        )
+
+        val items = when (mode) {
+            DataDistributionMode.ACTIVITY -> mapActivities(
+                records = records,
+                typesMap = typesMap,
+                isDarkTheme = isDarkTheme,
+                useProportionalMinutes = useProportionalMinutes,
+                showSeconds = showSeconds,
+            )
+            DataDistributionMode.CATEGORY -> mapCategories(
+                records = records,
+                categoriesMap = categories.associateBy { it.id },
+                isDarkTheme = isDarkTheme,
+                useProportionalMinutes = useProportionalMinutes,
+                showSeconds = showSeconds,
+            )
+            DataDistributionMode.TAG -> mapTags(
+                records = records,
+                typesMap = typesMap,
+                tagsMap = tags.associateBy { it.id },
+                isDarkTheme = isDarkTheme,
+                useProportionalMinutes = useProportionalMinutes,
+                showSeconds = showSeconds,
+            )
+        }
+
+        return hint + control + items
+    }
+
     private fun mapActivities(
         records: List<RecordBase>,
         typesMap: Map<Long, RecordType>,
@@ -374,10 +429,8 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             ?: return emptyList()
         val activitiesSize = activities.size
         val sumDuration = durations.map { (_, duration) -> duration }.sum()
-        val hint = resourceRepo.getString(R.string.statistics_detail_activity_split_hint)
-            .let(::HintViewData).let(::listOf)
 
-        return hint + durations
+        return durations
             .map { (typeId, duration) ->
                 val type = typesMap[typeId]
 
@@ -418,10 +471,8 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             ?: return emptyList()
         val categoriesSize = categories.size
         val sumDuration = durations.map { (_, duration) -> duration }.sum()
-        val hint = resourceRepo.getString(R.string.statistics_detail_category_split_hint)
-            .let(::HintViewData).let(::listOf)
 
-        return hint + durations
+        return durations
             .mapNotNull { (categoryId, duration) ->
                 val category = categoriesMap[categoryId]
                 val color = category?.color
@@ -465,10 +516,8 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             ?: return emptyList()
         val tagsSize = tags.size
         val sumDuration = durations.map { (_, duration) -> duration }.sum()
-        val hint = resourceRepo.getString(R.string.statistics_detail_tag_split_hint)
-            .let(::HintViewData).let(::listOf)
 
-        return hint + durations
+        return durations
             .mapNotNull { (tagId, duration) ->
                 val tag = tagsMap[tagId]
                 val icon = if (tag != null) {

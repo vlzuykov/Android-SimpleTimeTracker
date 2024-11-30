@@ -476,8 +476,6 @@
     <string name="statistics_detail_streaks_latest">Остання</string>
     <string name="statistics_detail_streaks_any">Будь-яка тривалість</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Розподіл активності</string>
-    <string name="statistics_detail_tag_split_hint">Розподіл тегів</string>
     <string name="statistics_detail_day_split_hint">Розподіл протягом дня</string>
     <string name="statistics_detail_duration_split_hint">Розподіл тривалості запису</string>
     <string name="statistics_detail_next_activities_hint">Найчастіші наступні активності</string>

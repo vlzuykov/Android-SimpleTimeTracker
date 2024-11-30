@@ -476,8 +476,6 @@
     <string name="statistics_detail_streaks_latest">אחרונה</string>
     <string name="statistics_detail_streaks_any">כל משך</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">התפלגות פעילויות</string>
-    <string name="statistics_detail_tag_split_hint">התפלגות תגיות</string>
     <string name="statistics_detail_day_split_hint">התפלגות יומית</string>
     <string name="statistics_detail_duration_split_hint">התפלגות משך רשומה</string>
     <string name="statistics_detail_next_activities_hint">פעילויות באות מובילות</string>
