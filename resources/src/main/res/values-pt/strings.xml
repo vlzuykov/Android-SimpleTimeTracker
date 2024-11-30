@@ -476,6 +476,9 @@ Exemplo:<br/>
     <string name="statistics_detail_streaks_latest">Mais recentes</string>
     <string name="statistics_detail_streaks_any">Qualquer duração</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
+    <string name="statistics_detail_data_split_hint">Distribuição</string>
+    <string name="statistics_detail_data_split_pie_chart">Círculo</string>
+    <string name="statistics_detail_data_split_bar_chart">Colunas</string>
     <string name="statistics_detail_day_split_hint">Distribuição diária</string>
     <string name="statistics_detail_duration_split_hint">Distribuição da duração do registro</string>
     <string name="statistics_detail_next_activities_hint">Principais próximas atividades</string>

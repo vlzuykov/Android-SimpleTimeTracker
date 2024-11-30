@@ -476,6 +476,9 @@ Przykład:<br/>
     <string name="statistics_detail_streaks_latest">Ostatnia</string>
     <string name="statistics_detail_streaks_any">Dowolny czas trwania</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
+    <string name="statistics_detail_data_split_hint">Dystrybucja</string>
+    <string name="statistics_detail_data_split_pie_chart">Koło</string>
+    <string name="statistics_detail_data_split_bar_chart">Kolumny</string>
     <string name="statistics_detail_day_split_hint">Podział dzienny</string>
     <string name="statistics_detail_duration_split_hint">Rozkład czasu trwania rekordu</string>
     <string name="statistics_detail_next_activities_hint">Bezpośrednio przed</string>

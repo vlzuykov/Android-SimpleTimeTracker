@@ -476,6 +476,9 @@ Ví dụ:<br/>
     <string name="statistics_detail_streaks_latest">Mới nhất</string>
     <string name="statistics_detail_streaks_any">Bất kỳ thời lượng nào</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
+    <string name="statistics_detail_data_split_hint">Phân bổ</string>
+    <string name="statistics_detail_data_split_pie_chart">Vòng tròn</string>
+    <string name="statistics_detail_data_split_bar_chart">Cột</string>
     <string name="statistics_detail_day_split_hint">Phân bổ hàng ngày</string>
     <string name="statistics_detail_duration_split_hint">Phân bổ thời lượng bản ghi</string>
     <string name="statistics_detail_next_activities_hint">Hoạt động tiếp theo hàng đầu</string>

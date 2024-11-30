@@ -476,6 +476,9 @@
     <string name="statistics_detail_streaks_latest">آخرین</string>
     <string name="statistics_detail_streaks_any">هر مدت</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
+    <string name="statistics_detail_data_split_hint">توزیع</string>
+    <string name="statistics_detail_data_split_pie_chart">دایره</string>
+    <string name="statistics_detail_data_split_bar_chart">ستون ها</string>
     <string name="statistics_detail_day_split_hint">پراکندگی روزانه</string>
     <string name="statistics_detail_duration_split_hint">پراکندگی طول تاریخچه</string>
     <string name="statistics_detail_next_activities_hint">برترین فعالیت های بعدی</string>

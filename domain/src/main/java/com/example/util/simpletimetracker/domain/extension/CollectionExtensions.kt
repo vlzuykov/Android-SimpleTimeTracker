@@ -10,3 +10,7 @@ fun <T> MutableList<T>.addOrRemove(item: T) {
 fun <T> MutableSet<T>.addOrRemove(item: T) {
     if (item in this) remove(item) else add(item)
 }
+
+operator fun <T> MutableCollection<in T>.plusAssign(element: T?) {
+    if (element != null) this.add(element)
+}

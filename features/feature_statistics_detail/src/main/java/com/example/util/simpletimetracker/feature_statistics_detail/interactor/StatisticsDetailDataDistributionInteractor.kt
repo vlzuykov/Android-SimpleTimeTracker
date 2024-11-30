@@ -17,6 +17,7 @@ import com.example.util.simpletimetracker.domain.model.RecordBase
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.Statistics
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.statistics.StatisticsViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBarChartViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
@@ -45,10 +46,6 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
     private val resourceRepo: ResourceRepo,
 ) {
 
-    // TODO STATS add translations
-    // TODO STATS refactor StatisticsTagViewData
-    // TODO STATS add round caps and gradient to data distribution bar chart
-    // TODO STATS don't show graphs if only one data point
     suspend fun mapDataDistribution(
         mode: DataDistributionMode,
         graph: DataDistributionGraph,
@@ -58,6 +55,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
     ): List<ViewHolderType> {
+        if (records.isEmpty()) return emptyList()
         val result = mutableListOf<ViewHolderType>()
 
         val filterType = mapFilterType(
@@ -71,9 +69,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             mode = mode,
             allRecords = records,
         )
-
-        result += mapHint()
-        result += mapChart(
+        val chart = mapChart(
             graph = graph,
             filterType = filterType,
             statistics = statistics,
@@ -81,9 +77,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
         )
-        result += mapModeControl(mode)
-        result += mapGraphControl(graph)
-        result += mapItemsList(
+        val items = mapItemsList(
             statistics = statistics,
             data = dataHolders,
             filterType = filterType,
@@ -91,6 +85,12 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
         )
+
+        result += mapHint()
+        result += chart
+        result += mapModeControl(mode)
+        result += mapGraphControl(graph)
+        result += items
 
         return result
     }
@@ -130,7 +130,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
         isDarkTheme: Boolean,
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
-    ): List<ViewHolderType> {
+    ): List<StatisticsViewData> {
         return statisticsViewDataMapper.mapItemsList(
             shift = shift,
             statistics = statistics,
@@ -221,6 +221,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             shouldDrawHorizontalLegends = false,
             showSelectedBarOnStart = false,
             goalValue = 0f,
+            drawRoundCaps = true,
             animate = OneShotValue(true),
         )
     }
@@ -301,9 +302,11 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
                 StatisticsDetailDataDistributionGraphViewData(
                     graph = it,
                     name = when (it) {
-                        DataDistributionGraph.PIE_CHART -> "Pie chart" // TODO STATS
-                        DataDistributionGraph.BAR_CHART -> "Bar chart"
-                    },
+                        DataDistributionGraph.PIE_CHART ->
+                            R.string.statistics_detail_data_split_pie_chart
+                        DataDistributionGraph.BAR_CHART ->
+                            R.string.statistics_detail_data_split_bar_chart
+                    }.let(resourceRepo::getString),
                     isSelected = it == graph,
                 )
             },

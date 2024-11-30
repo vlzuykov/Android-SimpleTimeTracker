@@ -84,6 +84,7 @@ class BarChartView @JvmOverloads constructor(
     private val barAnimationDuration: Long = 300L // ms
     private var selectedBarWasShownOnStart: Boolean = false
     private var singleColor: Int? = null
+    private var drawRoundCaps: Boolean = true
 
     private val barPaint: Paint = Paint()
     private val selectedBarPaint: Paint = Paint()
@@ -160,6 +161,7 @@ class BarChartView @JvmOverloads constructor(
     fun setBars(
         data: List<ViewData>,
         @ColorInt singleColor: Int?,
+        drawRoundCaps: Boolean,
         animate: Boolean,
     ) {
         bars = data.takeUnless { it.isEmpty() }
@@ -174,6 +176,7 @@ class BarChartView @JvmOverloads constructor(
             selectedBar = -1
         }
         this.singleColor = singleColor
+        this.drawRoundCaps = drawRoundCaps
         invalidate()
         if (!isInEditMode && animate) animateBars()
     }
@@ -424,7 +427,7 @@ class BarChartView @JvmOverloads constructor(
                 barPath = Path().apply {
                     // Draw round caps only if single colored,
                     // otherwise it wouldn't be visible on some small bar parts.
-                    if (partIndex == size - 1 && singleColor != null) {
+                    if (partIndex == size - 1 && drawRoundCaps) {
                         addRoundRect(bounds, radiusArr, Path.Direction.CW)
                     } else {
                         addRect(bounds, Path.Direction.CW)
@@ -592,6 +595,7 @@ class BarChartView @JvmOverloads constructor(
                     setBars(
                         data = it,
                         singleColor = null,
+                        drawRoundCaps = false,
                         animate = false,
                     )
                 }

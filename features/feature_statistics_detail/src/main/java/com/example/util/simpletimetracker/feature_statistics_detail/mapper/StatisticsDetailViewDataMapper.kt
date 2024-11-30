@@ -223,17 +223,22 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         showSeconds: Boolean,
         isDarkTheme: Boolean,
     ): StatisticsDetailChartCompositeViewData {
+        val chartIsSplitByActivity = splitByActivity && canSplitByActivity
+        val chartComparisonIsSplitByActivity = splitByActivity && canComparisonSplitByActivity
+
         val chartData = mapChartData(
             data = data,
             goal = goalValue,
             rangeLength = rangeLength,
             showSelectedBarOnStart = true,
+            drawRoundCaps = !chartIsSplitByActivity,
         )
         val compareChartData = mapChartData(
             data = compareData,
             goal = compareGoalValue,
             rangeLength = rangeLength,
             showSelectedBarOnStart = false,
+            drawRoundCaps = !chartComparisonIsSplitByActivity
         )
         val (title, rangeAverages) = getRangeAverages(
             data = data,
@@ -276,8 +281,8 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             appliedChartLength = appliedChartLength,
             chartLengthViewData = chartLengthViewData,
             chartLengthVisible = chartLengthViewData.isNotEmpty(),
-            useSingleColor = !splitByActivity || !canSplitByActivity,
-            useSingleColorComparison = !splitByActivity || !canComparisonSplitByActivity,
+            useSingleColor = !chartIsSplitByActivity,
+            useSingleColorComparison = !chartComparisonIsSplitByActivity,
             splitActivitiesItems = splitByActivityItems,
         )
     }
@@ -296,6 +301,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 shouldDrawHorizontalLegends = false,
                 showSelectedBarOnStart = false,
                 goalValue = 0f,
+                drawRoundCaps = true,
                 animate = OneShotValue(true),
             ),
             compareChartData = StatisticsDetailChartViewData(
@@ -306,6 +312,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 shouldDrawHorizontalLegends = false,
                 showSelectedBarOnStart = false,
                 goalValue = 0f,
+                drawRoundCaps = true,
                 animate = OneShotValue(true),
             ),
             showComparison = false,
@@ -362,6 +369,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             shouldDrawHorizontalLegends = true,
             showSelectedBarOnStart = false,
             goalValue = 0f,
+            drawRoundCaps = true,
             animate = OneShotValue(true),
         )
     }
@@ -390,6 +398,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             shouldDrawHorizontalLegends = true,
             showSelectedBarOnStart = false,
             goalValue = 0f,
+            drawRoundCaps = true,
             animate = OneShotValue(true),
         )
     }
@@ -442,6 +451,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             shouldDrawHorizontalLegends = true,
             showSelectedBarOnStart = false,
             goalValue = 0f,
+            drawRoundCaps = true,
             animate = OneShotValue(true),
         )
     }
@@ -616,6 +626,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         goal: Long,
         rangeLength: RangeLength,
         showSelectedBarOnStart: Boolean,
+        drawRoundCaps: Boolean,
     ): StatisticsDetailChartViewData {
         val (legendSuffix, isMinutes) = mapLegendSuffix(data)
 
@@ -644,6 +655,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             },
             showSelectedBarOnStart = showSelectedBarOnStart,
             goalValue = formatInterval(goal, isMinutes = isMinutes),
+            drawRoundCaps = drawRoundCaps,
             animate = OneShotValue(true),
         )
     }

@@ -476,6 +476,9 @@ Exemple:<br/>
     <string name="statistics_detail_streaks_latest">Última</string>
     <string name="statistics_detail_streaks_any">Qualsevol durada</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
+    <string name="statistics_detail_data_split_hint">Distribució</string>
+    <string name="statistics_detail_data_split_pie_chart">Cercle</string>
+    <string name="statistics_detail_data_split_bar_chart">Columnes</string>
     <string name="statistics_detail_day_split_hint">Distribució diària</string>
     <string name="statistics_detail_duration_split_hint">Distribució de la durada de l\'enregistrament</string>
     <string name="statistics_detail_next_activities_hint">Les properes activitats principals</string>
