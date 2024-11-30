@@ -134,6 +134,8 @@ class StatisticsDetailViewModel @Inject constructor(
                 splitChartDelegate.onSplitChartGroupingClick(viewData)
             StatisticsDetailBlock.DataDistributionMode ->
                 statsDelegate.onDataDistributionModeClick(viewData)
+            StatisticsDetailBlock.DataDistributionGraph ->
+                statsDelegate.onDataDistributionGraphClick(viewData)
             else -> {
                 // Do nothing
             }

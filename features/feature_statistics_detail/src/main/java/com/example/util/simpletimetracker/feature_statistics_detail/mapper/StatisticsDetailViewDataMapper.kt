@@ -617,23 +617,16 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         rangeLength: RangeLength,
         showSelectedBarOnStart: Boolean,
     ): StatisticsDetailChartViewData {
-        val isMinutes = data.maxOfOrNull { it.durations.sumOf { it.first } }
-            .orZero()
-            .let(TimeUnit.MILLISECONDS::toHours) == 0L
-
-        val legendSuffix = if (isMinutes) {
-            R.string.statistics_detail_legend_minute_suffix
-        } else {
-            R.string.statistics_detail_legend_hour_suffix
-        }.let(resourceRepo::getString)
+        val (legendSuffix, isMinutes) = mapLegendSuffix(data)
 
         return StatisticsDetailChartViewData(
             visible = data.size > 1,
             data = data.map {
+                val value = it.durations.map { (duration, color) ->
+                    formatInterval(duration, isMinutes) to color
+                }
                 BarChartView.ViewData(
-                    value = it.durations.map {
-                        formatInterval(it.first, isMinutes) to it.second
-                    },
+                    value = value,
                     legend = it.legend,
                 )
             },
@@ -655,7 +648,23 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         )
     }
 
-    private fun formatInterval(interval: Long, isMinutes: Boolean): Float {
+    fun mapLegendSuffix(
+        data: List<ChartBarDataDuration>,
+    ): Pair<String, Boolean> {
+        val isMinutes = data.maxOfOrNull { it.durations.sumOf { it.first } }
+            .orZero()
+            .let(TimeUnit.MILLISECONDS::toHours) == 0L
+
+        val legendSuffix = if (isMinutes) {
+            R.string.statistics_detail_legend_minute_suffix
+        } else {
+            R.string.statistics_detail_legend_hour_suffix
+        }.let(resourceRepo::getString)
+
+        return legendSuffix to isMinutes
+    }
+
+    fun formatInterval(interval: Long, isMinutes: Boolean): Float {
         val hr: Long = TimeUnit.MILLISECONDS.toHours(
             interval,
         )
@@ -679,6 +688,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         isDarkTheme: Boolean,
     ): List<ViewHolderType> {
         return StatisticsDetailButtonViewData(
+            marginTopDp = -10,
             data = StatisticsDetailButtonViewData.Button(
                 block = StatisticsDetailBlock.ChartSplitByActivity,
                 text = resourceRepo.getString(R.string.statistics_detail_chart_split),

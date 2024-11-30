@@ -116,19 +116,20 @@ class StatisticsViewDataMapper @Inject constructor(
             statisticsSize = statisticsSize,
         )
         val transitionName = "${TransitionNames.STATISTICS_DETAIL}_shift${shift}_id${statistics.id}"
+        val duration = mapDuration(
+            statistics = statistics,
+            showDuration = showDuration,
+            showSeconds = showSeconds,
+            useProportionalMinutes = useProportionalMinutes,
+        )
 
-        when {
+        return when {
             statistics.id == UNTRACKED_ITEM_ID -> {
-                return StatisticsViewData(
+                StatisticsViewData(
                     id = statistics.id,
                     name = R.string.untracked_time_name
                         .let(resourceRepo::getString),
-                    duration = mapDuration(
-                        statistics = statistics,
-                        showDuration = showDuration,
-                        showSeconds = showSeconds,
-                        useProportionalMinutes = useProportionalMinutes,
-                    ),
+                    duration = duration,
                     percent = durationPercent,
                     icon = RecordTypeIcon.Image(R.drawable.unknown),
                     color = colorMapper.toUntrackedColor(isDarkTheme),
@@ -136,19 +137,14 @@ class StatisticsViewDataMapper @Inject constructor(
                 )
             }
             statistics.id == UNCATEGORIZED_ITEM_ID -> {
-                return StatisticsViewData(
+                StatisticsViewData(
                     id = statistics.id,
                     name = if (filterType == ChartFilterType.RECORD_TAG) {
                         R.string.change_record_untagged
                     } else {
                         R.string.uncategorized_time_name
                     }.let(resourceRepo::getString),
-                    duration = mapDuration(
-                        statistics = statistics,
-                        showDuration = showDuration,
-                        showSeconds = showSeconds,
-                        useProportionalMinutes = useProportionalMinutes,
-                    ),
+                    duration = duration,
                     percent = durationPercent,
                     icon = RecordTypeIcon.Image(R.drawable.untagged),
                     color = colorMapper.toUntrackedColor(isDarkTheme),
@@ -156,15 +152,10 @@ class StatisticsViewDataMapper @Inject constructor(
                 )
             }
             dataHolder != null -> {
-                return StatisticsViewData(
+                StatisticsViewData(
                     id = statistics.id,
                     name = dataHolder.name,
-                    duration = mapDuration(
-                        statistics = statistics,
-                        showDuration = showDuration,
-                        showSeconds = showSeconds,
-                        useProportionalMinutes = useProportionalMinutes,
-                    ),
+                    duration = duration,
                     percent = durationPercent,
                     icon = dataHolder.icon
                         ?.let(iconMapper::mapIcon),
@@ -173,9 +164,7 @@ class StatisticsViewDataMapper @Inject constructor(
                     transitionName = transitionName,
                 )
             }
-            else -> {
-                return null
-            }
+            else -> null
         }
     }
 

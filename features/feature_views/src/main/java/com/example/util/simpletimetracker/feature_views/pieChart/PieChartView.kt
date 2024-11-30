@@ -117,6 +117,10 @@ class PieChartView @JvmOverloads constructor(
         attachedListener = listener
     }
 
+    fun resetAnimation() {
+        shouldAnimateSegmentsOpen = true
+    }
+
     fun setSegments(
         data: List<PiePortion>,
         animateOpen: Boolean,

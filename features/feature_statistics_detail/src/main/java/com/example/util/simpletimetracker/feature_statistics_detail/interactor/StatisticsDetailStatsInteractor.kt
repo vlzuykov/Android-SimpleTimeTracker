@@ -1,39 +1,23 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
-import com.example.util.simpletimetracker.core.mapper.ColorMapper
-import com.example.util.simpletimetracker.core.mapper.IconMapper
-import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsTagInteractor
 import com.example.util.simpletimetracker.domain.mapper.RangeMapper
-import com.example.util.simpletimetracker.domain.mapper.StatisticsMapper
-import com.example.util.simpletimetracker.domain.model.Category
 import com.example.util.simpletimetracker.domain.model.RangeLength
 import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
-import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
-import com.example.util.simpletimetracker.feature_base_adapter.statisticsTag.StatisticsTagViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.R
-import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
-import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonsRowViewData
-import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailHintViewData
+import com.example.util.simpletimetracker.feature_statistics_detail.model.DataDistributionGraph
 import com.example.util.simpletimetracker.feature_statistics_detail.model.DataDistributionMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailClickableLongest
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailClickableShortest
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailClickableTracked
-import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailDataDistributionModeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailStatsViewData
-import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -41,17 +25,10 @@ import javax.inject.Inject
 class StatisticsDetailStatsInteractor @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val recordTypeInteractor: RecordTypeInteractor,
-    private val categoryInteractor: CategoryInteractor,
-    private val recordTagInteractor: RecordTagInteractor,
     private val timeMapper: TimeMapper,
-    private val statisticsMapper: StatisticsMapper,
-    private val statisticsTagInteractor: StatisticsTagInteractor,
-    private val statisticsCategoryInteractor: StatisticsCategoryInteractor,
-    private val recordTagViewDataMapper: RecordTagViewDataMapper,
-    private val iconMapper: IconMapper,
-    private val colorMapper: ColorMapper,
     private val rangeMapper: RangeMapper,
     private val resourceRepo: ResourceRepo,
+    private val dataDistributionInteractor: StatisticsDetailDataDistributionInteractor,
 ) {
 
     suspend fun getStatsViewData(
@@ -61,6 +38,7 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         rangeLength: RangeLength,
         rangePosition: Int,
         dataDistributionMode: DataDistributionMode,
+        dataDistributionGraph: DataDistributionGraph,
     ): StatisticsDetailStatsViewData = withContext(Dispatchers.Default) {
         val isDarkTheme = prefsInteractor.getDarkMode()
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
@@ -69,8 +47,6 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         val useProportionalMinutes = prefsInteractor.getUseProportionalMinutes()
         val showSeconds = prefsInteractor.getShowSeconds()
         val types = recordTypeInteractor.getAll()
-        val tags = recordTagInteractor.getAll()
-        val categories = categoryInteractor.getAll()
 
         val range = timeMapper.getRangeStartAndEnd(
             rangeLength = rangeLength,
@@ -94,9 +70,8 @@ class StatisticsDetailStatsInteractor @Inject constructor(
             },
             showComparison = showComparison,
             types = types,
-            tags = tags,
-            categories = categories,
             dataDistributionMode = dataDistributionMode,
+            dataDistributionGraph = dataDistributionGraph,
             isDarkTheme = isDarkTheme,
             useMilitaryTime = useMilitaryTime,
             useProportionalMinutes = useProportionalMinutes,
@@ -132,9 +107,8 @@ class StatisticsDetailStatsInteractor @Inject constructor(
         compareRecords: List<RecordBase>,
         showComparison: Boolean,
         types: List<RecordType>,
-        tags: List<RecordTag>,
-        categories: List<Category>,
         dataDistributionMode: DataDistributionMode,
+        dataDistributionGraph: DataDistributionGraph,
         isDarkTheme: Boolean,
         useMilitaryTime: Boolean,
         useProportionalMinutes: Boolean,
@@ -161,12 +135,11 @@ class StatisticsDetailStatsInteractor @Inject constructor(
                 R.color.colorInactive
             }.let(resourceRepo::getColor),
         )
-        val splitData = mapDataDistribution(
+        val splitData = dataDistributionInteractor.mapDataDistribution(
             mode = dataDistributionMode,
+            graph = dataDistributionGraph,
             records = records,
             typesMap = typesMap,
-            tags = tags,
-            categories = categories,
             isDarkTheme = isDarkTheme,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
@@ -346,246 +319,6 @@ class StatisticsDetailStatsInteractor @Inject constructor(
                 ),
             ),
             splitData = splitData,
-        )
-    }
-
-    private suspend fun mapDataDistribution(
-        mode: DataDistributionMode,
-        records: List<RecordBase>,
-        typesMap: Map<Long, RecordType>,
-        tags: List<RecordTag>,
-        categories: List<Category>,
-        isDarkTheme: Boolean,
-        useProportionalMinutes: Boolean,
-        showSeconds: Boolean,
-    ): List<ViewHolderType> {
-        val hint = StatisticsDetailHintViewData(
-            block = StatisticsDetailBlock.DataDistributionHint,
-            text = resourceRepo.getString(R.string.statistics_detail_data_split_hint)
-        ).let(::listOf)
-
-        val control = StatisticsDetailButtonsRowViewData(
-            block = StatisticsDetailBlock.DataDistributionMode,
-            marginTopDp = 0,
-            data = DataDistributionMode.entries.map {
-                StatisticsDetailDataDistributionModeViewData(
-                    mode = it,
-                    name = when (it) {
-                        DataDistributionMode.ACTIVITY -> R.string.activity_hint
-                        DataDistributionMode.CATEGORY -> R.string.category_hint
-                        DataDistributionMode.TAG -> R.string.record_tag_hint_short
-                    }.let(resourceRepo::getString),
-                    isSelected = it == mode,
-                )
-            },
-        )
-
-        val items = when (mode) {
-            DataDistributionMode.ACTIVITY -> mapActivities(
-                records = records,
-                typesMap = typesMap,
-                isDarkTheme = isDarkTheme,
-                useProportionalMinutes = useProportionalMinutes,
-                showSeconds = showSeconds,
-            )
-            DataDistributionMode.CATEGORY -> mapCategories(
-                records = records,
-                categoriesMap = categories.associateBy { it.id },
-                isDarkTheme = isDarkTheme,
-                useProportionalMinutes = useProportionalMinutes,
-                showSeconds = showSeconds,
-            )
-            DataDistributionMode.TAG -> mapTags(
-                records = records,
-                typesMap = typesMap,
-                tagsMap = tags.associateBy { it.id },
-                isDarkTheme = isDarkTheme,
-                useProportionalMinutes = useProportionalMinutes,
-                showSeconds = showSeconds,
-            )
-        }
-
-        return hint + control + items
-    }
-
-    private fun mapActivities(
-        records: List<RecordBase>,
-        typesMap: Map<Long, RecordType>,
-        isDarkTheme: Boolean,
-        useProportionalMinutes: Boolean,
-        showSeconds: Boolean,
-    ): List<ViewHolderType> {
-        val activities: MutableMap<Long, MutableList<RecordBase>> = mutableMapOf()
-
-        records.forEach { record ->
-            record.typeIds.forEach { typeId ->
-                activities.getOrPut(typeId) { mutableListOf() }.add(record)
-            }
-        }
-
-        val durations = activities
-            .takeUnless { it.isEmpty() }
-            ?.mapValues { (_, records) -> records.let(rangeMapper::mapRecordsToDuration) }
-            ?: return emptyList()
-        val activitiesSize = activities.size
-        val sumDuration = durations.map { (_, duration) -> duration }.sum()
-
-        return durations
-            .map { (typeId, duration) ->
-                val type = typesMap[typeId]
-
-                mapTag(
-                    id = "activity_$typeId".hashCode().toLong(),
-                    name = type?.name
-                        ?: resourceRepo.getString(R.string.untracked_time_name),
-                    icon = type?.icon?.let(iconMapper::mapIcon)
-                        ?: RecordTypeIcon.Image(R.drawable.unknown),
-                    color = type?.color?.let { colorMapper.mapToColorInt(it, isDarkTheme) }
-                        ?: colorMapper.toUntrackedColor(isDarkTheme),
-                    duration = duration,
-                    sumDuration = sumDuration,
-                    statisticsSize = activitiesSize,
-                    useProportionalMinutes = useProportionalMinutes,
-                    showSeconds = showSeconds,
-                ) to duration
-            }
-            .sortedByDescending { (_, duration) -> duration }
-            .map { (statistics, _) -> statistics }
-    }
-
-    private suspend fun mapCategories(
-        records: List<RecordBase>,
-        categoriesMap: Map<Long, Category>,
-        isDarkTheme: Boolean,
-        useProportionalMinutes: Boolean,
-        showSeconds: Boolean,
-    ): List<ViewHolderType> {
-        val categories = statisticsCategoryInteractor.getCategoryRecords(
-            allRecords = records,
-            addUncategorized = true,
-        )
-
-        val durations = categories
-            .takeUnless { it.isEmpty() }
-            ?.mapValues { (_, records) -> records.let(rangeMapper::mapRecordsToDuration) }
-            ?: return emptyList()
-        val categoriesSize = categories.size
-        val sumDuration = durations.map { (_, duration) -> duration }.sum()
-
-        return durations
-            .mapNotNull { (categoryId, duration) ->
-                val category = categoriesMap[categoryId]
-                val color = category?.color
-                    ?.let { colorMapper.mapToColorInt(it, isDarkTheme) }
-                    ?: colorMapper.toUntrackedColor(isDarkTheme)
-                val name = category?.name
-                    ?: R.string.uncategorized_time_name.let(resourceRepo::getString)
-
-                mapTag(
-                    id = "category_${category?.id.orZero()}".hashCode().toLong(),
-                    name = name,
-                    icon = null,
-                    color = color,
-                    duration = duration,
-                    sumDuration = sumDuration,
-                    statisticsSize = categoriesSize,
-                    useProportionalMinutes = useProportionalMinutes,
-                    showSeconds = showSeconds,
-                ) to duration
-            }
-            .sortedByDescending { (_, duration) -> duration }
-            .map { (statistics, _) -> statistics }
-    }
-
-    private fun mapTags(
-        records: List<RecordBase>,
-        typesMap: Map<Long, RecordType>,
-        tagsMap: Map<Long, RecordTag>,
-        isDarkTheme: Boolean,
-        useProportionalMinutes: Boolean,
-        showSeconds: Boolean,
-    ): List<ViewHolderType> {
-        val tags = statisticsTagInteractor.getTagRecords(
-            allRecords = records,
-            addUncategorized = true,
-        )
-
-        val durations = tags
-            .takeUnless { it.isEmpty() }
-            ?.mapValues { (_, records) -> records.let(rangeMapper::mapRecordsToDuration) }
-            ?: return emptyList()
-        val tagsSize = tags.size
-        val sumDuration = durations.map { (_, duration) -> duration }.sum()
-
-        return durations
-            .mapNotNull { (tagId, duration) ->
-                val tag = tagsMap[tagId]
-                val icon = if (tag != null) {
-                    recordTagViewDataMapper.mapIcon(tag, typesMap)
-                        ?.let(iconMapper::mapIcon)
-                        ?: RecordTypeIcon.Image(0)
-                } else {
-                    RecordTypeIcon.Image(R.drawable.untagged)
-                }
-                val color = if (tag != null) {
-                    recordTagViewDataMapper.mapColor(tag, typesMap)
-                        .let { colorMapper.mapToColorInt(it, isDarkTheme) }
-                } else {
-                    colorMapper.toUntrackedColor(isDarkTheme)
-                }
-                val name = tag?.name
-                    ?: R.string.change_record_untagged.let(resourceRepo::getString)
-
-                mapTag(
-                    id = "tag_${tag?.id.orZero()}".hashCode().toLong(),
-                    name = name,
-                    icon = icon,
-                    color = color,
-                    duration = duration,
-                    sumDuration = sumDuration,
-                    statisticsSize = tagsSize,
-                    useProportionalMinutes = useProportionalMinutes,
-                    showSeconds = showSeconds,
-                ) to duration
-            }
-            .sortedByDescending { (_, duration) -> duration }
-            .map { (statistics, _) -> statistics }
-    }
-
-    private fun mapTag(
-        id: Long,
-        name: String,
-        icon: RecordTypeIcon?,
-        color: Int,
-        duration: Long,
-        sumDuration: Long,
-        statisticsSize: Int,
-        useProportionalMinutes: Boolean,
-        showSeconds: Boolean,
-    ): StatisticsTagViewData {
-        val durationPercent = statisticsMapper.getDurationPercentString(
-            sumDuration = sumDuration,
-            duration = duration,
-            statisticsSize = statisticsSize,
-        )
-
-        return StatisticsTagViewData(
-            id = id,
-            name = name,
-            duration = duration
-                .let {
-                    timeMapper.formatInterval(
-                        interval = it,
-                        forceSeconds = showSeconds,
-                        useProportionalMinutes = useProportionalMinutes,
-                    )
-                },
-            percent = durationPercent,
-            // Take icon and color from recordType if it is a typed tag,
-            // show empty icon and tag color for untyped tags,
-            // show unknown icon and untracked color if tagId == 0, meaning it is untagged.
-            icon = icon,
-            color = color,
         )
     }
 }

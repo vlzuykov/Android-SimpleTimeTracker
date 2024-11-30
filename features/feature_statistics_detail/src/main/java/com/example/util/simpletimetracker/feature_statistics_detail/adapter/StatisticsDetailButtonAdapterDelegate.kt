@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
+import com.example.util.simpletimetracker.feature_views.extension.setMargins
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
 import com.example.util.simpletimetracker.feature_views.extension.visible
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonViewData as ViewData
@@ -17,6 +18,8 @@ fun createStatisticsDetailButtonAdapterDelegate(
 
     with(binding) {
         item as ViewData
+
+        root.setMargins(top = item.marginTopDp)
 
         btnStatisticsDetailButtonItem.text = item.data.text
         btnStatisticsDetailButtonItem.backgroundTintList =
@@ -36,6 +39,7 @@ fun createStatisticsDetailButtonAdapterDelegate(
 }
 
 data class StatisticsDetailButtonViewData(
+    val marginTopDp: Int,
     val data: Button,
     val dataSecond: Button?,
 ) : ViewHolderType {
