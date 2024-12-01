@@ -11,7 +11,9 @@ data class TypesSelectionDialogParams(
     val type: Type,
     val selectedTypeIds: List<Long>,
     val isMultiSelectAvailable: Boolean,
+    // Allows showing items that are archived but was selected earlier.
     val idsShouldBeVisible: List<Long>,
+    val showHints: Boolean,
 ) : Parcelable, ScreenParams {
 
     sealed interface Type : Parcelable {
@@ -31,6 +33,7 @@ data class TypesSelectionDialogParams(
             type = Type.Activity,
             isMultiSelectAvailable = false,
             idsShouldBeVisible = emptyList(),
+            showHints = false,
         )
     }
 }

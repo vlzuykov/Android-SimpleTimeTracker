@@ -206,6 +206,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             selectedTypeIds = prefsInteractor.getRecordTagSelectionExcludeActivities(),
             isMultiSelectAvailable = true,
             idsShouldBeVisible = emptyList(),
+            showHints = true,
         ).let(router::navigate)
     }
 
@@ -230,6 +231,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             selectedTypeIds = prefsInteractor.getCommentInputExcludeActivities(),
             isMultiSelectAvailable = true,
             idsShouldBeVisible = emptyList(),
+            showHints = true,
         ).let(router::navigate)
     }
 

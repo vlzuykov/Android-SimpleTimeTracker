@@ -1,38 +1,7 @@
 package com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.model
 
+import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+
 data class RecordQuickActionsState(
-    val buttons: List<Button>,
-) {
-
-    sealed interface Button {
-        val wrapBefore: Boolean
-
-        data class Statistics(
-            override val wrapBefore: Boolean,
-        ) : Button
-
-        data class Delete(
-            override val wrapBefore: Boolean,
-        ) : Button
-
-        data class Continue(
-            override val wrapBefore: Boolean,
-        ) : Button
-
-        data class Repeat(
-            override val wrapBefore: Boolean,
-        ) : Button
-
-        data class Duplicate(
-            override val wrapBefore: Boolean,
-        ) : Button
-
-        data class Merge(
-            override val wrapBefore: Boolean,
-        ) : Button
-
-        data class Stop(
-            override val wrapBefore: Boolean,
-        ) : Button
-    }
-}
+    val buttons: List<ViewHolderType>,
+)

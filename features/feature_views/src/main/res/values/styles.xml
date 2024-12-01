@@ -288,7 +288,7 @@
     <style name="EditScreenControlButtonText" parent="InputFieldCardText">
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:maxLines">2</item>
         <item name="layout_constrainedWidth">true</item>
     </style>
 

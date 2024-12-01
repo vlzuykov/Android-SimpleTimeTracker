@@ -91,13 +91,15 @@ class TypesSelectionViewDataInteractor @Inject constructor(
             result += EmptyViewData(message = message)
             return result
         }
-        if (selected.isNotEmpty()) {
+
+        if (selected.isNotEmpty() && extra.showHints) {
             result += InfoViewData(resourceRepo.getString(R.string.something_selected))
-            result += selected
-        } else {
+        }
+        result += selected
+        if (selected.isEmpty() && extra.showHints) {
             result += InfoViewData(resourceRepo.getString(R.string.nothing_selected))
         }
-        if (available.isNotEmpty()) {
+        if (available.isNotEmpty() && extra.showHints) {
             result += DividerViewData(0)
         }
         result += available

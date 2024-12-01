@@ -203,6 +203,7 @@ class ChangeRecordTagViewModel @Inject constructor(
             selectedTypeIds = listOf(newIconColorSource),
             isMultiSelectAvailable = false,
             idsShouldBeVisible = listOf(newIconColorSource),
+            showHints = true,
         ).let(router::navigate)
     }
 

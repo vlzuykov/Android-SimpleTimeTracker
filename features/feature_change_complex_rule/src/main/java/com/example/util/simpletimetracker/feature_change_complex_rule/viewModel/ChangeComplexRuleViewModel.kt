@@ -116,6 +116,7 @@ class ChangeComplexRuleViewModel @Inject constructor(
                     selectedTypeIds = newAssignTagIds.toList(),
                     isMultiSelectAvailable = true,
                     idsShouldBeVisible = originalAssignTagIds.toList(),
+                    showHints = true,
                 ).let(router::navigate)
             }
         }
