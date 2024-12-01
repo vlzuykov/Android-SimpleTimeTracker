@@ -3,32 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btnRecordQuickActionsButton"
-    style="@style/RecordQuickActionButton"
-    android:layout_width="match_parent">
+    style="@style/EditScreenControlButton"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    app:cardBackgroundColor="?appActiveColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="16dp">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivRecordQuickActionsButton"
-            style="@style/RecordQuickActionButtonImage"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toStartOf="@id/tvRecordQuickActionsButton"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardRecordQuickActionsButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:foreground="?selectableItemBackground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/action_continue" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:backgroundTint="@color/purple_200">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivRecordQuickActionsButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scaleType="centerCrop"
+                android:tint="?appCardBackgroundColor"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/action_continue" />
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvRecordQuickActionsButton"
-            style="@style/RecordQuickActionButtonText"
-            android:layout_width="wrap_content"
+            style="@style/EditScreenControlButtonText"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="48dp"
+            android:textColor="?appLightTextColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivRecordQuickActionsButton"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="Button text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

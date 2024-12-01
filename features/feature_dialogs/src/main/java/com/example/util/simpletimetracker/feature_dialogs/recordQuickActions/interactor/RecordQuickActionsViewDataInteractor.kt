@@ -51,31 +51,37 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
                 block = RecordQuickActionsButton.CONTINUE,
                 text = R.string.change_record_continue.let(resourceRepo::getString),
                 icon = R.drawable.action_continue,
+                iconColor = resourceRepo.getColor(R.color.red_300),
             ),
             RecordQuickActionsButtonViewData(
                 block = RecordQuickActionsButton.REPEAT,
                 text = R.string.change_record_repeat.let(resourceRepo::getString),
                 icon = R.drawable.repeat,
+                iconColor = resourceRepo.getColor(R.color.purple_300),
             ),
             RecordQuickActionsButtonViewData(
                 block = RecordQuickActionsButton.DUPLICATE,
                 text = R.string.change_record_duplicate.let(resourceRepo::getString),
                 icon = R.drawable.action_copy,
+                iconColor = resourceRepo.getColor(R.color.indigo_300),
             ),
             RecordQuickActionsButtonViewData(
                 block = RecordQuickActionsButton.MERGE,
                 text = R.string.change_record_merge.let(resourceRepo::getString),
                 icon = R.drawable.action_merge,
+                iconColor = resourceRepo.getColor(R.color.light_blue_300),
             ),
             RecordQuickActionsButtonViewData(
                 block = RecordQuickActionsButton.STOP,
                 text = R.string.notification_record_type_stop.let(resourceRepo::getString),
                 icon = R.drawable.action_stop,
+                iconColor = resourceRepo.getColor(R.color.teal_300),
             ),
             RecordQuickActionsButtonViewData(
                 block = RecordQuickActionsButton.CHANGE_ACTIVITY,
                 text = resourceRepo.getString(R.string.data_edit_change_activity),
                 icon = R.drawable.action_change_item,
+                iconColor = resourceRepo.getColor(R.color.green_300),
             ),
         )
     }
