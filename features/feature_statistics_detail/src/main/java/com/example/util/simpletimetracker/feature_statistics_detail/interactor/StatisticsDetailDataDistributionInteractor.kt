@@ -275,10 +275,16 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
     private fun mapModeControl(
         mode: DataDistributionMode,
     ): ViewHolderType {
+        val values = listOf(
+            DataDistributionMode.ACTIVITY,
+            DataDistributionMode.CATEGORY,
+            DataDistributionMode.TAG,
+        )
+
         return StatisticsDetailButtonsRowViewData(
             block = StatisticsDetailBlock.DataDistributionMode,
             marginTopDp = 4,
-            data = DataDistributionMode.entries.map {
+            data = values.map {
                 StatisticsDetailDataDistributionModeViewData(
                     mode = it,
                     name = when (it) {
@@ -287,6 +293,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
                         DataDistributionMode.TAG -> R.string.record_tag_hint_short
                     }.let(resourceRepo::getString),
                     isSelected = it == mode,
+                    textSizeSp = 12,
                 )
             },
         )
@@ -295,10 +302,14 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
     private fun mapGraphControl(
         graph: DataDistributionGraph,
     ): ViewHolderType {
+        val values = listOf(
+            DataDistributionGraph.PIE_CHART,
+            DataDistributionGraph.BAR_CHART,
+        )
         return StatisticsDetailButtonsRowViewData(
             block = StatisticsDetailBlock.DataDistributionGraph,
             marginTopDp = -10,
-            data = DataDistributionGraph.entries.map {
+            data = values.map {
                 StatisticsDetailDataDistributionGraphViewData(
                     graph = it,
                     name = when (it) {

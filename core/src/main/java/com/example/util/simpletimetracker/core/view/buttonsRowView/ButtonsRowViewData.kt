@@ -7,6 +7,7 @@ abstract class ButtonsRowViewData : ViewHolderType {
     abstract val id: Long
     abstract val name: String
     abstract val isSelected: Boolean
+    open val textSizeSp: Int? = null
 
     override fun getUniqueId(): Long = id
 

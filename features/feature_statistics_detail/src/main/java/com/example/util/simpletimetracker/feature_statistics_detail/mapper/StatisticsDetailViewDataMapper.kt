@@ -700,7 +700,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         isDarkTheme: Boolean,
     ): List<ViewHolderType> {
         return StatisticsDetailButtonViewData(
-            marginTopDp = -10,
+            marginTopDp = 0, // Set later depending on previous items in list.
             data = StatisticsDetailButtonViewData.Button(
                 block = StatisticsDetailBlock.ChartSplitByActivity,
                 text = resourceRepo.getString(R.string.statistics_detail_chart_split),
@@ -736,6 +736,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 chartGrouping = it,
                 name = mapToGroupingName(it),
                 isSelected = it == appliedChartGrouping,
+                textSizeSp = if (availableChartGroupings.size >= 3) 12 else null
             )
         }
     }

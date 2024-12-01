@@ -52,6 +52,7 @@ class ChartFilterViewDataMapper @Inject constructor(
                 filterType = it,
                 name = mapToFilterTypeName(it),
                 isSelected = it == filterType,
+                textSizeSp = 12,
             )
         }
     }

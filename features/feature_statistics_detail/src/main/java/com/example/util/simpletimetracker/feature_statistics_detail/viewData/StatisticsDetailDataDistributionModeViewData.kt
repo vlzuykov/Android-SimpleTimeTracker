@@ -7,6 +7,7 @@ data class StatisticsDetailDataDistributionModeViewData(
     val mode: DataDistributionMode,
     override val name: String,
     override val isSelected: Boolean,
+    override val textSizeSp: Int?,
 ) : ButtonsRowViewData() {
 
     override val id: Long = mode.ordinal.toLong()

@@ -7,6 +7,7 @@ data class ChartFilterTypeViewData(
     val filterType: ChartFilterType,
     override val name: String,
     override val isSelected: Boolean,
+    override val textSizeSp: Int?,
 ) : ButtonsRowViewData() {
 
     override val id: Long = filterType.ordinal.toLong()

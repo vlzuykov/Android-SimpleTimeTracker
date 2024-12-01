@@ -7,6 +7,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBarChartViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonsRowViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailCardDoubleViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailCardViewData
@@ -110,7 +111,14 @@ class StatisticsDetailContentInteractor @Inject constructor(
             }
 
             if (viewData.chartData.visible) {
-                result += viewData.splitActivitiesItems
+                // Update margin top depending if has buttons before.
+                val hasButtonsBefore = result.lastOrNull() is StatisticsDetailButtonsRowViewData
+                val newMarginTopDp = if (hasButtonsBefore) -10 else 4
+                val splitActivitiesItems = viewData.splitActivitiesItems.map {
+                    (it as? StatisticsDetailButtonViewData)
+                        ?.copy(marginTopDp = newMarginTopDp) ?: it
+                }
+                result += splitActivitiesItems
             }
 
             val rangeAveragesData = viewData.rangeAverages
