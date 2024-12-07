@@ -370,6 +370,9 @@ Se a configuração <b>\"%s\"</b> estiver habilitada, o aplicativo enviará even
     <string name="settings_automated_tracking_extra_name">com o nome da atividade que deve ser iniciada ou interrompida.</string>
     <string name="settings_automated_tracking_extra_tag">com o nome de uma tag de registro. Ou lista de nomes de tags separados por vírgula.</string>
     <string name="settings_automated_tracking_extra_time">no formato \"aaaa-MM-dd HH:mm:ss\" ou carimbo de data/hora UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">seleciona qual registro alterar.</string>
+    <string name="settings_automated_tracking_comment_mode">seleciona como alterar o comentário do registro selecionado.</string>
+    <string name="settings_automated_tracking_find_with_activity">adicionalmente seleciona o registro pelo nome da atividade, se houver vários registros atuais ou últimos.</string>
 
     <string name="settings_save_backup">Salvar backup</string>
     <string name="settings_save_description">Antes de salvar, verifique se você tem a versão mais recente do aplicativo instalada para evitar conflitos.</string>

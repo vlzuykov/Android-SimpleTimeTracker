@@ -370,6 +370,9 @@
     <string name="settings_automated_tracking_extra_name">مع اسم النشاط الذي ينبغي أن يبدأ أو يتوقف.</string>
     <string name="settings_automated_tracking_extra_tag">باسم علامة السجل. أو قائمة بأسماء العلامات مفصولة بفاصلة.</string>
     <string name="settings_automated_tracking_extra_time">بالتنسيق \"yyyy-MM-dd HH:mm:ss\" أو الطابع الزمني UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">يختار السجل الذي تريد تغييره.</string>
+    <string name="settings_automated_tracking_comment_mode">يختار كيفية تغيير تعليق السجل المحدد.</string>
+    <string name="settings_automated_tracking_find_with_activity">بالإضافة إلى ذلك، يقوم بتحديد السجل حسب اسم النشاط، إذا كان هناك العديد من السجلات الحالية أو الأخيرة.</string>
 
     <string name="settings_save_backup">حفظ نسخة احتياطية</string>
     <string name="settings_save_description">قبل الحفظ، تأكد من تثبيت أحدث إصدار من التطبيق لتجنب التعارضات.</string>

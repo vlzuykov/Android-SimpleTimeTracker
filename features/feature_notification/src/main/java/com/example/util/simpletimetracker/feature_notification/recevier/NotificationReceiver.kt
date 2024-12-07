@@ -42,6 +42,7 @@ import com.example.util.simpletimetracker.feature_notification.activitySwitch.ma
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TAG_ID
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TYPES_SHIFT
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TYPE_ID
+import com.example.util.simpletimetracker.feature_notification.external.NotificationExternalBroadcastController
 import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TYPE_STOP
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -69,6 +70,9 @@ class NotificationReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var pomodoroController: NotificationPomodoroBroadcastController
+
+    @Inject
+    lateinit var externalController: NotificationExternalBroadcastController
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent?.action
@@ -138,7 +142,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
                     ?.splitTagNames().orEmpty()
                 val timeStarted = intent.getStringExtra(EXTRA_RECORD_TIME_STARTED)
-                typeController.onActionExternalActivityStart(
+                externalController.onActionExternalActivityStart(
                     name = name,
                     comment = comment,
                     tagNames = tagNames,
@@ -148,25 +152,25 @@ class NotificationReceiver : BroadcastReceiver() {
             ACTION_EXTERNAL_STOP_ACTIVITY -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
                 val timeEnded = intent.getStringExtra(EXTRA_RECORD_TIME_ENDED)
-                typeController.onActionExternalActivityStop(
+                externalController.onActionExternalActivityStop(
                     name = name,
                     timeEnded = timeEnded,
                 )
             }
             ACTION_EXTERNAL_STOP_ALL_ACTIVITIES -> {
-                typeController.onActionExternalActivityStopAll()
+                externalController.onActionExternalActivityStopAll()
             }
             ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY -> {
-                typeController.onActionExternalActivityStopShortest()
+                externalController.onActionExternalActivityStopShortest()
             }
             ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY -> {
-                typeController.onActionExternalActivityStopLongest()
+                externalController.onActionExternalActivityStopLongest()
             }
             ACTION_EXTERNAL_RESTART_ACTIVITY -> {
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
                     ?.splitTagNames().orEmpty()
-                typeController.onActionExternalActivityRestart(
+                externalController.onActionExternalActivityRestart(
                     comment = comment,
                     tagNames = tagNames,
                 )
@@ -178,7 +182,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
                     ?.splitTagNames().orEmpty()
-                typeController.onActionExternalRecordAdd(
+                externalController.onActionExternalRecordAdd(
                     name = name,
                     timeStarted = timeStarted,
                     timeEnded = timeEnded,
@@ -191,7 +195,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 val name = intent.getStringExtra(EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val commentMode = intent.getStringExtra(EXTRA_RECORD_COMMENT_MODE)
-                typeController.onActionExternalRecordChange(
+                externalController.onActionExternalRecordChange(
                     findMode = findMode,
                     name = name,
                     comment = comment,

@@ -370,6 +370,9 @@ Se l\'impostazione <b>\"%s\"</b> è abilitata, l\'app invierà eventi sull\'atti
     <string name="settings_automated_tracking_extra_name">con il nome dell\'attività che deve essere avviata o interrotta.</string>
     <string name="settings_automated_tracking_extra_tag">con il nome di un tag record. Oppure un elenco di nomi di tag separati da virgola.</string>
     <string name="settings_automated_tracking_extra_time">nel formato \"aaaa-MM-gg HH:mm:ss\" o timestamp UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">seleziona quale record modificare.</string>
+    <string name="settings_automated_tracking_comment_mode">seleziona come modificare il commento del record selezionato.</string>
+    <string name="settings_automated_tracking_find_with_activity">seleziona inoltre il record in base al nome dell\'attività, se sono presenti più record correnti o recenti.</string>
 
     <string name="settings_save_backup">Effettua un backup</string>
     <string name="settings_save_description">Prima di salvare, assicurati di avere l\'ultima versione dell\'app per evitare conflitti.</string>

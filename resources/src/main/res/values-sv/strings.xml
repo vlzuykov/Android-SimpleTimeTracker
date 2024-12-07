@@ -370,6 +370,9 @@ Om inställningen <b>\"%s\"</b> är aktiverad, kommer appen att skicka händelse
     <string name="settings_automated_tracking_extra_name">med namnet på aktiviteten som ska startas eller stoppas.</string>
     <string name="settings_automated_tracking_extra_tag">med namnet på en händelsetagg. Eller lista över taggnamn separerade med kommatecken.</string>
     <string name="settings_automated_tracking_extra_time">i formatet \"åååå-MM-dd HH:mm:ss\" eller UTC-tidsstämpel.</string>
+    <string name="settings_automated_tracking_find_record_mode">väljer vilken post som ska ändras.</string>
+    <string name="settings_automated_tracking_comment_mode">väljer hur kommentaren för den valda posten ska ändras.</string>
+    <string name="settings_automated_tracking_find_with_activity">väljer dessutom post efter aktivitetsnamn, om det finns flera aktuella eller senaste poster.</string>
 
     <string name="settings_save_backup">Spara säkerhetskopia</string>
     <string name="settings_save_description">Innan du sparar, se till att du har den senaste versionen av appen för att förhindra datakonflikter.</string>

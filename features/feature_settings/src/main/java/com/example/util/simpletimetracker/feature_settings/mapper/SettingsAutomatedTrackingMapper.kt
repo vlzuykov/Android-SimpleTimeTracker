@@ -297,8 +297,8 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                     resourceRepo.getString(
                         R.string.settings_automated_tracking_data_template,
                         resourceRepo.getString(R.string.settings_automated_tracking_extra_values),
-                        it.values.joinToString(separator = ", ")
-                    )
+                        it.values.joinToString(separator = ", "),
+                    ),
                 )
                 templateText.append("<br/>")
             }

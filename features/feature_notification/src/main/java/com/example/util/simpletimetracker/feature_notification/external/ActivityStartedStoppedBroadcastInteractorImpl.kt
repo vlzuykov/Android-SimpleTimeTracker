@@ -1,4 +1,4 @@
-package com.example.util.simpletimetracker.feature_notification.recordType.interactor
+package com.example.util.simpletimetracker.feature_notification.external
 
 import android.content.Context
 import android.content.Intent

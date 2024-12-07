@@ -370,6 +370,9 @@ Se a definição <b>\"%s\"</b> estiver ativada, a aplicação enviará eventos n
     <string name="settings_automated_tracking_extra_name">com o nome da atividade que deve ser iniciada ou interrompida.</string>
     <string name="settings_automated_tracking_extra_tag">com o nome da etiqueta. Ou lista de nomes de tags separados por vírgula.</string>
     <string name="settings_automated_tracking_extra_time">no formato \"aaaa-MM-dd HH:mm:ss\" ou carimbo de data/hora UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">seleciona qual o registo que será alterado.</string>
+    <string name="settings_automated_tracking_comment_mode">seleciona como alterar o comentário do registo selecionado.</string>
+    <string name="settings_automated_tracking_find_with_activity">seleciona adicionalmente o registo pelo nome da atividade, se existirem vários registos atuais ou últimos.</string>
 
     <string name="settings_save_backup">Guardar cópia de segurança</string>
     <string name="settings_save_description">Antes de guardar, verificar se a aplicação tem a versão mais recente para evitar conflitos.</string>

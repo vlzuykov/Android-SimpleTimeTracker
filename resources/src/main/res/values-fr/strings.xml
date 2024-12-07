@@ -370,6 +370,9 @@ Si le paramètre <b>\"%s\"</b> est activé, l\'application enverra automatiqueme
     <string name="settings_automated_tracking_extra_name">avec le nom de l\'activité qui doit être démarrée ou arrêtée.</string>
     <string name="settings_automated_tracking_extra_tag">avec le nom d\'une balise d\'enregistrement. Ou une liste de noms de balises séparés par des virgules.</string>
     <string name="settings_automated_tracking_extra_time">au format \"aaaa-MM-jj HH:mm:ss\" ou horodatage UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">sélectionne l\'enregistrement à modifier.</string>
+    <string name="settings_automated_tracking_comment_mode">sélectionne comment modifier le commentaire de l\'enregistrement sélectionné.</string>
+    <string name="settings_automated_tracking_find_with_activity">sélectionne également l\'enregistrement par nom d\'activité, s\'il existe plusieurs enregistrements actuels ou derniers.</string>
 
     <string name="settings_save_backup">Enregistrer la sauvegarde</string>
     <string name="settings_save_description">Avant de créer une sauvegarde, assurez-vous que la dernière version de l\'application est installée pour éviter tout conflit.</string>
