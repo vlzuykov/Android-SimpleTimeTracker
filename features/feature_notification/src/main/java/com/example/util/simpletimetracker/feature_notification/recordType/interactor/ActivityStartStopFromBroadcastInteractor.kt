@@ -41,34 +41,49 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
         name: String,
         comment: String?,
         tagNames: List<String>,
+        timeStarted: String?,
     ) {
         val typeId = getTypeIdByName(name) ?: return
         val runningRecord = runningRecordInteractor.get(typeId)
         if (runningRecord != null) return // Already running.
         val tagIds = findTagIdByName(tagNames, typeId)
+        val newTimeStarted = timeStarted?.let(::parseTimestamp)
 
         addRunningRecordMediator.startTimer(
             typeId = typeId,
             comment = comment.orEmpty(),
             tagIds = tagIds,
+            timeStarted = if (newTimeStarted != null) {
+                AddRunningRecordMediator.StartTime.Timestamp(newTimeStarted)
+            } else {
+                AddRunningRecordMediator.StartTime.TakeCurrent
+            },
+        )
+    }
+
+    suspend fun onActionActivityStopByName(
+        name: String,
+        timeEnded: String?,
+    ) {
+        val typeId = getTypeIdByName(name) ?: return
+        val newTimeEnded = timeEnded?.let(::parseTimestamp)
+
+        onActionActivityStop(
+            typeId = typeId,
+            timeEnded = newTimeEnded,
         )
     }
 
     suspend fun onActionActivityStop(
-        name: String,
-    ) {
-        val typeId = getTypeIdByName(name) ?: return
-        onActionActivityStop(typeId)
-    }
-
-    suspend fun onActionActivityStop(
         typeId: Long,
+        timeEnded: Long?,
     ) {
         val runningRecord = runningRecordInteractor.get(typeId)
             ?: return // Not running.
 
         removeRunningRecordMediator.removeWithRecordAdd(
             runningRecord = runningRecord,
+            timeEnded = timeEnded,
         )
     }
 

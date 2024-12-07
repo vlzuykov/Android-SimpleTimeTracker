@@ -20,8 +20,8 @@ import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_ICON
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_NOTE
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_ENDED
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_STARTED
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_ENDED
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_STARTED
 import com.example.util.simpletimetracker.domain.extension.indexesOf
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_views.extension.setClickableSpan
@@ -67,12 +67,15 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                     optional = listOf(
                         EXTRA_RECORD_COMMENT,
                         EXTRA_RECORD_TAG_NAME,
+                        EXTRA_RECORD_TIME_STARTED,
                     ),
                 ),
                 AvailableAction(
                     action = ACTION_EXTERNAL_STOP_ACTIVITY,
                     extras = listOf(EXTRA_ACTIVITY_NAME),
-                    optional = emptyList(),
+                    optional = listOf(
+                        EXTRA_RECORD_TIME_ENDED,
+                    ),
                 ),
                 AvailableAction(
                     action = ACTION_EXTERNAL_STOP_ALL_ACTIVITIES,
@@ -98,8 +101,8 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                     action = ACTION_EXTERNAL_ADD_RECORD,
                     extras = listOf(
                         EXTRA_ACTIVITY_NAME,
-                        EXTRA_TIME_STARTED,
-                        EXTRA_TIME_ENDED,
+                        EXTRA_RECORD_TIME_STARTED,
+                        EXTRA_RECORD_TIME_ENDED,
                     ),
                     optional = listOf(
                         EXTRA_RECORD_COMMENT,
@@ -149,11 +152,11 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_tag),
                 ),
                 ExtraDescription(
-                    extra = EXTRA_TIME_STARTED,
+                    extra = EXTRA_RECORD_TIME_STARTED,
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_time),
                 ),
                 ExtraDescription(
-                    extra = EXTRA_TIME_ENDED,
+                    extra = EXTRA_RECORD_TIME_ENDED,
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_time),
                 ),
             ),

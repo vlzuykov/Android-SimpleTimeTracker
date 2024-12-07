@@ -19,7 +19,9 @@ class RemoveRunningRecordMediator @Inject constructor(
         updateNotificationSwitch: Boolean = true,
         timeEnded: Long? = null, // null - take current time.
     ) {
-        val recordTimeEnded = timeEnded ?: System.currentTimeMillis()
+        val recordTimeEnded = timeEnded
+            ?.coerceAtLeast(runningRecord.timeStarted)
+            ?: System.currentTimeMillis()
         val durationToIgnore = prefsInteractor.getIgnoreShortRecordsDuration()
         val duration = TimeUnit.MILLISECONDS
             .toSeconds(recordTimeEnded - runningRecord.timeStarted)

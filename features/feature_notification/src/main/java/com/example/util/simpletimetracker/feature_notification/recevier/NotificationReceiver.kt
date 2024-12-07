@@ -15,8 +15,8 @@ import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTE
 import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_ENDED
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_STARTED
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_ENDED
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_STARTED
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_notification.activity.controller.NotificationActivityBroadcastController
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_STOP
@@ -132,16 +132,22 @@ class NotificationReceiver : BroadcastReceiver() {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
-                    ?.slipTagNames().orEmpty()
+                    ?.splitTagNames().orEmpty()
+                val timeStarted = intent.getStringExtra(EXTRA_RECORD_TIME_STARTED)
                 typeController.onActionExternalActivityStart(
                     name = name,
                     comment = comment,
                     tagNames = tagNames,
+                    timeStarted = timeStarted,
                 )
             }
             ACTION_EXTERNAL_STOP_ACTIVITY -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
-                typeController.onActionExternalActivityStop(name)
+                val timeEnded = intent.getStringExtra(EXTRA_RECORD_TIME_ENDED)
+                typeController.onActionExternalActivityStop(
+                    name = name,
+                    timeEnded = timeEnded,
+                )
             }
             ACTION_EXTERNAL_STOP_ALL_ACTIVITIES -> {
                 typeController.onActionExternalActivityStopAll()
@@ -155,7 +161,7 @@ class NotificationReceiver : BroadcastReceiver() {
             ACTION_EXTERNAL_RESTART_ACTIVITY -> {
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
-                    ?.slipTagNames().orEmpty()
+                    ?.splitTagNames().orEmpty()
                 typeController.onActionExternalActivityRestart(
                     comment = comment,
                     tagNames = tagNames,
@@ -163,11 +169,11 @@ class NotificationReceiver : BroadcastReceiver() {
             }
             ACTION_EXTERNAL_ADD_RECORD -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
-                val timeStarted = intent.getStringExtra(EXTRA_TIME_STARTED)
-                val timeEnded = intent.getStringExtra(EXTRA_TIME_ENDED)
+                val timeStarted = intent.getStringExtra(EXTRA_RECORD_TIME_STARTED)
+                val timeEnded = intent.getStringExtra(EXTRA_RECORD_TIME_ENDED)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
-                    ?.slipTagNames().orEmpty()
+                    ?.splitTagNames().orEmpty()
                 typeController.onActionExternalRecordAdd(
                     name = name,
                     timeStarted = timeStarted,
@@ -248,7 +254,7 @@ class NotificationReceiver : BroadcastReceiver() {
         pomodoroController.onBootCompleted()
     }
 
-    private fun String.slipTagNames(): List<String> {
+    private fun String.splitTagNames(): List<String> {
         return split(',').map(String::trim)
     }
 

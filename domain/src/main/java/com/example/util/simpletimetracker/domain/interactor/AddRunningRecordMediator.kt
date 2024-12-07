@@ -69,7 +69,7 @@ class AddRunningRecordMediator @Inject constructor(
             is StartTime.Current -> timeStarted.currentTimeStampMs
             is StartTime.TakeCurrent -> currentTime
             is StartTime.Timestamp -> timeStarted.timestampMs
-        }
+        }.coerceAtMost(currentTime)
         val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
         val actualPrevRecords = if (
             retroactiveTrackingMode ||
@@ -274,11 +274,15 @@ class AddRunningRecordMediator @Inject constructor(
     ): ComplexRuleProcessActionInteractor.Result {
         // If no rules - no need to check them.
         return if (complexRuleProcessActionInteractor.hasRules()) {
-            // TODO do not check current records for Continue action?
             val currentRecords = runningRecordInteractor.getAll()
+            val hasAnyRunningTimersOnTimeStarted = currentRecords.any {
+                it.timeStarted <= timeStarted
+            }
+            val takeCurrentRecords = currentRecords.isNotEmpty() &&
+                hasAnyRunningTimersOnTimeStarted
 
             // If no current records - check closest previous.
-            val records = currentRecords.ifEmpty { prevRecords }
+            val records = if (takeCurrentRecords) currentRecords else prevRecords
 
             val currentTypeIds = records
                 .map { it.typeIds }

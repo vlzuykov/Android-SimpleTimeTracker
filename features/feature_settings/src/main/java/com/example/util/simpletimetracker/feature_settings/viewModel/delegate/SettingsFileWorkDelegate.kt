@@ -1,7 +1,6 @@
 package com.example.util.simpletimetracker.feature_settings.viewModel.delegate
 
 import androidx.annotation.VisibleForTesting
-import androidx.core.text.HtmlCompat
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.extension.fromHtml

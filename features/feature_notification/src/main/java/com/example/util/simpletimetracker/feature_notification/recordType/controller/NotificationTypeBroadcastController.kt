@@ -27,21 +27,29 @@ class NotificationTypeBroadcastController @Inject constructor(
         name: String?,
         comment: String?,
         tagNames: List<String>,
+        timeStarted: String?,
     ) = GlobalScope.launch {
         name ?: return@launch
         mutex.withLock {
             activityStartStopFromBroadcastInteractor.onActionActivityStart(
-                name = name, comment = comment, tagNames = tagNames,
+                name = name,
+                comment = comment,
+                tagNames = tagNames,
+                timeStarted = timeStarted,
             )
         }
     }
 
     fun onActionExternalActivityStop(
         name: String?,
+        timeEnded: String?,
     ) = GlobalScope.launch {
         name ?: return@launch
         mutex.withLock {
-            activityStartStopFromBroadcastInteractor.onActionActivityStop(name)
+            activityStartStopFromBroadcastInteractor.onActionActivityStopByName(
+                name = name,
+                timeEnded = timeEnded,
+            )
         }
     }
 
@@ -50,7 +58,10 @@ class NotificationTypeBroadcastController @Inject constructor(
     ) {
         if (typeId == 0L) return
         GlobalScope.launch {
-            activityStartStopFromBroadcastInteractor.onActionActivityStop(typeId)
+            activityStartStopFromBroadcastInteractor.onActionActivityStop(
+                typeId = typeId,
+                timeEnded = null,
+            )
         }
     }
 

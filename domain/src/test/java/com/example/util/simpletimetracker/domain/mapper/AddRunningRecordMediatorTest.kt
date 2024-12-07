@@ -510,6 +510,57 @@ class AddRunningRecordMediatorTest {
     }
 
     @Test
+    fun rulesWithPastTimestamp(): Unit = runBlocking {
+        // Given
+        val timestamp = 1L
+        `when`(complexRuleProcessActionInteractor.hasRules()).thenReturn(true)
+        `when`(runningRecordInteractor.getAll()).thenReturn(runningRecords)
+        `when`(recordInteractor.getAllPrev(any())).thenReturn(
+            listOf(
+                Record(
+                    id = 0L,
+                    typeId = typeId2,
+                    timeStarted = 0,
+                    timeEnded = 0,
+                    comment = "",
+                    tagIds = emptyList(),
+                ),
+                Record(
+                    id = 0L,
+                    typeId = typeId3,
+                    timeStarted = 0,
+                    timeEnded = 0,
+                    comment = "",
+                    tagIds = emptyList(),
+                ),
+            ),
+        )
+        `when`(complexRuleProcessActionInteractor.processRules(any(), any(), any())).thenReturn(
+            ComplexRuleProcessActionInteractor.Result(
+                isMultitaskingAllowed = ResultContainer.Undefined,
+                tagsIds = emptySet(),
+            ),
+        )
+
+        // When
+        subject.startTimer(
+            typeId = typeId,
+            tagIds = listOf(tagId),
+            comment = "comment",
+            timeStarted = AddRunningRecordMediator.StartTime.Timestamp(timestamp),
+            updateNotificationSwitch = true,
+            checkDefaultDuration = true,
+        )
+
+        // Than
+        verify(complexRuleProcessActionInteractor).processRules(
+            timeStarted = eq(timestamp),
+            startingTypeId = eq(typeId),
+            currentTypeIds = eq(setOf(typeId2, typeId3)),
+        )
+    }
+
+    @Test
     fun defaultDuration(): Unit = runBlocking {
         // Given
         `when`(recordTypeInteractor.get(typeId)).thenReturn(
