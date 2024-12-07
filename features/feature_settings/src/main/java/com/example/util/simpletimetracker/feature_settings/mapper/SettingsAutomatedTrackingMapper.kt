@@ -7,6 +7,7 @@ import com.example.util.simpletimetracker.core.manager.ClipboardManager
 import com.example.util.simpletimetracker.core.provider.ApplicationDataProvider
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_ADD_RECORD
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_CHANGE_RECORD
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_RESTART_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_START_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ACTIVITY
@@ -16,13 +17,18 @@ import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTE
 import com.example.util.simpletimetracker.core.utils.EVENT_STARTED_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EVENT_STOPPED_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
+import com.example.util.simpletimetracker.core.utils.EXTRA_FIND_RECORD_MODE
+import com.example.util.simpletimetracker.core.utils.EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT_MODE
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
-import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_ICON
-import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_NOTE
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_ENDED
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_STARTED
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_ICON
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_NOTE
 import com.example.util.simpletimetracker.domain.extension.indexesOf
+import com.example.util.simpletimetracker.domain.model.ExternalActionCommentMode
+import com.example.util.simpletimetracker.domain.model.ExternalActionFindRecordMode
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_views.extension.setClickableSpan
 import com.example.util.simpletimetracker.feature_views.extension.setImageSpan
@@ -109,6 +115,17 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                         EXTRA_RECORD_TAG_NAME,
                     ),
                 ),
+                AvailableAction(
+                    action = ACTION_EXTERNAL_CHANGE_RECORD,
+                    extras = listOf(
+                        EXTRA_FIND_RECORD_MODE,
+                        EXTRA_RECORD_COMMENT,
+                        EXTRA_RECORD_COMMENT_MODE,
+                    ),
+                    optional = listOf(
+                        EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME,
+                    ),
+                ),
             ),
             isDarkTheme = isDarkTheme,
         )
@@ -146,18 +163,37 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                 ExtraDescription(
                     extra = EXTRA_ACTIVITY_NAME,
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_name),
+                    values = emptyList(),
                 ),
                 ExtraDescription(
                     extra = EXTRA_RECORD_TAG_NAME,
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_tag),
+                    values = emptyList(),
                 ),
                 ExtraDescription(
                     extra = EXTRA_RECORD_TIME_STARTED,
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_time),
+                    values = emptyList(),
                 ),
                 ExtraDescription(
                     extra = EXTRA_RECORD_TIME_ENDED,
                     description = resourceRepo.getString(R.string.settings_automated_tracking_extra_time),
+                    values = emptyList(),
+                ),
+                ExtraDescription(
+                    extra = EXTRA_FIND_RECORD_MODE,
+                    description = resourceRepo.getString(R.string.settings_automated_tracking_find_record_mode),
+                    values = ExternalActionFindRecordMode.entries.map { it.dataValue },
+                ),
+                ExtraDescription(
+                    extra = EXTRA_RECORD_COMMENT_MODE,
+                    description = resourceRepo.getString(R.string.settings_automated_tracking_comment_mode),
+                    values = ExternalActionCommentMode.entries.map { it.dataValue },
+                ),
+                ExtraDescription(
+                    extra = EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME,
+                    description = resourceRepo.getString(R.string.settings_automated_tracking_find_with_activity),
+                    values = emptyList(),
                 ),
             ),
         )
@@ -256,6 +292,16 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
                 ),
             )
             templateText.append("<br/>")
+            if (it.values.isNotEmpty()) {
+                templateText.append(
+                    resourceRepo.getString(
+                        R.string.settings_automated_tracking_data_template,
+                        resourceRepo.getString(R.string.settings_automated_tracking_extra_values),
+                        it.values.joinToString(separator = ", ")
+                    )
+                )
+                templateText.append("<br/>")
+            }
             templateText.append("<br/>")
         }
 
@@ -358,5 +404,6 @@ class SettingsAutomatedTrackingMapper @Inject constructor(
     private data class ExtraDescription(
         val extra: String,
         val description: String,
+        val values: List<String>,
     )
 }

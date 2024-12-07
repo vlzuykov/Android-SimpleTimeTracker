@@ -115,6 +115,22 @@ class NotificationTypeBroadcastController @Inject constructor(
         }
     }
 
+    fun onActionExternalRecordChange(
+        findMode: String?,
+        name: String?,
+        comment: String?,
+        commentMode: String?,
+    ) = GlobalScope.launch {
+        mutex.withLock {
+            activityStartStopFromBroadcastInteractor.onRecordChange(
+                findModeData = findMode,
+                name = name,
+                comment = comment,
+                commentModeData = commentMode,
+            )
+        }
+    }
+
     fun onActionTypeClick(
         from: Int,
         typeId: Long,

@@ -370,6 +370,9 @@ If <b>\"%s\"</b> setting is enabled, app will send events on activity started or
     <string name="settings_automated_tracking_extra_name">with activity name that should be started or stopped.</string>
     <string name="settings_automated_tracking_extra_tag">with the name of a record tag. Or list of tag names separated by comma.</string>
     <string name="settings_automated_tracking_extra_time">in the format \"yyyy-MM-dd HH:mm:ss\" or UTC timestamp.</string>
+    <string name="settings_automated_tracking_find_record_mode">selects which record to change.</string>
+    <string name="settings_automated_tracking_comment_mode">selects how to change comment of the selected record.</string>
+    <string name="settings_automated_tracking_find_with_activity">additionally selects record by activity name, if there are several current or last records.</string>
 
     <string name="settings_save_backup">Save backup</string>
     <string name="settings_save_description">Before saving, make sure that you have the latest version of the app installed to avoid conflicts.</string>

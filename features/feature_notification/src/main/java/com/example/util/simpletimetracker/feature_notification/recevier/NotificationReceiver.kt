@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import com.example.util.simpletimetracker.core.extension.goAsync
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_ADD_RECORD
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_CHANGE_RECORD
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_RESTART_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_START_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ACTIVITY
@@ -13,7 +14,10 @@ import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ALL_AC
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
+import com.example.util.simpletimetracker.core.utils.EXTRA_FIND_RECORD_MODE
+import com.example.util.simpletimetracker.core.utils.EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT_MODE
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_ENDED
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_STARTED
@@ -180,6 +184,18 @@ class NotificationReceiver : BroadcastReceiver() {
                     timeEnded = timeEnded,
                     comment = comment,
                     tagNames = tagNames,
+                )
+            }
+            ACTION_EXTERNAL_CHANGE_RECORD -> {
+                val findMode = intent.getStringExtra(EXTRA_FIND_RECORD_MODE)
+                val name = intent.getStringExtra(EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME)
+                val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
+                val commentMode = intent.getStringExtra(EXTRA_RECORD_COMMENT_MODE)
+                typeController.onActionExternalRecordChange(
+                    findMode = findMode,
+                    name = name,
+                    comment = comment,
+                    commentMode = commentMode,
                 )
             }
             ACTION_NOTIFICATION_TYPE_STOP -> {

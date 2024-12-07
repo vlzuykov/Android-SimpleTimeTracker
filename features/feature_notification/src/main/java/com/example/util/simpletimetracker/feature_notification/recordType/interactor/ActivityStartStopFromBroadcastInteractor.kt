@@ -17,6 +17,8 @@ import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordM
 import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager
+import com.example.util.simpletimetracker.domain.model.ExternalActionCommentMode
+import com.example.util.simpletimetracker.domain.model.ExternalActionFindRecordMode
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -146,6 +148,72 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
         ).let {
             addRecordMediator.add(it)
             recordsUpdateInteractor.send()
+        }
+    }
+
+    // TODO AUTO move all external actions logic to separate classes.
+    suspend fun onRecordChange(
+        findModeData: String?,
+        name: String?,
+        comment: String?,
+        commentModeData: String?,
+    ) {
+        val typeId = name?.let { getTypeIdByName(it) }
+        val findMode = ExternalActionFindRecordMode.entries.firstOrNull {
+            it.dataValue == findModeData
+        }  ?: ExternalActionFindRecordMode.CURRENT_OR_LAST
+        val commentMode = ExternalActionCommentMode.entries.firstOrNull {
+            it.dataValue == commentModeData
+        } ?: ExternalActionCommentMode.SET
+
+        fun processComment(
+            oldComment: String,
+            newComment: String,
+        ): String {
+            return when (commentMode) {
+                ExternalActionCommentMode.SET -> newComment
+                ExternalActionCommentMode.APPEND -> oldComment + newComment
+                ExternalActionCommentMode.PREFIX -> newComment + oldComment
+            }
+        }
+
+        suspend fun changeCurrent(): Boolean {
+            var wasChanged = false
+            runningRecordInteractor.getAll().let { allRecords ->
+                if (typeId != null) allRecords.filter { it.id == typeId } else allRecords
+            }.forEach { record ->
+                record.copy(
+                    comment = processComment(
+                        oldComment = record.comment,
+                        newComment = comment.orEmpty(),
+                    ),
+                ).let { runningRecordInteractor.add(it) }
+                wasChanged = true
+            }
+            return wasChanged
+        }
+
+        suspend fun changeLast() {
+            recordInteractor.getAllPrev(System.currentTimeMillis()).let { allRecords ->
+                if (typeId != null) allRecords.filter { it.id == typeId } else allRecords
+            }.forEach { record ->
+                record.copy(
+                    comment = processComment(
+                        oldComment = record.comment,
+                        newComment = comment.orEmpty(),
+                    ),
+                ).let { recordInteractor.add(it) }
+            }
+            recordsUpdateInteractor.send()
+        }
+
+        when (findMode) {
+            ExternalActionFindRecordMode.CURRENT_OR_LAST -> {
+                val currentWasChanged = changeCurrent()
+                if (!currentWasChanged) changeLast()
+            }
+            ExternalActionFindRecordMode.CURRENT -> changeCurrent()
+            ExternalActionFindRecordMode.LAST -> changeLast()
         }
     }
 
