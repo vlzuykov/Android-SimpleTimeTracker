@@ -1,17 +1,19 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.extension.plusAssign
 import com.example.util.simpletimetracker.domain.interactor.RecordActionDuplicateMediator
+import com.example.util.simpletimetracker.domain.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
-import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
+import com.example.util.simpletimetracker.feature_change_record.mapper.ChangeRecordViewDataMapper
 import javax.inject.Inject
 
 class ChangeRecordActionsDuplicateDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
     private val recordActionDuplicateMediator: RecordActionDuplicateMediator,
+    private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
 ) : ChangeRecordActionsSubDelegate<ChangeRecordActionsDuplicateDelegate.Parent> {
 
     private var parent: Parent? = null
@@ -51,11 +53,8 @@ class ChangeRecordActionsDuplicateDelegate @Inject constructor(
         result += HintViewData(
             text = resourceRepo.getString(R.string.change_record_duplicate_hint),
         )
-        result += ChangeRecordButtonViewData(
-            block = ChangeRecordActionsBlock.DuplicateButton,
-            text = resourceRepo.getString(R.string.change_record_duplicate),
-            icon = R.drawable.action_copy,
-            iconSizeDp = 20,
+        result += changeRecordViewDataMapper.mapRecordActionButton(
+            action = RecordQuickAction.DUPLICATE,
             isEnabled = params.isButtonEnabled,
         )
         return result

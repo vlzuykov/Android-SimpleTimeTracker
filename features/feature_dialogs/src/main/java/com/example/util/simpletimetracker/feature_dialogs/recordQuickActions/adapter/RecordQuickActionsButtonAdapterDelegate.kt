@@ -22,7 +22,7 @@ fun createRecordQuickActionsButtonAdapterDelegate(
         tvRecordQuickActionsButton.text = item.text
         ivRecordQuickActionsButton.setImageResource(item.icon)
         cardRecordQuickActionsButton.setCardBackgroundColor(item.iconColor)
-        btnRecordQuickActionsButton.setOnClickWith(item.block, onClick)
+        itemRecordQuickActionsButton.setOnClickWith(item.block, onClick)
     }
 }
 

@@ -1,12 +1,13 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.extension.plusAssign
 import com.example.util.simpletimetracker.domain.interactor.AddRecordMediator
 import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordSliderViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeAdjustmentViewData
@@ -71,7 +72,6 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
         val newTimeStarted = params.newTimeStarted
         val newTimeEnded = params.splitPreviewTimeEnded
         val showTimeEnded = params.showTimeEndedOnSplitPreview
-        val isButtonEnabled = params.isButtonEnabled
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(resourceRepo.getString(R.string.change_record_split_hint))
@@ -106,12 +106,9 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
             isCheckVisible = false,
             isCompareVisible = false,
         )
-        result += ChangeRecordButtonViewData(
-            block = ChangeRecordActionsBlock.SplitButton,
-            text = resourceRepo.getString(R.string.change_record_split),
-            icon = R.drawable.action_divide,
-            iconSizeDp = 18,
-            isEnabled = isButtonEnabled,
+        result += changeRecordViewDataMapper.mapRecordActionButton(
+            action = RecordQuickAction.SPLIT,
+            isEnabled = params.isButtonEnabled,
         )
         return result
     }

@@ -1,7 +1,9 @@
 package com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.interactor
 
+import com.example.util.simpletimetracker.core.mapper.RecordQuickActionMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_dialogs.R
 import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.adapter.RecordQuickActionsBlockHolder
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class RecordQuickActionsViewDataInteractor @Inject constructor(
     private val resourceRepo: ResourceRepo,
     private val prefsInteractor: PrefsInteractor,
+    private val recordQuickActionMapper: RecordQuickActionMapper,
 ) {
 
     suspend fun getViewData(
@@ -36,6 +39,14 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
     }
 
     private fun getAllButtons(): List<ViewHolderType> {
+        val allActions = listOf(
+            RecordQuickActionsButton.CONTINUE,
+            RecordQuickActionsButton.REPEAT,
+            RecordQuickActionsButton.DUPLICATE,
+            RecordQuickActionsButton.MERGE,
+            RecordQuickActionsButton.STOP,
+            RecordQuickActionsButton.CHANGE_ACTIVITY,
+        )
         return listOf(
             RecordQuickActionsButtonBigViewData(
                 block = RecordQuickActionsButton.STATISTICS,
@@ -47,43 +58,15 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
                 text = R.string.archive_dialog_delete.let(resourceRepo::getString),
                 icon = R.drawable.delete,
             ),
+        ) + allActions.mapNotNull {
+            val action = mapAction(it) ?: return@mapNotNull null
             RecordQuickActionsButtonViewData(
-                block = RecordQuickActionsButton.CONTINUE,
-                text = R.string.change_record_continue.let(resourceRepo::getString),
-                icon = R.drawable.action_continue,
-                iconColor = resourceRepo.getColor(R.color.red_300),
-            ),
-            RecordQuickActionsButtonViewData(
-                block = RecordQuickActionsButton.REPEAT,
-                text = R.string.change_record_repeat.let(resourceRepo::getString),
-                icon = R.drawable.repeat,
-                iconColor = resourceRepo.getColor(R.color.purple_300),
-            ),
-            RecordQuickActionsButtonViewData(
-                block = RecordQuickActionsButton.DUPLICATE,
-                text = R.string.change_record_duplicate.let(resourceRepo::getString),
-                icon = R.drawable.action_copy,
-                iconColor = resourceRepo.getColor(R.color.indigo_300),
-            ),
-            RecordQuickActionsButtonViewData(
-                block = RecordQuickActionsButton.MERGE,
-                text = R.string.change_record_merge.let(resourceRepo::getString),
-                icon = R.drawable.action_merge,
-                iconColor = resourceRepo.getColor(R.color.light_blue_300),
-            ),
-            RecordQuickActionsButtonViewData(
-                block = RecordQuickActionsButton.STOP,
-                text = R.string.notification_record_type_stop.let(resourceRepo::getString),
-                icon = R.drawable.action_stop,
-                iconColor = resourceRepo.getColor(R.color.teal_300),
-            ),
-            RecordQuickActionsButtonViewData(
-                block = RecordQuickActionsButton.CHANGE_ACTIVITY,
-                text = resourceRepo.getString(R.string.data_edit_change_activity),
-                icon = R.drawable.action_change_item,
-                iconColor = resourceRepo.getColor(R.color.green_300),
-            ),
-        )
+                block = it,
+                text = recordQuickActionMapper.mapText(action),
+                icon = recordQuickActionMapper.mapIcon(action),
+                iconColor = recordQuickActionMapper.mapColor(action),
+            )
+        }
     }
 
     private fun getAllowedButtons(
@@ -127,17 +110,32 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
             .indexOfLast { it is RecordQuickActionsButtonViewData }
 
         return buttons.mapIndexed { index, button ->
+            val isBigButtonFullWidth = bigButtonsCount % 2 != 0 && index == bigButtonLastIndex
+            val isSmallButtonFullWidth = smallButtonsCount % 2 != 0 && index == smallButtonLastIndex
             when {
-                button is RecordQuickActionsButtonBigViewData &&
-                    bigButtonsCount % 2 != 0 && index == bigButtonLastIndex -> {
+                button is RecordQuickActionsButtonBigViewData && isBigButtonFullWidth -> {
                     button.copy(width = RecordQuickActionsWidthHolder.Width.Full)
                 }
-                button is RecordQuickActionsButtonViewData &&
-                    smallButtonsCount % 2 != 0 && index == smallButtonLastIndex -> {
+                button is RecordQuickActionsButtonViewData && isSmallButtonFullWidth -> {
                     button.copy(width = RecordQuickActionsWidthHolder.Width.Full)
                 }
                 else -> button
             }
+        }
+    }
+
+    private fun mapAction(
+        action: RecordQuickActionsButton,
+    ): RecordQuickAction? {
+        return when (action) {
+            RecordQuickActionsButton.STATISTICS -> null
+            RecordQuickActionsButton.DELETE -> null
+            RecordQuickActionsButton.CONTINUE -> RecordQuickAction.CONTINUE
+            RecordQuickActionsButton.REPEAT -> RecordQuickAction.REPEAT
+            RecordQuickActionsButton.DUPLICATE -> RecordQuickAction.DUPLICATE
+            RecordQuickActionsButton.MERGE -> RecordQuickAction.MERGE
+            RecordQuickActionsButton.STOP -> RecordQuickAction.STOP
+            RecordQuickActionsButton.CHANGE_ACTIVITY -> RecordQuickAction.CHANGE_ACTIVITY
         }
     }
 }

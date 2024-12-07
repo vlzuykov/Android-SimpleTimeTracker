@@ -3,14 +3,18 @@ package com.example.util.simpletimetracker.feature_change_record.mapper
 import com.example.util.simpletimetracker.core.mapper.ChangeRecordDateTimeMapper
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconMapper
+import com.example.util.simpletimetracker.core.mapper.RecordQuickActionMapper
 import com.example.util.simpletimetracker.core.mapper.RecordViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.getFullName
 import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.model.RecordQuickAction
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.feature_change_record.R
+import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
+import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordDateTimeFieldsState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordSimpleViewData
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordViewData
@@ -23,6 +27,7 @@ class ChangeRecordViewDataMapper @Inject constructor(
     private val resourceRepo: ResourceRepo,
     private val recordViewDataMapper: RecordViewDataMapper,
     private val changeRecordDateTimeMapper: ChangeRecordDateTimeMapper,
+    private val recordQuickActionMapper: RecordQuickActionMapper,
 ) {
 
     fun map(
@@ -113,5 +118,33 @@ class ChangeRecordViewDataMapper @Inject constructor(
             iconId = preview.iconId,
             color = preview.color,
         )
+    }
+
+    fun mapRecordActionButton(
+        action: RecordQuickAction,
+        isEnabled: Boolean,
+    ): ChangeRecordButtonViewData? {
+        return ChangeRecordButtonViewData(
+            block = mapRecordAction(action) ?: return null,
+            text = recordQuickActionMapper.mapText(action),
+            icon = recordQuickActionMapper.mapIcon(action),
+            iconColor = recordQuickActionMapper.mapColor(action),
+            isEnabled = isEnabled,
+        )
+    }
+
+    private fun mapRecordAction(
+        action: RecordQuickAction,
+    ): ChangeRecordActionsBlock? {
+        return when (action) {
+            RecordQuickAction.CONTINUE -> ChangeRecordActionsBlock.ContinueButton
+            RecordQuickAction.REPEAT -> ChangeRecordActionsBlock.RepeatButton
+            RecordQuickAction.DUPLICATE -> ChangeRecordActionsBlock.DuplicateButton
+            RecordQuickAction.MERGE -> ChangeRecordActionsBlock.MergeButton
+            RecordQuickAction.SPLIT -> ChangeRecordActionsBlock.SplitButton
+            RecordQuickAction.ADJUST -> ChangeRecordActionsBlock.AdjustButton
+            RecordQuickAction.STOP -> null
+            RecordQuickAction.CHANGE_ACTIVITY -> null
+        }
     }
 }

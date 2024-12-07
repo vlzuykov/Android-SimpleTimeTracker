@@ -1,10 +1,10 @@
 package com.example.util.simpletimetracker.feature_change_record.adapter
 
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
-import com.example.util.simpletimetracker.feature_views.extension.dpToPx
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData as ViewData
 import com.example.util.simpletimetracker.feature_change_record.databinding.ChangeRecordButtonItemBinding as Binding
@@ -18,11 +18,11 @@ fun createChangeRecordButtonAdapterDelegate(
     with(binding) {
         item as ViewData
 
-        btnChangeRecordButtonItem.text = item.text
-        btnChangeRecordButtonItem.setIconResource(item.icon)
-        btnChangeRecordButtonItem.iconSize = item.iconSizeDp.dpToPx()
-        btnChangeRecordButtonItem.isEnabled = item.isEnabled
-        btnChangeRecordButtonItem.setOnClickWith(item, onClick)
+        tvRecordQuickActionsButton.text = item.text
+        ivRecordQuickActionsButton.setImageResource(item.icon)
+        cardChangeRecordActionsButton.setCardBackgroundColor(item.iconColor)
+        itemRecordQuickActionsButton.isEnabled = item.isEnabled
+        itemRecordQuickActionsButton.setOnClickWith(item, onClick)
     }
 }
 
@@ -30,7 +30,7 @@ data class ChangeRecordButtonViewData(
     val block: ChangeRecordActionsBlock,
     val text: String,
     @DrawableRes val icon: Int,
-    val iconSizeDp: Int,
+    @ColorInt val iconColor: Int,
     val isEnabled: Boolean,
 ) : ViewHolderType {
 

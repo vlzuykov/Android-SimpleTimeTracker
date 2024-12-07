@@ -238,7 +238,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             goal = compareGoalValue,
             rangeLength = rangeLength,
             showSelectedBarOnStart = false,
-            drawRoundCaps = !chartComparisonIsSplitByActivity
+            drawRoundCaps = !chartComparisonIsSplitByActivity,
         )
         val (title, rangeAverages) = getRangeAverages(
             data = data,
@@ -736,7 +736,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 chartGrouping = it,
                 name = mapToGroupingName(it),
                 isSelected = it == appliedChartGrouping,
-                textSizeSp = if (availableChartGroupings.size >= 3) 12 else null
+                textSizeSp = if (availableChartGroupings.size >= 3) 12 else null,
             )
         }
     }
