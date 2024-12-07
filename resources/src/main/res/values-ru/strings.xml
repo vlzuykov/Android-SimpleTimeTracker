@@ -19,6 +19,7 @@
     <string name="select_nothing">Ничего не выбирать</string>
     <string name="no_data">Нет данных</string>
     <string name="general_error">Что-то пошло не так. Пожалуйста, попробуйте еще раз или перезапустите приложение.</string>
+    <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Вчера</string>
@@ -358,31 +359,17 @@
 <b>Action</b> - \"%s\" или \"%s\".<br/>
 <b>Extra</b> - \"%s\" с именем действия, которое следует запустить или остановить.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Необязательные параметры для начала действия:<br/>
-<br/>
-<b>Extra</b> - \"%s\" с комментарием к записи.<br/>
-<b>Extra</b> - \"%s\" с названием тега записи. Или список названий тегов, разделенных запятой.<br/>
-<br/>
-Дополнительно:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> – \"%s\" с дополнительными функциями: \"%s\", \"%s\", \"%s\" и \"%s\", \"%s\" в формате \"гггг-ММ-дд ЧЧ:мм:сс\" или временной метке UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Отправлять события</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Если параметр <b>\"%s\"</b> включен, приложение будет отправлять события о начале или остановке активности сторонним приложениям для автоматического отслеживания со следующими параметрами:<br/>
-<br/>
-<b>Action</b> - \"%s\" или \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Если параметр <b>\"%s\"</b> включен, приложение будет отправлять события о начале или остановке активности сторонним приложениям для автоматического отслеживания.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Доступные действия:</string>
+    <string name="settings_automated_tracking_available_events">Доступные события:</string>
+    <string name="settings_automated_tracking_extras_description">Описание:</string>
+    <string name="settings_automated_tracking_extra_name">с именем действия, которое следует запустить или остановить.</string>
+    <string name="settings_automated_tracking_extra_tag">с названием тега записи. Или список названий тегов, разделенных запятой.</string>
+    <string name="settings_automated_tracking_extra_time">в формате \"гггг-ММ-дд ЧЧ:мм:сс\" или временной метке UTC.</string>
 
     <string name="settings_save_backup">Сохранить резервную копию</string>
     <string name="settings_save_description">Перед сохранением убедитесь, что у вас установлена последняя версия приложения, чтобы избежать конфликтов.</string>

@@ -19,6 +19,7 @@
     <string name="select_nothing">Ne rien sélectionner</string>
     <string name="no_data">Pas de données</string>
     <string name="general_error">Quelque chose s\'est mal passé. Veuillez réessayer ou redémarrer l\'application.</string>
+    <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Hier</string>
@@ -358,31 +359,17 @@ Pour activer ce comportement, ces applications doivent prendre en charge l\'envo
 <b>Action</b> - \"%s\" ou \"%s\".<br/>
 <b>Extra</b> - \"%s\" avec le nom de l\'activité qui doit être démarrée ou arrêtée.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Paramètres facultatifs pour le démarrage de l\'activité :<br/>
-<br/>
-<b>Extra</b> - \"%s\" avec commentaire d\'enregistrement.<br/>
-<b>Extra</b> - \"%s\" avec le nom d\'une balise d\'enregistrement. Ou une liste de noms de balises séparés par des virgules.<br/>
-<br/>
-Supplémentaire :<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" avec des extras: \"%s\", \"%s\", \"%s\" et \"%s\", \"%s\" au format \"aaaa-MM-jj HH:mm:ss\" ou horodatage UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Envoyer des événements</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Si le paramètre <b>\"%s\"</b> est activé, l\'application enverra automatiquement des événements au démarrage ou à l\'arrêt d\'une activité à des applications tierces pour un suivi automatisé avec ces paramètres:<br/>
-<br/>
-<b>Action</b> - \"%s\" ou \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Si le paramètre <b>\"%s\"</b> est activé, l\'application enverra automatiquement des événements au démarrage ou à l\'arrêt d\'une activité à des applications tierces pour un suivi automatisé.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Actions disponibles:</string>
+    <string name="settings_automated_tracking_available_events">Événements disponibles:</string>
+    <string name="settings_automated_tracking_extras_description">Description:</string>
+    <string name="settings_automated_tracking_extra_name">avec le nom de l\'activité qui doit être démarrée ou arrêtée.</string>
+    <string name="settings_automated_tracking_extra_tag">avec le nom d\'une balise d\'enregistrement. Ou une liste de noms de balises séparés par des virgules.</string>
+    <string name="settings_automated_tracking_extra_time">au format \"aaaa-MM-jj HH:mm:ss\" ou horodatage UTC.</string>
 
     <string name="settings_save_backup">Enregistrer la sauvegarde</string>
     <string name="settings_save_description">Avant de créer une sauvegarde, assurez-vous que la dernière version de l\'application est installée pour éviter tout conflit.</string>

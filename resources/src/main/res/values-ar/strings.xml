@@ -19,6 +19,7 @@
     <string name="select_nothing">لا تختار شيئا</string>
     <string name="no_data">لايوجد بيانات</string>
     <string name="general_error">حدث خطأ ما. يرجى المحاولة مرة أخرى أو إعادة تشغيل التطبيق.</string>
+    <string name="copied_to_clipboard">تم نسخها إلى الحافظة</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">اﻷمس</string>
@@ -358,31 +359,17 @@
 <b>Action</b> - \"%s\" أو \"%s\".<br/>
 <b>Extra</b> - \"%s\" مع اسم النشاط الذي ينبغي أن يبدأ أو يتوقف.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-معلمات اختيارية لبدء النشاط:<br/>
-<br/>
-<b>Extra</b> - \"%s\" مع تعليقات التتبع.<br/>
-<b>Extra</b> - \"%s\" باسم علامة السجل. أو قائمة بأسماء العلامات مفصولة بفاصلة.<br/>
-<br/>
-إضافات<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" مع الإضافات: \"%s\"، \"%s\"، \"%s\" و \"%s\"، \"%s\" بالتنسيق \"yyyy-MM-dd HH:mm:ss\" أو الطابع الزمني UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">إرسال اﻷحداث</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-إذا إعداد <b>\"%s\"</b> مفعل، فسيرسل التطبيق اﻷحداث المتعلقة بالنشاط الذي بدأ أو توقف إلى تطبيقات الطرف الثالث للتتبع التلقائي باستخدام هذه المعلمات:<br/>
-<br/>
-<b>Action</b> - \"%s\" أو \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+إذا تم تمكين الإعداد <b>\"%s\"</b>، فسيقوم التطبيق بإرسال الأحداث المتعلقة بالنشاط الذي بدأ أو توقف إلى تطبيقات الطرف الثالث للتتبع التلقائي.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">الإجراءات المتاحة:</string>
+    <string name="settings_automated_tracking_available_events">الأحداث المتاحة:</string>
+    <string name="settings_automated_tracking_extras_description">وصف:</string>
+    <string name="settings_automated_tracking_extra_name">مع اسم النشاط الذي ينبغي أن يبدأ أو يتوقف.</string>
+    <string name="settings_automated_tracking_extra_tag">باسم علامة السجل. أو قائمة بأسماء العلامات مفصولة بفاصلة.</string>
+    <string name="settings_automated_tracking_extra_time">بالتنسيق \"yyyy-MM-dd HH:mm:ss\" أو الطابع الزمني UTC.</string>
 
     <string name="settings_save_backup">حفظ نسخة احتياطية</string>
     <string name="settings_save_description">قبل الحفظ، تأكد من تثبيت أحدث إصدار من التطبيق لتجنب التعارضات.</string>

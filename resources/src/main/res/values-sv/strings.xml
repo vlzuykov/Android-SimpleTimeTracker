@@ -19,6 +19,7 @@
     <string name="select_nothing">Välj ingenting</string>
     <string name="no_data">Inga data</string>
     <string name="general_error">Något gick fel. Försök igen eller starta om appen.</string>
+    <string name="copied_to_clipboard">Kopierade till urklipp</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Igår</string>
@@ -358,31 +359,17 @@ För att aktivera detta beteende behöver tredjepartsapplikationen stödja \"int
 <b>Action</b> - \"%s\" eller \"%s\".<br/>
 <b>Extra</b> - \"%s\" med namnet på aktiviteten som ska startas eller stoppas.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Valfria parametrar för start av aktivitet:<br/>
-<br/>
-<b>Extra</b> - \"%s\" med händelsekommentar.<br/>
-<b>Extra</b> - \"%s\" med namnet på en händelsetagg. Eller lista över taggnamn separerade med kommatecken.<br/>
-<br/>
-Ytterligare:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" med extrafunktioner: \"%s\", \"%s\", \"%s\" och \"%s\", \"%s\" i formatet \"åååå-MM-dd HH:mm:ss\" eller UTC-tidsstämpel.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Skicka händelser</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Om inställningen <b>\"%s\"</b> är aktiverad, kommer appen att skicka händelser vid påbörjad eller stoppad aktivitet till tredjepartsprogram för automatisk spårning med dessa parametrar:<br/>
-<br/>
-<b>Action</b> - \"%s\" eller \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Om inställningen <b>\"%s\"</b> är aktiverad, kommer appen att skicka händelser vid påbörjad eller stoppad aktivitet till tredjepartsprogram för automatisk spårning.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Tillgängliga åtgärder:</string>
+    <string name="settings_automated_tracking_available_events">Tillgängliga evenemang:</string>
+    <string name="settings_automated_tracking_extras_description">Beskrivning:</string>
+    <string name="settings_automated_tracking_extra_name">med namnet på aktiviteten som ska startas eller stoppas.</string>
+    <string name="settings_automated_tracking_extra_tag">med namnet på en händelsetagg. Eller lista över taggnamn separerade med kommatecken.</string>
+    <string name="settings_automated_tracking_extra_time">i formatet \"åååå-MM-dd HH:mm:ss\" eller UTC-tidsstämpel.</string>
 
     <string name="settings_save_backup">Spara säkerhetskopia</string>
     <string name="settings_save_description">Innan du sparar, se till att du har den senaste versionen av appen för att förhindra datakonflikter.</string>

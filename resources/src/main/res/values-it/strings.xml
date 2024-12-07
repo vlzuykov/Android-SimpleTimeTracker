@@ -19,6 +19,7 @@
     <string name="select_nothing">Non selezionare nulla</string>
     <string name="no_data">Nessun dato</string>
     <string name="general_error">Qualcosa è andato storto. Riprova o riavvia l\'app.</string>
+    <string name="copied_to_clipboard">Copiato negli appunti</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ieri</string>
@@ -358,31 +359,17 @@ Per abilitare questo comportamento, queste applicazioni devono supportare l\'inv
 <b>Action</b> - \"%s\" o \"%s\".<br/>
 <b>Extra</b> - \"%s\" con il nome dell\'attività che deve essere avviata o interrotta.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Parametri facoltativi per l\'avvio dell\'attività:<br/>
-<br/>
-<b>Extra</b> - \"%s\" con commento al record.<br/>
-<b>Extra</b> - \"%s\" con il nome di un tag record. Oppure un elenco di nomi di tag separati da virgola.<br/>
-<br/>
-Aggiuntivo:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" con extra: \"%s\", \"%s\", \"%s\" e \"%s\", \"%s\" nel formato \"aaaa-MM-gg HH:mm:ss\" o timestamp UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Invia eventi</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Se l\'impostazione <b>\"%s\"</b> è abilitata, l\'app invierà eventi sull\'attività avviata o interrotta ad applicazioni di terze parti per il tracciamento automatico con questi parametri:<br/>
-<br/>
-<b>Action</b> - \"%s\" o \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Se l\'impostazione <b>\"%s\"</b> è abilitata, l\'app invierà eventi sull\'attività avviata o interrotta ad applicazioni di terze parti per il tracciamento automatico.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Azioni disponibili:</string>
+    <string name="settings_automated_tracking_available_events">Eventi disponibili:</string>
+    <string name="settings_automated_tracking_extras_description">Descrizione:</string>
+    <string name="settings_automated_tracking_extra_name">con il nome dell\'attività che deve essere avviata o interrotta.</string>
+    <string name="settings_automated_tracking_extra_tag">con il nome di un tag record. Oppure un elenco di nomi di tag separati da virgola.</string>
+    <string name="settings_automated_tracking_extra_time">nel formato \"aaaa-MM-gg HH:mm:ss\" o timestamp UTC.</string>
 
     <string name="settings_save_backup">Effettua un backup</string>
     <string name="settings_save_description">Prima di salvare, assicurati di avere l\'ultima versione dell\'app per evitare conflitti.</string>

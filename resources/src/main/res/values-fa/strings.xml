@@ -19,6 +19,7 @@
     <string name="select_nothing">چیزی را انتخاب نکنید</string>
     <string name="no_data">اطلاعاتی وجود ندارد</string>
     <string name="general_error">مشکلی پیش آمد. لطفاً دوباره امتحان کنید یا برنامه را دوباره راه اندازی کنید.</string>
+    <string name="copied_to_clipboard">در کلیپ بورد کپی شد</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">روز قبل</string>
@@ -358,31 +359,17 @@
 <b>عمل</b> - \"%s\" یا \"%s\".<br/>
 <b>اضافی</b> - \"%s\" با نام فعالیتی که باید شروع یا متوقف شود.<br/>
 <b>بسته</b> - \"%s\".<br/>
-<br/>
-پارامترهای اختیاری برای شروع فعالیت:<br/>
-<br/>
-<b>اضافی</b> - \"%s\" با نظر رکورد.<br/>
-<b>اضافی</b> - \"%s\" با نام یک برچسب رکورد. یا لیستی از نام برچسب ها که با کاما از هم جدا شده اند.<br/>
-<br/>
-موارد اضافی:<br/>
-<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\" با موارد اضافی: \"%s\"، \"%s\"، \"%s\" و \"%s\"، \"%s\" در قالب \"yyyy-MM-dd HH:mm:ss\" یا مهر زمانی UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">ارسال اتفاقات</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-اگر تنظیم <b>\"%s\"</b> فعال باشد، برنامه رویدادهای مربوط به فعالیت شروع شده یا متوقف شده را برای ردیابی خودکار با این پارامترها به برنامه های شخص ثالث ارسال می کند:<br/>
-<br/>
-<b>عمل</b> - \"%s\" یا \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
+اگر تنظیم <b>\"%s\"</b> فعال باشد، برنامه رویدادهای مربوط به فعالیت شروع شده یا متوقف شده را برای ردیابی خودکار به برنامه های شخص ثالث ارسال می کند.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">اقدامات موجود:</string>
+    <string name="settings_automated_tracking_available_events">رویدادهای موجود:</string>
+    <string name="settings_automated_tracking_extras_description">توضیحات:</string>
+    <string name="settings_automated_tracking_extra_name">با نام فعالیتی که باید شروع یا متوقف شود.</string>
+    <string name="settings_automated_tracking_extra_tag">با نام یک برچسب رکورد. یا لیستی از نام برچسب ها که با کاما از هم جدا شده اند.</string>
+    <string name="settings_automated_tracking_extra_time">در قالب \"yyyy-MM-dd HH:mm:ss\" یا مهر زمانی UTC.</string>
 
     <string name="settings_save_backup">ذخیره نسخه پشتیبان</string>
     <string name="settings_save_description">قبل از ذخیره کردن، از اینکه آخرین نسخه برنامه را نصب کرده اید مطمئن شوید تا از ناسازگاری جلوگیری شود.</string>

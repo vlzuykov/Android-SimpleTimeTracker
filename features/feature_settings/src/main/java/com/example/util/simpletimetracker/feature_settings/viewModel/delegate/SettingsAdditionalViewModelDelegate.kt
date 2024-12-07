@@ -14,6 +14,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.feature_settings.interactor.SettingsAdditionalViewDataInteractor
+import com.example.util.simpletimetracker.feature_settings.mapper.SettingsAutomatedTrackingMapper
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.feature_settings.viewModel.SettingsViewModel
 import com.example.util.simpletimetracker.navigation.Router
@@ -29,6 +30,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val resourceRepo: ResourceRepo,
     private val settingsMapper: SettingsMapper,
+    private val settingsAutomatedTrackingMapper: SettingsAutomatedTrackingMapper,
     private val settingsAdditionalViewDataInteractor: SettingsAdditionalViewDataInteractor,
     private val runningRecordInteractor: RunningRecordInteractor,
     private val removeRunningRecordMediator: RemoveRunningRecordMediator,
@@ -263,9 +265,8 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
     private fun onAutomatedTrackingHelpClick() {
         delegateScope.launch {
             val isDarkTheme = prefsInteractor.getDarkMode()
-            router.navigate(
-                settingsMapper.toAutomatedTrackingHelpDialog(isDarkTheme),
-            )
+            settingsAutomatedTrackingMapper.toAutomatedTrackingHelpDialog(isDarkTheme)
+                .let(router::navigate)
         }
     }
 

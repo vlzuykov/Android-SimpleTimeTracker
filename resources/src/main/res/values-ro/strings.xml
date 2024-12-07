@@ -19,6 +19,7 @@
     <string name="select_nothing">Nu selecta nimic</string>
     <string name="no_data">Nu există informații</string>
     <string name="general_error">Ceva a mers greşit. Vă rugăm să încercați din nou sau reporniți aplicația.</string>
+    <string name="copied_to_clipboard">Copiat în clipboard</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ieri</string>
@@ -358,31 +359,17 @@ Pentru a activa aceste aspecte, aplicațiile trebuie sa permită trimiterea de \
 <b>Acțiune</b> - \"%s\" sau \"%s\".<br/>
 <b>Extra</b> - \"%s\" cu numele activității care trebuie începută sau oprită.<br/>
 <b>Pachet</b> - \"%s\".<br/>
-<br/>
-Parametri opționali pentru începerea activității:<br/>
-<br/>
-<b>Extra</b> - \"%s\" cu comentariu înregistrării.<br/>
-<b>Extra</b> - \"%s\" cu numele etichetei înregistrării. Sau o listă de nume de etichete separate prin virgulă.<br/>
-<br/>
-Adițional:<br/>
-<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\" cu extra: \"%s\", \"%s\", \"%s\" și \"%s\", \"%s\" în formatul \"aaaa-ll-zz HH:mm:ss\" sau marcaj orar UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Trimite eveniment</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Dacă opțiunea <b>\"%s\"</b> este activă, aplicația va trimite evenimente la pornirea sau oprirea unei activități către o aplicație terță parte pentru urmărirea automată cu următorii parametri:<br/>
-<br/>
-<b>Acțiune</b> - \"%s\" or \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Dacă opțiunea <b>\"%s\"</b> este activă, aplicația va trimite evenimente la pornirea sau oprirea unei activități către o aplicație terță parte pentru urmărirea automată.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Acțiuni disponibile:</string>
+    <string name="settings_automated_tracking_available_events">Evenimente disponibile:</string>
+    <string name="settings_automated_tracking_extras_description">Descriere:</string>
+    <string name="settings_automated_tracking_extra_name">cu numele activității care trebuie începută sau oprită.</string>
+    <string name="settings_automated_tracking_extra_tag">cu numele etichetei înregistrării. Sau o listă de nume de etichete separate prin virgulă.</string>
+    <string name="settings_automated_tracking_extra_time">în formatul \"aaaa-ll-zz HH:mm:ss\" sau marcaj orar UTC.</string>
 
     <string name="settings_save_backup">Salvează backup</string>
     <string name="settings_save_description">Înainte de a salva, asigură-te ca ai ultima versiune a aplicației pentru a evita conflictele.</string>

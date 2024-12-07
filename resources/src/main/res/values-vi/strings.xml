@@ -19,6 +19,7 @@
     <string name="select_nothing">Không chọn gì</string>
     <string name="no_data">Không dữ liệu</string>
     <string name="general_error">Đã xảy ra lỗi. Vui lòng thử lại hoặc khởi động lại ứng dụng.</string>
+    <string name="copied_to_clipboard">Đã sao chép vào bảng nhớ tạm</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Hôm qua</string>
@@ -358,31 +359,17 @@ Một số ví dụ về sự kiện:<br/>
 <b>Hành động</b> - \"%s\" hoặc \"%s\".<br/>
 <b>Bổ sung</b> - \"%s\" với tên hoạt động sẽ được bắt đầu hoặc dừng.<br/>
 <b>Gói</b> - \"%s\".<br/>
-<br/>
-Các thông số tùy chọn để bắt đầu hoạt động:<br/>
-<br/>
-<b>Bổ sung</b> - \"%s\" có bản ghi nhận xét.<br/>
-<b>Bổ sung</b> - \"%s\" với tên của thẻ bản ghi. Hoặc danh sách tên thẻ cách nhau bằng dấu phẩy.<br/>
-<br/>
-Ngoài ra:<br/>
-<br/>
-<b>Hành động</b> - \"%s\".<br/>
-<b>Hành động</b> - \"%s\".<br/>
-<b>Hành động</b> - \"%s\".<br/>
-<b>Hành động</b> - \"%s\".<br/>
-<b>Hành động</b> - \"%s\" với các tính năng bổ sung: \"%s\", \"%s\", \"%s\" và \"%s\", \"%s\" ở định dạng \"yyyy-MM-dd HH:mm:ss\" hoặc dấu thời gian UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Gửi sự kiện</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Nếu thiết đặt <b>\"%s\"</b> được bật, ứng dụng sẽ gửi các sự kiện về hoạt động đã bắt đầu hoặc đã dừng tới các ứng dụng của bên thứ ba để theo dõi tự động với các thông số sau:<br/>
-<br/>
-<b>Hành động</b> - \"%s\" or \"%s\".<br/>
-<b>Bổ sung</b> - \"%s\".<br/>
-<b>Bổ sung</b> - \"%s\".<br/>
-<b>Bổ sung</b> - \"%s\".<br/>
-<b>Bổ sung</b> - \"%s\".<br/>
-<b>Bổ sung</b> - \"%s\".<br/>
+Nếu cài đặt <b>\"%s\"</b> được bật, ứng dụng sẽ gửi các sự kiện về hoạt động đã bắt đầu hoặc đã dừng đến các ứng dụng của bên thứ ba để theo dõi tự động.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Các hành động có sẵn:</string>
+    <string name="settings_automated_tracking_available_events">Các sự kiện có sẵn:</string>
+    <string name="settings_automated_tracking_extras_description">Sự miêu tả:</string>
+    <string name="settings_automated_tracking_extra_name">với tên hoạt động sẽ được bắt đầu hoặc dừng.</string>
+    <string name="settings_automated_tracking_extra_tag">với tên của thẻ bản ghi. Hoặc danh sách tên thẻ cách nhau bằng dấu phẩy.</string>
+    <string name="settings_automated_tracking_extra_time">ở định dạng \"yyyy-MM-dd HH:mm:ss\" hoặc dấu thời gian UTC.</string>
 
     <string name="settings_save_backup">Lưu bản sao lưu</string>
     <string name="settings_save_description">Trước khi lưu, hãy đảm bảo rằng bạn đã cài đặt phiên bản mới nhất của ứng dụng để tránh xung đột.</string>

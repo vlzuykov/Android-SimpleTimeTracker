@@ -19,6 +19,7 @@
     <string name="select_nothing">Select nothing</string>
     <string name="no_data">No data</string>
     <string name="general_error">Something went wrong. Please try again or restart the app.</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Yesterday</string>
@@ -358,31 +359,17 @@ To enable this behaviour these applications should support sending \"intent\" or
 <b>Action</b> - \"%s\" or \"%s\".<br/>
 <b>Extra</b> - \"%s\" with activity name that should be started or stopped.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Optional parameters for starting activity:<br/>
-<br/>
-<b>Extra</b> - \"%s\" with record comment.<br/>
-<b>Extra</b> - \"%s\" with the name of a record tag. Or list of tag names separated by comma.<br/>
-<br/>
-Additional:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" with extras: \"%s\", \"%s\", \"%s\" and \"%s\", \"%s\" in the format \"yyyy-MM-dd HH:mm:ss\" or UTC timestamp.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Send events</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-If <b>\"%s\"</b> setting is enabled, app will send events on activity started or stopped to third-party applications for automated tracking with these parameters:<br/>
-<br/>
-<b>Action</b> - \"%s\" or \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+If <b>\"%s\"</b> setting is enabled, app will send events on activity started or stopped to third-party applications for automated tracking.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Available actions:</string>
+    <string name="settings_automated_tracking_available_events">Available events:</string>
+    <string name="settings_automated_tracking_extras_description">Description:</string>
+    <string name="settings_automated_tracking_extra_name">with activity name that should be started or stopped.</string>
+    <string name="settings_automated_tracking_extra_tag">with the name of a record tag. Or list of tag names separated by comma.</string>
+    <string name="settings_automated_tracking_extra_time">in the format \"yyyy-MM-dd HH:mm:ss\" or UTC timestamp.</string>
 
     <string name="settings_save_backup">Save backup</string>
     <string name="settings_save_description">Before saving, make sure that you have the latest version of the app installed to avoid conflicts.</string>

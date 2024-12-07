@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.text.HtmlCompat
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.base.ViewModelDelegate
+import com.example.util.simpletimetracker.core.extension.fromHtml
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toModel
 import com.example.util.simpletimetracker.core.extension.toParams
@@ -241,8 +242,7 @@ class SettingsFileWorkDelegate @Inject constructor(
     fun onImportCsvHelpClick() {
         HelpDialogParams(
             title = resourceRepo.getString(R.string.settings_import_csv),
-            text = resourceRepo.getString(R.string.settings_import_csv_help)
-                .let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) },
+            text = resourceRepo.getString(R.string.settings_import_csv_help).fromHtml(),
         ).let(router::navigate)
     }
 

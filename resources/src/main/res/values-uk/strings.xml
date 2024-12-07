@@ -19,6 +19,7 @@
     <string name="select_nothing">Нічого не обирати</string>
     <string name="no_data">Немає даних</string>
     <string name="general_error">Щось пішло не так. Повторіть спробу або перезапустіть програму.</string>
+    <string name="copied_to_clipboard">Скопійовано в буфер обміну</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Вчора</string>
@@ -358,31 +359,17 @@
 <b>Action</b> - \"%s\" або \"%s\".<br/>
 <b>Extra</b> - \"%s\" із назвою дії, яку потрібно розпочати або зупинити.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Необов\'язкові параметри для запуску активності:<br/>
-<br/>
-<b>Extra</b> - \"%s\" із коментарем до запису.<br/>
-<b>Extra</b> - \"%s\" з назвою тегу запису. Або список імен тегів, розділених комами.<br/>
-<br/>
-Додатково:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" з додатками: \"%s\", \"%s\", \"%s\" і \"%s\", \"%s\" у форматі \"рррр-ММ-дд ГГ:хх:сс\" або у форматі часової позначки UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Надсилати події</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Якщо параметр <b>\"%s\"</b> увімкнено, програма надсилатиме події про початок або зупинку активності стороннім програмам для автоматичного відстеження з такими параметрами:<br/>
-<br/>
-<b>Action</b> - \"%s\" або \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Якщо параметр <b>\"%s\"</b> увімкнено, програма надсилатиме події про початок або зупинку активності стороннім програмам для автоматичного відстеження.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Доступні дії:</string>
+    <string name="settings_automated_tracking_available_events">Доступні події:</string>
+    <string name="settings_automated_tracking_extras_description">Опис:</string>
+    <string name="settings_automated_tracking_extra_name">із назвою дії, яку потрібно розпочати або зупинити.</string>
+    <string name="settings_automated_tracking_extra_tag">з назвою тегу запису. Або список імен тегів, розділених комами.</string>
+    <string name="settings_automated_tracking_extra_time">у форматі \"рррр-ММ-дд ГГ:хх:сс\" або у форматі часової позначки UTC.</string>
 
     <string name="settings_save_backup">Зберегти резервну копію</string>
     <string name="settings_save_description">Перед збереженням переконайтесь, що у вас встановлена остання версія додатку, щоб уникнути конфліктів.</string>

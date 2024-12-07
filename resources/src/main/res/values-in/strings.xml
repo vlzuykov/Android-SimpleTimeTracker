@@ -19,6 +19,7 @@
     <string name="select_nothing">Pilih apa pun</string>
     <string name="no_data">Tidak ada data</string>
     <string name="general_error">Ada yang tidak beres. Silakan coba lagi atau mulai ulang aplikasi.</string>
+    <string name="copied_to_clipboard">Disalin ke papan klip</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Kemarin</string>
@@ -358,31 +359,17 @@ Untuk mengaktifkan perilaku ini, aplikasi ini harus mendukung pengiriman \"inten
 <b>Action</b> - \"%s\" atau \"%s\".<br/>
 <b>Extra</b> - \"%s\" dengan nama aktivitas yang harus dimulai atau dihentikan.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Parameter opsional untuk memulai aktivitas:<br/>
-<br/>
-<b>Extra</b> - \"%s\" dengan catatan komentar.<br/>
-<b>Extra</b> - \"%s\" dengan nama tag rekaman. Atau daftar nama tag dipisahkan dengan koma.<br/>
-<br/>
-Tambahan:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" dengan tambahan: \"%s\", \"%s\", \"%s\" dan \"%s\", \"%s\" dalam format \"yyyy-MM-dd HH:mm:ss\" atau stempel waktu UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Kirim acara</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Jika setelan <b>\"%s\"</b> diaktifkan, aplikasi akan mengirimkan peristiwa pada aktivitas yang dimulai atau dihentikan ke aplikasi pihak ketiga untuk pelacakan otomatis dengan parameter berikut:<br/>
-<br/>
-<b>Action</b> - \"%s\" atau \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Jika setelan <b>\"%s\"</b> diaktifkan, aplikasi akan mengirimkan peristiwa pada aktivitas yang dimulai atau dihentikan ke aplikasi pihak ketiga untuk pelacakan otomatis.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Tindakan yang tersedia:</string>
+    <string name="settings_automated_tracking_available_events">Acara yang tersedia:</string>
+    <string name="settings_automated_tracking_extras_description">Keterangan:</string>
+    <string name="settings_automated_tracking_extra_name">dengan nama aktivitas yang harus dimulai atau dihentikan.</string>
+    <string name="settings_automated_tracking_extra_tag">dengan nama tag rekaman. Atau daftar nama tag dipisahkan dengan koma.</string>
+    <string name="settings_automated_tracking_extra_time">dalam format \"yyyy-MM-dd HH:mm:ss\" atau stempel waktu UTC.</string>
 
     <string name="settings_save_backup">Simpan cadangan</string>
     <string name="settings_save_description">Sebelum menyimpan, pastikan Anda memiliki versi terbaru aplikasi terinstal untuk menghindari masalah teknis.</string>

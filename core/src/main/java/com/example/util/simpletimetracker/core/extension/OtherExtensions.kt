@@ -3,7 +3,9 @@ package com.example.util.simpletimetracker.core.extension
 import android.content.BroadcastReceiver
 import android.graphics.Rect
 import android.os.StrictMode
+import android.text.Spanned
 import android.view.View
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.widget.ViewPager2
 import com.example.util.simpletimetracker.core.utils.getLifecycleObserverAdapter
@@ -135,4 +137,8 @@ fun View.getCoordinates(): Coordinates {
         right = rect.right,
         bottom = rect.bottom,
     )
+}
+
+fun String.fromHtml(): Spanned {
+    return HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }

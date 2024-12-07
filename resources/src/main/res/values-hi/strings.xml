@@ -19,6 +19,7 @@
     <string name="select_nothing">कुछ भी नहीं चुनें</string>
     <string name="no_data">कोई डेटा नहीं</string>
     <string name="general_error">कुछ गलत हो गया। कृपया पुनः प्रयास करें या ऐप को पुनरारंभ करें।</string>
+    <string name="copied_to_clipboard">क्लिपबोर्ड पर कॉपी किया गया</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">कल</string>
@@ -358,31 +359,17 @@
 <b> एक्शन </b> - \"%s\" या \"%s\"। <br/>
 <b> अतिरिक्त </b> - \"%s\" गतिविधि के नाम के साथ जिसे शुरू या बंद किया जाना चाहिए। <br/>
 <b> पैकेज </b> - \"%s\"। <br/>
-<br/>
-गतिविधि शुरू करने के लिए वैकल्पिक पैरामीटर: <br/>
-<br/>
-रिकॉर्ड टिप्पणी के साथ <b> अतिरिक्त </b> - \"%s\"। <br/>
-<b> अतिरिक्त </b> - \"%s\" एक रिकॉर्ड टैग के नाम के साथ। या अल्पविराम से अलग किए गए टैग नामों की सूची।<br/>"
-<br/>
-अतिरिक्त:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" अतिरिक्त के साथ: \"%s\", \"%s\", \"%s\" और \"%s\", \"%s\" प्रारूप में \"yyyy-MM-dd HH:mm:ss\" या UTC टाइमस्टैम्प।<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">घटनाएँ भेजें</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-यदि <b>\"%s\"</b> सेटिंग सक्षम है, तो ऐप इन पैरामीटर के साथ स्वचालित ट्रैकिंग के लिए तृतीय-पक्ष एप्लिकेशन को प्रारंभ या बंद की गई गतिविधि पर ईवेंट भेजेगा:<br/>
-<br/>
-<b> एक्शन </b> - \"%s\" या \"%s\"। <br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
+यदि <b>\"%s\"</b> सेटिंग सक्षम है, तो ऐप स्वचालित ट्रैकिंग के लिए तृतीय-पक्ष एप्लिकेशन को शुरू या बंद की गई गतिविधि पर ईवेंट भेजेगा।<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">उपलब्ध क्रियाएं:</string>
+    <string name="settings_automated_tracking_available_events">उपलब्ध घटनाएँ:</string>
+    <string name="settings_automated_tracking_extras_description">विवरण:</string>
+    <string name="settings_automated_tracking_extra_name">गतिविधि के नाम के साथ जिसे शुरू या बंद किया जाना चाहिए। </string>
+    <string name="settings_automated_tracking_extra_tag">एक रिकॉर्ड टैग के नाम के साथ। या अल्पविराम से अलग किए गए टैग नामों की सूची।</string>
+    <string name="settings_automated_tracking_extra_time">प्रारूप में \"yyyy-MM-dd HH:mm:ss\" या UTC टाइमस्टैम्प।</string>
 
     <string name="settings_save_backup">बैकअप सहेजें</string>
     <string name="settings_save_description">सहेजने से पहले, सुनिश्चित करें कि आपके पास संघर्षों से बचने के लिए इंस्टॉल किए गए ऐप का नवीनतम संस्करण है।</string>

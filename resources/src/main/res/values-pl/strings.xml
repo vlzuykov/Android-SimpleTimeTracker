@@ -19,6 +19,7 @@
     <string name="select_nothing">Odznacz wszystko</string>
     <string name="no_data">Brak danych</string>
     <string name="general_error">Coś poszło nie tak. Spróbuj ponownie lub uruchom ponownie aplikację.</string>
+    <string name="copied_to_clipboard">Skopiowano do schowka</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Wczoraj</string>
@@ -358,31 +359,17 @@ Aby włączyć to zachowanie, te aplikacje powinny móc wysyłać tzw. \"intent\
 <b>Action</b> - \"%s\" lub \"%s\".<br/>
 <b>Extra</b> - \"%s\" z nazwą działania, które należy rozpocząć lub zatrzymać.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Opcjonalne parametry do rozpoczęcia aktywności:<br/>
-<br/>
-<b>Extra</b> - \"%s\" z komentarzem do rekordu<br/>
-<b>Extra</b> - \"%s\" z nazwą taga dla rekordu. Lub lista nazw znaczników oddzielonych przecinkami.<br/>
-<br/>
-Dodatkowo:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" z dodatkami: \"%s\", \"%s\", \"%s\" i \"%s\", \"%s\" w formacie \"rrrr-mm-dd gg:mm:ss\" lub sygnatura czasowa UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Wysyłaj zdarzenia</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Jeśli <b>\"%s\"</b> jest włączone, aplikacja będzie wysyłać zdarzenia dotyczące rozpoczęcia lub zatrzymania aktywności do innych aplikacji w celu automatycznego śledzenia z następującymi parametrami:<br/>
-<br/>
-<b>Action</b> - \"%s\" lub \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Jeśli <b>\"%s\"</b> jest włączone, aplikacja będzie wysyłać zdarzenia dotyczące rozpoczęcia lub zatrzymania aktywności do innych aplikacji w celu automatycznego śledzenia.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Dostępne akcje:</string>
+    <string name="settings_automated_tracking_available_events">Dostępne wydarzenia:</string>
+    <string name="settings_automated_tracking_extras_description">Opis:</string>
+    <string name="settings_automated_tracking_extra_name">z nazwą działania, które należy rozpocząć lub zatrzymać.</string>
+    <string name="settings_automated_tracking_extra_tag">z nazwą taga dla rekordu. Lub lista nazw znaczników oddzielonych przecinkami.</string>
+    <string name="settings_automated_tracking_extra_time">w formacie \"rrrr-mm-dd gg:mm:ss\" lub sygnatura czasowa UTC.</string>
 
     <string name="settings_save_backup">Zapisz kopię zapasową</string>
     <string name="settings_save_description">Przed zapisaniem upewnij się, że masz zainstalowaną najnowszą wersję aplikacji, aby uniknąć błędów.</string>

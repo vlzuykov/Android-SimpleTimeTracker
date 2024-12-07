@@ -19,6 +19,7 @@
     <string name="select_nothing">No seleccionar nada</string>
     <string name="no_data">Sin datos</string>
     <string name="general_error">Algo salió mal. Inténtalo de nuevo o reinicia la aplicación.</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ayer</string>
@@ -358,31 +359,17 @@ Para habilitar este comportamiento, estas aplicaciones deben admitir el envío d
 <b>Action</b> - \"%s\" o \"%s\".<br/>
 <b>Extra</b> - \"%s\" con el nombre de la actividad que debe iniciarse o detenerse.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Parámetros opcionales para iniciar la actividad:<br/>
-<br/>
-<b>Extra</b> - \"%s\" con comentario de registro.<br/>
-<b>Extra</b> - \"%s\" con el nombre de una etiqueta de registro. O lista de nombres de etiquetas separados por coma.<br/>
-<br/>
-Adicional:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" con extras: \"%s\", \"%s\", \"%s\" y \"%s\", \"%s\" en el formato \"yyyy-MM-dd HH:mm:ss\" o marca de tiempo UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Enviar eventos</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Si la configuración <b>\"%s\"</b> está habilitada, la aplicación enviará eventos sobre la actividad iniciada o detenida a aplicaciones de terceros para un seguimiento automático con estos parámetros:<br/>
-<br/>
-<b>Action</b> - \"%s\" o \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Si la configuración <b>\"%s\"</b> está habilitada, la aplicación enviará eventos sobre la actividad iniciada o detenida a aplicaciones de terceros para un seguimiento automático.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Acciones disponibles:</string>
+    <string name="settings_automated_tracking_available_events">Eventos disponibles:</string>
+    <string name="settings_automated_tracking_extras_description">Descripción:</string>
+    <string name="settings_automated_tracking_extra_name">con el nombre de la actividad que debe iniciarse o detenerse.</string>
+    <string name="settings_automated_tracking_extra_tag">con el nombre de una etiqueta de registro. O lista de nombres de etiquetas separados por coma.</string>
+    <string name="settings_automated_tracking_extra_time">en el formato \"yyyy-MM-dd HH:mm:ss\" o marca de tiempo UTC.</string>
 
     <string name="settings_save_backup">Guardar copia de seguridad</string>
     <string name="settings_save_description">Antes de guardar, asegúrese de que tiene la última versión de la aplicación instalada para evitar conflictos.</string>

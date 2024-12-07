@@ -19,6 +19,7 @@
     <string name="select_nothing">何も選択しない</string>
     <string name="no_data">データなし</string>
     <string name="general_error">何か問題が発生しました。もう一度試すか、アプリを再起動してください。</string>
+    <string name="copied_to_clipboard">クリップボードにコピーされました</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">昨日</string>
@@ -358,31 +359,17 @@
 <b>Action</b> - \"%s\" または \"%s\".<br/>
 <b>Extra</b> - \"%s\" を開始または停止する必要があるアクティビティ名で指定します。<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-アクティビティを開始するためのオプション パラメータ:<br/>
-<br/>
-<b>Extra</b> - \"%s\" レコード コメント付き。<br/>
-<b>Extra</b> - \"%s\" にレコード タグの名前を付けます。または、カンマで区切られたタグ名のリスト。<br/>
-<br/>
-追加：<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" と追加機能: \"%s\"、\"%s\"、\"%s\" および \"%s\"、\"%s\" 形式は 「yyyy-MM-dd HH:mm:ss」 または UTC タイムスタンプです。<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">イベントを送信する</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-<b>\"%s\"</b> 設定が有効になっている場合、アプリはアクティビティの開始または停止に関するイベントをサードパーティ アプリケーションに送信し、これらのパラメータを使用して自動追跡を行います:<br/>
-<br/>
-<b>Action</b> - \"%s\" または \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+<b>\"%s\"</b> 設定が有効になっている場合、アプリはアクティビティの開始または停止に関するイベントをサードパーティのアプリケーションに送信し、自動追跡を行います。<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">利用可能なアクション:</string>
+    <string name="settings_automated_tracking_available_events">利用可能なイベント:</string>
+    <string name="settings_automated_tracking_extras_description">説明：</string>
+    <string name="settings_automated_tracking_extra_name">を開始または停止する必要があるアクティビティ名で指定します。</string>
+    <string name="settings_automated_tracking_extra_tag">にレコード タグの名前を付けます。または、カンマで区切られたタグ名のリスト。</string>
+    <string name="settings_automated_tracking_extra_time">形式は 「yyyy-MM-dd HH:mm:ss」 または UTC タイムスタンプです。</string>
 
     <string name="settings_save_backup">バックアップの保存</string>
     <string name="settings_save_description">保存する前に競合を避けるため、最新バージョンのアプリがインストールされていることを確認してください。</string>

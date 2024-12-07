@@ -19,6 +19,7 @@
     <string name="select_nothing">不選擇任何內容</string>
     <string name="no_data">沒有數據</string>
     <string name="general_error">出了點問題。請重試或重新啟動應用程式。</string>
+    <string name="copied_to_clipboard">已複製到剪貼簿</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">昨天</string>
@@ -358,31 +359,17 @@
 <b>行動</b> - \"%s\" 或 \"%s\"。<br/>
 <b>Extra</b> - \"%s\" 具有應啟動或停止的活動名稱。<br/>
 <b>包</b> - \"%s\".<br/>
-<br/>
-啟動活動的可選參數：<br/>
-<br/>
-<b>Extra</b> - \"%s\" with record comment.<br/>
-<b>Extra</b> - \"%s\" 帶有記錄標籤的名稱。或以逗號分隔的標籤名稱清單。<br/>
-<br/>
-額外的：<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" 以及附加功能：\"%s\"、\"%s\"、\"%s\" 和\"%s\"、\"%s\" 格式為 \"yyyy-MM-dd HH:mm:ss\" 或 UTC 時間戳記。<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">發送事件</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-如果啟用了 <b>\"%s\"</b> 設置，應用程序將在活動開始或停止時將事件發送到第三方應用程序以使用以下參數進行自動跟踪：<br/>
-<br/>
-<b>行動</b> - \"%s\" 或 \"%s\"。<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+如果啟用<b>\"%s\"</b>設置，應用程式會將活動啟動或停止的事件發送到第三方應用程式以進行自動追蹤。
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">可用的操作：</string>
+    <string name="settings_automated_tracking_available_events">可用活動：</string>
+    <string name="settings_automated_tracking_extras_description">描述：</string>
+    <string name="settings_automated_tracking_extra_name">具有應啟動或停止的活動名稱。</string>
+    <string name="settings_automated_tracking_extra_tag">帶有記錄標籤的名稱。或以逗號分隔的標籤名稱清單。</string>
+    <string name="settings_automated_tracking_extra_time">格式為 \"yyyy-MM-dd HH:mm:ss\" 或 UTC 時間戳記。</string>
 
     <string name="settings_save_backup">儲存備份</string>
     <string name="settings_save_description">在保存之前，請確保您已安裝最新版本的應用程序以避免衝突。</string>

@@ -19,6 +19,7 @@
     <string name="select_nothing">בחר כלום</string>
     <string name="no_data">אין נתונים</string>
     <string name="general_error">משהו השתבש. אנא נסה שוב או הפעל מחדש את היישום.</string>
+    <string name="copied_to_clipboard">הועתק ללוח</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">אתמול</string>
@@ -358,31 +359,17 @@
 <b>Action</b> - \"%s\" או \"%s\".<br/>
 <b>Extra</b> - \"%s\" עם שם פעילות שיש להתחיל או לעצור.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-פרמטרים אופציונליים להתחלת פעילות:<br/>
-<br/>
-<b>Extra</b> - \"%s\" עם הערת רשומה.<br/>
-<b>Extra</b> - \"%s\" עם השם של תג רשומה. או רשימה של שמות תגים מופרדים בפסיק.<br/>
-<br/>
-נוספים:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" עם תוספות: \"%s\", \"%s\", \"%s\" ו \"%s\", \"%s\" בפורמט \"yyyy-MM-dd HH:mm:ss\" או חותמת זמן UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">שלח אירועים</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-אם ההגדרה <b>\"%s\"</b> מופעלת, היישום ישלח אירועים על פעילות שהחלה או נעצרה ליישומי צד שלישי לצורך מעקב אוטומטי עם פרמטרים אלה:<br/>
-<br/>
-<b>Action</b> - \"%s\" או \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+אם ההגדרה <b>\"%s\"</b> מופעלת, האפליקציה תשלח אירועים על פעילות שהתחילה או הופסקה ליישומי צד שלישי למעקב אוטומטי.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">פעולות זמינות:</string>
+    <string name="settings_automated_tracking_available_events">אירועים זמינים:</string>
+    <string name="settings_automated_tracking_extras_description">תֵאוּר:</string>
+    <string name="settings_automated_tracking_extra_name">עם שם פעילות שיש להתחיל או לעצור.</string>
+    <string name="settings_automated_tracking_extra_tag">עם השם של תג רשומה. או רשימה של שמות תגים מופרדים בפסיק.</string>
+    <string name="settings_automated_tracking_extra_time">בפורמט \"yyyy-MM-dd HH:mm:ss\" או חותמת זמן UTC.</string>
 
     <string name="settings_save_backup">שמור גיבוי</string>
     <string name="settings_save_description">לפני השמירה, יש לוודא שהגרסה העדכנית ביותר של היישום מותקנת כדי להימנע מקונפליקטים.</string>

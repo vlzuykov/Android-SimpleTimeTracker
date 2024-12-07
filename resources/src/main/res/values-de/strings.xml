@@ -19,6 +19,7 @@
     <string name="select_nothing">Nichts auswählen</string>
     <string name="no_data">Keine Daten</string>
     <string name="general_error">Etwas ist schief gelaufen. Bitte versuchen Sie es erneut oder starten Sie die App neu.</string>
+    <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Gestern</string>
@@ -358,31 +359,17 @@ Um dieses Verhalten zu aktivieren, sollten diese Anwendungen das Senden von \"In
 <b>Action</b> - \"%s\" oder \"%s\".<br/>
 <b>Extra</b> - \"%s\" mit Name der Aktivität, die gestartet oder gestoppt werden soll.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Optionale Parameter zum Starten der Aktivität:<br/>
-<br/>
-<b>Extra</b> - \"%s\" mit Datensatzkommentar.<br/>
-<b>Extra</b> - \"%s\" mit dem Namen eines Datensatz-Tags. Oder durch Komma getrennte Liste von Tag-Namen.<br/>
-<br/>
-Zusätzlich:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> – \"%s\" mit Extras: \"%s\", \"%s\", \"%s\" und \"%s\", \"%s\" im Format „jjjj-MM-tt HH:mm:ss“ oder UTC-Zeitstempel.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Ereignisse senden</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Wenn die Einstellung <b>\"%s\"</b> aktiviert ist, sendet die App Ereignisse zu gestarteten oder gestoppten Aktivitäten an Anwendungen von Drittanbietern zur automatischen Verfolgung mit diesen Parametern:<br/>
-<br/>
-<b>Action</b> - \"%s\" oder \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Wenn die Einstellung <b>\"%s\"</b> aktiviert ist, sendet die App Ereignisse zu gestarteten oder gestoppten Aktivitäten an Anwendungen von Drittanbietern zur automatischen Verfolgung.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Verfügbare Aktionen:</string>
+    <string name="settings_automated_tracking_available_events">Verfügbare Veranstaltungen:</string>
+    <string name="settings_automated_tracking_extras_description">Beschreibung:</string>
+    <string name="settings_automated_tracking_extra_name">mit Name der Aktivität, die gestartet oder gestoppt werden soll.</string>
+    <string name="settings_automated_tracking_extra_tag">mit dem Namen eines Datensatz-Tags. Oder durch Komma getrennte Liste von Tag-Namen.</string>
+    <string name="settings_automated_tracking_extra_time">im Format „jjjj-MM-tt HH:mm:ss“ oder UTC-Zeitstempel.</string>
 
     <string name="settings_save_backup">Backup speichern</string>
     <string name="settings_save_description">Stelle vor dem Speichern sicher, dass die neueste Version der App installiert ist, um Konflikte zu vermeiden.</string>

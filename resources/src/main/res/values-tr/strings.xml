@@ -19,6 +19,7 @@
     <string name="select_nothing">Hiçbir şey seçme</string>
     <string name="no_data">Veri yok</string>
     <string name="general_error">Bir şeyler ters gitti. Lütfen tekrar deneyin veya uygulamayı yeniden başlatın.</string>
+    <string name="copied_to_clipboard">Panoya kopyalandı</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Dün</string>
@@ -358,31 +359,17 @@ Bu davranışı etkinleştirmek için bu uygulamaların şu parametrelerle \"int
 <b>Action</b> - \"%s\" veya \"%s\".<br/>
 <b>Extra</b> - Başlatılması veya durdurulması gereken etkinlik adıyla \"%s\".<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Aktiviteyi başlatmak için isteğe bağlı parametreler:<br/>
-<br/>
-<b>Extra</b> - Kayıt yorumuyla \"%s\".<br/>
-<b>Extra</b> - Bir kayıt etiketi adıyla \"%s\". Veya virgülle ayrılmış etiket adlarının listesi.<br/>
-<br/>
-Ek olarak:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" ve ekstralar: \"%s\", \"%s\", \"%s\" ve \"%s\", \"%s\" \"yyyy-AA-gg SS:dd:ss\" veya UTC zaman damgası biçiminde.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Etkinlikleri gönder</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-<b>\"%s\"</b> ayarı etkinleştirilirse uygulama, başlatılan veya durdurulan etkinliklerle ilgili olayları otomatik izleme için şu parametrelerle üçüncü taraf uygulamalara gönderir:<br/>
-<br/>
-<b>Action</b> - \"%s\" veya \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+<b>\"%s\"</b> ayarı etkinleştirilirse, uygulama, etkinlik başlatıldığında veya durdurulduğunda otomatik izleme için olayları üçüncü taraf uygulamalarına gönderir.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Mevcut eylemler:</string>
+    <string name="settings_automated_tracking_available_events">Mevcut etkinlikler:</string>
+    <string name="settings_automated_tracking_extras_description">Tanım:</string>
+    <string name="settings_automated_tracking_extra_name">başlatılması veya durdurulması gereken etkinlik adıyla.</string>
+    <string name="settings_automated_tracking_extra_tag">bir kayıt etiketi adıyla. Veya virgülle ayrılmış etiket adlarının listesi.</string>
+    <string name="settings_automated_tracking_extra_time">veya UTC zaman damgası biçiminde.</string>
 
     <string name="settings_save_backup">Yedekleme kaydet</string>
     <string name="settings_save_description">Kaydetmeden önce, uyuşmazlık yaşamamak için uygulamanın güncel olduğundan emin olun.</string>

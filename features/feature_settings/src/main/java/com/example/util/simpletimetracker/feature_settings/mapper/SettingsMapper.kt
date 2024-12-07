@@ -1,32 +1,9 @@
 package com.example.util.simpletimetracker.feature_settings.mapper
 
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import androidx.annotation.StringRes
-import androidx.core.text.HtmlCompat
 import com.example.util.simpletimetracker.core.extension.shiftTimeStamp
 import com.example.util.simpletimetracker.core.interactor.LanguageInteractor
-import com.example.util.simpletimetracker.core.manager.ClipboardManager
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
-import com.example.util.simpletimetracker.core.provider.ApplicationDataProvider
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_ADD_RECORD
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_RESTART_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_START_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ALL_ACTIVITIES
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.EVENT_STARTED_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.EVENT_STOPPED_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
-import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
-import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
-import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_ICON
-import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_NOTE
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_ENDED
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_STARTED
-import com.example.util.simpletimetracker.domain.extension.indexesOf
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.interactor.DarkMode
 import com.example.util.simpletimetracker.domain.model.CardOrder
@@ -43,27 +20,18 @@ import com.example.util.simpletimetracker.feature_settings.viewData.DaysInCalend
 import com.example.util.simpletimetracker.feature_settings.viewData.FirstDayOfWeekViewData
 import com.example.util.simpletimetracker.feature_settings.viewData.LanguageViewData
 import com.example.util.simpletimetracker.feature_settings.viewData.RepeatButtonViewData
-import com.example.util.simpletimetracker.feature_settings.views.SettingsDurationViewData
 import com.example.util.simpletimetracker.feature_settings.viewData.WidgetTransparencyViewData
-import com.example.util.simpletimetracker.feature_views.extension.setClickableSpan
-import com.example.util.simpletimetracker.feature_views.extension.setImageSpan
-import com.example.util.simpletimetracker.feature_views.extension.toSpannableString
+import com.example.util.simpletimetracker.feature_settings.views.SettingsDurationViewData
 import com.example.util.simpletimetracker.feature_views.spinner.CustomSpinner
-import com.example.util.simpletimetracker.navigation.Router
-import com.example.util.simpletimetracker.navigation.params.notification.SnackBarParams
-import com.example.util.simpletimetracker.navigation.params.screen.HelpDialogParams
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 
 class SettingsMapper @Inject constructor(
-    private val router: Router,
     private val timeMapper: TimeMapper,
     private val resourceRepo: ResourceRepo,
-    private val clipboardManager: ClipboardManager,
     private val languageInteractor: LanguageInteractor,
-    private val applicationDataProvider: ApplicationDataProvider,
 ) {
 
     private val cardOrderList: List<CardOrder> = listOf(
@@ -115,56 +83,6 @@ class SettingsMapper @Inject constructor(
         DarkMode.Enabled,
         DarkMode.Disabled,
     )
-
-    fun toAutomatedTrackingHelpDialog(
-        isDarkTheme: Boolean,
-    ): HelpDialogParams {
-        val mainText = formatHelpText(
-            R.string.settings_automated_tracking_text,
-            isDarkTheme,
-            listOf(
-                HelpText(ACTION_EXTERNAL_START_ACTIVITY, canCopy = true),
-                HelpText(ACTION_EXTERNAL_STOP_ACTIVITY, canCopy = true),
-                HelpText(EXTRA_ACTIVITY_NAME, canCopy = true),
-                HelpText(applicationDataProvider.getPackageName(), canCopy = true),
-                HelpText(EXTRA_RECORD_COMMENT, canCopy = true),
-                HelpText(EXTRA_RECORD_TAG_NAME, canCopy = true),
-                HelpText(ACTION_EXTERNAL_STOP_ALL_ACTIVITIES, canCopy = true),
-                HelpText(ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY, canCopy = true),
-                HelpText(ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY, canCopy = true),
-                HelpText(ACTION_EXTERNAL_RESTART_ACTIVITY, canCopy = true),
-                HelpText(ACTION_EXTERNAL_ADD_RECORD, canCopy = true),
-                HelpText(EXTRA_ACTIVITY_NAME, canCopy = true),
-                HelpText(EXTRA_RECORD_COMMENT, canCopy = true),
-                HelpText(EXTRA_RECORD_TAG_NAME, canCopy = true),
-                HelpText(EXTRA_TIME_STARTED, canCopy = true),
-                HelpText(EXTRA_TIME_ENDED, canCopy = true),
-            ),
-        )
-
-        val sendEventsText = formatHelpText(
-            R.string.settings_automated_tracking_send_events_text,
-            isDarkTheme,
-            listOf(
-                HelpText(resourceRepo.getString(R.string.settings_automated_tracking_send_events), canCopy = false),
-                HelpText(EVENT_STARTED_ACTIVITY, canCopy = true),
-                HelpText(EVENT_STOPPED_ACTIVITY, canCopy = true),
-                HelpText(EXTRA_ACTIVITY_NAME, canCopy = true),
-                HelpText(EXTRA_RECORD_COMMENT, canCopy = true),
-                HelpText(EXTRA_RECORD_TAG_NAME, canCopy = true),
-                HelpText(EXTRA_RECORD_TYPE_NOTE, canCopy = true),
-                HelpText(EXTRA_RECORD_TYPE_ICON, canCopy = true),
-            ),
-        )
-
-        return HelpDialogParams(
-            title = resourceRepo.getString(R.string.settings_automated_tracking),
-            text = SpannableStringBuilder()
-                .append(mainText)
-                .append("\n")
-                .append(sendEventsText),
-        )
-    }
 
     fun toCardOrderViewData(currentOrder: CardOrder): CardOrderViewData {
         return CardOrderViewData(
@@ -388,80 +306,6 @@ class SettingsMapper @Inject constructor(
         )
     }
 
-    private fun formatHelpText(
-        @StringRes stringResId: Int,
-        isDarkTheme: Boolean,
-        arguments: List<HelpText>,
-    ): SpannableString = runCatching {
-        val imageTag = "IMAGE_TAG"
-        val theme = if (isDarkTheme) R.style.AppThemeDark else R.style.AppTheme
-        val copyableArguments = arguments.filter(HelpText::canCopy)
-
-        fun insertImageTags(arguments: List<HelpText>): List<String> {
-            return arguments.mapIndexed { index, arg ->
-                if (arg.canCopy) {
-                    "${arg.text} $imageTag"
-                } else {
-                    arg.text
-                }
-            }
-        }
-
-        fun insertClickableSpans(string: SpannableString): SpannableString {
-            copyableArguments.map { it.text }.toSet().forEach { argument ->
-                string.indexesOf(argument).forEach { index ->
-                    string.setClickableSpan(
-                        start = index,
-                        // 1 is for space in between.
-                        length = argument.length + imageTag.length + 1,
-                        onClick = { copyToClipboard(argument) },
-                    )
-                }
-            }
-            return string
-        }
-
-        fun insertImageSpans(string: SpannableString): SpannableString {
-            val icon = resourceRepo.getDrawable(R.drawable.action_copy)
-                ?.mutate()
-                ?.apply {
-                    setTint(resourceRepo.getThemedAttr(R.attr.appTextHintColor, theme))
-                }
-                ?: return SpannableString("")
-
-            string.indexesOf(imageTag).forEach { index ->
-                string.setImageSpan(
-                    start = index,
-                    length = imageTag.length,
-                    drawable = icon,
-                    sizeDp = 16,
-                )
-            }
-            return string
-        }
-
-        return insertImageTags(arguments)
-            .let { resourceRepo.getString(stringResId).format(*it.toTypedArray()) }
-            .let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
-            .toSpannableString()
-            .let(::insertClickableSpans)
-            .let(::insertImageSpans)
-    }.getOrNull() ?: runCatching {
-        // Fallback in case of spans error.
-        resourceRepo.getString(stringResId)
-            .format(*arguments.toTypedArray())
-            .toSpannableString()
-    }.getOrNull() ?: SpannableString("")
-
-    private fun copyToClipboard(text: String) {
-        clipboardManager.send(text)
-        SnackBarParams(
-            message = "Copied to clipboard\n\n$text",
-            duration = SnackBarParams.Duration.ExtraShort,
-            inDialog = true,
-        ).let(router::show)
-    }
-
     private fun toPosition(cardOrder: CardOrder): Int {
         return cardOrderList.indexOf(cardOrder).takeUnless { it == -1 }.orZero()
     }
@@ -514,9 +358,4 @@ class SettingsMapper @Inject constructor(
     private fun toPosition(darkMode: DarkMode): Int {
         return darkModeList.indexOf(darkMode).takeUnless { it == -1 }.orZero()
     }
-
-    private data class HelpText(
-        val text: String,
-        val canCopy: Boolean,
-    )
 }

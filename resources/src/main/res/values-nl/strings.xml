@@ -19,6 +19,7 @@
     <string name="select_nothing">Selecteer niets</string>
     <string name="no_data">Geen gegevens</string>
     <string name="general_error">Er is iets misgegaan. Probeer het opnieuw of start de app opnieuw.</string>
+    <string name="copied_to_clipboard">Gekopieerd naar klembord</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Gisteren</string>
@@ -358,31 +359,17 @@ Om dit gedrag mogelijk te maken, moeten deze toepassingen het verzenden van \"in
 <b>Action</b> - \"%s\" of \"%s\".<br/>
 <b>Extra</b> - \"%s\" met de naam van de activiteit die moet worden gestart of gestopt.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Optionele parameters voor het starten van activiteit:<br/>
-<br/>
-<b>Extra</b> - \"%s\" met recordopmerking.<br/>
-<b>Extra</b> - \"%s\" met de naam van een recordtag. Of een lijst met tagnamen, gescheiden door een komma.<br/>
-<br/>
-Aanvullend:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" met extra\'s: \"%s\", \"%s\", \"%s\" en \"%s\", \"%s\" in de notatie \"jjjj-MM-dd HH:mm:ss\" of UTC-tijdstempel.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Stuur evenementen</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Als de instelling <b>\"%s\"</b> is ingeschakeld, stuurt de app gebeurtenissen over gestarte of gestopte activiteit naar applicaties van derden voor automatische tracking met deze parameters:<br/>
-<br/>
-<b>Action</b> - \"%s\" of \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Als de instelling <b>\"%s\"</b> is ingeschakeld, stuurt de app gebeurtenissen over gestarte of gestopte activiteit naar applicaties van derden voor automatische tracking.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Beschikbare acties:</string>
+    <string name="settings_automated_tracking_available_events">Beschikbare evenementen:</string>
+    <string name="settings_automated_tracking_extras_description">Beschrijving:</string>
+    <string name="settings_automated_tracking_extra_name">met de naam van de activiteit die moet worden gestart of gestopt.</string>
+    <string name="settings_automated_tracking_extra_tag">met de naam van een recordtag. Of een lijst met tagnamen, gescheiden door een komma.</string>
+    <string name="settings_automated_tracking_extra_time">in de notatie \"jjjj-MM-dd HH:mm:ss\" of UTC-tijdstempel.</string>
 
     <string name="settings_save_backup">Back-up opslaan</string>
     <string name="settings_save_description">Zorg ervoor dat je de nieuwste versie van de app hebt geïnstalleerd voordat je opslaat om conflicten te voorkomen.</string>
