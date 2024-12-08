@@ -87,7 +87,6 @@ class ChangeRunningRecordViewModel @Inject constructor(
     override val showTimeEndedOnAdjustPreview: Boolean get() = false
     override val isTimeEndedAvailable: Boolean get() = false
     override val isAdditionalActionsAvailable: Boolean get() = false
-    override val isStopButtonVisible: Boolean get() = true
     override val isDeleteButtonVisible: Boolean get() = true
     override val isStatisticsButtonVisible: Boolean get() = true
 
@@ -145,12 +144,6 @@ class ChangeRunningRecordViewModel @Inject constructor(
         )
         doAfter()
         sendPreviewUpdate(fullUpdate = true)
-        router.back()
-    }
-
-    override suspend fun onStopClickDelegate() {
-        runningRecordInteractor.get(extra.id)
-            ?.let { removeRunningRecordMediator.removeWithRecordAdd(it) }
         router.back()
     }
 
