@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">अंतिम टिप्पणियाँ</string>
     <string name="change_record_favourite_comments_hint">पसंदीदा</string>
     <string name="change_record_favourite_comments_hint_long">पसंदीदा टिप्पणियाँ</string>
+    <string name="change_record_similar_comments_hint">समान टिप्पणियाँ</string>
     <string name="change_record_categories_empty">कोई रिकॉर्ड टैग नहीं जोड़ा गया</string>
     <string name="change_record_save">बचाना</string>
     <string name="change_record_untagged">टैग नहीं किए गए</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">क्रमबद्ध अभिलेख</string>
     <string name="records_all_sort_time_started">समय शुरू हुआ</string>
     <string name="records_all_sort_duration">अवधि</string>
-    <string name="records_all_search_comment">खोज टिप्पणी</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">ट्रैकिंग शुरू करने के लिए, %s बटन पर क्लिक करके गतिविधियाँ जोड़ें या %s बटन पर क्लिक करके डिफ़ॉल्ट प्रीसेट का उपयोग करें</string>

@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">نظرهای قبلی</string>
     <string name="change_record_favourite_comments_hint">مورد علاقه</string>
     <string name="change_record_favourite_comments_hint_long">نظرات مورد علاقه</string>
+    <string name="change_record_similar_comments_hint">نظرات مشابه</string>
     <string name="change_record_categories_empty">برچسب تاریخچه ای اضافه نشده</string>
     <string name="change_record_save">ذخیره</string>
     <string name="change_record_untagged">بدون برچسب</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">مرتب کردن تاریخچه ها</string>
     <string name="records_all_sort_time_started">زمان شروع</string>
     <string name="records_all_sort_duration">طول مدت</string>
-    <string name="records_all_search_comment">جستجوی نظر</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">برای شروع ردیابی، با کلیک بر روی دکمه %s فعالیت ها را اضافه کنید یا با کلیک بر روی دکمه %s از تنظیمات پیش فرض استفاده کنید</string>

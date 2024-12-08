@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">이전 코멘트</string>
     <string name="change_record_favourite_comments_hint">자주쓰는 코멘트</string>
     <string name="change_record_favourite_comments_hint_long">즐겨찾는 댓글</string>
+    <string name="change_record_similar_comments_hint">비슷한 댓글</string>
     <string name="change_record_categories_empty">기록 태그 없음</string>
     <string name="change_record_save">저장</string>
     <string name="change_record_untagged">태그 없음</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">기록 정렬</string>
     <string name="records_all_sort_time_started">시작한 시간</string>
     <string name="records_all_sort_duration">기간</string>
-    <string name="records_all_search_comment">코멘트 검색</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">기록을 시작하기 위해 %s 버튼을 눌러 활동을 추가하거나 %s 버튼을 눌러 기본 템플릿을 사용하세요</string>

@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Nhận xét cuối cùng</string>
     <string name="change_record_favourite_comments_hint">Yêu thích</string>
     <string name="change_record_favourite_comments_hint_long">Bình luận yêu thích</string>
+    <string name="change_record_similar_comments_hint">Nhận xét tương tự</string>
     <string name="change_record_categories_empty">Không có thẻ bản ghi nào được thêm vào</string>
     <string name="change_record_save">Lưu</string>
     <string name="change_record_untagged">Chưa gắn thẻ</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Sắp xếp bản ghi</string>
     <string name="records_all_sort_time_started">Thời gian bắt đầu</string>
     <string name="records_all_sort_duration">Thời lượng</string>
-    <string name="records_all_search_comment">Tìm kiếm nhận xét</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Để bắt đầu theo dõi, hãy thêm hoạt động bằng cách nhấp vào nút %s hoặc sử dụng thiết đặt trước mặc định bằng cách nhấp vào nút %s</string>

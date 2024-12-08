@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">آخر التعليقات</string>
     <string name="change_record_favourite_comments_hint">المفضلة</string>
     <string name="change_record_favourite_comments_hint_long">التعليقات المفضلة</string>
+    <string name="change_record_similar_comments_hint">تعليقات مماثلة</string>
     <string name="change_record_categories_empty">لم تضاف وسوم متتبعة</string>
     <string name="change_record_save">حفظ</string>
     <string name="change_record_untagged">بدون وسم</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">فرز التتبعات</string>
     <string name="records_all_sort_time_started">بدأ الوقت</string>
     <string name="records_all_sort_duration">مدة</string>
-    <string name="records_all_search_comment">تعليق البحث</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">لبدء التتبع ، أضف الأنشطة بالنقر فوق الزر %s أو استخدم الإعدادات المسبقة الافتراضية بالنقر فوق الزر %s</string>

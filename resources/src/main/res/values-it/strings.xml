@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Ultimi commenti</string>
     <string name="change_record_favourite_comments_hint">Preferito</string>
     <string name="change_record_favourite_comments_hint_long">Commenti preferiti</string>
+    <string name="change_record_similar_comments_hint">Commenti simili</string>
     <string name="change_record_categories_empty">Nessuna etichetta aggiunta alla registrazione</string>
     <string name="change_record_save">Salva</string>
     <string name="change_record_untagged">Non etichettato</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Ordina le registrazioni</string>
     <string name="records_all_sort_time_started">Ora di inizio</string>
     <string name="records_all_sort_duration">Durata</string>
-    <string name="records_all_search_comment">Cerca commento</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Per avviare il tracciamento, aggiungi attività facendo clic sul pulsante %s o utilizza i preset predefiniti facendo clic sul pulsante %s</string>

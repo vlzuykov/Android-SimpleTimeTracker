@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">最后评论</string>
     <string name="change_record_favourite_comments_hint">最喜欢的</string>
     <string name="change_record_favourite_comments_hint_long">收藏评论</string>
+    <string name="change_record_similar_comments_hint">类似评论</string>
     <string name="change_record_categories_empty">未添加记录标签</string>
     <string name="change_record_save">保存</string>
     <string name="change_record_untagged">无标签</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">对记录排序</string>
     <string name="records_all_sort_time_started">开始时间</string>
     <string name="records_all_sort_duration">持续时间</string>
-    <string name="records_all_search_comment">搜索评论</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">要开始跟踪，请单击 %s 按钮添加活动，或单击 %s 按钮使用默认预设</string>

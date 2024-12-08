@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">הערות אחרונות</string>
     <string name="change_record_favourite_comments_hint">מועדף</string>
     <string name="change_record_favourite_comments_hint_long">הערות אהובות</string>
+    <string name="change_record_similar_comments_hint">הערות דומות</string>
     <string name="change_record_categories_empty">לא נוספו תגיות רשומה</string>
     <string name="change_record_save">שמור</string>
     <string name="change_record_untagged">לא מתויג</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">מיין רשומות</string>
     <string name="records_all_sort_time_started">זמן התחלה</string>
     <string name="records_all_sort_duration">משך</string>
-    <string name="records_all_search_comment">חפש הערה</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">כדי להתחיל מעקב, הוסף פעילויות על ידי לחיצה על כפתור %s או השתמש בקביעות ברירת מחדל על ידי לחיצה על כפתור %s</string>

@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Últimos comentários</string>
     <string name="change_record_favourite_comments_hint">Favorito</string>
     <string name="change_record_favourite_comments_hint_long">Comentários favoritos</string>
+    <string name="change_record_similar_comments_hint">Comentários semelhantes</string>
     <string name="change_record_categories_empty">Nenhuma tag de registro adicionada</string>
     <string name="change_record_save">Salvar</string>
     <string name="change_record_untagged">Sem tag</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Ordenar registros</string>
     <string name="records_all_sort_time_started">Hora de início</string>
     <string name="records_all_sort_duration">Duração</string>
-    <string name="records_all_search_comment">Pesquisar comentário</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Para iniciar o rastreamento, adicione atividades clicando no botão %s ou use as predefinições padrão clicando no botão %s</string>

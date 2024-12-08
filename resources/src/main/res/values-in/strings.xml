@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Komentar terakhir</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
     <string name="change_record_favourite_comments_hint_long">Komentar favorit</string>
+    <string name="change_record_similar_comments_hint">Komentar serupa</string>
     <string name="change_record_categories_empty">Tidak ada label rekaman yang ditambahkan</string>
     <string name="change_record_save">Simpan</string>
     <string name="change_record_untagged">Tidak berlabel</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Urutkan rekor</string>
     <string name="records_all_sort_time_started">Waktu dimulai</string>
     <string name="records_all_sort_duration">Durasi</string>
-    <string name="records_all_search_comment">Cari komentar</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Untuk memulai pelacakan, tambahkan aktivitas dengan mengklik tombol %s atau gunakan preset default dengan mengklik tombol %s</string>

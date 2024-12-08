@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">最後註解</string>
     <string name="change_record_favourite_comments_hint">最喜歡的</string>
     <string name="change_record_favourite_comments_hint_long">收藏評論</string>
+    <string name="change_record_similar_comments_hint">類似評論</string>
     <string name="change_record_categories_empty">沒有新增紀錄標記</string>
     <string name="change_record_save">儲存</string>
     <string name="change_record_untagged">已取消標記</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">排序紀錄</string>
     <string name="records_all_sort_time_started">開始時間</string>
     <string name="records_all_sort_duration">期間</string>
-    <string name="records_all_search_comment">搜尋註解</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">要開始跟踪，請單擊 %s 按鈕添加活動，或單擊 %s 按鈕使用默認預設</string>

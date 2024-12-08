@@ -13,14 +13,11 @@ import com.example.util.simpletimetracker.domain.interactor.RunningRecordInterac
 import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
-import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_change_record.R
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordCommentFieldViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordCommentViewData
 import com.example.util.simpletimetracker.feature_change_record.mapper.ChangeRecordViewDataMapper
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordDateTimeFieldsState
-import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordFavCommentState
-import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordSearchCommentState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordViewData
 import javax.inject.Inject
 
@@ -61,10 +58,47 @@ class ChangeRecordViewDataInteractor @Inject constructor(
         )
     }
 
-    suspend fun getLastCommentsViewData(
+    // TODO replace fav to text button?
+    // TODO add button to hide similar comments?
+    suspend fun getCommentsViewData(
+        comment: String,
         typeId: Long,
     ): List<ViewHolderType> {
         data class Data(val timeStarted: Long, val comment: String)
+
+        val items = mutableListOf<ViewHolderType>()
+        val isDarkTheme = prefsInteractor.getDarkMode()
+        val isFavourite = favouriteCommentInteractor.get(comment) != null
+
+        ChangeRecordCommentFieldViewData(
+            id = 1L, // Only one at the time.
+            text = comment,
+            iconColor = if (isFavourite) {
+                resourceRepo.getColor(R.color.colorSecondary)
+            } else {
+                colorMapper.toInactiveColor(isDarkTheme)
+            }
+        ).let(items::add)
+
+        val searchResults = if (comment.isNotEmpty()) {
+            recordInteractor.searchComment(comment)
+                .asSequence()
+                .sortedByDescending { it.timeStarted }
+                .map { it.comment }
+                .toSet()
+                .mapNotNull {
+                    if (it == comment) return@mapNotNull null
+                    ChangeRecordCommentViewData.Last(it)
+                }
+                .takeUnless { it.isEmpty() }
+                ?.let {
+                    HintViewData(
+                        text = resourceRepo.getString(R.string.change_record_similar_comments_hint)
+                    ).let(::listOf) + it
+                }.orEmpty()
+        } else {
+            emptyList()
+        }
 
         val favouriteComments = favouriteCommentInteractor.getAll()
             .map { ChangeRecordCommentViewData.Favourite(it.comment) }
@@ -95,51 +129,11 @@ class ChangeRecordViewDataInteractor @Inject constructor(
                 ).let(::listOf) + it
             }.orEmpty()
 
-        return favouriteComments + lastComments
-    }
+        items += searchResults
+        items += favouriteComments
+        items += lastComments
 
-    suspend fun getFavCommentViewData(
-        comment: String,
-    ): ChangeRecordFavCommentState {
-        val isDarkTheme = prefsInteractor.getDarkMode()
-        val isFavourite = favouriteCommentInteractor.get(comment) != null
-
-        return ChangeRecordFavCommentState(
-            iconColor = if (isFavourite) {
-                resourceRepo.getColor(R.color.colorSecondary)
-            } else {
-                colorMapper.toInactiveColor(isDarkTheme)
-            },
-            isVisible = comment.isNotEmpty(),
-        )
-    }
-
-    suspend fun getSearchCommentViewData(
-        isEnabled: Boolean,
-        isLoading: Boolean,
-        search: String,
-    ): ChangeRecordSearchCommentState {
-        val items = mutableListOf<ViewHolderType>()
-
-        ChangeRecordCommentFieldViewData(
-            id = 1L, // Only one at the time.
-            text = search,
-        ).let(items::add)
-
-        when {
-            isLoading -> LoaderViewData().let(::listOf)
-            search.isEmpty() -> emptyList()
-            else -> {
-                recordInteractor.searchComment(search)
-                    .sortedByDescending { it.timeStarted }
-                    .map { ChangeRecordCommentViewData.Last(it.comment) }
-            }
-        }.let(items::addAll)
-
-        return ChangeRecordSearchCommentState(
-            enabled = isEnabled,
-            items = items,
-        )
+        return items
     }
 
     fun getTimeAdjustmentItems(

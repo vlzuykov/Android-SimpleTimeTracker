@@ -1,13 +1,13 @@
 package com.example.util.simpletimetracker.feature_change_record.view
 
-import android.content.res.ColorStateList
+import android.annotation.SuppressLint
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.util.simpletimetracker.core.base.BaseFragment
 import com.example.util.simpletimetracker.core.extension.addOnBackPressedListener
@@ -28,8 +28,8 @@ import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAc
 import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.hintBig.createHintBigAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.info.createInfoAdapterDelegate
-import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
+import com.example.util.simpletimetracker.feature_change_record.R
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordChangePreviewAdapterDelegate
 import com.example.util.simpletimetracker.feature_change_record.adapter.createChangeRecordCommentAdapterDelegate
@@ -45,11 +45,10 @@ import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeR
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordChooserState.State.Closed
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordChooserState.State.Comment
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordChooserState.State.Tag
-import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordFavCommentState
-import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordSearchCommentState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordTagsViewData
 import com.example.util.simpletimetracker.feature_change_record.viewModel.ChangeRecordBaseViewModel
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
+import com.example.util.simpletimetracker.feature_views.extension.postDelayed
 import com.example.util.simpletimetracker.feature_views.extension.rotateDown
 import com.example.util.simpletimetracker.feature_views.extension.rotateUp
 import com.example.util.simpletimetracker.feature_views.extension.setOnClick
@@ -87,17 +86,13 @@ class ChangeRecordCore(
     private val commentsAdapter: BaseRecyclerAdapter by lazy {
         BaseRecyclerAdapter(
             createHintAdapterDelegate(),
-            createChangeRecordCommentAdapterDelegate(viewModel::onCommentClick),
-        )
-    }
-    private val searchCommentsAdapter: BaseRecyclerAdapter by lazy {
-        BaseRecyclerAdapter(
-            createLoaderAdapterDelegate(),
             createChangeRecordCommentFieldAdapterDelegate(
-                afterTextChange = viewModel::onSearchCommentChange,
-                onSearchClick = viewModel::onSearchCommentClick,
+                afterTextChange = viewModel::onCommentChange,
+                onFavouriteClick = viewModel::onFavouriteCommentClick,
             ),
-            createChangeRecordCommentAdapterDelegate(viewModel::onCommentClick),
+            createChangeRecordCommentAdapterDelegate(
+                onItemClick = viewModel::onCommentClick,
+            ),
         )
     }
     private val actionsAdapter: BaseRecyclerAdapter by lazy {
@@ -140,21 +135,13 @@ class ChangeRecordCore(
             }
             adapter = categoriesAdapter
         }
-        rvChangeRecordLastComments.apply {
+        rvChangeRecordComments.apply {
             layoutManager = FlexboxLayoutManager(context).apply {
                 flexDirection = FlexDirection.ROW
                 justifyContent = JustifyContent.CENTER
                 flexWrap = FlexWrap.WRAP
             }
             adapter = commentsAdapter
-        }
-        rvChangeRecordSearchComments.apply {
-            layoutManager = FlexboxLayoutManager(context).apply {
-                flexDirection = FlexDirection.ROW
-                justifyContent = JustifyContent.CENTER
-                flexWrap = FlexWrap.WRAP
-            }
-            adapter = searchCommentsAdapter
         }
         rvChangeRecordAction.apply {
             layoutManager = LinearLayoutManagerWithExtraLayoutSpace(context)
@@ -166,9 +153,6 @@ class ChangeRecordCore(
         fragment: BaseFragment<T>,
         binding: ChangeRecordCoreLayoutBinding,
     ) = with(binding) {
-        etChangeRecordComment.doAfterTextChanged { viewModel.onCommentChange(it.toString()) }
-        btnChangeRecordFavouriteComment.setOnClick(viewModel::onFavouriteCommentClick)
-        btnChangeRecordSearchComment.setOnClick(viewModel::onSearchCommentClick)
         fieldChangeRecordType.setOnClick(viewModel::onTypeChooserClick)
         fieldChangeRecordCategory.setOnClick(viewModel::onCategoryChooserClick)
         fieldChangeRecordComment.setOnClick(viewModel::onCommentChooserClick)
@@ -217,17 +201,8 @@ class ChangeRecordCore(
             timeStartedAdjustmentItems.observe(containerChangeRecordTimeStartedAdjust.adapter::replace)
             timeEndedAdjustmentItems.observe(containerChangeRecordTimeEndedAdjust.adapter::replace)
             chooserState.observe { updateChooserState(it, binding) }
-            keyboardVisibility.observe { visible ->
-                if (visible) {
-                    showKeyboard(etChangeRecordComment)
-                } else {
-                    hideKeyboard()
-                }
-            }
-            lastComments.observe(commentsAdapter::replace)
-            comment.observe { updateUi(binding, it) }
-            favCommentViewData.observe { setFavCommentState(it, binding) }
-            searchCommentViewData.observe { setSearchCommentState(it, binding) }
+            keyboardVisibility.observe { onKeyboardVisibility(binding, it) }
+            comments.observe(commentsAdapter::replace)
             actionsViewData.observe(::setActionsViewData)
         }
     }
@@ -242,14 +217,6 @@ class ChangeRecordCore(
             iconChangeRecordTypePreview.itemIcon = iconId
             layoutChangeRecordTagsPreview.setCardBackgroundColor(color)
         }
-    }
-
-    fun updateUi(
-        binding: ChangeRecordCoreLayoutBinding,
-        comment: String,
-    ) = with(binding) {
-        etChangeRecordComment.setText(comment)
-        etChangeRecordComment.setSelection(comment.length)
     }
 
     fun setDateTime(
@@ -292,7 +259,7 @@ class ChangeRecordCore(
         )
         updateChooser<Comment>(
             state = state,
-            chooserData = containerChangeRecordComment,
+            chooserData = rvChangeRecordComments,
             chooserView = fieldChangeRecordComment,
             chooserArrow = arrowChangeRecordComment,
         )
@@ -330,31 +297,6 @@ class ChangeRecordCore(
         actionsAdapter.replace(data)
     }
 
-    private fun setFavCommentState(
-        data: ChangeRecordFavCommentState,
-        binding: ChangeRecordCoreLayoutBinding,
-    ) {
-        ViewCompat.setBackgroundTintList(
-            binding.ivChangeRecordFavouriteComment,
-            ColorStateList.valueOf(data.iconColor),
-        )
-        binding.btnChangeRecordFavouriteComment.visible = data.isVisible
-    }
-
-    private fun setSearchCommentState(
-        data: ChangeRecordSearchCommentState,
-        binding: ChangeRecordCoreLayoutBinding,
-    ) {
-        if (data.enabled) {
-            binding.containerChangeRecordCommentField.visible = false
-            binding.rvChangeRecordSearchComments.visible = true
-        } else {
-            binding.containerChangeRecordCommentField.visible = true
-            binding.rvChangeRecordSearchComments.visible = false
-        }
-        searchCommentsAdapter.replaceAsNew(data.items)
-    }
-
     private fun setTimeEndedVisibility(
         isVisible: Boolean,
         binding: ChangeRecordCoreLayoutBinding,
@@ -364,6 +306,7 @@ class ChangeRecordCore(
         binding.btnChangeRecordTimeEndedAdjust.isVisible = isVisible
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateCategories(
         data: ChangeRecordTagsViewData,
         binding: ChangeRecordCoreLayoutBinding,
@@ -371,6 +314,20 @@ class ChangeRecordCore(
         categoriesAdapter.replace(data.viewData)
         layoutChangeRecordTagsPreview.isVisible = data.selectedCount > 0
         tvChangeRecordTagPreview.text = data.selectedCount.toString()
+    }
+
+    private fun Fragment.onKeyboardVisibility(
+        binding: ChangeRecordCoreLayoutBinding,
+        visible: Boolean,
+    ) {
+        if (visible) {
+            binding.rvChangeRecordComments.postDelayed(500) {
+                findViewById<EditText>(R.id.etChangeRecordCommentField)
+                    ?.let(::showKeyboard)
+            }
+        } else {
+            hideKeyboard()
+        }
     }
 
     private inline fun <reified T : ChangeRecordChooserState.State> updateChooser(

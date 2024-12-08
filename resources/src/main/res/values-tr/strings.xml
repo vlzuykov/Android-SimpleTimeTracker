@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Son yorumlar</string>
     <string name="change_record_favourite_comments_hint">Favori</string>
     <string name="change_record_favourite_comments_hint_long">Favori yorumlar</string>
+    <string name="change_record_similar_comments_hint">Benzer yorumlar</string>
     <string name="change_record_categories_empty">Kayıt etiketi eklenmedi</string>
     <string name="change_record_save">Kaydet</string>
     <string name="change_record_untagged">Etiketsiz</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Kayıtları sırala</string>
     <string name="records_all_sort_time_started">Başlangıç zamanı</string>
     <string name="records_all_sort_duration">Süre</string>
-    <string name="records_all_search_comment">Yorum ara</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">İzlemeye başlamak için %s düğmesine tıklayarak etkinlikler ekleyin veya %s düğmesine tıklayarak varsayılan ön ayarları kullanın</string>

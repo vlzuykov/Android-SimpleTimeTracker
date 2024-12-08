@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Ostatni komentarz</string>
     <string name="change_record_favourite_comments_hint">Ulubione</string>
     <string name="change_record_favourite_comments_hint_long">Ulubione komentarze</string>
+    <string name="change_record_similar_comments_hint">Podobne komentarze</string>
     <string name="change_record_categories_empty">Brak dodanych tagów</string>
     <string name="change_record_save">Zapisz</string>
     <string name="change_record_untagged">Nieotagowane</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Posortuj rekordy</string>
     <string name="records_all_sort_time_started">Czas rozpoczęcia</string>
     <string name="records_all_sort_duration">Czas trwania</string>
-    <string name="records_all_search_comment">Wyszukaj komentarz</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Aby rozpocząć śledzenie, dodaj aktywność, klikając przycisk %s lub użyj domyślnych, klikając przycisk %s</string>

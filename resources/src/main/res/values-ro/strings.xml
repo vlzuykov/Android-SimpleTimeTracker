@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Ultimele comentarii</string>
     <string name="change_record_favourite_comments_hint">Favorite</string>
     <string name="change_record_favourite_comments_hint_long">Comentarii preferate</string>
+    <string name="change_record_similar_comments_hint">Comentarii similare</string>
     <string name="change_record_categories_empty">Nu au fost adăugate etichete</string>
     <string name="change_record_save">Salvează</string>
     <string name="change_record_untagged">Ne-etichetat</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Sortează înregistrările</string>
     <string name="records_all_sort_time_started">Ora de început</string>
     <string name="records_all_sort_duration">Durata</string>
-    <string name="records_all_search_comment">Caută comentariu</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Pentru a începe urmărirea, adaugă activitatea prin apăsarea butonului %s sau folosește setările de bază apăsând butonul %s</string>

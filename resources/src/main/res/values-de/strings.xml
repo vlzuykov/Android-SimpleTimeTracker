@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Letzte Kommentare</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
     <string name="change_record_favourite_comments_hint_long">Lieblingskommentare</string>
+    <string name="change_record_similar_comments_hint">Ähnliche Kommentare</string>
     <string name="change_record_categories_empty">Keine Datensatz-Tags hinzugefügt</string>
     <string name="change_record_save">Speichern</string>
     <string name="change_record_untagged">Nicht markiert</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Einträge sortieren</string>
     <string name="records_all_sort_time_started">Zeit gestartet</string>
     <string name="records_all_sort_duration">Dauer</string>
-    <string name="records_all_search_comment">Kommentar suchen</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Um mit der Verfolgung zu beginnen, fügen Sie Aktivitäten hinzu, indem Sie auf die Schaltfläche %s klicken, oder verwenden Sie Standardvoreinstellungen, indem Sie auf die Schaltfläche %s klicken</string>

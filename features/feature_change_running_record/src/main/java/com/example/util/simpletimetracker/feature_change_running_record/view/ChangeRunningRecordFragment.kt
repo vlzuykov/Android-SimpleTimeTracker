@@ -76,9 +76,6 @@ class ChangeRunningRecordFragment :
     override fun initViewModel() = with(binding) {
         with(viewModel) {
             extra = params
-            record.observeOnce(viewLifecycleOwner) {
-                core.updateUi(layoutChangeRunningRecordCore, it.recordPreview?.comment.orEmpty())
-            }
             record.observe(::updatePreview)
             core.initViewModel(this@ChangeRunningRecordFragment, layoutChangeRunningRecordCore)
 

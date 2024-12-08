@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Últims comentaris</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
     <string name="change_record_favourite_comments_hint_long">Comentaris preferits</string>
+    <string name="change_record_similar_comments_hint">Comentaris semblants</string>
     <string name="change_record_categories_empty">No s\'han afegit etiquetes</string>
     <string name="change_record_save">Desa</string>
     <string name="change_record_untagged">Sense etiquetar</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Endreça els enregistraments</string>
     <string name="records_all_sort_time_started">Temps d\'inici</string>
     <string name="records_all_sort_duration">Durada</string>
-    <string name="records_all_search_comment">Cerca un comentari</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Per començar el seguiment, afegiu activitats fent clic al botó %s o utilitzeu els valors predeterminats fent clic al botó %s</string>

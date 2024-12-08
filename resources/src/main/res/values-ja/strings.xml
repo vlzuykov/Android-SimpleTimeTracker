@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">最新コメント</string>
     <string name="change_record_favourite_comments_hint">お気に入り</string>
     <string name="change_record_favourite_comments_hint_long">お気に入りのコメント</string>
+    <string name="change_record_similar_comments_hint">同様のコメント</string>
     <string name="change_record_categories_empty">計測タグがありません</string>
     <string name="change_record_save">保存</string>
     <string name="change_record_untagged">タグを外す</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">計測記録をソート</string>
     <string name="records_all_sort_time_started">時間の開始</string>
     <string name="records_all_sort_duration">期間</string>
-    <string name="records_all_search_comment">検索コメント</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">追跡を開始するには、%s ボタンをクリックしてアクティビティを追加するか、%s ボタンをクリックしてデフォルトのプリセットを使用します。</string>

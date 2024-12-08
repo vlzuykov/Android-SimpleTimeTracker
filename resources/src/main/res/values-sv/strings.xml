@@ -111,6 +111,7 @@
     <string name="change_record_last_comments_hint">Tidigare kommentarer</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
     <string name="change_record_favourite_comments_hint_long">Favoritkommentarer</string>
+    <string name="change_record_similar_comments_hint">Liknande kommentarer</string>
     <string name="change_record_categories_empty">Ingen händelsetagg vald</string>
     <string name="change_record_save">Spara</string>
     <string name="change_record_untagged">Ej taggad</string>
@@ -238,7 +239,6 @@
     <string name="records_all_sort_order">Sortera händelser</string>
     <string name="records_all_sort_time_started">Starttid</string>
     <string name="records_all_sort_duration">Varaktighet</string>
-    <string name="records_all_search_comment">Sök kommentar</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">För att börja spåra, lägg till aktiviteter genom att klicka på %s-knappen eller använd standardförinställningar genom att klicka på %s-knappen</string>
