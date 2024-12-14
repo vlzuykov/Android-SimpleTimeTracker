@@ -522,6 +522,7 @@
     <string name="data_edit_hint">لا يمكن التراجع عن هذه التغييرات. تأكد من إنشاء ملف نسخ احتياطي قبل القيام بأي شيء.</string>
     <string name="data_edit_select_records">اختيار التتبعات</string>
     <string name="data_edit_change_activity">تغيير النشاط</string>
+    <string name="data_edit_change_tag">تغيير العلامات</string>
     <string name="data_edit_change_activity_hint">ستزال وسوم النشاط الحالي.</string>
     <string name="data_edit_change_comment">تغيير التعليق</string>
     <string name="data_edit_change_add_tag">إضافة وسوم</string>

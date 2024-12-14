@@ -522,6 +522,7 @@ csv 文件必須包含以逗號分隔的這些列：<br/>
     <string name="data_edit_hint">這些更改無法撤消。確保在執行任何操作之前創建備份文件。</string>
     <string name="data_edit_select_records">選擇記錄</string>
     <string name="data_edit_change_activity">更改活動</string>
+    <string name="data_edit_change_tag">更改標籤</string>
     <string name="data_edit_change_activity_hint">當前活動的標籤將被刪除。</string>
     <string name="data_edit_change_comment">更改評論</string>
     <string name="data_edit_change_add_tag">添加標籤</string>

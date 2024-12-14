@@ -522,6 +522,7 @@
     <string name="data_edit_hint">Ці зміни не можна скасувати. Перш ніж щось робити, обов’язково створіть файл резервної копії.</string>
     <string name="data_edit_select_records">Виберіть записи</string>
     <string name="data_edit_change_activity">Змінити активність</string>
+    <string name="data_edit_change_tag">Змінити теги</string>
     <string name="data_edit_change_activity_hint">Теги поточної активності буде видалено.</string>
     <string name="data_edit_change_comment">Змінити коментар</string>
     <string name="data_edit_change_add_tag">Додати теги</string>

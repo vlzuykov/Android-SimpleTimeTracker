@@ -77,7 +77,7 @@ class ChangeRecordViewDataInteractor @Inject constructor(
                 resourceRepo.getColor(R.color.colorSecondary)
             } else {
                 colorMapper.toInactiveColor(isDarkTheme)
-            }
+            },
         ).let(items::add)
 
         val searchResults = if (comment.isNotEmpty()) {
@@ -93,7 +93,7 @@ class ChangeRecordViewDataInteractor @Inject constructor(
                 .takeUnless { it.isEmpty() }
                 ?.let {
                     HintViewData(
-                        text = resourceRepo.getString(R.string.change_record_similar_comments_hint)
+                        text = resourceRepo.getString(R.string.change_record_similar_comments_hint),
                     ).let(::listOf) + it
                 }.orEmpty()
         } else {

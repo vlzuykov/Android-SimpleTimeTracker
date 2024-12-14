@@ -180,7 +180,7 @@ fun TextView.setCompoundDrawableWithIntrinsicBounds(
 
 inline fun <T : View> T.postDelayed(
     delayMillis: Long,
-    crossinline action: T.() -> Unit
+    crossinline action: T.() -> Unit,
 ) {
     postDelayed(
         { action() },

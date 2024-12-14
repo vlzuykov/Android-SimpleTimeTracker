@@ -522,6 +522,7 @@
     <string name="data_edit_hint">לא ניתן לבטל שינויים אלה. יש ליצור קובץ גיבוי לפני שעושים משהו.</string>
     <string name="data_edit_select_records">בחר רשומות</string>
     <string name="data_edit_change_activity">שנה פעילות</string>
+    <string name="data_edit_change_tag">שנה תגים</string>
     <string name="data_edit_change_activity_hint">תגיות של פעילות נוכחית יוסרו.</string>
     <string name="data_edit_change_comment">שנה הערה</string>
     <string name="data_edit_change_add_tag">הוסף תגיות</string>

@@ -522,6 +522,7 @@ Example:<br/>
     <string name="data_edit_hint">These changes cannot be undone. Make sure to create a backup file before doing anything.</string>
     <string name="data_edit_select_records">Select records</string>
     <string name="data_edit_change_activity">Change activity</string>
+    <string name="data_edit_change_tag">Change tags</string>
     <string name="data_edit_change_activity_hint">Tags of current activity will be removed.</string>
     <string name="data_edit_change_comment">Change comment</string>
     <string name="data_edit_change_add_tag">Add tags</string>

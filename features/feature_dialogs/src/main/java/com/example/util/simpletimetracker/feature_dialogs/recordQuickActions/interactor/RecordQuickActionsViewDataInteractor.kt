@@ -2,7 +2,11 @@ package com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.in
 
 import com.example.util.simpletimetracker.core.mapper.RecordQuickActionMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.interactor.GetSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.model.RecordBase
 import com.example.util.simpletimetracker.domain.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_dialogs.R
@@ -19,15 +23,37 @@ import javax.inject.Inject
 class RecordQuickActionsViewDataInteractor @Inject constructor(
     private val resourceRepo: ResourceRepo,
     private val prefsInteractor: PrefsInteractor,
+    private val recordInteractor: RecordInteractor,
+    private val runningRecordInteractor: RunningRecordInteractor,
     private val recordQuickActionMapper: RecordQuickActionMapper,
+    private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
 ) {
+
+    suspend fun getRecord(
+        extra: RecordQuickActionsParams,
+    ): RecordBase? {
+        return when (val params = extra.type) {
+            is Type.RecordTracked -> recordInteractor.get(params.id)
+            is Type.RecordUntracked -> null
+            is Type.RecordRunning -> runningRecordInteractor.get(params.id)
+            null -> null
+        }
+    }
 
     suspend fun getViewData(
         extra: RecordQuickActionsParams,
     ): RecordQuickActionsState {
         val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
         val canContinue = !retroactiveTrackingModeEnabled
-        val allowedButtons = getAllowedButtons(extra, canContinue)
+        val typeId = getRecord(extra)?.typeIds?.firstOrNull()
+        val hasTags = typeId
+            ?.let { getSelectableTagsInteractor.execute(it) }
+            .orEmpty().any { !it.archived }
+        val allowedButtons = getAllowedButtons(
+            extra = extra,
+            canContinue = canContinue,
+            hasTags = hasTags,
+        )
         val buttons = getAllButtons().filter {
             val block = (it as? RecordQuickActionsBlockHolder)?.block
             block in allowedButtons
@@ -46,6 +72,7 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
             RecordQuickActionsButton.MERGE,
             RecordQuickActionsButton.STOP,
             RecordQuickActionsButton.CHANGE_ACTIVITY,
+            RecordQuickActionsButton.CHANGE_TAG,
         )
         return listOf(
             RecordQuickActionsButtonBigViewData(
@@ -72,6 +99,7 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
     private fun getAllowedButtons(
         extra: RecordQuickActionsParams,
         canContinue: Boolean,
+        hasTags: Boolean,
     ): List<RecordQuickActionsButton> {
         return when (extra.type) {
             is Type.RecordTracked -> listOfNotNull(
@@ -81,17 +109,19 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
                 RecordQuickActionsButton.REPEAT,
                 RecordQuickActionsButton.DUPLICATE,
                 RecordQuickActionsButton.CHANGE_ACTIVITY,
+                RecordQuickActionsButton.CHANGE_TAG.takeIf { hasTags },
             )
-            is Type.RecordUntracked -> listOf(
+            is Type.RecordUntracked -> listOfNotNull(
                 RecordQuickActionsButton.STATISTICS,
                 RecordQuickActionsButton.MERGE,
                 RecordQuickActionsButton.CHANGE_ACTIVITY,
             )
-            is Type.RecordRunning -> listOf(
+            is Type.RecordRunning -> listOfNotNull(
                 RecordQuickActionsButton.STATISTICS,
                 RecordQuickActionsButton.DELETE,
                 RecordQuickActionsButton.STOP,
                 RecordQuickActionsButton.CHANGE_ACTIVITY,
+                RecordQuickActionsButton.CHANGE_TAG.takeIf { hasTags },
             )
             null -> emptyList()
         }
@@ -136,6 +166,7 @@ class RecordQuickActionsViewDataInteractor @Inject constructor(
             RecordQuickActionsButton.MERGE -> RecordQuickAction.MERGE
             RecordQuickActionsButton.STOP -> RecordQuickAction.STOP
             RecordQuickActionsButton.CHANGE_ACTIVITY -> RecordQuickAction.CHANGE_ACTIVITY
+            RecordQuickActionsButton.CHANGE_TAG -> RecordQuickAction.CHANGE_TAG
         }
     }
 }

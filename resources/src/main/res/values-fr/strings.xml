@@ -522,6 +522,7 @@ Exemple:<br/>
     <string name="data_edit_hint">Ces modifications ne peuvent pas être annulées. Assurez-vous de créer un fichier de sauvegarde avant de faire quoi que ce soit.</string>
     <string name="data_edit_select_records">Sélectionnez des enregistrements</string>
     <string name="data_edit_change_activity">Changer d\'activité</string>
+    <string name="data_edit_change_tag">Changer les balises</string>
     <string name="data_edit_change_activity_hint">Les balises de l\'activité en cours seront supprimées.</string>
     <string name="data_edit_change_comment">Modifier le commentaire</string>
     <string name="data_edit_change_add_tag">Ajouter des balises</string>

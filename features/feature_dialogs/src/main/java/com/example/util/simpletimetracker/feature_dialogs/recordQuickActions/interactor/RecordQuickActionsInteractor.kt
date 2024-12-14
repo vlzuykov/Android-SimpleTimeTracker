@@ -7,6 +7,7 @@ import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordM
 import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.model.RunningRecord
 import com.example.util.simpletimetracker.navigation.params.screen.RecordQuickActionsParams.Type
 import javax.inject.Inject
 
@@ -28,17 +29,11 @@ class RecordQuickActionsInteractor @Inject constructor(
                 val recordId = params.id
                 val record = recordInteractor.get(recordId) ?: return
                 if (record.typeId == newTypeId) return
-                Record(
-                    id = recordId,
-                    typeId = newTypeId,
-                    timeStarted = record.timeStarted,
-                    timeEnded = record.timeEnded,
-                    comment = record.comment,
-                    tagIds = emptyList(), // Reset tags.
-                ).let {
-                    addRecordMediator.add(it)
-                    externalViewsInteractor.onRecordChangeType(record.typeId)
-                }
+                changeRecord(
+                    old = record,
+                    newTypeId = newTypeId,
+                    newTagIds = emptyList(), // Reset tags.
+                )
             }
             is Type.RecordUntracked -> {
                 val newTimeStarted = params.timeStarted
@@ -57,19 +52,77 @@ class RecordQuickActionsInteractor @Inject constructor(
             is Type.RecordRunning -> {
                 val recordId = params.id
                 val record = runningRecordInteractor.get(recordId) ?: return
-                // Widgets will update on adding.
-                removeRunningRecordMediator.remove(
-                    typeId = recordId,
-                    updateWidgets = false,
-                    updateNotificationSwitch = false,
-                )
-                addRunningRecordMediator.addAfterChange(
-                    typeId = newTypeId,
-                    timeStarted = record.timeStarted,
-                    comment = record.comment,
-                    tagIds = emptyList(), // Reset tags
+                changeRunningRecord(
+                    old = record,
+                    newTypeId = newTypeId,
+                    newTagIds = emptyList(), // Reset tags
                 )
             }
         }
+    }
+
+    suspend fun changeTags(
+        params: Type,
+        newTagIds: List<Long>,
+    ) {
+        when (params) {
+            is Type.RecordTracked -> {
+                val recordId = params.id
+                val record = recordInteractor.get(recordId) ?: return
+                if (record.tagIds.sorted() == newTagIds.sorted()) return
+                changeRecord(
+                    old = record,
+                    newTypeId = record.typeId,
+                    newTagIds = newTagIds,
+                )
+            }
+            is Type.RecordUntracked -> {
+                // Do nothing. Should not be possible.
+            }
+            is Type.RecordRunning -> {
+                val recordId = params.id
+                val record = runningRecordInteractor.get(recordId) ?: return
+                changeRunningRecord(
+                    old = record,
+                    newTypeId = recordId,
+                    newTagIds = newTagIds,
+                )
+            }
+        }
+    }
+
+    private suspend fun changeRecord(
+        old: Record,
+        newTypeId: Long,
+        newTagIds: List<Long>,
+    ) {
+        old.copy(
+            typeId = newTypeId,
+            tagIds = newTagIds,
+        ).let {
+            addRecordMediator.add(it)
+            if (old.typeId != newTypeId) {
+                externalViewsInteractor.onRecordChangeType(old.typeId)
+            }
+        }
+    }
+
+    private suspend fun changeRunningRecord(
+        old: RunningRecord,
+        newTypeId: Long,
+        newTagIds: List<Long>,
+    ) {
+        // Widgets will update on adding.
+        removeRunningRecordMediator.remove(
+            typeId = old.id,
+            updateWidgets = false,
+            updateNotificationSwitch = false,
+        )
+        addRunningRecordMediator.addAfterChange(
+            typeId = newTypeId,
+            timeStarted = old.timeStarted,
+            comment = old.comment,
+            tagIds = newTagIds,
+        )
     }
 }

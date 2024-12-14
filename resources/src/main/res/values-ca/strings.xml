@@ -522,6 +522,7 @@ Exemple:<br/>
     <string name="data_edit_hint">Aquests canvis no es poden desfer. Assegureu-vos de crear un fitxer de còpia de seguretat abans de fer res.</string>
     <string name="data_edit_select_records">Seleccioneu registres</string>
     <string name="data_edit_change_activity">Canvia l\'activitat</string>
+    <string name="data_edit_change_tag">Canvia les etiquetes</string>
     <string name="data_edit_change_activity_hint">Les etiquetes de l\'activitat actual s\'eliminaran.</string>
     <string name="data_edit_change_comment">Canvia el comentari</string>
     <string name="data_edit_change_add_tag">Afegeix etiquetes</string>

@@ -522,6 +522,7 @@
     <string name="data_edit_hint">این تغییرات دائمی هستند. مطمئن شوید قبل از تغییر نسخه پشتیبان تهیه کرده اید</string>
     <string name="data_edit_select_records">انتخاب تاریخچه ها</string>
     <string name="data_edit_change_activity">تغییر فعالیت</string>
+    <string name="data_edit_change_tag">تگ ها را تغییر دهید</string>
     <string name="data_edit_change_activity_hint">برچسب های فعالیت فعلی حذف خواهند شد.</string>
     <string name="data_edit_change_comment">تغییر نظر</string>
     <string name="data_edit_change_add_tag">افزودن برچسب</string>

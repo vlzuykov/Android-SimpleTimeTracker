@@ -112,7 +112,7 @@ class ChangeComplexRuleViewModel @Inject constructor(
                     tag = RECORD_TAG_SELECTION_DIALOG_TAG,
                     title = "",
                     subtitle = "",
-                    type = TypesSelectionDialogParams.Type.Tag,
+                    type = TypesSelectionDialogParams.Type.Tag.All,
                     selectedTypeIds = newAssignTagIds.toList(),
                     isMultiSelectAvailable = true,
                     idsShouldBeVisible = originalAssignTagIds.toList(),

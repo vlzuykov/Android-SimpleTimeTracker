@@ -522,6 +522,7 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="data_edit_hint">Эти изменения нельзя отменить. Обязательно создайте файл резервной копии, прежде чем что-либо делать.</string>
     <string name="data_edit_select_records">Выберите записи</string>
     <string name="data_edit_change_activity">Изменить активность</string>
+    <string name="data_edit_change_tag">Изменить теги</string>
     <string name="data_edit_change_activity_hint">Теги текущей активности будут удалены.</string>
     <string name="data_edit_change_comment">Изменить комментарий</string>
     <string name="data_edit_change_add_tag">Добавить теги</string>

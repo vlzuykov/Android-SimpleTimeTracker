@@ -522,6 +522,7 @@ Exemplo:<br/>
     <string name="data_edit_hint">Certifica-te que crias uma cópia de segurança antes de fazeres qualquer coisa. Estas alterações não podem ser desfeitas.</string>
     <string name="data_edit_select_records">Selecionar registos</string>
     <string name="data_edit_change_activity">Alterar atividade</string>
+    <string name="data_edit_change_tag">Alterar etiquetas</string>
     <string name="data_edit_change_activity_hint">As etiquetas da atividade atual serão removidas.</string>
     <string name="data_edit_change_comment">Alterar comentário</string>
     <string name="data_edit_change_add_tag">Adicionar etiquetas</string>

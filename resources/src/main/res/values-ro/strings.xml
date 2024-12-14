@@ -522,6 +522,7 @@ Examplu:<br/>
     <string name="data_edit_hint">Aceste modificări nu pot fi reversate. Fii sigur că ai facut un backup înainte de a face orice altceva.</string>
     <string name="data_edit_select_records">Alege înregistrarea</string>
     <string name="data_edit_change_activity">Modifică activitatea</string>
+    <string name="data_edit_change_tag">Schimbați etichetele</string>
     <string name="data_edit_change_activity_hint">Etichetele activității curente vor fi eliminate.</string>
     <string name="data_edit_change_comment">Schimbă comentariul</string>
     <string name="data_edit_change_add_tag">Adaug etichete</string>

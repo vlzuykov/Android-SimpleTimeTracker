@@ -522,6 +522,7 @@ Ví dụ:<br/>
     <string name="data_edit_hint">Những thay đổi này không thể hoàn tác được. Đảm bảo tạo một tệp sao lưu trước khi làm bất cứ điều gì.</string>
     <string name="data_edit_select_records">Chọn bản ghi</string>
     <string name="data_edit_change_activity">Thay đổi hoạt động</string>
+    <string name="data_edit_change_tag">Thay đổi thẻ</string>
     <string name="data_edit_change_activity_hint">Thẻ của hoạt động hiện tại sẽ bị xóa.</string>
     <string name="data_edit_change_comment">Thay đổi nhận xét</string>
     <string name="data_edit_change_add_tag">Thêm thẻ</string>

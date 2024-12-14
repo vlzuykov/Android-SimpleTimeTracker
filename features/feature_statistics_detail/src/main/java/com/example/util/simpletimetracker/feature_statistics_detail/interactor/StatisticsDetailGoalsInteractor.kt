@@ -1,10 +1,7 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
-import com.example.util.simpletimetracker.core.mapper.ColorMapper
-import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.mapper.RangeMapper
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.model.RangeLength
 import com.example.util.simpletimetracker.domain.model.RecordBase
@@ -85,11 +82,11 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
-            splitSortMode = ChartSplitSortMode.ACTIVITY_ORDER
+            splitSortMode = ChartSplitSortMode.ACTIVITY_ORDER,
         )
         val goalValue = chartInteractor.getGoalValue(
             goals = goals,
-            appliedChartGrouping = compositeData.appliedChartGrouping
+            appliedChartGrouping = compositeData.appliedChartGrouping,
         )
 
         return@withContext StatisticsDetailGoalsCompositeViewData(

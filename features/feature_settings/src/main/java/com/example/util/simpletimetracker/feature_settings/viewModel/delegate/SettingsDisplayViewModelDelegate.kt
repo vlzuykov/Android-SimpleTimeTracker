@@ -7,7 +7,6 @@ import com.example.util.simpletimetracker.domain.interactor.PomodoroStopInteract
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordsContainerUpdateInteractor
 import com.example.util.simpletimetracker.domain.interactor.UpdateExternalViewsInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.domain.model.CardOrder
 import com.example.util.simpletimetracker.domain.model.CardTagOrder
 import com.example.util.simpletimetracker.domain.model.WidgetTransparencyPercent
@@ -31,7 +30,6 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val settingsMapper: SettingsMapper,
     private val externalViewsInteractor: UpdateExternalViewsInteractor,
-    private val widgetInteractor: WidgetInteractor,
     private val settingsDisplayViewDataInteractor: SettingsDisplayViewDataInteractor,
     private val pomodoroStopInteractor: PomodoroStopInteractor,
     private val recordsContainerUpdateInteractor: RecordsContainerUpdateInteractor,

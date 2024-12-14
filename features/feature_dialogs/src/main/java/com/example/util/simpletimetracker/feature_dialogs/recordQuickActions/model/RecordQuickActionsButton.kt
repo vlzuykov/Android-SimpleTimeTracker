@@ -9,4 +9,5 @@ enum class RecordQuickActionsButton {
     MERGE,
     STOP,
     CHANGE_ACTIVITY,
+    CHANGE_TAG,
 }

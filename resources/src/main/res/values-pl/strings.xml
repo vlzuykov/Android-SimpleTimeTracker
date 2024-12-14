@@ -522,6 +522,7 @@ Przykład:<br/>
     <string name="data_edit_hint">Tych zmian nie można cofnąć. Zanim zrobisz cokolwiek, pamiętaj o utworzeniu kopii zapasowej.</string>
     <string name="data_edit_select_records">Wybierz rekordy</string>
     <string name="data_edit_change_activity">Zmień aktywność</string>
+    <string name="data_edit_change_tag">Zmień tagi</string>
     <string name="data_edit_change_activity_hint">Tagi bieżącej aktywności zostaną usunięte.</string>
     <string name="data_edit_change_comment">Edytuj komentarz</string>
     <string name="data_edit_change_add_tag">Dodaj tagi</string>

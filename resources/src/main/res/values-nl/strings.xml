@@ -522,6 +522,7 @@ Voorbeeld:<br/>
     <string name="data_edit_hint">Deze wijzigingen kunnen niet ongedaan worden gemaakt. Zorg ervoor dat u een back-upbestand maakt voordat u iets doet.</string>
     <string name="data_edit_select_records">Selecteer records</string>
     <string name="data_edit_change_activity">Activiteit wijzigen</string>
+    <string name="data_edit_change_tag">Wijzig tags</string>
     <string name="data_edit_change_activity_hint">Tags van huidige activiteit worden verwijderd.</string>
     <string name="data_edit_change_comment">Opmerking wijzigen</string>
     <string name="data_edit_change_add_tag">Labels toevoegen</string>

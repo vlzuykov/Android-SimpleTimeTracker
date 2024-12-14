@@ -3,6 +3,7 @@ package com.example.util.simpletimetracker.feature_dialogs.typesSelection.intera
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.interactor.GetSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.model.RecordType
@@ -17,6 +18,7 @@ import javax.inject.Inject
 
 class TypesSelectionViewDataInteractor @Inject constructor(
     private val recordTagInteractor: RecordTagInteractor,
+    private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val prefsInteractor: PrefsInteractor,
@@ -27,14 +29,23 @@ class TypesSelectionViewDataInteractor @Inject constructor(
         extra: TypesSelectionDialogParams,
         types: List<RecordType>,
     ): List<TypesSelectionCacheHolder> {
-        return when (extra.type) {
+        val extraType = extra.type
+        return when (extraType) {
             is TypesSelectionDialogParams.Type.Activity -> {
                 types.filter {
                     !it.hidden || it.id in extra.idsShouldBeVisible
                 }.map(TypesSelectionCacheHolder::Type)
             }
             is TypesSelectionDialogParams.Type.Tag -> {
-                recordTagInteractor.getAll().filter {
+                val tags = when (extraType) {
+                    is TypesSelectionDialogParams.Type.Tag.All -> {
+                        recordTagInteractor.getAll()
+                    }
+                    is TypesSelectionDialogParams.Type.Tag.ByType -> {
+                        getSelectableTagsInteractor.execute(extraType.typeId)
+                    }
+                }
+                tags.filter {
                     !it.archived || it.id in extra.idsShouldBeVisible
                 }.map(TypesSelectionCacheHolder::Tag)
             }

@@ -74,6 +74,8 @@ class RecordQuickActionsViewModel @Inject constructor(
                 onButtonClick(onProceed = ::onStop)
             RecordQuickActionsButton.CHANGE_ACTIVITY ->
                 onButtonClick(delayBlock = true, onProceed = ::onChangeActivity)
+            RecordQuickActionsButton.CHANGE_TAG ->
+                onButtonClick(delayBlock = true, onProceed = ::onChangeTag)
         }
     }
 
@@ -191,14 +193,38 @@ class RecordQuickActionsViewModel @Inject constructor(
         ).let(router::navigate)
     }
 
-    fun onTypesSelected(typeIds: List<Long>, tag: String?) = viewModelScope.launch {
-        if (tag != RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG) return@launch
+    private fun onChangeTag() = viewModelScope.launch {
+        val record = recordQuickActionsViewDataInteractor.getRecord(extra)
+        val typeId = record?.typeIds?.firstOrNull() ?: return@launch
+        val selectedTypeIds = record.tagIds
 
-        buttonsBlocked = true
-        val typeId = typeIds.firstOrNull() ?: return@launch
+        TypesSelectionDialogParams(
+            tag = RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG,
+            title = resourceRepo.getString(R.string.records_filter_select_tags),
+            subtitle = "",
+            type = TypesSelectionDialogParams.Type.Tag.ByType(typeId),
+            selectedTypeIds = selectedTypeIds,
+            isMultiSelectAvailable = true,
+            idsShouldBeVisible = selectedTypeIds,
+            showHints = true,
+        ).let(router::navigate)
+    }
+
+    fun onTypesSelected(typeIds: List<Long>, tag: String?) = viewModelScope.launch {
         val params = extra.type ?: return@launch
-        recordQuickActionsInteractor.changeType(params, typeId)
-        exit()
+        when (tag) {
+            RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG -> {
+                buttonsBlocked = true
+                val typeId = typeIds.firstOrNull() ?: return@launch
+                recordQuickActionsInteractor.changeType(params, typeId)
+                exit()
+            }
+            RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG -> {
+                buttonsBlocked = true
+                recordQuickActionsInteractor.changeTags(params, typeIds)
+                exit()
+            }
+        }
     }
 
     private suspend fun getTrackedRecord(): Record? {
@@ -240,5 +266,6 @@ class RecordQuickActionsViewModel @Inject constructor(
 
     companion object {
         private const val RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG = "RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG"
+        private const val RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG = "RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG"
     }
 }

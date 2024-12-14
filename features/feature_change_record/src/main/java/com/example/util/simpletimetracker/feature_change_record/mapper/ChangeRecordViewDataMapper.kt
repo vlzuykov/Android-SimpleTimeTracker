@@ -145,6 +145,7 @@ class ChangeRecordViewDataMapper @Inject constructor(
             RecordQuickAction.ADJUST -> ChangeRecordActionsBlock.AdjustButton
             RecordQuickAction.STOP -> null
             RecordQuickAction.CHANGE_ACTIVITY -> null
+            RecordQuickAction.CHANGE_TAG -> null
         }
     }
 }

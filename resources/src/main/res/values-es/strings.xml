@@ -522,6 +522,7 @@ Ejemplo:<br/>
     <string name="data_edit_hint">Estos cambios no se pueden deshacer. Asegúrese de crear un archivo de copia de seguridad antes de hacer nada.</string>
     <string name="data_edit_select_records">Seleccionar registros</string>
     <string name="data_edit_change_activity">Cambiar actividad</string>
+    <string name="data_edit_change_tag">Cambiar etiquetas</string>
     <string name="data_edit_change_activity_hint">Se eliminarán las etiquetas de la actividad actual.</string>
     <string name="data_edit_change_comment">Cambiar comentario</string>
     <string name="data_edit_change_add_tag">Agregar etiquetas</string>

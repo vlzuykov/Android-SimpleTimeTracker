@@ -20,8 +20,13 @@ data class TypesSelectionDialogParams(
         @Parcelize
         object Activity : Type
 
-        @Parcelize
-        object Tag : Type
+        sealed interface Tag : Type {
+            @Parcelize
+            object All : Tag
+
+            @Parcelize
+            data class ByType(val typeId: Long) : Tag
+        }
     }
 
     companion object {

@@ -130,7 +130,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
-            splitSortMode = splitSortMode
+            splitSortMode = splitSortMode,
         )
         val compareData = getChartData(
             allRecords = compareRecords,

@@ -522,6 +522,7 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="data_edit_hint">これらの変更は元に戻せません。何かを行う前に、必ずバックアップ ファイルを作成してください。</string>
     <string name="data_edit_select_records">レコードを選択</string>
     <string name="data_edit_change_activity">アクティビティを変更</string>
+    <string name="data_edit_change_tag">タグを変更する</string>
     <string name="data_edit_change_activity_hint">現在のアクティビティのタグは削除されます。</string>
     <string name="data_edit_change_comment">コメントを変更</string>
     <string name="data_edit_change_add_tag">タグを追加する</string>

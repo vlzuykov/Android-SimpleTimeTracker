@@ -522,6 +522,7 @@ Exempel:<br/>
     <string name="data_edit_hint">Dessa ändringar kan inte ångras. Se till att skapa en säkerhetskopia innan du gör något.</string>
     <string name="data_edit_select_records">Välj poster</string>
     <string name="data_edit_change_activity">Ändra aktivitet</string>
+    <string name="data_edit_change_tag">Byt taggar</string>
     <string name="data_edit_change_activity_hint">Taggar för aktuell aktivitet kommer att tas bort.</string>
     <string name="data_edit_change_comment">Ändra kommentar</string>
     <string name="data_edit_change_add_tag">Lägg till taggar</string>

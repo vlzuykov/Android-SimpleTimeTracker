@@ -522,6 +522,7 @@ Contoh:<br/>
     <string name="data_edit_hint">Perubahan ini tidak dapat diurungkan. Pastikan untuk membuat file cadangan sebelum melakukan apa pun.</string>
     <string name="data_edit_select_records">Pilih rekaman</string>
     <string name="data_edit_change_activity">Ubah aktivitas</string>
+    <string name="data_edit_change_tag">Ubah tag</string>
     <string name="data_edit_change_activity_hint">Tag aktivitas saat ini akan dihapus.</string>
     <string name="data_edit_change_comment">Ubah komentar</string>
     <string name="data_edit_change_add_tag">Tambahkan tanda</string>

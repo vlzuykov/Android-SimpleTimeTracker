@@ -9,4 +9,5 @@ enum class RecordQuickAction {
     ADJUST,
     STOP,
     CHANGE_ACTIVITY,
+    CHANGE_TAG,
 }
