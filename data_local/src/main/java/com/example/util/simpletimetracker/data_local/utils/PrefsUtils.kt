@@ -1,10 +1,10 @@
 package com.example.util.simpletimetracker.data_local.utils
 
 import android.content.SharedPreferences
-import com.example.util.simpletimetracker.data_local.repo.RepoConstants.LOG_MESSAGE_CACHE
-import com.example.util.simpletimetracker.data_local.repo.RepoConstants.LOG_MESSAGE_DISK_PREFIX
-import com.example.util.simpletimetracker.data_local.repo.RepoConstants.LOG_MESSAGE_PREFIX
-import com.example.util.simpletimetracker.data_local.repo.RepoConstants.LOG_MESSAGE_PREFS_PREFIX
+import com.example.util.simpletimetracker.data_local.utils.RepoConstants.LOG_MESSAGE_CACHE
+import com.example.util.simpletimetracker.data_local.utils.RepoConstants.LOG_MESSAGE_DISK_PREFIX
+import com.example.util.simpletimetracker.data_local.utils.RepoConstants.LOG_MESSAGE_PREFIX
+import com.example.util.simpletimetracker.data_local.utils.RepoConstants.LOG_MESSAGE_PREFS_PREFIX
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

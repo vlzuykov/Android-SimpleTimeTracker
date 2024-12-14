@@ -1,31 +1,27 @@
 package com.example.util.simpletimetracker.data_local.di
 
-import com.example.util.simpletimetracker.core.repo.DataEditRepo
-import com.example.util.simpletimetracker.core.repo.FileWorkRepo
-import com.example.util.simpletimetracker.data_local.repo.ActivityFilterRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.CategoryRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.ComplexRuleRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.DataEditRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.FavouriteColorRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.FavouriteCommentRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.FavouriteIconRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.FileWorkRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.PrefsRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordTagRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordToRecordTagRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordTypeCategoryRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordTypeGoalRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordTypeRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordTypeToDefaultTagRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RecordTypeToTagRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RunningRecordRepoImpl
-import com.example.util.simpletimetracker.data_local.repo.RunningRecordToRecordTagRepoImpl
-import com.example.util.simpletimetracker.data_local.resolver.BackupPartialRepoImpl
-import com.example.util.simpletimetracker.data_local.resolver.BackupRepoImpl
-import com.example.util.simpletimetracker.data_local.resolver.CsvRepoImpl
-import com.example.util.simpletimetracker.data_local.resolver.IcsRepoImpl
-import com.example.util.simpletimetracker.data_local.resolver.SharingRepoImpl
+import com.example.util.simpletimetracker.data_local.activityFilter.ActivityFilterRepoImpl
+import com.example.util.simpletimetracker.data_local.category.CategoryRepoImpl
+import com.example.util.simpletimetracker.data_local.category.RecordTypeCategoryRepoImpl
+import com.example.util.simpletimetracker.data_local.complexRule.ComplexRuleRepoImpl
+import com.example.util.simpletimetracker.data_local.favourite.FavouriteColorRepoImpl
+import com.example.util.simpletimetracker.data_local.favourite.FavouriteCommentRepoImpl
+import com.example.util.simpletimetracker.data_local.favourite.FavouriteIconRepoImpl
+import com.example.util.simpletimetracker.data_local.prefs.PrefsRepoImpl
+import com.example.util.simpletimetracker.data_local.record.RecordRepoImpl
+import com.example.util.simpletimetracker.data_local.record.RunningRecordRepoImpl
+import com.example.util.simpletimetracker.data_local.recordTag.RunningRecordToRecordTagRepoImpl
+import com.example.util.simpletimetracker.data_local.recordTag.RecordTagRepoImpl
+import com.example.util.simpletimetracker.data_local.recordTag.RecordToRecordTagRepoImpl
+import com.example.util.simpletimetracker.data_local.recordTag.RecordTypeToDefaultTagRepoImpl
+import com.example.util.simpletimetracker.data_local.recordTag.RecordTypeToTagRepoImpl
+import com.example.util.simpletimetracker.data_local.recordType.RecordTypeGoalRepoImpl
+import com.example.util.simpletimetracker.data_local.recordType.RecordTypeRepoImpl
+import com.example.util.simpletimetracker.data_local.backup.BackupPartialRepoImpl
+import com.example.util.simpletimetracker.data_local.backup.BackupRepoImpl
+import com.example.util.simpletimetracker.data_local.file.CsvRepoImpl
+import com.example.util.simpletimetracker.data_local.file.IcsRepoImpl
+import com.example.util.simpletimetracker.data_local.sharing.SharingRepoImpl
 import com.example.util.simpletimetracker.domain.repo.ActivityFilterRepo
 import com.example.util.simpletimetracker.domain.repo.CategoryRepo
 import com.example.util.simpletimetracker.domain.repo.ComplexRuleRepo
@@ -137,14 +133,6 @@ interface DataLocalModuleBinds {
     @Binds
     @Singleton
     fun bindRecordTypeGoalRepo(impl: RecordTypeGoalRepoImpl): RecordTypeGoalRepo
-
-    @Binds
-    @Singleton
-    fun bindDataEditRepo(impl: DataEditRepoImpl): DataEditRepo
-
-    @Binds
-    @Singleton
-    fun bindFileWorkRepo(impl: FileWorkRepoImpl): FileWorkRepo
 
     @Binds
     @Singleton
