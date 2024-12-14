@@ -474,6 +474,8 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="statistics_detail_next_activities_hint">Топ следующих активностей</string>
     <string name="statistics_detail_multitasking_activities_hint">Топ многозадачности</string>
     <string name="statistics_detail_goals_hint">Превышение или дефицит цели</string>
+    <string name="statistics_detail_goals_excess">Превышение</string>
+    <string name="statistics_detail_goals_deficit">Дефицит</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Записей</item>-->

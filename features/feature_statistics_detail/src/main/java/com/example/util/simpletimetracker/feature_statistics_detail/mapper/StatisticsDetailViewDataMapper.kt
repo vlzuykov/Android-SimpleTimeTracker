@@ -730,11 +730,18 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             availableChartLengths = availableChartLengths,
             appliedChartLength = appliedChartLength,
         )
-
-        items += StatisticsDetailHintViewData(
-            block = StatisticsDetailBlock.GoalExcessDeficitHint,
-            text = resourceRepo.getString(R.string.statistics_detail_goals_hint),
+        val goalTotals = mapGoalExcessDeficitTotals(
+            goalData = goalData,
+            useProportionalMinutes = useProportionalMinutes,
+            showSeconds = showSeconds,
         )
+
+        if (chartData.visible) {
+            items += StatisticsDetailHintViewData(
+                block = StatisticsDetailBlock.GoalExcessDeficitHint,
+                text = resourceRepo.getString(R.string.statistics_detail_goals_hint),
+            )
+        }
 
         if (chartData.visible) {
             items += StatisticsDetailBarChartViewData(
@@ -767,6 +774,15 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 title = title,
                 marginTopDp = 0,
                 data = rangeAverages,
+            )
+        }
+
+        if (chartData.visible) {
+            items += StatisticsDetailCardViewData(
+                block = StatisticsDetailBlock.GoalTotals,
+                title = "",
+                marginTopDp = 0,
+                data = goalTotals,
             )
         }
 
@@ -841,8 +857,53 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         ).let(::listOf)
     }
 
-    // TODO GOAL mark zero line on bar chart, to be more visible.
-    // TODO GOAL add total excess and total deficit for selected range.
+    private fun mapGoalExcessDeficitTotals(
+        goalData: List<ChartBarDataDuration>,
+        useProportionalMinutes: Boolean,
+        showSeconds: Boolean,
+    ): List<StatisticsDetailCardInternalViewData> {
+        val barValues = goalData.map { bar -> bar.durations.sumOf { it.first } }
+        val negativeValue = barValues.filter { it < 0L }.sum()
+        val positiveValue = barValues.filter { it > 0L }.sum()
+        val total = negativeValue + positiveValue
+
+        fun formatInterval(
+            interval: Long,
+        ): String {
+            return timeMapper.formatInterval(
+                interval = interval,
+                forceSeconds = showSeconds,
+                useProportionalMinutes = useProportionalMinutes,
+            )
+        }
+
+        return listOf(
+            StatisticsDetailCardInternalViewData(
+                value = formatInterval(negativeValue),
+                valueChange = StatisticsDetailCardInternalViewData.ValueChange.None,
+                secondValue = "",
+                description = resourceRepo.getString(R.string.statistics_detail_goals_deficit),
+                titleTextSizeSp = 14,
+                subtitleTextSizeSp = 12,
+            ),
+            StatisticsDetailCardInternalViewData(
+                value = formatInterval(total),
+                valueChange = StatisticsDetailCardInternalViewData.ValueChange.None,
+                secondValue = "",
+                description = resourceRepo.getString(R.string.statistics_detail_total_duration),
+                titleTextSizeSp = 14,
+                subtitleTextSizeSp = 12,
+            ),
+            StatisticsDetailCardInternalViewData(
+                value = formatInterval(positiveValue),
+                valueChange = StatisticsDetailCardInternalViewData.ValueChange.None,
+                secondValue = "",
+                description = resourceRepo.getString(R.string.statistics_detail_goals_excess),
+                titleTextSizeSp = 14,
+                subtitleTextSizeSp = 12,
+            ),
+        )
+    }
 
     private fun mapToChartGroupingViewData(
         availableChartGroupings: List<ChartGrouping>,

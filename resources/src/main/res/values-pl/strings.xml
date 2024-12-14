@@ -474,6 +474,8 @@ Przykład:<br/>
     <string name="statistics_detail_next_activities_hint">Bezpośrednio przed</string>
     <string name="statistics_detail_multitasking_activities_hint">Najczęściej razem z</string>
     <string name="statistics_detail_goals_hint">Nadmiar lub niedobór celu</string>
+    <string name="statistics_detail_goals_excess">Nadmiar</string>
+    <string name="statistics_detail_goals_deficit">Deficyt</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">rekordów</item>-->

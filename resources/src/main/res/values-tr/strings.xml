@@ -474,6 +474,8 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="statistics_detail_next_activities_hint">Sonraki en iyi aktiviteler</string>
     <string name="statistics_detail_multitasking_activities_hint">En iyi çoklu görev</string>
     <string name="statistics_detail_goals_hint">Hedef fazlası veya açığı</string>
+    <string name="statistics_detail_goals_excess">Aşırı</string>
+    <string name="statistics_detail_goals_deficit">Açık</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Kayıt</item>-->

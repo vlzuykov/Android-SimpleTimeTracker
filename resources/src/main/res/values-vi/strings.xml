@@ -474,6 +474,8 @@ Ví dụ:<br/>
     <string name="statistics_detail_next_activities_hint">Hoạt động tiếp theo hàng đầu</string>
     <string name="statistics_detail_multitasking_activities_hint">Đa nhiệm hàng đầu</string>
     <string name="statistics_detail_goals_hint">Mục tiêu vượt quá hoặc thâm hụt</string>
+    <string name="statistics_detail_goals_excess">Thặng dư</string>
+    <string name="statistics_detail_goals_deficit">Thâm hụt</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Bản ghi</item>-->

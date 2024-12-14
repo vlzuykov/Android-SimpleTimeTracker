@@ -541,7 +541,7 @@ class BarChartView @JvmOverloads constructor(
     }
 
     private fun drawLines(canvas: Canvas) {
-        val points = (0..valueUpperBound step nearestValueStep).toList()
+        val points = (valueDownerBound..valueUpperBound step nearestValueStep).toList()
         points.forEachIndexed { index, _ ->
             canvas.drawLine(
                 0f,

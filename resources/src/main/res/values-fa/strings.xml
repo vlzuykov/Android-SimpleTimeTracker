@@ -474,6 +474,8 @@
     <string name="statistics_detail_next_activities_hint">برترین فعالیت های بعدی</string>
     <string name="statistics_detail_multitasking_activities_hint">چند کاره برتر</string>
     <string name="statistics_detail_goals_hint">بیش از حد یا کسری هدف</string>
+    <string name="statistics_detail_goals_excess">مازاد</string>
+    <string name="statistics_detail_goals_deficit">کسری</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">بدون تاریخچه</item>-->

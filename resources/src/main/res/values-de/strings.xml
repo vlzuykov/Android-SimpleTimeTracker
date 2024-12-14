@@ -474,6 +474,8 @@ Beispiel:<br/>
     <string name="statistics_detail_next_activities_hint">Top nächste Aktivitäten</string>
     <string name="statistics_detail_multitasking_activities_hint">Top Multitasking</string>
     <string name="statistics_detail_goals_hint">Zielüberschreitung oder -defizit</string>
+    <string name="statistics_detail_goals_excess">Überschuss</string>
+    <string name="statistics_detail_goals_deficit">Defizit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">keine Einträge</item>-->

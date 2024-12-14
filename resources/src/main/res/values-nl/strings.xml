@@ -474,6 +474,8 @@ Voorbeeld:<br/>
     <string name="statistics_detail_next_activities_hint">Top volgende activiteiten</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasken</string>
     <string name="statistics_detail_goals_hint">Doeloverschot of -tekort</string>
+    <string name="statistics_detail_goals_excess">Overmaat</string>
+    <string name="statistics_detail_goals_deficit">Tekort</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Gegevens</item>-->

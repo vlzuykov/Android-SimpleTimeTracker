@@ -474,6 +474,8 @@
     <string name="statistics_detail_next_activities_hint">أهم الأنشطة القادمة</string>
     <string name="statistics_detail_multitasking_activities_hint">أعلى المهام المتعددة</string>
     <string name="statistics_detail_goals_hint">هدف فائض أو عجز</string>
+    <string name="statistics_detail_goals_excess">إفراط</string>
+    <string name="statistics_detail_goals_deficit">العجز</string>
 
     <plurals name="statistics_detail_times_tracked">
         <item quantity="zero">تتبع</item>

@@ -474,6 +474,8 @@ Exempel:<br/>
     <string name="statistics_detail_next_activities_hint">Topp nästa aktiviteter</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasked</string>
     <string name="statistics_detail_goals_hint">Målöverskott eller underskott</string>
+    <string name="statistics_detail_goals_excess">Överskott</string>
+    <string name="statistics_detail_goals_deficit">Underskott</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">händelser</item>-->

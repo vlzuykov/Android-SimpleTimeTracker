@@ -34,6 +34,7 @@ enum class StatisticsDetailBlock {
     GoalChartGrouping,
     GoalChartLength,
     GoalRangeAverages,
+    GoalTotals,
     DataDistributionHint,
     DataDistributionPieChart,
     DataDistributionBarChart,

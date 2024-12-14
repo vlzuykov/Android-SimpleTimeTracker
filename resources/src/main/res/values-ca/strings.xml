@@ -474,6 +474,8 @@ Exemple:<br/>
     <string name="statistics_detail_next_activities_hint">Les properes activitats principals</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasca</string>
     <string name="statistics_detail_goals_hint">Excés o dèficit d\'objectius</string>
+    <string name="statistics_detail_goals_excess">Excés</string>
+    <string name="statistics_detail_goals_deficit">Dèficit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Enregistraments</item>-->

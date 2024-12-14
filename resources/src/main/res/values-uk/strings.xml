@@ -474,6 +474,8 @@
     <string name="statistics_detail_next_activities_hint">Найчастіші наступні активності</string>
     <string name="statistics_detail_multitasking_activities_hint">Топ багатозадачності</string>
     <string name="statistics_detail_goals_hint">Перевищення або дефіцит цілі</string>
+    <string name="statistics_detail_goals_excess">Перевищення</string>
+    <string name="statistics_detail_goals_deficit">Дефіцит</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Записів</item>-->

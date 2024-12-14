@@ -474,6 +474,8 @@ Contoh:<br/>
     <string name="statistics_detail_next_activities_hint">Aktivitas teratas selanjutnya</string>
     <string name="statistics_detail_multitasking_activities_hint">Multitugas teratas</string>
     <string name="statistics_detail_goals_hint">Kelebihan atau kekurangan gol</string>
+    <string name="statistics_detail_goals_excess">Kelebihan</string>
+    <string name="statistics_detail_goals_deficit">Defisit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Rekor</item>-->
