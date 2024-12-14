@@ -473,6 +473,7 @@ Exemplo:<br/>
     <string name="statistics_detail_duration_split_hint">Distribuição da duração do registro</string>
     <string name="statistics_detail_next_activities_hint">Principais próximas atividades</string>
     <string name="statistics_detail_multitasking_activities_hint">Principais multitarefas</string>
+    <string name="statistics_detail_goals_hint">Excesso ou déficit de meta</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Registros</item>-->

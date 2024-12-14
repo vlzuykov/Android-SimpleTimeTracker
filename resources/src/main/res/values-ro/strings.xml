@@ -473,6 +473,7 @@ Examplu:<br/>
     <string name="statistics_detail_duration_split_hint">Distribuția înregistrărilor</string>
     <string name="statistics_detail_next_activities_hint">Top următoare activități</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasked</string>
+    <string name="statistics_detail_goals_hint">Exces sau deficit de obiectiv</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Înregistrări</item>-->

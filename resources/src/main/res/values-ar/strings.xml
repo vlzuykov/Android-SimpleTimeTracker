@@ -473,6 +473,7 @@
     <string name="statistics_detail_duration_split_hint">تحصيص مدة التتبع</string>
     <string name="statistics_detail_next_activities_hint">أهم الأنشطة القادمة</string>
     <string name="statistics_detail_multitasking_activities_hint">أعلى المهام المتعددة</string>
+    <string name="statistics_detail_goals_hint">هدف فائض أو عجز</string>
 
     <plurals name="statistics_detail_times_tracked">
         <item quantity="zero">تتبع</item>

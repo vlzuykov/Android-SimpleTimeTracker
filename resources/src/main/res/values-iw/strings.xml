@@ -473,6 +473,7 @@
     <string name="statistics_detail_duration_split_hint">התפלגות משך רשומה</string>
     <string name="statistics_detail_next_activities_hint">פעילויות באות מובילות</string>
     <string name="statistics_detail_multitasking_activities_hint">ריבוי משימות מוביל</string>
+    <string name="statistics_detail_goals_hint">עודף או גירעון יעד</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">רשומות</item>-->

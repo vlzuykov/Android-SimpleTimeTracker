@@ -16,6 +16,7 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.abs
 
 class TimeMapper @Inject constructor(
     localeProvider: LocaleProvider,
@@ -469,13 +470,13 @@ class TimeMapper @Inject constructor(
         val secondString = resourceRepo.getString(R.string.time_second)
 
         val hr: Long = TimeUnit.MILLISECONDS.toHours(
-            interval,
+            abs(interval),
         )
         val min: Long = TimeUnit.MILLISECONDS.toMinutes(
-            interval - TimeUnit.HOURS.toMillis(hr),
+            abs(interval) - TimeUnit.HOURS.toMillis(hr),
         )
         val sec: Long = TimeUnit.MILLISECONDS.toSeconds(
-            interval - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min),
+            abs(interval) - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min),
         )
 
         if (useProportionalMinutes) {
@@ -501,6 +502,8 @@ class TimeMapper @Inject constructor(
         if (willShowMinutes) res += "$min$minuteString"
         if (willShowMinutes && willShowSeconds) res += " "
         if (willShowSeconds) res += "$sec$secondString"
+
+        res = if (interval < 0) "-$res" else res
 
         return res
     }

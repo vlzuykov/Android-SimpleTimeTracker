@@ -473,6 +473,7 @@ Beispiel:<br/>
     <string name="statistics_detail_duration_split_hint">Verteilung der Aufzeichnungsdauer</string>
     <string name="statistics_detail_next_activities_hint">Top nächste Aktivitäten</string>
     <string name="statistics_detail_multitasking_activities_hint">Top Multitasking</string>
+    <string name="statistics_detail_goals_hint">Zielüberschreitung oder -defizit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">keine Einträge</item>-->

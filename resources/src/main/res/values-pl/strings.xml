@@ -473,6 +473,7 @@ Przykład:<br/>
     <string name="statistics_detail_duration_split_hint">Rozkład czasu trwania rekordu</string>
     <string name="statistics_detail_next_activities_hint">Bezpośrednio przed</string>
     <string name="statistics_detail_multitasking_activities_hint">Najczęściej razem z</string>
+    <string name="statistics_detail_goals_hint">Nadmiar lub niedobór celu</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">rekordów</item>-->

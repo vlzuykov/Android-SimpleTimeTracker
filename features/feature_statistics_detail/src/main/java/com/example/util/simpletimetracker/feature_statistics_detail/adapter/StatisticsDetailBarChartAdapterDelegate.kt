@@ -23,14 +23,14 @@ fun createStatisticsDetailBarChartAdapterDelegate() = createRecyclerBindingAdapt
         showSelectedBarOnStart(viewData.showSelectedBarOnStart)
         setBars(
             data = viewData.data,
-            singleColor = item.singleColor,
-            drawRoundCaps = viewData.drawRoundCaps,
             animate = viewData.animate.getValue().orFalse(),
         )
         setLegendTextSuffix(viewData.legendSuffix)
         shouldAddLegendToSelectedBar(viewData.addLegendToSelectedBar)
         shouldDrawHorizontalLegends(viewData.shouldDrawHorizontalLegends)
         setGoalValue(viewData.goalValue)
+        setSingleColor(item.singleColor.takeIf { viewData.useSingleColor })
+        setDrawRoundCaps(viewData.drawRoundCaps)
     }
 }
 

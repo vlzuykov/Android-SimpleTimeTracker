@@ -18,6 +18,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.adapter.Stat
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailSeriesChartViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartViewData
+import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailGoalsCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailPreviewCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailPreviewViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailStatsViewData
@@ -42,6 +43,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
         durationSplitChartViewData: StatisticsDetailChartViewData?,
         comparisonDurationSplitChartViewData: StatisticsDetailChartViewData?,
         nextActivitiesViewData: List<ViewHolderType>?,
+        goalsViewData: StatisticsDetailGoalsCompositeViewData?,
     ): List<ViewHolderType> {
         val result = mutableListOf<ViewHolderType>()
 
@@ -77,8 +79,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.chartData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.ChartData,
-                    singleColor = getPreviewColor()
-                        .takeIf { viewData.useSingleColor },
+                    singleColor = getPreviewColor(),
                     marginTopDp = 16,
                     data = viewData.chartData,
                 )
@@ -87,8 +88,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.compareChartData.visible && comparisonChartIsVisible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.ChartDataComparison,
-                    singleColor = getPreviewColorComparison()
-                        .takeIf { viewData.useSingleColorComparison },
+                    singleColor = getPreviewColorComparison(),
                     marginTopDp = 16,
                     data = viewData.compareChartData,
                 )
@@ -114,11 +114,11 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 // Update margin top depending if has buttons before.
                 val hasButtonsBefore = result.lastOrNull() is StatisticsDetailButtonsRowViewData
                 val newMarginTopDp = if (hasButtonsBefore) -10 else 4
-                val splitActivitiesItems = viewData.splitActivitiesItems.map {
+                val additionalChartButtonItems = viewData.additionalChartButtonItems.map {
                     (it as? StatisticsDetailButtonViewData)
                         ?.copy(marginTopDp = newMarginTopDp) ?: it
                 }
-                result += splitActivitiesItems
+                result += additionalChartButtonItems
             }
 
             val rangeAveragesData = viewData.rangeAverages
@@ -295,6 +295,8 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 )
             }
         }
+
+        result += goalsViewData?.viewData.orEmpty()
 
         statsViewData?.let { viewData ->
             result += viewData.splitData

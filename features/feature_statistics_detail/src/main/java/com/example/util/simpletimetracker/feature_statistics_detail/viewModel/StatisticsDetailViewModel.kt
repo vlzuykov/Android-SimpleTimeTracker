@@ -29,6 +29,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.de
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailDailyCalendarViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailDurationSplitViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailFilterViewModelDelegate
+import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailGoalsViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailNextActivitiesViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailPreviewViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailRangeViewModelDelegate
@@ -60,6 +61,7 @@ class StatisticsDetailViewModel @Inject constructor(
     private val rangeDelegate: StatisticsDetailRangeViewModelDelegate,
     private val filterDelegate: StatisticsDetailFilterViewModelDelegate,
     private val dailyCalendarDelegate: StatisticsDetailDailyCalendarViewModelDelegate,
+    private val goalsDelegate: StatisticsDetailGoalsViewModelDelegate,
 ) : BaseViewModel() {
 
     val scrollToTop: LiveData<Unit> = SingleLiveEvent()
@@ -82,6 +84,7 @@ class StatisticsDetailViewModel @Inject constructor(
         rangeDelegate,
         filterDelegate,
         dailyCalendarDelegate,
+        goalsDelegate,
     )
 
     init {
@@ -126,6 +129,10 @@ class StatisticsDetailViewModel @Inject constructor(
                 chartDelegate.onChartGroupingClick(viewData)
             StatisticsDetailBlock.ChartLength ->
                 chartDelegate.onChartLengthClick(viewData)
+            StatisticsDetailBlock.GoalChartGrouping ->
+                goalsDelegate.onChartGroupingClick(viewData)
+            StatisticsDetailBlock.GoalChartLength ->
+                goalsDelegate.onChartLengthClick(viewData)
             StatisticsDetailBlock.SeriesGoal ->
                 streaksDelegate.onStreaksGoalClick(viewData)
             StatisticsDetailBlock.SeriesType ->
@@ -239,6 +246,7 @@ class StatisticsDetailViewModel @Inject constructor(
         splitChartDelegate.updateSplitChartViewData()
         durationSplitDelegate.updateViewData()
         nextActivitiesDelegate.updateViewData()
+        goalsDelegate.updateViewData()
     }
 
     private fun updateContent() {
@@ -264,6 +272,7 @@ class StatisticsDetailViewModel @Inject constructor(
             durationSplitChartViewData = durationSplitDelegate.viewData.value,
             comparisonDurationSplitChartViewData = durationSplitDelegate.comparisonViewData.value,
             nextActivitiesViewData = nextActivitiesDelegate.viewData.value,
+            goalsViewData = goalsDelegate.viewData.value,
         )
     }
 

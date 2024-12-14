@@ -221,6 +221,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             shouldDrawHorizontalLegends = false,
             showSelectedBarOnStart = false,
             goalValue = 0f,
+            useSingleColor = true,
             drawRoundCaps = true,
             animate = OneShotValue(true),
         )

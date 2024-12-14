@@ -11,6 +11,7 @@ data class StatisticsDetailChartViewData(
     val shouldDrawHorizontalLegends: Boolean,
     val showSelectedBarOnStart: Boolean,
     val goalValue: Float,
+    val useSingleColor: Boolean,
     val drawRoundCaps: Boolean,
     val animate: OneShotValue<Boolean>,
 )

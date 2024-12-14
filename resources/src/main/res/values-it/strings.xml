@@ -473,6 +473,7 @@ Esempio:<br/>
     <string name="statistics_detail_duration_split_hint">Distribuzione della durata del record</string>
     <string name="statistics_detail_next_activities_hint">Le migliori attività successive</string>
     <string name="statistics_detail_multitasking_activities_hint">Il massimo del multitasking</string>
+    <string name="statistics_detail_goals_hint">Eccesso o deficit di obiettivo</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Registrazioni</item>-->
