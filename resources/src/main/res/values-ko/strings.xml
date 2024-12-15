@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">카테고리 추가되지 않음</string>
     <string name="change_record_type_goal_time_disabled">비활성화됨</string>
     <string name="change_record_type_goal_time_hint">목표</string>
+    <string name="change_record_type_limit_time_hint">한계</string>
     <string name="change_record_type_additional_hint">추가의</string>
     <string name="change_record_type_default_duration">기본 기간</string>
     <string name="change_record_type_default_duration_hint">기본 기간이 있는 활동은 클릭 시 즉시 추적됩니다.</string>

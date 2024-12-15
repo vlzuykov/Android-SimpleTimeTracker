@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Nu au fost categorii adăugate</string>
     <string name="change_record_type_goal_time_disabled">Dezactivat</string>
     <string name="change_record_type_goal_time_hint">Țel</string>
+    <string name="change_record_type_limit_time_hint">Limită</string>
     <string name="change_record_type_additional_hint">Adiţional</string>
     <string name="change_record_type_default_duration">Durată implicită</string>
     <string name="change_record_type_default_duration_hint">Activitățile cu durată implicită sunt urmărite imediat la clic.</string>

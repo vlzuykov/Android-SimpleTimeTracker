@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Geen categorieën toegevoegd</string>
     <string name="change_record_type_goal_time_disabled">Uitgeschakeld</string>
     <string name="change_record_type_goal_time_hint">Doel</string>
+    <string name="change_record_type_limit_time_hint">Beperken</string>
     <string name="change_record_type_additional_hint">Aanvullend</string>
     <string name="change_record_type_default_duration">Standaardduur</string>
     <string name="change_record_type_default_duration_hint">Activiteiten met een standaardduur worden onmiddellijk na klikken gevolgd.</string>

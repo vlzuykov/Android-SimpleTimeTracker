@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_change_goals.api
 
+import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_views.spinner.CustomSpinner
 
@@ -17,11 +18,12 @@ data class ChangeRecordTypeGoalsViewData(
         val typeItems: List<CustomSpinner.CustomSpinnerItem>,
         val typeSelectedPosition: Int,
         val type: Type,
+        val subtypeItems: List<ButtonsRowViewData>,
         val value: String,
     )
 
     sealed interface Type {
-        object Duration : Type
-        object Count : Type
+        data object Duration : Type
+        data object Count : Type
     }
 }

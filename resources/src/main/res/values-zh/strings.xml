@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">未添加任何类别</string>
     <string name="change_record_type_goal_time_disabled">不启用</string>
     <string name="change_record_type_goal_time_hint">目标</string>
+    <string name="change_record_type_limit_time_hint">限制</string>
     <string name="change_record_type_additional_hint">额外的</string>
     <string name="change_record_type_default_duration">默认持续时间</string>
     <string name="change_record_type_default_duration_hint">单击后会立即跟踪具有默认持续时间的活动。</string>

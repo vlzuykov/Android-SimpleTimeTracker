@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Brak dodanej kategorii</string>
     <string name="change_record_type_goal_time_disabled">Wyłączony</string>
     <string name="change_record_type_goal_time_hint">Cel</string>
+    <string name="change_record_type_limit_time_hint">Limit</string>
     <string name="change_record_type_additional_hint">Dodatkowy</string>
     <string name="change_record_type_default_duration">Domyślny czas trwania</string>
     <string name="change_record_type_default_duration_hint">Aktywności o domyślnym czasie trwania są śledzone natychmiast po kliknięciu.</string>

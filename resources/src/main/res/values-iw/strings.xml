@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">לא נוספו קטגוריות</string>
     <string name="change_record_type_goal_time_disabled">מושבת</string>
     <string name="change_record_type_goal_time_hint">יעד</string>
+    <string name="change_record_type_limit_time_hint">לְהַגבִּיל</string>
     <string name="change_record_type_additional_hint">נוסף</string>
     <string name="change_record_type_default_duration">משך ברירת מחדל</string>
     <string name="change_record_type_default_duration_hint">מעקב אחר פעילויות עם משך ברירת מחדל מתבצע מיד בלחיצה.</string>

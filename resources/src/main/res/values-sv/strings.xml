@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Inga kategorier har lagts till</string>
     <string name="change_record_type_goal_time_disabled">Inaktiverad</string>
     <string name="change_record_type_goal_time_hint">Mål</string>
+    <string name="change_record_type_limit_time_hint">Begränsa</string>
     <string name="change_record_type_additional_hint">Ytterligare</string>
     <string name="change_record_type_default_duration">Standardvaraktighet</string>
     <string name="change_record_type_default_duration_hint">Aktiviteter med standardvaraktighet spåras direkt vid klick.</string>

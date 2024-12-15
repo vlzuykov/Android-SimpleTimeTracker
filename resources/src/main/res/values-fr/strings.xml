@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Aucune catégorie ajoutée</string>
     <string name="change_record_type_goal_time_disabled">Désactivé</string>
     <string name="change_record_type_goal_time_hint">Objectif</string>
+    <string name="change_record_type_limit_time_hint">Limite</string>
     <string name="change_record_type_additional_hint">Supplémentaire</string>
     <string name="change_record_type_default_duration">Durée par défaut</string>
     <string name="change_record_type_default_duration_hint">Les activités avec une durée par défaut sont suivies immédiatement au clic.</string>

@@ -54,7 +54,7 @@ import com.example.util.simpletimetracker.data_local.recordType.RecordTypeGoalDa
         ComplexRuleDBO::class,
         FavouriteColorDBO::class,
     ],
-    version = 23,
+    version = 24,
     exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {

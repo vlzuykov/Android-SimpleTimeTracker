@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Chưa thêm danh mục nào</string>
     <string name="change_record_type_goal_time_disabled">Đã tắt</string>
     <string name="change_record_type_goal_time_hint">Mục tiêu</string>
+    <string name="change_record_type_limit_time_hint">Giới hạn</string>
     <string name="change_record_type_additional_hint">Thêm vào</string>
     <string name="change_record_type_default_duration">Thời lượng mặc định</string>
     <string name="change_record_type_default_duration_hint">Các hoạt động có thời lượng mặc định được theo dõi ngay lập tức khi nhấp chuột.</string>

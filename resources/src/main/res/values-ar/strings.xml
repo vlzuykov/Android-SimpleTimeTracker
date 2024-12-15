@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">لا توجد تصنيفات مضافة</string>
     <string name="change_record_type_goal_time_disabled">غير مفعل</string>
     <string name="change_record_type_goal_time_hint">الهدف</string>
+    <string name="change_record_type_limit_time_hint">حد</string>
     <string name="change_record_type_additional_hint">إضافي</string>
     <string name="change_record_type_default_duration">المدة الافتراضية</string>
     <string name="change_record_type_default_duration_hint">يتم تعقب الأنشطة ذات المدة الافتراضية فور النقر عليها.</string>

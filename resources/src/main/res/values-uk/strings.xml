@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Категорії не додано</string>
     <string name="change_record_type_goal_time_disabled">Вимкнено</string>
     <string name="change_record_type_goal_time_hint">Ціль</string>
+    <string name="change_record_type_limit_time_hint">Ліміт</string>
     <string name="change_record_type_additional_hint">Додатково</string>
     <string name="change_record_type_default_duration">Тривалість за замовчуванням</string>
     <string name="change_record_type_default_duration_hint">Дії з тривалістю за замовчуванням відстежуються одразу після натискання.</string>

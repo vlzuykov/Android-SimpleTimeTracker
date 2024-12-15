@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">沒有新增分類</string>
     <string name="change_record_type_goal_time_disabled">關閉</string>
     <string name="change_record_type_goal_time_hint">目標</string>
+    <string name="change_record_type_limit_time_hint">限制</string>
     <string name="change_record_type_additional_hint">額外的</string>
     <string name="change_record_type_default_duration">預設持續時間</string>
     <string name="change_record_type_default_duration_hint">點擊後會立即追蹤具有預設持續時間的活動。</string>

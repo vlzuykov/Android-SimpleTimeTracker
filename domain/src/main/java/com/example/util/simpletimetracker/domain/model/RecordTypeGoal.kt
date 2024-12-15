@@ -5,6 +5,7 @@ data class RecordTypeGoal(
     val idData: IdData,
     val range: Range,
     val type: Type,
+    val subType: Subtype,
     val daysOfWeek: List<DayOfWeek>,
 ) {
 
@@ -15,12 +16,11 @@ data class RecordTypeGoal(
         data class Category(override val value: Long) : IdData
     }
 
-    // TODO switch to GoalTimeType
     sealed interface Range {
-        object Session : Range
-        object Daily : Range
-        object Weekly : Range
-        object Monthly : Range
+        data object Session : Range
+        data object Daily : Range
+        data object Weekly : Range
+        data object Monthly : Range
     }
 
     sealed interface Type {
@@ -28,5 +28,10 @@ data class RecordTypeGoal(
 
         data class Duration(override val value: Long) : Type
         data class Count(override val value: Long) : Type
+    }
+
+    sealed interface Subtype {
+        data object Goal: Subtype
+        data object Limit: Subtype
     }
 }

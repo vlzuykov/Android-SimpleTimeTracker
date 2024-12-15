@@ -29,6 +29,11 @@ class RecordTypeGoalDataLocalMapper @Inject constructor(
                 1L -> RecordTypeGoal.Type.Count(dbo.value)
                 else -> RecordTypeGoal.Type.Duration(dbo.value)
             },
+            subType = when (dbo.subType) {
+                0L -> RecordTypeGoal.Subtype.Goal
+                1L -> RecordTypeGoal.Subtype.Limit
+                else -> RecordTypeGoal.Subtype.Goal
+            },
             daysOfWeek = daysOfWeekDataLocalMapper.mapDaysOfWeek(dbo.daysOfWeek),
         )
     }
@@ -46,6 +51,10 @@ class RecordTypeGoalDataLocalMapper @Inject constructor(
             type = when (domain.type) {
                 is RecordTypeGoal.Type.Duration -> 0L
                 is RecordTypeGoal.Type.Count -> 1L
+            },
+            subType = when (domain.subType) {
+                is RecordTypeGoal.Subtype.Goal -> 0L
+                is RecordTypeGoal.Subtype.Limit -> 1L
             },
             value = domain.type.value,
             categoryId = (domain.idData as? RecordTypeGoal.IdData.Category)?.value.orZero(),

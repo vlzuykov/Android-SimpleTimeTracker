@@ -25,6 +25,11 @@ data class RecordTypeGoalDBO(
     @ColumnInfo(name = "type")
     val type: Long,
 
+    // 0 - goal
+    // 1 - limit
+    @ColumnInfo(name = "goalType")
+    val subType: Long,
+
     // seconds if goal time
     // count if goal count
     @ColumnInfo(name = "value")

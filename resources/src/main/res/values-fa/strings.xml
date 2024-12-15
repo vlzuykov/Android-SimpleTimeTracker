@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">دسته بندی ای اضافه نشد</string>
     <string name="change_record_type_goal_time_disabled">غیر فعال</string>
     <string name="change_record_type_goal_time_hint">هدف</string>
+    <string name="change_record_type_limit_time_hint">محدود کنید</string>
     <string name="change_record_type_additional_hint">اضافی</string>
     <string name="change_record_type_default_duration">مدت زمان پیش فرض</string>
     <string name="change_record_type_default_duration_hint">فعالیت‌های با مدت زمان پیش‌فرض بلافاصله با کلیک کردن ردیابی می‌شوند.</string>

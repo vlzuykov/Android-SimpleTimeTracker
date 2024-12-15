@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">No categories added</string>
     <string name="change_record_type_goal_time_disabled">Disabled</string>
     <string name="change_record_type_goal_time_hint">Goal</string>
+    <string name="change_record_type_limit_time_hint">Limit</string>
     <string name="change_record_type_additional_hint">Additional</string>
     <string name="change_record_type_default_duration">Default duration</string>
     <string name="change_record_type_default_duration_hint">Activities with default duration are tracked immediately on click.</string>

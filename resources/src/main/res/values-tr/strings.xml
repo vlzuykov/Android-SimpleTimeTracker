@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">Kategori eklenmedi</string>
     <string name="change_record_type_goal_time_disabled">Devre dışı</string>
     <string name="change_record_type_goal_time_hint">Hedef</string>
+    <string name="change_record_type_limit_time_hint">Sınır</string>
     <string name="change_record_type_additional_hint">Ek olarak</string>
     <string name="change_record_type_default_duration">Varsayılan süre</string>
     <string name="change_record_type_default_duration_hint">Varsayılan süreye sahip etkinlikler, tıklandığında hemen izlenir.</string>

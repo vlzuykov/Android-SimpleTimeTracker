@@ -69,6 +69,9 @@ object GoalsViewDelegate {
             view.fieldChangeRecordTypeGoalDuration.setOnClick {
                 viewModel.onGoalTimeClick(range)
             }
+            view.btnChangeRecordTypeGoalSubtype.listener = {
+                viewModel.onGoalSubTypeSelected(range, it)
+            }
         }
 
         initUx(RecordTypeGoal.Range.Session, layoutChangeRecordTypeGoalSession)
@@ -154,6 +157,13 @@ object GoalsViewDelegate {
                     view.fieldChangeRecordTypeGoalDuration.isInvisible = true
                     view.inputChangeRecordTypeGoalCount.isVisible = true
                 }
+            }
+
+            if (goal.subtypeItems.isNotEmpty()) {
+                view.btnChangeRecordTypeGoalSubtype.visible = true
+                view.btnChangeRecordTypeGoalSubtype.adapter.replace(goal.subtypeItems)
+            } else {
+                view.btnChangeRecordTypeGoalSubtype.visible = false
             }
         }
 

@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">कोई श्रेणियां नहीं जोड़ी</string>
     <string name="change_record_type_goal_time_disabled">अक्षम</string>
     <string name="change_record_type_goal_time_hint">लक्ष्य</string>
+    <string name="change_record_type_limit_time_hint">सीमा</string>
     <string name="change_record_type_additional_hint">अतिरिक्त</string>
     <string name="change_record_type_default_duration">डिफ़ॉल्ट अवधि</string>
     <string name="change_record_type_default_duration_hint">डिफ़ॉल्ट अवधि वाली गतिविधियों को क्लिक पर तुरंत ट्रैक किया जाता है।</string>

@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">カテゴリが追加されていません</string>
     <string name="change_record_type_goal_time_disabled">未設定</string>
     <string name="change_record_type_goal_time_hint">目標</string>
+    <string name="change_record_type_limit_time_hint">限界</string>
     <string name="change_record_type_additional_hint">追加</string>
     <string name="change_record_type_default_duration">デフォルトの期間</string>
     <string name="change_record_type_default_duration_hint">デフォルトの期間のアクティビティは、クリックするとすぐに追跡されます。</string>

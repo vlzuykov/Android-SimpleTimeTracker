@@ -159,6 +159,7 @@
     <string name="change_record_type_categories_empty">No s\'han afegit categories</string>
     <string name="change_record_type_goal_time_disabled">Desactivat</string>
     <string name="change_record_type_goal_time_hint">Objectiu</string>
+    <string name="change_record_type_limit_time_hint">Límit</string>
     <string name="change_record_type_additional_hint">Addicional</string>
     <string name="change_record_type_default_duration">Durada per defecte</string>
     <string name="change_record_type_default_duration_hint">Les activitats amb una durada predeterminada es fan un seguiment immediatament en fer clic.</string>
