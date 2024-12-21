@@ -30,15 +30,24 @@ data class ChangeRunningRecordParams(
         data class GoalTimeParams(
             val text: String,
             val complete: Boolean,
+            val state: GoalSubtypeParams,
         ) : Parcelable
+
+        sealed interface GoalSubtypeParams : Parcelable {
+            @Parcelize
+            data object Goal : GoalSubtypeParams
+
+            @Parcelize
+            data object Limit : GoalSubtypeParams
+        }
     }
 
     sealed class From : Parcelable {
         @Parcelize
-        object Records : From()
+        data object Records : From()
 
         @Parcelize
-        object RunningRecords : From()
+        data object RunningRecords : From()
     }
 
     companion object {

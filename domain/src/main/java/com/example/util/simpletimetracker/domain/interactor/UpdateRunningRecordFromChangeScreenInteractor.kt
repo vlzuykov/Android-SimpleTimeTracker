@@ -27,6 +27,7 @@ class UpdateRunningRecordFromChangeScreenInteractor @Inject constructor() {
         val timerTotal: String,
         val goalText: String,
         val goalComplete: Boolean,
+        val goalState: GoalState,
         val additionalData: AdditionalData?,
     )
 
@@ -35,4 +36,9 @@ class UpdateRunningRecordFromChangeScreenInteractor @Inject constructor() {
         val timeStarted: String,
         val comment: String,
     )
+
+    sealed interface GoalState {
+        object Goal : GoalState
+        object Limit : GoalState
+    }
 }

@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_base_adapter.recordType
 
 import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 data class RecordTypeViewData(
@@ -14,7 +15,7 @@ data class RecordTypeViewData(
     val width: Int? = null,
     val height: Int? = null,
     val asRow: Boolean = false,
-    val isChecked: Boolean? = null,
+    val checkState: CheckState = CheckState.HIDDEN,
     val itemIsFiltered: Boolean = false,
     val isComplete: Boolean = false,
 ) : ViewHolderType {

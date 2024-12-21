@@ -7,6 +7,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.recordType.Record
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.feature_dialogs.cardSize.viewData.CardSizeButtonsViewData
 import com.example.util.simpletimetracker.feature_dialogs.cardSize.viewData.CardSizeDefaultButtonViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class CardSizeViewDataMapper @Inject constructor(
@@ -23,7 +24,7 @@ class CardSizeViewDataMapper @Inject constructor(
             recordType = recordType,
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            isChecked = null,
+            checkState = GoalCheckmarkView.CheckState.HIDDEN,
             isComplete = false,
         )
     }

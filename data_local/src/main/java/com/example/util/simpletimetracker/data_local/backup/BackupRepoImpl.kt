@@ -505,7 +505,7 @@ class BackupRepoImpl @Inject constructor(
             is RecordTypeGoal.Type.Duration -> 0L
             is RecordTypeGoal.Type.Count -> 1L
         }.toString()
-        val subtypeString = when (recordTypeGoal.subType) {
+        val subtypeString = when (recordTypeGoal.subtype) {
             is RecordTypeGoal.Subtype.Goal -> 0L
             is RecordTypeGoal.Subtype.Limit -> 1L
         }.toString()
@@ -556,7 +556,7 @@ class BackupRepoImpl @Inject constructor(
         val monthlyGoalTime = parts.getOrNull(10)?.toLongOrNull().orZero()
         // Didn't exist when goal time was in type db, no need to migrate.
         val daysOfWeek = DayOfWeek.entries
-        val subType = RecordTypeGoal.Subtype.Goal
+        val subtype = RecordTypeGoal.Subtype.Goal
 
         val goalTimes = mutableListOf<RecordTypeGoal>().apply {
             if (goalTime != 0L) {
@@ -565,7 +565,7 @@ class BackupRepoImpl @Inject constructor(
                     idData = RecordTypeGoal.IdData.Type(typeId),
                     range = RecordTypeGoal.Range.Session,
                     type = RecordTypeGoal.Type.Duration(goalTime),
-                    subType = subType,
+                    subtype = subtype,
                     daysOfWeek = daysOfWeek,
                 ).let(::add)
             }
@@ -574,7 +574,7 @@ class BackupRepoImpl @Inject constructor(
                     idData = RecordTypeGoal.IdData.Type(typeId),
                     range = RecordTypeGoal.Range.Daily,
                     type = RecordTypeGoal.Type.Duration(dailyGoalTime),
-                    subType = subType,
+                    subtype = subtype,
                     daysOfWeek = daysOfWeek,
                 ).let(::add)
             }
@@ -583,7 +583,7 @@ class BackupRepoImpl @Inject constructor(
                     idData = RecordTypeGoal.IdData.Type(typeId),
                     range = RecordTypeGoal.Range.Weekly,
                     type = RecordTypeGoal.Type.Duration(weeklyGoalTime),
-                    subType = subType,
+                    subtype = subtype,
                     daysOfWeek = daysOfWeek,
                 ).let(::add)
             }
@@ -592,7 +592,7 @@ class BackupRepoImpl @Inject constructor(
                     idData = RecordTypeGoal.IdData.Type(typeId),
                     range = RecordTypeGoal.Range.Monthly,
                     type = RecordTypeGoal.Type.Duration(monthlyGoalTime),
-                    subType = subType,
+                    subtype = subtype,
                     daysOfWeek = daysOfWeek,
                 ).let(::add)
             }
@@ -765,7 +765,7 @@ class BackupRepoImpl @Inject constructor(
                     else -> RecordTypeGoal.Type.Duration(value)
                 }
             },
-            subType = run {
+            subtype = run {
                 when (parts.getOrNull(8)?.toLongOrNull()) {
                     0L -> RecordTypeGoal.Subtype.Goal
                     1L -> RecordTypeGoal.Subtype.Limit

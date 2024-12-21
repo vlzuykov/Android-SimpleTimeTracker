@@ -1,9 +1,7 @@
 package com.example.util.simpletimetracker.feature_change_goals.viewData
 
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 
 data class ChangeRecordTypeGoalSubtypeViewData(
     val subtype: RecordTypeGoal.Subtype,

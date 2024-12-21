@@ -15,6 +15,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.empty.EmptyViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
@@ -48,7 +49,7 @@ class RecordTypeViewDataMapper @Inject constructor(
         recordType: RecordType,
         numberOfCards: Int,
         isDarkTheme: Boolean,
-        isChecked: Boolean?,
+        checkState: GoalCheckmarkView.CheckState,
         isComplete: Boolean,
     ): RecordTypeViewData {
         return RecordTypeViewData(
@@ -60,7 +61,7 @@ class RecordTypeViewDataMapper @Inject constructor(
             width = recordTypeCardSizeMapper.toCardWidth(numberOfCards),
             height = recordTypeCardSizeMapper.toCardHeight(numberOfCards),
             asRow = recordTypeCardSizeMapper.toCardAsRow(numberOfCards),
-            isChecked = isChecked,
+            checkState = checkState,
             isComplete = isComplete,
         )
     }
@@ -70,14 +71,14 @@ class RecordTypeViewDataMapper @Inject constructor(
         numberOfCards: Int,
         isDarkTheme: Boolean,
         isFiltered: Boolean,
-        isChecked: Boolean?,
+        checkState: GoalCheckmarkView.CheckState,
         isComplete: Boolean,
     ): RecordTypeViewData {
         val default = map(
             recordType = recordType,
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            isChecked = isChecked,
+            checkState = checkState,
             isComplete = isComplete,
         )
 
@@ -103,7 +104,7 @@ class RecordTypeViewDataMapper @Inject constructor(
             icon = RecordTypeIcon.Image(R.drawable.add),
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            isChecked = null,
+            checkState = GoalCheckmarkView.CheckState.HIDDEN,
         )
     }
 
@@ -117,7 +118,7 @@ class RecordTypeViewDataMapper @Inject constructor(
             icon = RecordTypeIcon.Image(R.drawable.add),
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            isChecked = null,
+            checkState = GoalCheckmarkView.CheckState.HIDDEN,
         )
     }
 
@@ -131,7 +132,7 @@ class RecordTypeViewDataMapper @Inject constructor(
             icon = RecordTypeIcon.Image(R.drawable.repeat),
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            isChecked = null,
+            checkState = GoalCheckmarkView.CheckState.HIDDEN,
         )
     }
 
@@ -146,8 +147,12 @@ class RecordTypeViewDataMapper @Inject constructor(
             icon = RecordTypeIcon.Image(R.drawable.pomodoro),
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            // Somewhat weird logic, null - means do not show, false - red dot not checked.
-            isChecked = if (isPomodoroStarted) false else null,
+            // Somewhat weird logic, GOAL_NOT_REACHED - red dot not checked.
+            checkState = if (isPomodoroStarted) {
+                GoalCheckmarkView.CheckState.GOAL_NOT_REACHED
+            } else {
+                GoalCheckmarkView.CheckState.HIDDEN
+            },
         )
     }
 
@@ -155,7 +160,7 @@ class RecordTypeViewDataMapper @Inject constructor(
         type: RecordType,
         goals: Map<Long, List<RecordTypeGoal>>,
         allDailyCurrents: Map<Long, GetCurrentRecordsDurationInteractor.Result>,
-    ): Boolean? {
+    ): GoalCheckmarkView.CheckState {
         return mapGoalCheckmark(
             goal = goals[type.id].orEmpty().getDaily(),
             dailyCurrent = allDailyCurrents[type.id],
@@ -165,7 +170,7 @@ class RecordTypeViewDataMapper @Inject constructor(
     fun mapGoalCheckmark(
         goal: RecordTypeGoal?,
         dailyCurrent: GetCurrentRecordsDurationInteractor.Result?,
-    ): Boolean? {
+    ): GoalCheckmarkView.CheckState {
         val goalValue = when (goal?.type) {
             is RecordTypeGoal.Type.Duration -> goal.value * 1000
             is RecordTypeGoal.Type.Count -> goal.value
@@ -177,8 +182,28 @@ class RecordTypeViewDataMapper @Inject constructor(
             else -> 0
         }
         val valueLeft = goalValue - current
+        val isLimit = goal?.subtype == RecordTypeGoal.Subtype.Limit
 
-        return if (goal != null) valueLeft <= 0L else null
+        // TODO GOAL excess for goal count?
+        // TODO GOAL detailed stats, excess graph, count deficit when should have a goal.
+        // TODO GOAL streaks, skip count days when should not have a goal (daily goals).
+        return if (goal != null) {
+            if (valueLeft <= 0L) {
+                if (isLimit) {
+                    GoalCheckmarkView.CheckState.LIMIT_REACHED
+                } else {
+                    GoalCheckmarkView.CheckState.GOAL_REACHED
+                }
+            } else {
+                if (isLimit) {
+                    GoalCheckmarkView.CheckState.LIMIT_NOT_REACHED
+                } else {
+                    GoalCheckmarkView.CheckState.GOAL_NOT_REACHED
+                }
+            }
+        } else {
+            GoalCheckmarkView.CheckState.HIDDEN
+        }
     }
 
     private fun mapToSpecial(
@@ -187,7 +212,7 @@ class RecordTypeViewDataMapper @Inject constructor(
         icon: RecordTypeIcon,
         numberOfCards: Int,
         isDarkTheme: Boolean,
-        isChecked: Boolean?,
+        checkState: GoalCheckmarkView.CheckState,
     ): RunningRecordTypeSpecialViewData {
         return RunningRecordTypeSpecialViewData(
             type = type,
@@ -197,7 +222,7 @@ class RecordTypeViewDataMapper @Inject constructor(
             width = recordTypeCardSizeMapper.toCardWidth(numberOfCards),
             height = recordTypeCardSizeMapper.toCardHeight(numberOfCards),
             asRow = recordTypeCardSizeMapper.toCardAsRow(numberOfCards),
-            isChecked = isChecked,
+            checkState = checkState,
         )
     }
 

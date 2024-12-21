@@ -5,7 +5,7 @@ data class RecordTypeGoal(
     val idData: IdData,
     val range: Range,
     val type: Type,
-    val subType: Subtype,
+    val subtype: Subtype,
     val daysOfWeek: List<DayOfWeek>,
 ) {
 
@@ -31,7 +31,7 @@ data class RecordTypeGoal(
     }
 
     sealed interface Subtype {
-        data object Goal: Subtype
-        data object Limit: Subtype
+        data object Goal : Subtype
+        data object Limit : Subtype
     }
 }

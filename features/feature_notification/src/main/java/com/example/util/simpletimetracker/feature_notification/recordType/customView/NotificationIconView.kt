@@ -10,6 +10,7 @@ import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.databinding.NotificationIconViewLayoutBinding
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 class NotificationIconView @JvmOverloads constructor(
@@ -38,12 +39,11 @@ class NotificationIconView @JvmOverloads constructor(
                     .let(RecordTypeIcon::Image)
             }
 
-            if (hasValue(R.styleable.NotificationIconView_itemWithCheck)) {
-                itemWithCheck = getBoolean(R.styleable.NotificationIconView_itemWithCheck, false)
-            }
-
-            if (hasValue(R.styleable.NotificationIconView_itemIsChecked)) {
-                itemIsChecked = getBoolean(R.styleable.NotificationIconView_itemIsChecked, false)
+            if (hasValue(R.styleable.NotificationIconView_itemCheckState)) {
+                itemCheckState = getInt(
+                    R.styleable.NotificationIconView_itemCheckState,
+                    CheckState.HIDDEN.value,
+                ).let(CheckState.Companion::fromValue)
             }
 
             if (hasValue(R.styleable.NotificationIconView_itemIsComplete)) {
@@ -67,15 +67,9 @@ class NotificationIconView @JvmOverloads constructor(
             field = value
         }
 
-    var itemWithCheck: Boolean = false
+    var itemCheckState: CheckState = CheckState.HIDDEN
         set(value) {
-            binding.viewNotificationIconCheckmark.itemWithCheck = value
-            field = value
-        }
-
-    var itemIsChecked: Boolean = false
-        set(value) {
-            binding.viewNotificationIconCheckmark.itemIsChecked = value
+            binding.viewNotificationIconCheckmark.itemCheckState = value
             field = value
         }
 

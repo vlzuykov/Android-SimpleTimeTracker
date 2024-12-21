@@ -174,12 +174,20 @@ class StatisticsDetailChartInteractor @Inject constructor(
         goals: List<RecordTypeGoal>,
         appliedChartGrouping: ChartGrouping,
     ): Long {
-        return when (appliedChartGrouping) {
-            ChartGrouping.DAILY -> goals.getDailyDuration().value
-            ChartGrouping.WEEKLY -> goals.getWeeklyDuration().value
-            ChartGrouping.MONTHLY -> goals.getMonthlyDuration().value
-            ChartGrouping.YEARLY -> 0
-        } * 1000
+        return getGoal(
+            goals = goals,
+            appliedChartGrouping = appliedChartGrouping,
+        ).value * 1000
+    }
+
+    fun getGoalSubtype(
+        goals: List<RecordTypeGoal>,
+        appliedChartGrouping: ChartGrouping,
+    ): RecordTypeGoal.Subtype {
+        return getGoal(
+            goals = goals,
+            appliedChartGrouping = appliedChartGrouping,
+        )?.subtype ?: RecordTypeGoal.Subtype.Goal
     }
 
     fun getChartData(
@@ -553,6 +561,18 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val previewType = statisticsDetailPreviewInteractor.getPreviewType(filter)
         return previewType is StatisticsDetailPreviewInteractor.PreviewType.Activities &&
             filter.getTypeIds().size > 1
+    }
+
+    private fun getGoal(
+        goals: List<RecordTypeGoal>,
+        appliedChartGrouping: ChartGrouping,
+    ): RecordTypeGoal? {
+        return when (appliedChartGrouping) {
+            ChartGrouping.DAILY -> goals.getDailyDuration()
+            ChartGrouping.WEEKLY -> goals.getWeeklyDuration()
+            ChartGrouping.MONTHLY -> goals.getMonthlyDuration()
+            ChartGrouping.YEARLY -> null
+        }
     }
 
     data class CompositeChartData(

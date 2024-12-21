@@ -44,8 +44,8 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
     private var parent: StatisticsDetailViewModelDelegate.Parent? = null
     private var streaksType: StreaksType = StreaksType.LONGEST
     private var streaksGoal: StreaksGoal = StreaksGoal.ANY
-    private var dailyGoal: Result<RecordTypeGoal.Type?>? = null
-    private var compareDailyGoal: Result<RecordTypeGoal.Type?>? = null
+    private var dailyGoal: Result<RecordTypeGoal?>? = null
+    private var compareDailyGoal: Result<RecordTypeGoal?>? = null
 
     override fun attach(parent: StatisticsDetailViewModelDelegate.Parent) {
         this.parent = parent
@@ -99,12 +99,12 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
 
     private suspend fun getDailyGoalType(
         filters: List<RecordsFilter>,
-    ): RecordTypeGoal.Type? {
+    ): RecordTypeGoal? {
         return statisticsDetailGetGoalFromFilterInteractor.execute(filters)
-            .getDaily()?.type
+            .getDaily()
     }
 
-    private suspend fun getDailyGoal(): RecordTypeGoal.Type? {
+    private suspend fun getDailyGoal(): RecordTypeGoal? {
         // Initialize if null.
         val goal = dailyGoal
         val parent = parent ?: return null
@@ -116,7 +116,7 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
         }
     }
 
-    private suspend fun getCompareDailyGoal(): RecordTypeGoal.Type? {
+    private suspend fun getCompareDailyGoal(): RecordTypeGoal? {
         // Initialize if null.
         val goal = compareDailyGoal
         val parent = parent ?: return null
@@ -143,8 +143,8 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
             rangePosition = parent.rangePosition,
             streaksType = streaksType,
             streaksGoal = streaksGoal,
-            goalType = getDailyGoal(),
-            compareGoalType = getCompareDailyGoal(),
+            goal = getDailyGoal(),
+            compareGoal = getCompareDailyGoal(),
         )
     }
 

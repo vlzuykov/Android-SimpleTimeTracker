@@ -11,6 +11,7 @@ import com.example.util.simpletimetracker.feature_archive.viewData.ArchiveViewDa
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class ArchiveViewDataInteractor @Inject constructor(
@@ -39,7 +40,7 @@ class ArchiveViewDataInteractor @Inject constructor(
                 numberOfCards = numberOfCards,
                 isDarkTheme = isDarkTheme,
                 isFiltered = false,
-                isChecked = null,
+                checkState = GoalCheckmarkView.CheckState.HIDDEN,
                 isComplete = false,
             )
         }

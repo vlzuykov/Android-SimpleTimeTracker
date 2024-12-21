@@ -88,17 +88,23 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             goals = goals,
             appliedChartGrouping = compositeData.appliedChartGrouping,
         )
+        val goalSubtype = chartInteractor.getGoalSubtype(
+            goals = goals,
+            appliedChartGrouping = compositeData.appliedChartGrouping,
+        )
 
         return@withContext StatisticsDetailGoalsCompositeViewData(
             viewData = statisticsDetailViewDataMapper.mapGoalChartViewData(
                 goalData = statisticsDetailViewDataMapper.mapGoalData(
                     data = data,
                     goalValue = goalValue,
+                    goalSubtype = goalSubtype,
                     isDarkTheme = isDarkTheme,
                 ),
                 goalChartPrevData = statisticsDetailViewDataMapper.mapGoalData(
                     data = prevData,
                     goalValue = goalValue,
+                    goalSubtype = goalSubtype,
                     isDarkTheme = isDarkTheme,
                 ),
                 goalValue = goalValue,

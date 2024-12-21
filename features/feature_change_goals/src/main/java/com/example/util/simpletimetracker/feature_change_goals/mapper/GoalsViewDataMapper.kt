@@ -90,7 +90,7 @@ class GoalsViewDataMapper @Inject constructor(
     fun getDefaultGoal(): ChangeRecordTypeGoalsState.GoalState {
         return ChangeRecordTypeGoalsState.GoalState(
             type = RecordTypeGoal.Type.Duration(0),
-            subtype = RecordTypeGoal.Subtype.Goal
+            subtype = RecordTypeGoal.Subtype.Goal,
         )
     }
 

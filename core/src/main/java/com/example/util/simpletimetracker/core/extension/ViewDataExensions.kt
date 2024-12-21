@@ -48,6 +48,7 @@ fun ChangeRunningRecordParams.Preview.GoalTimeParams.toViewData(): GoalTimeViewD
     return GoalTimeViewData(
         text = this.text,
         complete = this.complete,
+        state = this.state.toViewData(),
     )
 }
 
@@ -55,7 +56,22 @@ fun GoalTimeViewData.toParams(): ChangeRunningRecordParams.Preview.GoalTimeParam
     return ChangeRunningRecordParams.Preview.GoalTimeParams(
         text = this.text,
         complete = this.complete,
+        state = this.state.toParams(),
     )
+}
+
+fun ChangeRunningRecordParams.Preview.GoalSubtypeParams.toViewData(): GoalTimeViewData.Subtype {
+    return when (this) {
+        is ChangeRunningRecordParams.Preview.GoalSubtypeParams.Goal -> GoalTimeViewData.Subtype.Goal
+        is ChangeRunningRecordParams.Preview.GoalSubtypeParams.Limit -> GoalTimeViewData.Subtype.Limit
+    }
+}
+
+fun GoalTimeViewData.Subtype.toParams(): ChangeRunningRecordParams.Preview.GoalSubtypeParams {
+    return when (this) {
+        is GoalTimeViewData.Subtype.Goal -> ChangeRunningRecordParams.Preview.GoalSubtypeParams.Goal
+        is GoalTimeViewData.Subtype.Limit -> ChangeRunningRecordParams.Preview.GoalSubtypeParams.Limit
+    }
 }
 
 fun ChangeRecordDateTimeStateParams.toViewData(): ChangeRecordDateTimeState {

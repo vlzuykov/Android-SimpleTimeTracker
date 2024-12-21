@@ -12,5 +12,5 @@
     tools:itemGoal="goal 8h 30m"
     tools:itemGoalCurrent="1h 30m"
     tools:itemGoalPercent="33%"
-    tools:itemGoalTimeComplete="false"
+    tools:itemCheckState="goalReached"
     tools:itemName="Statistics" />

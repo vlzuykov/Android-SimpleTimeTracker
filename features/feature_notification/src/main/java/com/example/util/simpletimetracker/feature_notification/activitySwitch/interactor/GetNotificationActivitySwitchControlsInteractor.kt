@@ -13,6 +13,7 @@ import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsParams
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
@@ -48,7 +49,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
                 id = REPEAT_BUTTON_ITEM_ID,
                 icon = viewData.iconId,
                 color = viewData.color,
-                isChecked = null,
+                checkState = GoalCheckmarkView.CheckState.HIDDEN,
                 isComplete = false,
             ).let(::listOf)
         } else {
@@ -62,7 +63,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
                     id = type.id,
                     icon = type.icon.let(iconMapper::mapIcon),
                     color = type.color.let { colorMapper.mapToColorInt(it, isDarkTheme) },
-                    isChecked = recordTypeViewDataMapper.mapGoalCheckmark(
+                    checkState = recordTypeViewDataMapper.mapGoalCheckmark(
                         type = type,
                         goals = goals,
                         allDailyCurrents = allDailyCurrents,

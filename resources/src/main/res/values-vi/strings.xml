@@ -59,7 +59,6 @@
     <string name="untracked_time_name">Chưa theo dõi</string>
     <string name="uncategorized_time_name">Chưa phân loại</string>
     <string name="multitask_time_name">Đa nhiệm</string>
-    <string name="running_record_goal_time">mục tiêu %s</string>
     <string name="record_types_empty">Chưa thêm hoạt động nào</string>
     <string name="record_tag_selection_hint">Chọn thẻ bản ghi</string>
     <string name="time_now">Bây giờ</string>
@@ -500,6 +499,7 @@ Ví dụ:<br/>
     <string name="notification_activity_title">Lời nhắc hoạt động</string>
     <string name="notification_activity_text">Bạn vẫn đang làm: %s?</string>
     <string name="notification_goal_time_description">đã đạt mục tiêu</string>
+    <string name="notification_limit_time_description">đạt đến giới hạn</string>
     <string name="notification_time_started">Bắt đầu lúc %s</string>
     <string name="notification_time_ended">Đã hoàn tất lúc %s</string>
     <string name="notification_record_type_stop">Dừng lại</string>

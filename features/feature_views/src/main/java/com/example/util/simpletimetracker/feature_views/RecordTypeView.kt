@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
 import com.example.util.simpletimetracker.feature_views.databinding.RecordTypeViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.animateAlpha
 import com.example.util.simpletimetracker.feature_views.extension.setMargins
@@ -61,12 +62,11 @@ class RecordTypeView @JvmOverloads constructor(
                     itemIsRow = getBoolean(R.styleable.RecordTypeView_itemIsRow, false)
                 }
 
-                if (hasValue(R.styleable.RecordTypeView_itemWithCheck)) {
-                    itemWithCheck = getBoolean(R.styleable.RecordTypeView_itemWithCheck, false)
-                }
-
-                if (hasValue(R.styleable.RecordTypeView_itemIsChecked)) {
-                    itemIsChecked = getBoolean(R.styleable.RecordTypeView_itemIsChecked, false)
+                if (hasValue(R.styleable.RecordTypeView_itemCheckState)) {
+                    itemCheckState = getInt(
+                        R.styleable.RecordTypeView_itemCheckState,
+                        CheckState.HIDDEN.value,
+                    ).let(CheckState.Companion::fromValue)
                 }
 
                 if (hasValue(R.styleable.RecordTypeView_itemIsComplete)) {
@@ -118,15 +118,9 @@ class RecordTypeView @JvmOverloads constructor(
             field = value
         }
 
-    var itemWithCheck: Boolean = false
+    var itemCheckState: CheckState = CheckState.HIDDEN
         set(value) {
-            binding.viewRecordTypeItemCheckmark.itemWithCheck = value
-            field = value
-        }
-
-    var itemIsChecked: Boolean = false
-        set(value) {
-            binding.viewRecordTypeItemCheckmark.itemIsChecked = value
+            binding.viewRecordTypeItemCheckmark.itemCheckState = value
             field = value
         }
 

@@ -59,7 +59,6 @@
     <string name="untracked_time_name">未追踪</string>
     <string name="uncategorized_time_name">未分类</string>
     <string name="multitask_time_name">多任务</string>
-    <string name="running_record_goal_time">目标 %s</string>
     <string name="record_types_empty">未添加任何活动</string>
     <string name="record_tag_selection_hint">选择记录标签</string>
     <string name="time_now">现在</string>
@@ -500,6 +499,7 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="notification_activity_title">活动提醒</string>
     <string name="notification_activity_text">你还在做：%s？</string>
     <string name="notification_goal_time_description">达到的目标</string>
+    <string name="notification_limit_time_description">达到限制</string>
     <string name="notification_time_started">从 %s 开始</string>
     <string name="notification_time_ended">于 %s 完成</string>
     <string name="notification_record_type_stop">停止</string>

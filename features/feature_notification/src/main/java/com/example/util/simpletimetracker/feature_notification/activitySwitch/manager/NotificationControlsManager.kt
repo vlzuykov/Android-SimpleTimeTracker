@@ -9,11 +9,11 @@ import android.view.View
 import android.widget.RemoteViews
 import com.example.util.simpletimetracker.core.extension.allowVmViolations
 import com.example.util.simpletimetracker.core.utils.PendingIntents
-import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.mapper.NotificationControlsMapper
 import com.example.util.simpletimetracker.feature_notification.recevier.NotificationReceiver
 import com.example.util.simpletimetracker.feature_notification.recordType.customView.NotificationIconView
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
 import com.example.util.simpletimetracker.feature_views.extension.measureExactly
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
@@ -102,7 +102,7 @@ class NotificationControlsManager @Inject constructor(
             getTypeControlView(
                 icon = it.icon,
                 color = color,
-                isChecked = it.isChecked,
+                checkState = it.checkState,
                 isComplete = it.isComplete,
                 intent = getPendingSelfIntent(
                     context = context,
@@ -125,7 +125,7 @@ class NotificationControlsManager @Inject constructor(
             getTypeControlView(
                 icon = null,
                 color = null,
-                isChecked = null,
+                checkState = GoalCheckmarkView.CheckState.HIDDEN,
                 isComplete = false,
                 intent = null,
             ).let {
@@ -233,7 +233,7 @@ class NotificationControlsManager @Inject constructor(
     private fun getTypeControlView(
         icon: RecordTypeIcon?,
         color: Int?,
-        isChecked: Boolean?,
+        checkState: GoalCheckmarkView.CheckState,
         isComplete: Boolean,
         intent: PendingIntent?,
     ): RemoteViews {
@@ -243,7 +243,7 @@ class NotificationControlsManager @Inject constructor(
                     val bitmap = getIconBitmap(
                         icon = icon,
                         color = color,
-                        isChecked = isChecked,
+                        checkState = checkState,
                         isComplete = isComplete,
                     )
                     setViewVisibility(R.id.containerNotificationType, View.VISIBLE)
@@ -306,14 +306,13 @@ class NotificationControlsManager @Inject constructor(
     private fun getIconBitmap(
         icon: RecordTypeIcon,
         color: Int,
-        isChecked: Boolean? = null,
+        checkState: GoalCheckmarkView.CheckState = GoalCheckmarkView.CheckState.HIDDEN,
         isComplete: Boolean = false,
     ): Bitmap = synchronized(iconView) {
         return iconView.apply {
             itemIcon = icon
             itemColor = color
-            itemWithCheck = isChecked != null
-            itemIsChecked = isChecked.orFalse()
+            itemCheckState = checkState
             itemIsComplete = isComplete
             measureExactly(iconSize)
         }.getBitmapFromView()

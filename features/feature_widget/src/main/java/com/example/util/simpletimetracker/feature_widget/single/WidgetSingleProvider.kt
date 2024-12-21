@@ -24,7 +24,6 @@ import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.utils.PendingIntents
 import com.example.util.simpletimetracker.domain.REPEAT_BUTTON_ITEM_ID
 import com.example.util.simpletimetracker.domain.extension.getDaily
-import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
@@ -35,6 +34,7 @@ import com.example.util.simpletimetracker.domain.interactor.RunningRecordInterac
 import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.domain.model.RecordDataSelectionDialogResult
 import com.example.util.simpletimetracker.feature_views.ColorUtils
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.RecordTypeView
 import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
 import com.example.util.simpletimetracker.feature_views.extension.measureExactly
@@ -173,7 +173,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     recordTypeName = viewData.name,
                     recordTypeColor = viewData.color,
                     isColored = false,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                     backgroundTransparency = backgroundTransparency,
                 )
@@ -190,13 +190,13 @@ class WidgetSingleProvider : AppWidgetProvider() {
                 } else {
                     null
                 }
-                val isChecked = if (recordType != null) {
+                val checkState = if (recordType != null) {
                     recordTypeViewDataMapper.mapGoalCheckmark(
                         goal = goal,
                         dailyCurrent = dailyCurrent,
                     )
                 } else {
-                    null
+                    GoalCheckmarkView.CheckState.HIDDEN
                 }
                 val isColored = when {
                     runningRecord != null -> recordType != null
@@ -211,7 +211,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     recordTypeColor = recordType?.color
                         ?.let { colorMapper.mapToColorInt(it, isDarkTheme) },
                     isColored = isColored,
-                    isChecked = isChecked,
+                    checkState = checkState,
                     isComplete = recordTypeId in completeTypesStateInteractor.widgetTypeIds,
                     backgroundTransparency = backgroundTransparency,
                 )
@@ -254,7 +254,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
         recordTypeName: String?,
         recordTypeColor: Int?,
         isColored: Boolean,
-        isChecked: Boolean?,
+        checkState: GoalCheckmarkView.CheckState,
         isComplete: Boolean,
         backgroundTransparency: Long,
     ): View {
@@ -285,8 +285,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
             itemName = name
             itemIconColor = textColor
             itemColor = color
-            itemWithCheck = isChecked != null
-            itemIsChecked = isChecked.orFalse()
+            itemCheckState = checkState
             itemCompleteIsAnimated = false
             itemIsComplete = isComplete
         }

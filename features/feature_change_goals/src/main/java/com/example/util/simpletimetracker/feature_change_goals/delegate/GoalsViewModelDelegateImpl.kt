@@ -69,7 +69,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
         updateGoalsViewData()
     }
 
-    override fun onGoalSubTypeSelected(range: RecordTypeGoal.Range, viewData : ButtonsRowViewData) {
+    override fun onGoalSubTypeSelected(range: RecordTypeGoal.Range, viewData: ButtonsRowViewData) {
         if (viewData !is ChangeRecordTypeGoalSubtypeViewData) return
         val newSubType = viewData.subtype
         if (newGoalsState.getCurrentState(range).subtype::class.java == newSubType::class.java) return
@@ -157,7 +157,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
                     idData = id,
                     range = goalRange,
                     type = type,
-                    subType = goalType,
+                    subtype = goalType,
                     daysOfWeek = daysOfWeek,
                 ).let {
                     recordTypeGoalInteractor.add(it)
@@ -202,7 +202,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
         ): ChangeRecordTypeGoalsState.GoalState {
             return ChangeRecordTypeGoalsState.GoalState(
                 type = goal.type,
-                subtype = goal.subType,
+                subtype = goal.subtype,
             )
         }
 
@@ -238,7 +238,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
     }
 
     private fun ChangeRecordTypeGoalsState.getCurrentState(
-        range: RecordTypeGoal.Range
+        range: RecordTypeGoal.Range,
     ): ChangeRecordTypeGoalsState.GoalState {
         return when (range) {
             is RecordTypeGoal.Range.Session -> session

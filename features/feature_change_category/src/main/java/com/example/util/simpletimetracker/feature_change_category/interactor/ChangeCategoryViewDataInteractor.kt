@@ -7,6 +7,7 @@ import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.feature_change_category.viewData.ChangeCategoryTypesViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class ChangeCategoryViewDataInteractor @Inject constructor(
@@ -36,7 +37,7 @@ class ChangeCategoryViewDataInteractor @Inject constructor(
                     recordType = it,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                 )
             }.let(viewData::addAll)
@@ -50,7 +51,7 @@ class ChangeCategoryViewDataInteractor @Inject constructor(
                     recordType = it,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                 )
             }.let(viewData::addAll)

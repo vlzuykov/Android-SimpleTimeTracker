@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_notification.activitySwitch.manager
 
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 sealed interface NotificationControlsParams {
@@ -22,7 +23,7 @@ sealed interface NotificationControlsParams {
         val id: Long,
         val icon: RecordTypeIcon,
         val color: Int,
-        val isChecked: Boolean?,
+        val checkState: GoalCheckmarkView.CheckState,
         val isComplete: Boolean,
     )
 

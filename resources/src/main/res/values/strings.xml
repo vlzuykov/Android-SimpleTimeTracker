@@ -59,7 +59,6 @@
     <string name="untracked_time_name">Untracked</string>
     <string name="uncategorized_time_name">Uncategorized</string>
     <string name="multitask_time_name">Multitask</string>
-    <string name="running_record_goal_time">goal %s</string>
     <string name="record_types_empty">No activities added</string>
     <string name="record_tag_selection_hint">Select record tag</string>
     <string name="time_now">Now</string>
@@ -500,6 +499,7 @@ Example:<br/>
     <string name="notification_activity_title">Activity reminder</string>
     <string name="notification_activity_text">Are you still doing: %s?</string>
     <string name="notification_goal_time_description">goal reached</string>
+    <string name="notification_limit_time_description">limit reached</string>
     <string name="notification_time_started">Started at %s</string>
     <string name="notification_time_ended">Finished at %s</string>
     <string name="notification_record_type_stop">Stop</string>

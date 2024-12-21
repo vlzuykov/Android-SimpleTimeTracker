@@ -8,6 +8,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_change_record_tag.mapper.ChangeRecordTagMapper
 import com.example.util.simpletimetracker.feature_change_record_tag.viewData.ChangeRecordTagTypesViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class ChangeRecordTagViewDataInteractor @Inject constructor(
@@ -66,7 +67,7 @@ class ChangeRecordTagViewDataInteractor @Inject constructor(
                     recordType = it,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                 )
             }.let(viewData::addAll)
@@ -80,7 +81,7 @@ class ChangeRecordTagViewDataInteractor @Inject constructor(
                     recordType = it,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                 )
             }.let(viewData::addAll)

@@ -132,7 +132,7 @@ class RunningRecordsViewDataInteractor @Inject constructor(
                     isFiltered = it.id in recordTypesRunning,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = recordTypeViewDataMapper.mapGoalCheckmark(
+                    checkState = recordTypeViewDataMapper.mapGoalCheckmark(
                         type = it,
                         goals = goals,
                         allDailyCurrents = allDailyCurrents,

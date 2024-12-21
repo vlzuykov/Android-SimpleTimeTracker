@@ -59,7 +59,6 @@
     <string name="untracked_time_name">Без відстеження</string>
     <string name="uncategorized_time_name">Без категорії</string>
     <string name="multitask_time_name">Багатозадачність</string>
-    <string name="running_record_goal_time">ціль %s</string>
     <string name="record_types_empty">Жодної активності не додано</string>
     <string name="record_tag_selection_hint">Виберіть тег запису</string>
     <string name="time_now">Тепер</string>
@@ -500,6 +499,7 @@
     <string name="notification_activity_title">Нагадування про активність</string>
     <string name="notification_activity_text">Ви все ще робите: %s?</string>
     <string name="notification_goal_time_description">ціль досягнута</string>
+    <string name="notification_limit_time_description">обмеження досягнуто</string>
     <string name="notification_time_started">Почато в %s</string>
     <string name="notification_time_ended">Завершено о %s</string>
     <string name="notification_record_type_stop">Стоп</string>

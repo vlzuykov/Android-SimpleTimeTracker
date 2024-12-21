@@ -1,6 +1,5 @@
 package com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial
 
-import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
@@ -25,8 +24,7 @@ fun createRunningRecordTypeSpecialAdapterDelegate(
         itemColor = item.color
         itemIcon = item.iconId
         itemName = item.name
-        itemWithCheck = item.isChecked != null
-        itemIsChecked = item.isChecked.orFalse()
+        itemCheckState = item.checkState
         setOnClickWith(item, onItemClick)
     }
 }

@@ -59,7 +59,6 @@
     <string name="untracked_time_name">غير متتبع</string>
     <string name="uncategorized_time_name">غير مصنف</string>
     <string name="multitask_time_name">تعدد المهام</string>
-    <string name="running_record_goal_time">الهدف %s</string>
     <string name="record_types_empty">لم تضاف أنشطة</string>
     <string name="record_tag_selection_hint">اختر وسوم متتبعة</string>
     <string name="time_now">الآن</string>
@@ -500,6 +499,7 @@
     <string name="notification_activity_title">مذكر النشاط</string>
     <string name="notification_activity_text">هل مازلت تنشط: %s?</string>
     <string name="notification_goal_time_description">تم الوصول للهدف</string>
+    <string name="notification_limit_time_description">تم الوصول إلى الحد</string>
     <string name="notification_time_started">بُدء في %s</string>
     <string name="notification_time_ended">انتهى عند %s</string>
     <string name="notification_record_type_stop">أوقف</string>

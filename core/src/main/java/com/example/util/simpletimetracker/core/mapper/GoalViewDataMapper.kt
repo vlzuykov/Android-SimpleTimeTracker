@@ -14,6 +14,7 @@ import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
 import com.example.util.simpletimetracker.domain.model.Statistics
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.GoalTimeViewData
 import com.example.util.simpletimetracker.feature_base_adapter.statisticsGoal.StatisticsGoalViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 import kotlin.math.roundToLong
 
@@ -33,6 +34,7 @@ class GoalViewDataMapper @Inject constructor(
         val noGoal = GoalTimeViewData(
             text = "",
             complete = false,
+            state = GoalTimeViewData.Subtype.Goal,
         )
         if (goal == null || goal.value <= 0L || !goalsVisible) {
             return noGoal
@@ -78,9 +80,15 @@ class GoalViewDataMapper @Inject constructor(
             "$typeString $formatted"
         }
 
+        val state = when (goal.subtype) {
+            is RecordTypeGoal.Subtype.Goal -> GoalTimeViewData.Subtype.Goal
+            is RecordTypeGoal.Subtype.Limit -> GoalTimeViewData.Subtype.Limit
+        }
+
         return GoalTimeViewData(
             text = durationLeftString,
             complete = complete,
+            state = state,
         )
     }
 
@@ -184,7 +192,15 @@ class GoalViewDataMapper @Inject constructor(
             is RecordTypeGoal.Type.Count -> statistics?.data?.count.orZero()
         }
 
-        val goalComplete = goalValue - current <= 0L
+        val goalSubtype = goal.subtype
+        val goalState = if (goalValue - current <= 0L) {
+            when (goalSubtype) {
+                is RecordTypeGoal.Subtype.Goal -> GoalCheckmarkView.CheckState.GOAL_REACHED
+                is RecordTypeGoal.Subtype.Limit -> GoalCheckmarkView.CheckState.LIMIT_REACHED
+            }
+        } else {
+            GoalCheckmarkView.CheckState.HIDDEN
+        }
         val (currentValueString, goalValueString) = when (goal.type) {
             is RecordTypeGoal.Type.Duration -> {
                 mapDuration(current) to mapDuration(goalValue)
@@ -193,8 +209,10 @@ class GoalViewDataMapper @Inject constructor(
                 mapCount(current) to mapCount(goalValue)
             }
         }
-        val goalHint = resourceRepo.getString(R.string.change_record_type_goal_time_hint)
-            .lowercase()
+        val goalHint = when (goalSubtype) {
+            is RecordTypeGoal.Subtype.Goal -> R.string.change_record_type_goal_time_hint
+            is RecordTypeGoal.Subtype.Limit -> R.string.change_record_type_limit_time_hint
+        }.let(resourceRepo::getString).lowercase()
         val goalString = "$goalHint - $goalValueString"
         val goalPercent = if (goalValue == 0L) {
             0
@@ -206,7 +224,7 @@ class GoalViewDataMapper @Inject constructor(
             goalCurrent = currentValueString,
             goal = goalString,
             goalPercent = goalPercent.let { "$it%" },
-            goalComplete = goalComplete,
+            goalState = goalState,
             percent = goalPercent,
         )
     }

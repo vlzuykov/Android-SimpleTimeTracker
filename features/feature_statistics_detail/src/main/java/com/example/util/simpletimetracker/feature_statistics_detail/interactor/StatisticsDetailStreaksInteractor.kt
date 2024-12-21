@@ -69,8 +69,8 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
         rangePosition: Int,
         streaksType: StreaksType,
         streaksGoal: StreaksGoal,
-        goalType: RecordTypeGoal.Type?,
-        compareGoalType: RecordTypeGoal.Type?,
+        goal: RecordTypeGoal?,
+        compareGoal: RecordTypeGoal?,
     ): StatisticsDetailStreaksViewData = withContext(Dispatchers.Default) {
         val calendar = Calendar.getInstance()
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
@@ -91,7 +91,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
             startOfDayShift = startOfDayShift,
             streaksType = streaksType,
             streaksGoal = streaksGoal,
-            goalType = goalType,
+            goal = goal,
         )
         val compareStatsData = if (showComparison) {
             mapStatsData(
@@ -102,7 +102,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
                 startOfDayShift = startOfDayShift,
                 streaksType = streaksType,
                 streaksGoal = streaksGoal,
-                goalType = compareGoalType,
+                goal = compareGoal,
             )
         } else {
             null
@@ -185,8 +185,8 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
 
     fun mapToStreaksGoalViewData(
         streaksGoal: StreaksGoal,
-        dailyGoal: RecordTypeGoal.Type?,
-        compareGoalType: RecordTypeGoal.Type?,
+        dailyGoal: RecordTypeGoal?,
+        compareGoalType: RecordTypeGoal?,
         rangeLength: RangeLength,
     ): List<ViewHolderType> {
         if (dailyGoal == null && compareGoalType == null) {
@@ -232,7 +232,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
         startOfDayShift: Long,
         streaksType: StreaksType,
         streaksGoal: StreaksGoal,
-        goalType: RecordTypeGoal.Type?,
+        goal: RecordTypeGoal?,
     ): IntermediateData {
         val stats = calculate(
             range = range,
@@ -241,7 +241,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
             startOfDayShift = startOfDayShift,
             streaksType = streaksType,
             streaksGoal = streaksGoal,
-            goalType = goalType,
+            goal = goal,
             rangeLength = rangeLength,
         )
 
@@ -256,7 +256,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
                 startOfDayShift = startOfDayShift,
                 streaksType = streaksType,
                 streaksGoal = streaksGoal,
-                goalType = goalType,
+                goal = goal,
                 rangeLength = rangeLength,
             ).currentStreak
             stats.copy(currentStreak = currentStreak)
@@ -282,14 +282,22 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
         startOfDayShift: Long,
         streaksType: StreaksType,
         streaksGoal: StreaksGoal,
-        goalType: RecordTypeGoal.Type?,
+        goal: RecordTypeGoal?,
         rangeLength: RangeLength,
     ): IntermediateData {
-        val defaultGoal = RecordTypeGoal.Type.Duration(1)
-        val goal = if (streaksGoal == StreaksGoal.GOAL) {
-            goalType ?: defaultGoal
+        // If doesn't have a goal - count any duration.
+        val defaultGoalType = RecordTypeGoal.Type.Duration(1)
+        val defaultGoalSubtype = RecordTypeGoal.Subtype.Goal
+
+        val goalType = if (streaksGoal == StreaksGoal.GOAL) {
+            goal?.type ?: defaultGoalType
         } else {
-            defaultGoal
+            defaultGoalType
+        }
+        val goalSubtype = if (streaksGoal == StreaksGoal.GOAL) {
+            goal?.subtype ?: defaultGoalSubtype
+        } else {
+            defaultGoalSubtype
         }
         // Pair of day start to data on this day (duration or count).
         val durations: List<Pair<Long, Long>> = getRanges(
@@ -318,15 +326,15 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
                     ),
                 )
             }.run {
-                when (goal) {
+                when (goalType) {
                     is RecordTypeGoal.Type.Count -> count().toLong()
                     is RecordTypeGoal.Type.Duration -> sumOf(Range::duration)
                 }
             }
         }
-        val goalValue = when (goal) {
-            is RecordTypeGoal.Type.Duration -> goal.value * 1000
-            is RecordTypeGoal.Type.Count -> goal.value
+        val goalValue = when (goalType) {
+            is RecordTypeGoal.Type.Duration -> goalType.value * 1000
+            is RecordTypeGoal.Type.Count -> goalType.value
         }
 
         val data: MutableList<IntermediateData.Streak> = mutableListOf()
@@ -335,13 +343,17 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
         var streakStart: Long = 0
         var streakEnd: Long = 0
         durations.forEachIndexed { index, duration ->
+            val isReached = when (goalSubtype) {
+                is RecordTypeGoal.Subtype.Goal -> duration.second >= goalValue
+                is RecordTypeGoal.Subtype.Limit -> duration.second <= goalValue
+            }
             val isLast = index == durations.size - 1
-            if (duration.second >= goalValue) {
+            if (isReached) {
                 counter++
                 if (streakStart == 0L) streakStart = duration.first
                 streakEnd = duration.first
             }
-            if (duration.second < goalValue || isLast) {
+            if (!isReached || isLast) {
                 // Series of one day makes no sense.
                 if (counter > 1) {
                     data += IntermediateData.Streak(
@@ -353,7 +365,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
                 }
                 if (counter > longestStreak) longestStreak = counter
             }
-            if (duration.second < goalValue && !isLast) {
+            if (!isReached && !isLast) {
                 counter = 0
                 streakStart = 0
                 streakEnd = 0
@@ -369,6 +381,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
             firstDayOfWeek = firstDayOfWeek,
             startOfDayShift = startOfDayShift,
             goalValue = goalValue,
+            goalSubtype = goalSubtype,
             rangeLength = rangeLength,
         )
 
@@ -454,6 +467,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
         firstDayOfWeek: DayOfWeek,
         startOfDayShift: Long,
         goalValue: Long,
+        goalSubtype: RecordTypeGoal.Subtype,
         rangeLength: RangeLength,
     ): List<SeriesCalendarView.ViewData> {
         val days = listOf(
@@ -492,13 +506,17 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
 
         return dummyDays + data
             .map {
+                val isReached = when (goalSubtype) {
+                    is RecordTypeGoal.Subtype.Goal -> it.second >= goalValue
+                    is RecordTypeGoal.Subtype.Limit -> it.second <= goalValue
+                }
                 val rangeStart = calendar.shiftTimeStamp(it.first, -startOfDayShift)
                 val monthLegend = if (!isCalendarShownInOneRow) {
                     timeMapper.formatShortMonth(rangeStart)
                 } else {
                     ""
                 }
-                if (it.second >= goalValue) {
+                if (isReached) {
                     SeriesCalendarView.ViewData.Present(rangeStart, monthLegend)
                 } else {
                     SeriesCalendarView.ViewData.NotPresent(rangeStart, monthLegend)

@@ -19,7 +19,7 @@ fun createStatisticsGoalAdapterDelegate(
         itemGoalCurrent = item.goal.goalCurrent
         itemGoal = item.goal.goal
         itemGoalPercent = item.goal.goalPercent
-        itemGoalTimeComplete = item.goal.goalComplete
+        itemGoalState = item.goal.goalState
 
         if (item.icon != null) {
             itemIconVisible = true

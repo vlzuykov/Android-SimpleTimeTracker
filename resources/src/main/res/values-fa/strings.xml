@@ -59,7 +59,6 @@
     <string name="untracked_time_name">اندازه گیری نشده</string>
     <string name="uncategorized_time_name">دسته بندی نشده</string>
     <string name="multitask_time_name">چند وظیفه ای</string>
-    <string name="running_record_goal_time">هدف %s</string>
     <string name="record_types_empty">فعالیتی اضافه نشده</string>
     <string name="record_tag_selection_hint">انتخاب برچسب تاریخچه</string>
     <string name="time_now">اکنون</string>
@@ -500,6 +499,7 @@
     <string name="notification_activity_title">یادآور فعالیت</string>
     <string name="notification_activity_text">آیا هنوز درحال انجام: %s ?</string>
     <string name="notification_goal_time_description">به هدف خود رسیدید</string>
+    <string name="notification_limit_time_description">حد رسیده است</string>
     <string name="notification_time_started">شروع شده در %s</string>
     <string name="notification_time_ended">در %s به پایان رسید</string>
     <string name="notification_record_type_stop">توقف</string>

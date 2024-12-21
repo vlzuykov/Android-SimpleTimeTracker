@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.feature_notification.goalTime.manager
 
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 data class NotificationGoalTimeParams(
@@ -10,4 +11,5 @@ data class NotificationGoalTimeParams(
     val color: Int,
     val text: String,
     val description: String,
+    val checkState: GoalCheckmarkView.CheckState,
 )

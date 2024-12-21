@@ -59,7 +59,6 @@
     <string name="untracked_time_name">Non suivi</string>
     <string name="uncategorized_time_name">Non classé</string>
     <string name="multitask_time_name">Multitâche</string>
-    <string name="running_record_goal_time">objectif %s</string>
     <string name="record_types_empty">Aucune activité ajoutée</string>
     <string name="record_tag_selection_hint">Sélectionnez une étiquette d\'enregistrement</string>
     <string name="time_now">À présent</string>
@@ -500,6 +499,7 @@ Exemple:<br/>
     <string name="notification_activity_title">Rappel d\'activité</string>
     <string name="notification_activity_text">Faites-vous toujours : %s ?</string>
     <string name="notification_goal_time_description">objectif atteint</string>
+    <string name="notification_limit_time_description">limite atteinte</string>
     <string name="notification_time_started">Commencé à %s</string>
     <string name="notification_time_ended">Terminé à %s</string>
     <string name="notification_record_type_stop">Arrêt</string>

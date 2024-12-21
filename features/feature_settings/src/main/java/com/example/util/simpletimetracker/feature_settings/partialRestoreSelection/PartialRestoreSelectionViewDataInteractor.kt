@@ -25,6 +25,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.category.Category
 import com.example.util.simpletimetracker.feature_base_adapter.color.ColorViewData
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
 import com.example.util.simpletimetracker.feature_settings.partialRestoreSelection.model.PartialRestoreSelectionDialogParams
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class PartialRestoreSelectionViewDataInteractor @Inject constructor(
@@ -71,7 +72,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                         numberOfCards = numberOfCards,
                         isDarkTheme = isDarkTheme,
                         isFiltered = it.id in dataIdsFiltered,
-                        isChecked = null,
+                        checkState = GoalCheckmarkView.CheckState.HIDDEN,
                         isComplete = false,
                     )
                 }

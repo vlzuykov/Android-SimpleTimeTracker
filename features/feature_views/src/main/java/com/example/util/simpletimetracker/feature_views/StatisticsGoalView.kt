@@ -8,6 +8,7 @@ import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.feature_views.ColorUtils.normalizeLightness
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
 import com.example.util.simpletimetracker.feature_views.databinding.StatisticsGoalViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.visible
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
@@ -69,10 +70,10 @@ class StatisticsGoalView @JvmOverloads constructor(
             setGoalPercentVisibility()
         }
 
-    var itemGoalTimeComplete: Boolean = false
+    var itemGoalState: CheckState = CheckState.HIDDEN
         set(value) {
             field = value
-            binding.ivStatisticsGoalItemCheck.visible = value
+            binding.ivStatisticsGoalItemCheck.itemCheckState = value
             setGoalPercentVisibility()
         }
 
@@ -131,8 +132,11 @@ class StatisticsGoalView @JvmOverloads constructor(
                     itemGoalPercent = getString(R.styleable.StatisticsGoalView_itemGoalPercent).orEmpty()
                 }
 
-                if (hasValue(R.styleable.StatisticsGoalView_itemGoalTimeComplete)) {
-                    itemGoalTimeComplete = getBoolean(R.styleable.StatisticsGoalView_itemGoalTimeComplete, false)
+                if (hasValue(R.styleable.StatisticsGoalView_itemCheckState)) {
+                    itemGoalState = getInt(
+                        R.styleable.StatisticsGoalView_itemCheckState,
+                        CheckState.HIDDEN.value,
+                    ).let(CheckState.Companion::fromValue)
                 }
 
                 recycle()
@@ -145,9 +149,8 @@ class StatisticsGoalView @JvmOverloads constructor(
     }
 
     private fun setGoalPercentVisibility() {
-        binding.ivStatisticsGoalItemCheck.visible = itemGoalTimeComplete
         binding.tvStatisticsGoalItemPercent.visibility = when {
-            itemGoalTimeComplete -> View.INVISIBLE
+            itemGoalState != CheckState.HIDDEN -> View.INVISIBLE
             itemGoalPercent.isEmpty() -> View.GONE
             else -> View.VISIBLE
         }

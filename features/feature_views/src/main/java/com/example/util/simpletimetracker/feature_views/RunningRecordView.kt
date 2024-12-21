@@ -92,6 +92,12 @@ class RunningRecordView @JvmOverloads constructor(
             field = value
         }
 
+    var itemGoalTimeCheck: GoalCheckmarkView.CheckState = GoalCheckmarkView.CheckState.HIDDEN
+        set(value) {
+            binding.ivRunningRecordItemGoalTimeCheck.itemCheckState = value
+            field = value
+        }
+
     var itemComment: String = ""
         set(value) {
             binding.tvRunningRecordItemComment.text = value

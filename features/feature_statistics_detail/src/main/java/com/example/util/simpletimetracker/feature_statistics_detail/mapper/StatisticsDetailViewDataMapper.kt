@@ -18,6 +18,7 @@ import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.domain.model.RangeLength
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBarChartViewData
@@ -667,18 +668,27 @@ class StatisticsDetailViewDataMapper @Inject constructor(
     fun mapGoalData(
         data: List<ChartBarDataDuration>,
         goalValue: Long,
+        goalSubtype: RecordTypeGoal.Subtype,
         isDarkTheme: Boolean,
     ): List<ChartBarDataDuration> {
         if (goalValue == 0L) return emptyList()
         val greenColor = resourceRepo.getThemedAttr(R.attr.appPositiveColor, isDarkTheme)
         val redColor = resourceRepo.getThemedAttr(R.attr.appNegativeColor, isDarkTheme)
+        val positiveColor = when (goalSubtype) {
+            is RecordTypeGoal.Subtype.Goal -> greenColor
+            is RecordTypeGoal.Subtype.Limit -> redColor
+        }
+        val negativeColor = when (goalSubtype) {
+            is RecordTypeGoal.Subtype.Goal -> redColor
+            is RecordTypeGoal.Subtype.Limit -> greenColor
+        }
 
         return data.map { dataPart ->
             val totalDuration = dataPart.durations.sumOf { it.first }
             // Show difference from goal value only on days
             // when there were records tracked.
             val goalDuration = if (totalDuration != 0L) totalDuration - goalValue else 0L
-            val color = if (goalDuration >= 0) greenColor else redColor
+            val color = if (goalDuration >= 0) positiveColor else negativeColor
             ChartBarDataDuration(
                 legend = dataPart.legend,
                 durations = listOf(goalDuration to color),
@@ -705,7 +715,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
 
         val chartData = mapChartData(
             data = goalData,
-            goal = goalValue,
+            goal = 0, // Don't show goal on goal graph.
             rangeLength = rangeLength,
             showSelectedBarOnStart = true,
             useSingleColor = false,

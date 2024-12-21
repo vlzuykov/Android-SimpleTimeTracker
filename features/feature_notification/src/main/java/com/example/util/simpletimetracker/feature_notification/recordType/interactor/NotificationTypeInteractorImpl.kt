@@ -123,7 +123,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
 
         show(
             recordType = recordType,
-            goalTime = goalTime,
+            goal = goalTime,
             runningRecord = runningRecord ?: return,
             recordTags = recordTags.filter { it.id in runningRecord.tagIds },
             dailyCurrent = getCurrentRecordsDurationInteractor.getDailyCurrent(runningRecord),
@@ -192,7 +192,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
                 }
                 show(
                     recordType = recordTypes[runningRecord.id],
-                    goalTime = goalTime,
+                    goal = goalTime,
                     runningRecord = runningRecord,
                     recordTags = recordTags.filter { it.id in runningRecord.tagIds },
                     dailyCurrent = getCurrentRecordsDurationInteractor.getDailyCurrent(runningRecord),
@@ -212,7 +212,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
 
     private fun show(
         recordType: RecordType?,
-        goalTime: RecordTypeGoal?,
+        goal: RecordTypeGoal?,
         runningRecord: RunningRecord,
         recordTags: List<RecordTag>,
         dailyCurrent: GetCurrentRecordsDurationInteractor.Result,
@@ -222,6 +222,17 @@ class NotificationTypeInteractorImpl @Inject constructor(
         controls: NotificationControlsParams,
     ) {
         if (recordType == null) return
+
+        val goalSubtype = goal?.subtype ?: RecordTypeGoal.Subtype.Goal
+        val goalSubtypeString = when (goalSubtype) {
+            is RecordTypeGoal.Subtype.Goal -> R.string.change_record_type_goal_time_hint
+            is RecordTypeGoal.Subtype.Limit -> R.string.change_record_type_limit_time_hint
+        }.let(resourceRepo::getString).lowercase()
+        val goalTime = goal.value
+            .takeIf { it > 0 }
+            ?.let(timeMapper::formatDuration)
+            ?.let { "$goalSubtypeString $it" }
+            .orEmpty()
 
         NotificationTypeParams(
             id = recordType.id,
@@ -240,11 +251,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
             totalDuration = dailyCurrent.let {
                 if (it.durationDiffersFromCurrent) it.duration else null
             },
-            goalTime = goalTime.value
-                .takeIf { it > 0 }
-                ?.let(timeMapper::formatDuration)
-                ?.let { resourceRepo.getString(R.string.running_record_goal_time, it) }
-                .orEmpty(),
+            goalTime = goalTime,
             stopButton = resourceRepo.getString(R.string.notification_record_type_stop),
             controls = controls,
         ).let(notificationTypeManager::show)

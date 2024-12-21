@@ -142,7 +142,7 @@
             tools:text="goal 30m 10s"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
             android:id="@+id/ivRunningRecordItemGoalTimeCheck"
             android:layout_width="14dp"
             android:layout_height="14dp"
@@ -151,7 +151,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tvRunningRecordItemGoalTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvRunningRecordItemGoalTime"
-            app:srcCompat="@drawable/spinner_check_mark"
+            tools:itemCheckState="goalReached"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Barrier

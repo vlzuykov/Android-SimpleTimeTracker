@@ -59,7 +59,6 @@
     <string name="untracked_time_name">미기록</string>
     <string name="uncategorized_time_name">미분류됨</string>
     <string name="multitask_time_name">멀티태스크</string>
-    <string name="running_record_goal_time">목표 %s</string>
     <string name="record_types_empty">추가된 활동이 없습니다</string>
     <string name="record_tag_selection_hint">기록 태그를 선택하세요</string>
     <string name="time_now">지금</string>
@@ -500,6 +499,7 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="notification_activity_title">활동 알림</string>
     <string name="notification_activity_text">아직도 하고있나요?: %s</string>
     <string name="notification_goal_time_description">목표 달성</string>
+    <string name="notification_limit_time_description">한도에 도달함</string>
     <string name="notification_time_started">%s에 시작함</string>
     <string name="notification_time_ended">%s에 완료됨</string>
     <string name="notification_record_type_stop">정지</string>
