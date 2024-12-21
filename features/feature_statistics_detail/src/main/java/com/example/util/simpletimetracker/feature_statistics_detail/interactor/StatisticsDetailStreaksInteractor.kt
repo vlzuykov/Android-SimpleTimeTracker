@@ -336,6 +336,12 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
             is RecordTypeGoal.Type.Duration -> goalType.value * 1000
             is RecordTypeGoal.Type.Count -> goalType.value
         }
+        val todayRange = timeMapper.getRangeStartAndEnd(
+            rangeLength = RangeLength.Day,
+            shift = 0,
+            firstDayOfWeek = firstDayOfWeek,
+            startOfDayShift = startOfDayShift,
+        )
 
         val data: MutableList<IntermediateData.Streak> = mutableListOf()
         var longestStreak: Long = 0
@@ -343,10 +349,11 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
         var streakStart: Long = 0
         var streakEnd: Long = 0
         durations.forEachIndexed { index, duration ->
+            val isInPast = duration.first < todayRange.timeEnded
             val isReached = when (goalSubtype) {
                 is RecordTypeGoal.Subtype.Goal -> duration.second >= goalValue
                 is RecordTypeGoal.Subtype.Limit -> duration.second <= goalValue
-            }
+            } && isInPast
             val isLast = index == durations.size - 1
             if (isReached) {
                 counter++
@@ -484,6 +491,12 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
                 .let(list::rotateLeft)
         }.reversed()
 
+        val todayRange = timeMapper.getRangeStartAndEnd(
+            rangeLength = RangeLength.Day,
+            shift = 0,
+            firstDayOfWeek = firstDayOfWeek,
+            startOfDayShift = startOfDayShift,
+        )
         val calendar = Calendar.getInstance()
         // Take last because data is from range start to range end.
         val endDayOfWeek: DayOfWeek? = data.lastOrNull()?.first?.let {
@@ -506,10 +519,11 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
 
         return dummyDays + data
             .map {
+                val isInPast = it.first < todayRange.timeEnded
                 val isReached = when (goalSubtype) {
                     is RecordTypeGoal.Subtype.Goal -> it.second >= goalValue
                     is RecordTypeGoal.Subtype.Limit -> it.second <= goalValue
-                }
+                } && isInPast
                 val rangeStart = calendar.shiftTimeStamp(it.first, -startOfDayShift)
                 val monthLegend = if (!isCalendarShownInOneRow) {
                     timeMapper.formatShortMonth(rangeStart)
