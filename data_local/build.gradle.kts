@@ -5,7 +5,7 @@ import com.example.util.simpletimetracker.applyAndroidLibrary
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
+    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
 }
 
 applyAndroidLibrary()
@@ -28,6 +28,6 @@ dependencies {
     implementation(Deps.Androidx.room)
     implementation(Deps.Ktx.room)
 
-    kapt(Deps.Kapt.room)
-    kapt(Deps.Kapt.dagger)
+    ksp(Deps.Kapt.room)
+    ksp(Deps.Kapt.dagger)
 }

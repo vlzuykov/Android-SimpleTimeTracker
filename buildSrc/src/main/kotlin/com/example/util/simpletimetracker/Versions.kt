@@ -4,6 +4,7 @@ object Versions {
     const val gradle = "8.4.0"
     const val kotlin = "1.9.25"
     const val ktlint = "12.1.0"
+    const val ksp = "${kotlin}-1.0.20"
 
     const val coroutines = "1.6.4"
     const val timber = "4.7.1"

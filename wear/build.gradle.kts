@@ -11,7 +11,7 @@ import com.example.util.simpletimetracker.applyAndroidWearLibrary
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-kapt")
+    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
     id("dagger.hilt.android.plugin")
 }
 
@@ -81,8 +81,8 @@ dependencies {
     implementation(Deps.Compose.horologist)
     implementation(Deps.Compose.hilt)
     debugImplementation(Deps.Compose.uiTooling)
-    kapt(Deps.Kapt.dagger)
-    kapt(Deps.Kapt.metadata)
+    ksp(Deps.Kapt.dagger)
+    ksp(Deps.Kapt.metadata)
 
     testImplementation(Deps.Test.junit)
     testImplementation(Deps.Test.mockito)

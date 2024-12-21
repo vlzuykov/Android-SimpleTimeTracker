@@ -17,6 +17,12 @@ buildscript {
     }
 }
 
+plugins {
+    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
+        .version(com.example.util.simpletimetracker.Versions.ksp)
+        .apply(false)
+}
+
 allprojects {
     repositories {
         google()

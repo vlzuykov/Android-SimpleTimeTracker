@@ -6,7 +6,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
+    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
 }
 
 applyAndroidLibrary()

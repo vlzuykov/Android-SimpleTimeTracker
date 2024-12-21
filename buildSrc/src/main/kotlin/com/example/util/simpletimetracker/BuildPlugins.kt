@@ -5,4 +5,6 @@ object BuildPlugins {
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
     const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}"
+
+    const val ksp = "com.google.devtools.ksp"
 }
