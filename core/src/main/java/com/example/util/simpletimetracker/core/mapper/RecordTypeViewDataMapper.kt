@@ -184,7 +184,6 @@ class RecordTypeViewDataMapper @Inject constructor(
         val valueLeft = goalValue - current
         val isLimit = goal?.subtype == RecordTypeGoal.Subtype.Limit
 
-        // TODO GOAL excess for goal count?
         // TODO GOAL detailed stats, excess graph, count deficit when should have a goal.
         // TODO GOAL streaks, skip count days when should not have a goal (daily goals).
         return if (goal != null) {

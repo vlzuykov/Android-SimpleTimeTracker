@@ -70,10 +70,6 @@ class RangeMapper @Inject constructor() {
         return ranges.sumOf(Range::duration)
     }
 
-    fun mapRecordsToDuration(records: List<RecordBase>): Long {
-        return records.sumOf(RecordBase::duration)
-    }
-
     private fun clampNormalRecordToRange(
         record: Record,
         range: Range,

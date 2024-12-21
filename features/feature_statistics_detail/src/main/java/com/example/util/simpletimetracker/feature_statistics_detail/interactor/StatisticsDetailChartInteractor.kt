@@ -25,6 +25,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartB
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataRange
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartMode
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
 import kotlinx.coroutines.Dispatchers
@@ -95,6 +96,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val typesOrder = types.map(RecordType::id)
         val canSplitByActivity = canSplitByActivity(filter)
         val canComparisonSplitByActivity = canSplitByActivity(compare)
+        val chartMode = ChartMode.DURATIONS
 
         val compositeData = getChartRangeSelectionData(
             currentChartGrouping = currentChartGrouping,
@@ -116,6 +118,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
             splitByActivity = splitByActivity && canSplitByActivity,
             splitSortMode = splitSortMode,
         )
@@ -130,6 +133,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
             splitSortMode = splitSortMode,
         )
         val compareData = getChartData(
@@ -138,6 +142,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
             splitByActivity = splitByActivity && canComparisonSplitByActivity,
             splitSortMode = splitSortMode,
         )
@@ -164,30 +169,11 @@ class StatisticsDetailChartInteractor @Inject constructor(
             appliedChartGrouping = compositeData.appliedChartGrouping,
             availableChartLengths = compositeData.availableChartLengths,
             appliedChartLength = compositeData.appliedChartLength,
+            chartMode = chartMode,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
             isDarkTheme = isDarkTheme,
         )
-    }
-
-    fun getGoalValue(
-        goals: List<RecordTypeGoal>,
-        appliedChartGrouping: ChartGrouping,
-    ): Long {
-        return getGoal(
-            goals = goals,
-            appliedChartGrouping = appliedChartGrouping,
-        ).value * 1000
-    }
-
-    fun getGoalSubtype(
-        goals: List<RecordTypeGoal>,
-        appliedChartGrouping: ChartGrouping,
-    ): RecordTypeGoal.Subtype {
-        return getGoal(
-            goals = goals,
-            appliedChartGrouping = appliedChartGrouping,
-        )?.subtype ?: RecordTypeGoal.Subtype.Goal
     }
 
     fun getChartData(
@@ -196,11 +182,19 @@ class StatisticsDetailChartInteractor @Inject constructor(
         typesOrder: List<Long>,
         typesMap: Map<Long, RecordType>,
         isDarkTheme: Boolean,
+        chartMode: ChartMode,
         splitByActivity: Boolean,
         splitSortMode: ChartSplitSortMode,
     ): List<ChartBarDataDuration> {
         fun mapEmpty(): List<ChartBarDataDuration> {
             return ranges.map { ChartBarDataDuration(legend = it.legend, durations = listOf(0L to 0)) }
+        }
+
+        fun mapRangesToValue(list: List<Range>): Long {
+            return when (chartMode) {
+                ChartMode.DURATIONS -> rangeMapper.mapToDuration(list)
+                ChartMode.COUNTS -> list.size.toLong()
+            }
         }
 
         val unknownColor = colorMapper.toUntrackedColor(isDarkTheme)
@@ -221,7 +215,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
                 val durations = if (!splitByActivity) {
                     rangeMapper.getRecordsFromRange(records, range)
                         .map { record -> rangeMapper.clampToRange(record, range) }
-                        .let(rangeMapper::mapToDuration)
+                        .let(::mapRangesToValue)
                         .let { listOf(it to 0) }
                 } else {
                     rangeMapper.getRecordsFromRange(records, range)
@@ -229,7 +223,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
                         .toList()
                         .map { (id, records) ->
                             val value = records.map { record -> rangeMapper.clampToRange(record, range) }
-                                .let(rangeMapper::mapToDuration)
+                                .let(::mapRangesToValue)
                             value to id
                         }
                         .run {
@@ -381,6 +375,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
         typesOrder: List<Long>,
         typesMap: Map<Long, RecordType>,
         isDarkTheme: Boolean,
+        chartMode: ChartMode,
         splitSortMode: ChartSplitSortMode,
     ): List<ChartBarDataDuration> {
         return if (rangeLength != RangeLength.All) {
@@ -399,6 +394,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
                 typesMap = typesMap,
                 isDarkTheme = isDarkTheme,
                 splitByActivity = false,
+                chartMode = chartMode,
                 splitSortMode = splitSortMode,
             )
         } else {
@@ -561,6 +557,17 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val previewType = statisticsDetailPreviewInteractor.getPreviewType(filter)
         return previewType is StatisticsDetailPreviewInteractor.PreviewType.Activities &&
             filter.getTypeIds().size > 1
+    }
+
+    private fun getGoalValue(
+        goals: List<RecordTypeGoal>,
+        appliedChartGrouping: ChartGrouping,
+    ): Long {
+        // Currently only duration goals are on chart.
+        return getGoal(
+            goals = goals,
+            appliedChartGrouping = appliedChartGrouping,
+        ).value * 1000
     }
 
     private fun getGoal(

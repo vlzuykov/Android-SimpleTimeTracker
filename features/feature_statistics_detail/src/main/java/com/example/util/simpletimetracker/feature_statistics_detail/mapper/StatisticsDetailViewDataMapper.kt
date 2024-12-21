@@ -32,6 +32,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartB
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataRange
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartMode
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.model.SplitChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData
@@ -224,6 +225,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         appliedChartGrouping: ChartGrouping,
         availableChartLengths: List<ChartLength>,
         appliedChartLength: ChartLength,
+        chartMode: ChartMode,
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
         isDarkTheme: Boolean,
@@ -235,6 +237,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             data = data,
             goal = goalValue,
             rangeLength = rangeLength,
+            chartMode = chartMode,
             showSelectedBarOnStart = true,
             useSingleColor = !chartIsSplitByActivity,
             drawRoundCaps = !chartIsSplitByActivity,
@@ -243,6 +246,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             data = compareData,
             goal = compareGoalValue,
             rangeLength = rangeLength,
+            chartMode = chartMode,
             showSelectedBarOnStart = false,
             useSingleColor = !chartComparisonIsSplitByActivity,
             drawRoundCaps = !chartComparisonIsSplitByActivity,
@@ -254,6 +258,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             showComparison = showComparison,
             rangeLength = rangeLength,
             chartGrouping = appliedChartGrouping,
+            chartMode = chartMode,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
             isDarkTheme = isDarkTheme,
@@ -466,6 +471,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         showComparison: Boolean,
         rangeLength: RangeLength,
         chartGrouping: ChartGrouping,
+        chartMode: ChartMode,
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
         isDarkTheme: Boolean,
@@ -476,6 +482,19 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         fun getAverage(data: List<ChartBarDataDuration>): Long {
             if (data.isEmpty()) return 0L
             return data.sumOf { it.durations.map { it.first }.sum() } / data.size
+        }
+
+        fun formatInterval(
+            interval: Long,
+        ): String {
+            return when (chartMode) {
+                ChartMode.DURATIONS -> timeMapper.formatInterval(
+                    interval = interval,
+                    forceSeconds = showSeconds,
+                    useProportionalMinutes = useProportionalMinutes,
+                )
+                ChartMode.COUNTS -> interval.toString()
+            }
         }
 
         val average = getAverage(data)
@@ -497,27 +516,14 @@ class StatisticsDetailViewDataMapper @Inject constructor(
 
         val rangeAverages = listOf(
             StatisticsDetailCardInternalViewData(
-                value = average.let {
-                    timeMapper.formatInterval(
-                        interval = it,
-                        forceSeconds = showSeconds,
-                        useProportionalMinutes = useProportionalMinutes,
-                    )
-                },
+                value = formatInterval(average),
                 valueChange = mapValueChange(
                     average = average,
                     prevAverage = prevAverage,
                     rangeLength = rangeLength,
                     isDarkTheme = isDarkTheme,
                 ),
-                secondValue = comparisonAverage
-                    .let {
-                        timeMapper.formatInterval(
-                            interval = it,
-                            forceSeconds = showSeconds,
-                            useProportionalMinutes = useProportionalMinutes,
-                        )
-                    }
+                secondValue = formatInterval(comparisonAverage)
                     .let { "($it)" }
                     .takeIf { showComparison }
                     .orEmpty(),
@@ -526,27 +532,14 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 subtitleTextSizeSp = 12,
             ),
             StatisticsDetailCardInternalViewData(
-                value = averageByNonEmpty.let {
-                    timeMapper.formatInterval(
-                        interval = it,
-                        forceSeconds = showSeconds,
-                        useProportionalMinutes = useProportionalMinutes,
-                    )
-                },
+                value = formatInterval(averageByNonEmpty),
                 valueChange = mapValueChange(
                     average = averageByNonEmpty,
                     prevAverage = prevAverageByNonEmpty,
                     rangeLength = rangeLength,
                     isDarkTheme = isDarkTheme,
                 ),
-                secondValue = comparisonAverageByNonEmpty
-                    .let {
-                        timeMapper.formatInterval(
-                            interval = it,
-                            forceSeconds = showSeconds,
-                            useProportionalMinutes = useProportionalMinutes,
-                        )
-                    }
+                secondValue = formatInterval(comparisonAverageByNonEmpty)
                     .let { "($it)" }
                     .takeIf { showComparison }
                     .orEmpty(),
@@ -628,17 +621,28 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         data: List<ChartBarDataDuration>,
         goal: Long,
         rangeLength: RangeLength,
+        chartMode: ChartMode,
         showSelectedBarOnStart: Boolean,
         useSingleColor: Boolean,
         drawRoundCaps: Boolean,
     ): StatisticsDetailChartViewData {
-        val (legendSuffix, isMinutes) = mapLegendSuffix(data)
+        val (legendSuffix, isMinutes) = when (chartMode) {
+            ChartMode.DURATIONS -> mapLegendSuffix(data)
+            ChartMode.COUNTS -> "" to false
+        }
+
+        fun formatInterval(interval: Long): Float {
+            return when (chartMode) {
+                ChartMode.DURATIONS -> formatInterval(interval, isMinutes)
+                ChartMode.COUNTS -> interval.toFloat()
+            }
+        }
 
         return StatisticsDetailChartViewData(
             visible = data.size > 1,
             data = data.map {
                 val value = it.durations.map { (duration, color) ->
-                    formatInterval(duration, isMinutes) to color
+                    formatInterval(duration) to color
                 }
                 BarChartView.ViewData(
                     value = value,
@@ -658,7 +662,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 -> data.size <= 10
             },
             showSelectedBarOnStart = showSelectedBarOnStart,
-            goalValue = formatInterval(goal, isMinutes = isMinutes),
+            goalValue = formatInterval(goal),
             useSingleColor = useSingleColor,
             drawRoundCaps = drawRoundCaps,
             animate = OneShotValue(true),
@@ -705,6 +709,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         appliedChartGrouping: ChartGrouping,
         availableChartLengths: List<ChartLength>,
         appliedChartLength: ChartLength,
+        chartMode: ChartMode,
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
         isDarkTheme: Boolean,
@@ -717,6 +722,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             data = goalData,
             goal = 0, // Don't show goal on goal graph.
             rangeLength = rangeLength,
+            chartMode = chartMode,
             showSelectedBarOnStart = true,
             useSingleColor = false,
             drawRoundCaps = true,
@@ -728,6 +734,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             showComparison = false,
             rangeLength = rangeLength,
             chartGrouping = appliedChartGrouping,
+            chartMode = chartMode,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
             isDarkTheme = isDarkTheme,
@@ -742,6 +749,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         )
         val goalTotals = mapGoalExcessDeficitTotals(
             goalData = goalData,
+            chartMode = chartMode,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
         )
@@ -869,6 +877,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
 
     private fun mapGoalExcessDeficitTotals(
         goalData: List<ChartBarDataDuration>,
+        chartMode: ChartMode,
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
     ): List<StatisticsDetailCardInternalViewData> {
@@ -880,11 +889,14 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         fun formatInterval(
             interval: Long,
         ): String {
-            return timeMapper.formatInterval(
-                interval = interval,
-                forceSeconds = showSeconds,
-                useProportionalMinutes = useProportionalMinutes,
-            )
+            return when (chartMode) {
+                ChartMode.DURATIONS -> timeMapper.formatInterval(
+                    interval = interval,
+                    forceSeconds = showSeconds,
+                    useProportionalMinutes = useProportionalMinutes,
+                )
+                ChartMode.COUNTS -> interval.toString()
+            }
         }
 
         return listOf(

@@ -1,5 +1,9 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
+import com.example.util.simpletimetracker.domain.extension.getDaily
+import com.example.util.simpletimetracker.domain.extension.getMonthly
+import com.example.util.simpletimetracker.domain.extension.getWeekly
+import com.example.util.simpletimetracker.domain.extension.value
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
@@ -12,6 +16,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.interactor.S
 import com.example.util.simpletimetracker.feature_statistics_detail.mapper.StatisticsDetailViewDataMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartMode
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailGoalsCompositeViewData
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +58,15 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             firstDayOfWeek = firstDayOfWeek,
             goals = goals,
         )
-
+        val goal = getGoal(
+            goals = goals,
+            appliedChartGrouping = compositeData.appliedChartGrouping,
+        )
+        val chartMode = when (goal?.type) {
+            is RecordTypeGoal.Type.Duration -> ChartMode.DURATIONS
+            is RecordTypeGoal.Type.Count -> ChartMode.COUNTS
+            null -> ChartMode.DURATIONS
+        }
         val ranges = chartInteractor.getRanges(
             compositeData = compositeData,
             rangeLength = rangeLength,
@@ -68,6 +81,7 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
             splitByActivity = false,
             splitSortMode = ChartSplitSortMode.ACTIVITY_ORDER,
         )
@@ -82,16 +96,11 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             typesOrder = typesOrder,
             typesMap = typesMap,
             isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
             splitSortMode = ChartSplitSortMode.ACTIVITY_ORDER,
         )
-        val goalValue = chartInteractor.getGoalValue(
-            goals = goals,
-            appliedChartGrouping = compositeData.appliedChartGrouping,
-        )
-        val goalSubtype = chartInteractor.getGoalSubtype(
-            goals = goals,
-            appliedChartGrouping = compositeData.appliedChartGrouping,
-        )
+        val goalValue = getGoalValue(goal)
+        val goalSubtype = goal?.subtype ?: RecordTypeGoal.Subtype.Goal
 
         return@withContext StatisticsDetailGoalsCompositeViewData(
             viewData = statisticsDetailViewDataMapper.mapGoalChartViewData(
@@ -113,6 +122,7 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
                 appliedChartGrouping = compositeData.appliedChartGrouping,
                 availableChartLengths = compositeData.availableChartLengths,
                 appliedChartLength = compositeData.appliedChartLength,
+                chartMode = chartMode,
                 useProportionalMinutes = useProportionalMinutes,
                 showSeconds = showSeconds,
                 isDarkTheme = isDarkTheme,
@@ -137,7 +147,7 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
         )
 
         val availableChartGroupings = mainData.availableChartGroupings
-            .filter { chartInteractor.getGoalValue(goals, it) != 0L }
+            .filter { getGoal(goals, it).value != 0L }
             .takeUnless { it.isEmpty() }
             ?: listOf(ChartGrouping.DAILY)
 
@@ -148,5 +158,27 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
                 ?: availableChartGroupings.firstOrNull()
                 ?: ChartGrouping.DAILY,
         )
+    }
+
+    private fun getGoal(
+        goals: List<RecordTypeGoal>,
+        appliedChartGrouping: ChartGrouping,
+    ): RecordTypeGoal? {
+        return when (appliedChartGrouping) {
+            ChartGrouping.DAILY -> goals.getDaily()
+            ChartGrouping.WEEKLY -> goals.getWeekly()
+            ChartGrouping.MONTHLY -> goals.getMonthly()
+            ChartGrouping.YEARLY -> null
+        }
+    }
+
+    private fun getGoalValue(
+        goal: RecordTypeGoal?,
+    ): Long {
+        return when (goal?.type) {
+            is RecordTypeGoal.Type.Duration -> goal.value * 1000
+            is RecordTypeGoal.Type.Count -> goal.value
+            null -> 0L
+        }
     }
 }
