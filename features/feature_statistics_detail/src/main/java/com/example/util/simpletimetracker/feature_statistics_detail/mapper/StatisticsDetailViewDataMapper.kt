@@ -779,9 +779,12 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         }
 
         if (chartLengthViewData.isNotEmpty()) {
+            // Update margin top depending if has buttons before.
+            val hasButtonsBefore = items.lastOrNull() is StatisticsDetailButtonsRowViewData
+            val marginTopDp = if (hasButtonsBefore) -10 else 4
             items += StatisticsDetailButtonsRowViewData(
                 block = StatisticsDetailBlock.GoalChartLength,
-                marginTopDp = -10,
+                marginTopDp = marginTopDp,
                 data = chartLengthViewData,
             )
         }
