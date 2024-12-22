@@ -9,10 +9,10 @@ import com.example.util.simpletimetracker.Versions
 import com.example.util.simpletimetracker.applyAndroidWearLibrary
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    id(com.example.util.simpletimetracker.BuildPlugins.gradleApplication)
+    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
     id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-    id("dagger.hilt.android.plugin")
+    id(com.example.util.simpletimetracker.BuildPlugins.hiltPlugin)
 }
 
 applyAndroidWearLibrary()

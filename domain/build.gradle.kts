@@ -1,8 +1,8 @@
 import com.example.util.simpletimetracker.Deps
 
 plugins {
-    id("java-library")
-    id("kotlin")
+    id(com.example.util.simpletimetracker.BuildPlugins.javaLibrary)
+    id(com.example.util.simpletimetracker.BuildPlugins.kotlinLibrary)
 }
 
 java {

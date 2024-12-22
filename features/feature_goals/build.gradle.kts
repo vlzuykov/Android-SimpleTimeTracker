@@ -3,10 +3,10 @@ import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    id(com.example.util.simpletimetracker.BuildPlugins.gradleLibrary)
+    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
     id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-    id("dagger.hilt.android.plugin")
+    id(com.example.util.simpletimetracker.BuildPlugins.hiltPlugin)
 }
 
 applyAndroidLibrary()

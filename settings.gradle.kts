@@ -1,4 +1,13 @@
 rootProject.name = "Simple Time Tracker"
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 include(
     "app",
     "domain",
