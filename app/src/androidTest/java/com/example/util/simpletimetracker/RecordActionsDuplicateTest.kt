@@ -186,7 +186,7 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.change_record_type_field)
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         closeSoftKeyboard()
         clickOnViewWithText(coreR.string.change_record_comment_field)
 
@@ -246,7 +246,7 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.change_record_type_field)
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         closeSoftKeyboard()
         clickOnViewWithText(coreR.string.change_record_comment_field)
 

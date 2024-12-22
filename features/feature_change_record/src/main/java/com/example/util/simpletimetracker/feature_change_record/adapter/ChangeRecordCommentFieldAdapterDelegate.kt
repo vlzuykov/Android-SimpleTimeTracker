@@ -29,7 +29,7 @@ fun createChangeRecordCommentFieldAdapterDelegate(
             binding.ivChangeRecordFavouriteComment,
             ColorStateList.valueOf(item.iconColor),
         )
-        btnChangeRecordCommentField.setOnClick { onFavouriteClick() }
+        btnChangeRecordFavouriteComment.setOnClick { onFavouriteClick() }
 
         etChangeRecordCommentField.removeTextChangedListener(textWatcher)
         textWatcher = etChangeRecordCommentField.doAfterTextChanged { afterTextChange(it.toString()) }

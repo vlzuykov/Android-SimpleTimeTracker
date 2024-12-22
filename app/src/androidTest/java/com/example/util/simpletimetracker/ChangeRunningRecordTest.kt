@@ -69,6 +69,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
                     idData = RecordTypeGoal.IdData.Type(0),
                     range = RecordTypeGoal.Range.Session,
                     type = RecordTypeGoal.Type.Duration(firstGoalTime),
+                    subtype = RecordTypeGoal.Subtype.Goal,
                     daysOfWeek = emptyList(),
                 ),
             ),
@@ -106,7 +107,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         checkViewIsNotDisplayed(withId(changeRecordR.id.rvChangeRecordCategories))
         checkViewIsDisplayed(withId(changeRecordR.id.containerChangeRecordTimeStartedAdjust))
         checkViewIsNotDisplayed(withId(changeRecordR.id.containerChangeRecordTimeEndedAdjust))
-        checkViewIsNotDisplayed(allOf(withId(changeRecordR.id.etChangeRecordComment), withText("")))
+        checkViewIsNotDisplayed(allOf(withId(changeRecordR.id.etChangeRecordCommentField), withText("")))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedDate), withText(timeStarted.date)))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedTime), withText(timeStarted.time)))
 
@@ -156,7 +157,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedDate), withText(timeStarted.date)))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedTime), withText(timeStarted.time)))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         clickOnViewWithText(coreR.string.change_record_comment_field)
 
         // Preview is updated
@@ -434,7 +435,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         // Select last comment
         clickOnViewWithText(comment1)
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment1))) }
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, "")
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "")
         clickOnViewWithText(coreR.string.change_record_comment_field)
 
         // Select activity with many previous comments
@@ -454,7 +455,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment2))) }
         clickOnViewWithText(comment3)
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment3))) }
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, "")
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "")
         clickOnViewWithText(coreR.string.change_record_comment_field)
 
         // Select activity with no previous comments
@@ -550,7 +551,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         // From quick actions
         NavUtils.openRecordsScreen()
         longClickOnView(allOf(withText(name), isCompletelyDisplayed()))
-        clickOnViewWithId(dialogsR.id.btnRecordQuickActionsStatistics)
+        clickOnViewWithText(R.string.shortcut_navigation_statistics)
         checkViewIsDisplayed(
             allOf(
                 withId(statisticsDetailR.id.viewStatisticsDetailItem),

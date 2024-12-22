@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
-        app:layout_constraintEnd_toStartOf="@id/btnChangeRecordCommentField"
+        app:layout_constraintEnd_toStartOf="@id/btnChangeRecordFavouriteComment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,7 +25,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btnChangeRecordCommentField"
+        android:id="@+id/btnChangeRecordFavouriteComment"
         style="@style/InputFieldCard"
         android:layout_width="36dp"
         android:layout_height="0dp"

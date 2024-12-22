@@ -221,7 +221,7 @@ object NavUtils {
         goal: RecordTypeGoal,
     ) {
         val newGoal = goal.copy(
-            type = when (val type = goal.type) {
+            type = when (goal.type) {
                 is RecordTypeGoal.Type.Duration -> RecordTypeGoal.Type.Duration(0)
                 is RecordTypeGoal.Type.Count -> RecordTypeGoal.Type.Count(0)
             },
@@ -324,7 +324,7 @@ object NavUtils {
         // Comment
         if (!comment.isNullOrEmpty()) {
             clickOnViewWithText(coreR.string.change_record_comment_field)
-            typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+            typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
             clickOnViewWithText(coreR.string.change_record_comment_field)
         }
 

@@ -29,6 +29,7 @@ enum class StatisticsDetailBlock {
     DurationSplitChart,
     DurationSplitChartComparison,
     NextActivities,
+    GoalStats,
     GoalExcessDeficitHint,
     GoalChartData,
     GoalChartGrouping,

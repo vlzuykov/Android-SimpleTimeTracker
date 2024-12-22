@@ -18,6 +18,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_statistics_detail.customView.SeriesCalendarView
 import com.example.util.simpletimetracker.feature_statistics_detail.customView.SeriesView
+import com.example.util.simpletimetracker.feature_statistics_detail.mapper.StatisticsDetailViewDataMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.model.StreaksGoal
 import com.example.util.simpletimetracker.feature_statistics_detail.model.StreaksType
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData
@@ -29,13 +30,13 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 import javax.inject.Inject
 import kotlin.math.abs
-import kotlin.math.roundToLong
 
 class StatisticsDetailStreaksInteractor @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val timeMapper: TimeMapper,
     private val rangeMapper: RangeMapper,
     private val resourceRepo: ResourceRepo,
+    private val statisticsDetailViewDataMapper: StatisticsDetailViewDataMapper,
 ) {
 
     private val emptyValue by lazy { resourceRepo.getString(R.string.statistics_detail_empty) }
@@ -603,15 +604,6 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
                 .orEmpty()
         }
 
-        fun processPercentageString(value: Float): String {
-            val text = when {
-                value >= 10 -> value.toLong()
-                (value * 10).roundToLong() % 10L == 0L -> value.toLong()
-                else -> String.format("%.1f", value)
-            }
-            return "$text%"
-        }
-
         fun getPercentage(
             data: List<SeriesCalendarView.ViewData>,
         ): String {
@@ -619,7 +611,7 @@ class StatisticsDetailStreaksInteractor @Inject constructor(
             val completed = data.filterIsInstance<SeriesCalendarView.ViewData.Present>().size
 
             return if (total != 0) {
-                processPercentageString(completed * 100f / total)
+                statisticsDetailViewDataMapper.processPercentageString(completed * 100f / total)
             } else {
                 emptyValue
             }

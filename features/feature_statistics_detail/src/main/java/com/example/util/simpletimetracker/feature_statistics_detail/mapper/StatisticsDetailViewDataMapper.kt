@@ -11,11 +11,14 @@ import com.example.util.simpletimetracker.domain.MULTITASK_ITEM_ID
 import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.extension.rotateLeft
+import com.example.util.simpletimetracker.domain.extension.value
+import com.example.util.simpletimetracker.domain.mapper.RangeMapper
 import com.example.util.simpletimetracker.domain.model.Category
 import com.example.util.simpletimetracker.domain.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.model.OneShotValue
 import com.example.util.simpletimetracker.domain.model.Range
 import com.example.util.simpletimetracker.domain.model.RangeLength
+import com.example.util.simpletimetracker.domain.model.RecordBase
 import com.example.util.simpletimetracker.domain.model.RecordTag
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
@@ -52,6 +55,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
     private val iconMapper: IconMapper,
     private val colorMapper: ColorMapper,
     private val timeMapper: TimeMapper,
+    private val rangeMapper: RangeMapper,
     private val resourceRepo: ResourceRepo,
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val recordTagViewDataMapper: RecordTagViewDataMapper,
@@ -464,6 +468,15 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         )
     }
 
+    fun processPercentageString(value: Float): String {
+        val text = when {
+            value >= 10 -> value.toLong()
+            (value * 10).roundToLong() % 10L == 0L -> value.toLong()
+            else -> String.format("%.1f", value)
+        }
+        return "$text%"
+    }
+
     private fun getRangeAverages(
         data: List<ChartBarDataDuration>,
         prevData: List<ChartBarDataDuration>,
@@ -700,10 +713,56 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         }
     }
 
+    fun mapGoalStatsViewData(
+        records: List<RecordBase>,
+        currentRangeGoal: RecordTypeGoal?,
+        rangeLength: RangeLength,
+        rangePosition: Int,
+        useProportionalMinutes: Boolean,
+        showSeconds: Boolean,
+        firstDayOfWeek: DayOfWeek,
+        startOfDayShift: Long,
+    ): List<ViewHolderType> {
+        val goalValue = getGoalValue(currentRangeGoal)
+        val goalSubtype = currentRangeGoal?.subtype ?: RecordTypeGoal.Subtype.Goal
+        val goalRange = currentRangeGoal?.range ?: RecordTypeGoal.Range.Daily
+        if (goalValue == 0L) return emptyList()
+
+        val items = mutableListOf<ViewHolderType>()
+        val chartMode = mapToChartMode(currentRangeGoal)
+        val goalStats = mapGoalStats(
+            records = records,
+            goalValue = goalValue,
+            goalRange = goalRange,
+            rangeLength = rangeLength,
+            rangePosition = rangePosition,
+            chartMode = chartMode,
+            useProportionalMinutes = useProportionalMinutes,
+            showSeconds = showSeconds,
+            firstDayOfWeek = firstDayOfWeek,
+            startOfDayShift = startOfDayShift,
+        )
+
+        if (goalStats.isNotEmpty()) {
+            val title = when (goalSubtype) {
+                is RecordTypeGoal.Subtype.Goal -> R.string.change_record_type_goal_time_hint
+                is RecordTypeGoal.Subtype.Limit -> R.string.change_record_type_limit_time_hint
+            }.let(resourceRepo::getString)
+            items += StatisticsDetailCardViewData(
+                block = StatisticsDetailBlock.GoalStats,
+                title = title,
+                marginTopDp = 10,
+                data = goalStats,
+            )
+        }
+
+        return items
+    }
+
     fun mapGoalChartViewData(
-        goalData: List<ChartBarDataDuration>,
-        goalChartPrevData: List<ChartBarDataDuration>,
-        goalValue: Long,
+        data: List<ChartBarDataDuration>,
+        prevData: List<ChartBarDataDuration>,
+        chartGoal: RecordTypeGoal?,
         rangeLength: RangeLength,
         availableChartGroupings: List<ChartGrouping>,
         appliedChartGrouping: ChartGrouping,
@@ -714,10 +773,23 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         showSeconds: Boolean,
         isDarkTheme: Boolean,
     ): List<ViewHolderType> {
+        val goalValue = getGoalValue(chartGoal)
         if (goalValue == 0L) return emptyList()
 
         val items = mutableListOf<ViewHolderType>()
-
+        val goalSubtype = chartGoal?.subtype ?: RecordTypeGoal.Subtype.Goal
+        val goalData = mapGoalData(
+            data = data,
+            goalValue = goalValue,
+            goalSubtype = goalSubtype,
+            isDarkTheme = isDarkTheme,
+        )
+        val goalChartPrevData = mapGoalData(
+            data = prevData,
+            goalValue = goalValue,
+            goalSubtype = goalSubtype,
+            isDarkTheme = isDarkTheme,
+        )
         val chartData = mapChartData(
             data = goalData,
             goal = 0, // Don't show goal on goal graph.
@@ -845,6 +917,26 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         }
     }
 
+    fun mapToChartMode(
+        goal: RecordTypeGoal?,
+    ): ChartMode {
+        return when (goal?.type) {
+            is RecordTypeGoal.Type.Duration -> ChartMode.DURATIONS
+            is RecordTypeGoal.Type.Count -> ChartMode.COUNTS
+            null -> ChartMode.DURATIONS
+        }
+    }
+
+    private fun getGoalValue(
+        goal: RecordTypeGoal?,
+    ): Long {
+        return when (goal?.type) {
+            is RecordTypeGoal.Type.Duration -> goal.value * 1000
+            is RecordTypeGoal.Type.Count -> goal.value
+            null -> 0L
+        }
+    }
+
     private fun mapSplitByActivityItems(
         splitByActivity: Boolean,
         splitSortMode: ChartSplitSortMode,
@@ -926,6 +1018,76 @@ class StatisticsDetailViewDataMapper @Inject constructor(
                 description = resourceRepo.getString(R.string.statistics_detail_goals_excess),
                 titleTextSizeSp = 14,
                 subtitleTextSizeSp = 12,
+            ),
+        )
+    }
+
+    private fun mapGoalStats(
+        records: List<RecordBase>,
+        goalValue: Long,
+        goalRange: RecordTypeGoal.Range,
+        rangeLength: RangeLength,
+        rangePosition: Int,
+        chartMode: ChartMode,
+        useProportionalMinutes: Boolean,
+        showSeconds: Boolean,
+        firstDayOfWeek: DayOfWeek,
+        startOfDayShift: Long,
+    ): List<StatisticsDetailCardInternalViewData> {
+        fun formatInterval(
+            interval: Long,
+        ): String {
+            return when (chartMode) {
+                ChartMode.DURATIONS -> timeMapper.formatInterval(
+                    interval = interval,
+                    forceSeconds = showSeconds,
+                    useProportionalMinutes = useProportionalMinutes,
+                )
+                ChartMode.COUNTS -> interval.toString()
+            }
+        }
+
+        val range = timeMapper.getRangeStartAndEnd(
+            rangeLength = rangeLength,
+            shift = rangePosition,
+            firstDayOfWeek = firstDayOfWeek,
+            startOfDayShift = startOfDayShift,
+        )
+        val recordsFromRange = if (range.timeStarted == 0L && range.timeEnded == 0L) {
+            records
+        } else {
+            rangeMapper.getRecordsFromRange(records, range)
+                .map { rangeMapper.clampRecordToRange(it, range) }
+        }
+        val currentValue = when (chartMode) {
+            ChartMode.DURATIONS -> recordsFromRange.sumOf(RecordBase::duration)
+            ChartMode.COUNTS -> recordsFromRange.size.toLong()
+        }
+        val percentage = if (goalValue != 0L) {
+            currentValue * 100f / goalValue
+        } else {
+            0f
+        }
+        val percentageString = processPercentageString(percentage)
+        val description = when (goalRange) {
+            is RecordTypeGoal.Range.Session -> 0 // Shouldn't be possible.
+            is RecordTypeGoal.Range.Daily -> R.string.range_day
+            is RecordTypeGoal.Range.Weekly -> R.string.range_week
+            is RecordTypeGoal.Range.Monthly -> R.string.range_month
+        }.let(resourceRepo::getString)
+
+        return listOf(
+            StatisticsDetailCardInternalViewData(
+                value = formatInterval(goalValue),
+                valueChange = StatisticsDetailCardInternalViewData.ValueChange.None,
+                secondValue = "",
+                description = description,
+            ),
+            StatisticsDetailCardInternalViewData(
+                value = formatInterval(currentValue),
+                valueChange = StatisticsDetailCardInternalViewData.ValueChange.None,
+                secondValue = "",
+                description = percentageString,
             ),
         )
     }

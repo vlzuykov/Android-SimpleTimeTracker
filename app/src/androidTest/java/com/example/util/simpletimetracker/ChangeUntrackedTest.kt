@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit
 import com.example.util.simpletimetracker.core.R as coreR
 import com.example.util.simpletimetracker.feature_base_adapter.R as baseR
 import com.example.util.simpletimetracker.feature_change_record.R as changeRecordR
-import com.example.util.simpletimetracker.feature_dialogs.R as dialogsR
 import com.example.util.simpletimetracker.feature_statistics_detail.R as statisticsDetailR
 import com.example.util.simpletimetracker.feature_views.R as viewsR
 
@@ -118,7 +117,7 @@ class ChangeUntrackedTest : BaseUiTest() {
 
         // From quick actions
         longClickOnView(allOf(withText(coreR.string.untracked_time_name), isCompletelyDisplayed()))
-        clickOnViewWithId(dialogsR.id.btnRecordQuickActionsStatistics)
+        clickOnViewWithText(R.string.shortcut_navigation_statistics)
         checkViewIsDisplayed(
             allOf(
                 withId(statisticsDetailR.id.viewStatisticsDetailItem),

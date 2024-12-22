@@ -49,6 +49,7 @@ class StartRecordTest : BaseUiTest() {
                     idData = RecordTypeGoal.IdData.Type(0),
                     range = RecordTypeGoal.Range.Session,
                     type = RecordTypeGoal.Type.Duration(firstGoalTime),
+                    subtype = RecordTypeGoal.Subtype.Goal,
                     daysOfWeek = emptyList(),
                 ),
             ),
@@ -151,7 +152,7 @@ class StartRecordTest : BaseUiTest() {
         // Add comment
         longClickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name)))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         clickOnViewWithText(coreR.string.change_record_comment_field)
         clickOnViewWithText(coreR.string.change_record_save)
 
@@ -170,7 +171,7 @@ class StartRecordTest : BaseUiTest() {
         )
         clickOnView(allOf(withText(name), isCompletelyDisplayed()))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        checkViewIsDisplayed(allOf(withId(changeRecordR.id.etChangeRecordComment), withText(comment)))
+        checkViewIsDisplayed(allOf(withId(changeRecordR.id.etChangeRecordCommentField), withText(comment)))
     }
 
     @Test

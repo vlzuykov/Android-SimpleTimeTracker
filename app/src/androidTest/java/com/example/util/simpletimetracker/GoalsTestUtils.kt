@@ -218,7 +218,8 @@ object GoalsTestUtils {
             idData = RecordTypeGoal.IdData.Type(0),
             range = range,
             type = RecordTypeGoal.Type.Duration(duration),
-            daysOfWeek = DayOfWeek.values().toList(),
+            subtype = RecordTypeGoal.Subtype.Goal,
+            daysOfWeek = DayOfWeek.entries,
         )
     }
 
@@ -238,7 +239,8 @@ object GoalsTestUtils {
             idData = RecordTypeGoal.IdData.Type(0),
             range = range,
             type = RecordTypeGoal.Type.Count(count),
-            daysOfWeek = DayOfWeek.values().toList(),
+            subtype = RecordTypeGoal.Subtype.Goal,
+            daysOfWeek = DayOfWeek.entries,
         )
     }
 

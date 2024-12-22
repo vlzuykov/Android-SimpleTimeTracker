@@ -16,7 +16,6 @@ import com.example.util.simpletimetracker.feature_statistics_detail.interactor.S
 import com.example.util.simpletimetracker.feature_statistics_detail.mapper.StatisticsDetailViewDataMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
-import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartMode
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailGoalsCompositeViewData
 import kotlinx.coroutines.Dispatchers
@@ -58,15 +57,11 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             firstDayOfWeek = firstDayOfWeek,
             goals = goals,
         )
-        val goal = getGoal(
+        val chartGoal = getGoal(
             goals = goals,
-            appliedChartGrouping = compositeData.appliedChartGrouping,
+            rangeLength = mapToRange(compositeData.appliedChartGrouping),
         )
-        val chartMode = when (goal?.type) {
-            is RecordTypeGoal.Type.Duration -> ChartMode.DURATIONS
-            is RecordTypeGoal.Type.Count -> ChartMode.COUNTS
-            null -> ChartMode.DURATIONS
-        }
+        val chartMode = statisticsDetailViewDataMapper.mapToChartMode(chartGoal)
         val ranges = chartInteractor.getRanges(
             compositeData = compositeData,
             rangeLength = rangeLength,
@@ -99,34 +94,37 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             chartMode = chartMode,
             splitSortMode = ChartSplitSortMode.ACTIVITY_ORDER,
         )
-        val goalValue = getGoalValue(goal)
-        val goalSubtype = goal?.subtype ?: RecordTypeGoal.Subtype.Goal
+
+        val statsViewData = statisticsDetailViewDataMapper.mapGoalStatsViewData(
+            records = records,
+            currentRangeGoal = getGoal(
+                goals = goals,
+                rangeLength = rangeLength,
+            ),
+            rangeLength = rangeLength,
+            rangePosition = rangePosition,
+            useProportionalMinutes = useProportionalMinutes,
+            showSeconds = showSeconds,
+            firstDayOfWeek = firstDayOfWeek,
+            startOfDayShift = startOfDayShift,
+        )
+        val chartViewData = statisticsDetailViewDataMapper.mapGoalChartViewData(
+            data = data,
+            prevData = prevData,
+            chartGoal = chartGoal,
+            rangeLength = rangeLength,
+            availableChartGroupings = compositeData.availableChartGroupings,
+            appliedChartGrouping = compositeData.appliedChartGrouping,
+            availableChartLengths = compositeData.availableChartLengths,
+            appliedChartLength = compositeData.appliedChartLength,
+            chartMode = chartMode,
+            useProportionalMinutes = useProportionalMinutes,
+            showSeconds = showSeconds,
+            isDarkTheme = isDarkTheme,
+        )
 
         return@withContext StatisticsDetailGoalsCompositeViewData(
-            viewData = statisticsDetailViewDataMapper.mapGoalChartViewData(
-                goalData = statisticsDetailViewDataMapper.mapGoalData(
-                    data = data,
-                    goalValue = goalValue,
-                    goalSubtype = goalSubtype,
-                    isDarkTheme = isDarkTheme,
-                ),
-                goalChartPrevData = statisticsDetailViewDataMapper.mapGoalData(
-                    data = prevData,
-                    goalValue = goalValue,
-                    goalSubtype = goalSubtype,
-                    isDarkTheme = isDarkTheme,
-                ),
-                goalValue = goalValue,
-                rangeLength = rangeLength,
-                availableChartGroupings = compositeData.availableChartGroupings,
-                appliedChartGrouping = compositeData.appliedChartGrouping,
-                availableChartLengths = compositeData.availableChartLengths,
-                appliedChartLength = compositeData.appliedChartLength,
-                chartMode = chartMode,
-                useProportionalMinutes = useProportionalMinutes,
-                showSeconds = showSeconds,
-                isDarkTheme = isDarkTheme,
-            ),
+            viewData = statsViewData + chartViewData,
             appliedChartGrouping = compositeData.appliedChartGrouping,
             appliedChartLength = compositeData.appliedChartLength,
         )
@@ -147,7 +145,7 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
         )
 
         val availableChartGroupings = mainData.availableChartGroupings
-            .filter { getGoal(goals, it).value != 0L }
+            .filter { getGoal(goals, mapToRange(it)).value != 0L }
             .takeUnless { it.isEmpty() }
             ?: listOf(ChartGrouping.DAILY)
 
@@ -160,25 +158,26 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
         )
     }
 
-    private fun getGoal(
-        goals: List<RecordTypeGoal>,
+    private fun mapToRange(
         appliedChartGrouping: ChartGrouping,
-    ): RecordTypeGoal? {
+    ): RangeLength? {
         return when (appliedChartGrouping) {
-            ChartGrouping.DAILY -> goals.getDaily()
-            ChartGrouping.WEEKLY -> goals.getWeekly()
-            ChartGrouping.MONTHLY -> goals.getMonthly()
+            ChartGrouping.DAILY -> RangeLength.Day
+            ChartGrouping.WEEKLY -> RangeLength.Week
+            ChartGrouping.MONTHLY -> RangeLength.Month
             ChartGrouping.YEARLY -> null
         }
     }
 
-    private fun getGoalValue(
-        goal: RecordTypeGoal?,
-    ): Long {
-        return when (goal?.type) {
-            is RecordTypeGoal.Type.Duration -> goal.value * 1000
-            is RecordTypeGoal.Type.Count -> goal.value
-            null -> 0L
+    private fun getGoal(
+        goals: List<RecordTypeGoal>,
+        rangeLength: RangeLength?,
+    ): RecordTypeGoal? {
+        return when (rangeLength) {
+            is RangeLength.Day -> goals.getDaily()
+            is RangeLength.Week -> goals.getWeekly()
+            is RangeLength.Month -> goals.getMonthly()
+            else -> null
         }
     }
 }
