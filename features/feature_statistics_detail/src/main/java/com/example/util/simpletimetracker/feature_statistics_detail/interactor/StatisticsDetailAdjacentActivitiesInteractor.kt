@@ -4,6 +4,8 @@ import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.getTypeIds
 import com.example.util.simpletimetracker.domain.extension.orZero
+import com.example.util.simpletimetracker.domain.interactor.CalculateAdjacentActivitiesInteractor
+import com.example.util.simpletimetracker.domain.interactor.CalculateAdjacentActivitiesInteractor.CalculationResult
 import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
@@ -26,6 +28,7 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
     private val recordInteractor: RecordInteractor,
     private val timeMapper: TimeMapper,
     private val statisticsDetailViewDataMapper: StatisticsDetailViewDataMapper,
+    private val calculateAdjacentActivitiesInteractor: CalculateAdjacentActivitiesInteractor,
 ) {
 
     suspend fun getNextActivitiesViewData(
@@ -38,8 +41,10 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
         val isDarkTheme = prefsInteractor.getDarkMode()
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
         val actualRecords = getRecords(rangeLength, rangePosition)
-        val nextActivitiesIds = calculateNextActivities(typeId, actualRecords)
-        val multitaskingActivitiesIds = calculateMultitasking(typeId, actualRecords)
+        val nextActivitiesIds = calculateAdjacentActivitiesInteractor
+            .calculateNextActivities(typeId, actualRecords)
+        val multitaskingActivitiesIds = calculateAdjacentActivitiesInteractor
+            .calculateMultitasking(typeId, actualRecords)
 
         fun mapPreviews(typeToCounts: List<CalculationResult>): List<ViewHolderType> {
             val total = typeToCounts.sumOf(CalculationResult::count)
@@ -121,81 +126,7 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
             ?.firstOrNull()
     }
 
-    // TODO make more precise calculations?
-    private fun calculateNextActivities(
-        typeId: Long,
-        records: List<RecordBase>,
-    ): List<CalculationResult> {
-        val counts = mutableMapOf<Long, Long>()
-
-        val recordsSorted = records.sortedBy { it.timeStarted }
-        var currentRecord: RecordBase? = null
-        recordsSorted.forEach { record ->
-            val currentTimeEnded = currentRecord?.timeEnded
-            if (currentTimeEnded != null &&
-                currentTimeEnded <= record.timeStarted
-            ) {
-                record.typeIds.firstOrNull()?.let { id ->
-                    counts[id] = counts[id].orZero() + 1
-                }
-                currentRecord = null
-            }
-            if (currentRecord == null && typeId in record.typeIds) {
-                currentRecord = record
-            }
-        }
-
-        return counts.keys
-            .sortedByDescending { counts[it].orZero() }
-            .take(MAX_COUNT)
-            .map { CalculationResult(it, counts[it].orZero()) }
-    }
-
-    // TODO make more precise calculations?
-    private fun calculateMultitasking(
-        typeId: Long,
-        records: List<RecordBase>,
-    ): List<CalculationResult> {
-        val counts = mutableMapOf<Long, Long>()
-
-        val recordsSorted = records.sortedBy { it.timeStarted }
-        var currentRecord: RecordBase? = null
-        recordsSorted.forEach { record ->
-            val currentTimeStarted = currentRecord?.timeStarted
-            val currentTimeEnded = currentRecord?.timeEnded
-            if (currentTimeStarted != null &&
-                currentTimeEnded != null &&
-                // Find next records that was started after this one but before this one ends.
-                currentTimeStarted <= record.timeStarted &&
-                currentTimeEnded > record.timeStarted &&
-                // Cutoff short intersections.
-                currentTimeEnded - record.timeStarted > 1_000L
-            ) {
-                record.typeIds.firstOrNull()?.let { id ->
-                    counts[id] = counts[id].orZero() + 1
-                }
-            }
-            if (typeId in record.typeIds) {
-                currentRecord = record
-            }
-        }
-
-        return counts.keys
-            .sortedByDescending { counts[it].orZero() }
-            .take(MAX_COUNT)
-            .map { CalculationResult(it, counts[it].orZero()) }
-    }
-
     private fun getEmptyViewData(): List<ViewHolderType> {
         return emptyList()
-    }
-
-    private data class CalculationResult(
-        val typeId: Long,
-        val count: Long,
-    )
-
-    companion object {
-        private const val MAX_COUNT = 5
     }
 }
