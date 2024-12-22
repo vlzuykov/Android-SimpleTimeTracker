@@ -4,14 +4,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleLibrary)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-    id(com.example.util.simpletimetracker.BuildPlugins.hiltPlugin)
+    alias(libs.plugins.gradleLibrary)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 applyAndroidLibrary()
@@ -23,11 +22,11 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":wear_api"))
-    implementation(Deps.Google.services)
-    implementation(Deps.Google.gson)
-    implementation(Deps.Google.dagger)
-    ksp(Deps.Kapt.dagger)
+    implementation(libs.google.services)
+    implementation(libs.google.gson)
+    implementation(libs.google.dagger)
+    ksp(libs.kapt.dagger)
 
-    testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.coroutines)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.coroutines)
 }

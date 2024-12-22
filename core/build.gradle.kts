@@ -1,12 +1,11 @@
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleLibrary)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlinParcelize)
-    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
+    alias(libs.plugins.gradleLibrary)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.ksp)
 }
 
 applyAndroidLibrary()
@@ -23,23 +22,23 @@ dependencies {
     api(project(":feature_base_adapter"))
     api(project(":feature_views"))
 
-    api(Deps.Androidx.appcompat)
-    api(Deps.Androidx.recyclerView)
-    api(Deps.Androidx.constraintLayout)
-    api(Deps.Androidx.cardView)
-    api(Deps.Androidx.material)
-    api(Deps.Androidx.viewpager2)
-    api(Deps.Emoji.emojiBundled)
-    api(Deps.Google.flexBox)
-    api(Deps.Google.dagger)
-    api(Deps.Ktx.core)
-    api(Deps.Ktx.fragment)
-    api(Deps.Ktx.liveDataCore)
-    api(Deps.Ktx.liveData)
-    api(Deps.Ktx.viewModel)
-    api(Deps.Ktx.activity)
-    api(Deps.UiTest.espressoIdling)
+    api(libs.androidx.appcompat)
+    api(libs.androidx.recyclerView)
+    api(libs.androidx.constraintLayout)
+    api(libs.androidx.cardView)
+    api(libs.androidx.material)
+    api(libs.androidx.viewpager2)
+    api(libs.emoji.emojiBundled)
+    api(libs.google.flexBox)
+    api(libs.google.dagger)
+    api(libs.ktx.core)
+    api(libs.ktx.fragment)
+    api(libs.ktx.liveDataCore)
+    api(libs.ktx.liveData)
+    api(libs.ktx.viewModel)
+    api(libs.ktx.activity)
+    api(libs.uitest.espressoIdling)
 
-    testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.mockito)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.mockito)
 }

@@ -1,19 +1,12 @@
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-        .version(com.example.util.simpletimetracker.Versions.ksp)
-        .apply(false)
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleApplication)
-        .version(com.example.util.simpletimetracker.Versions.gradle)
-        .apply(false)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-        .version(com.example.util.simpletimetracker.Versions.kotlin)
-        .apply(false)
-    id(com.example.util.simpletimetracker.BuildPlugins.ktlint)
-        .version(com.example.util.simpletimetracker.Versions.ktlint)
-        .apply(false)
-    id(com.example.util.simpletimetracker.BuildPlugins.hilt)
-        .version(com.example.util.simpletimetracker.Versions.dagger)
-        .apply(false)
+    alias(libs.plugins.gradleApplication) apply false
+    alias(libs.plugins.gradleLibrary) apply false
+    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.kotlinParcelize) apply false
+    alias(libs.plugins.kotlinLibrary) apply false
+    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 allprojects {
@@ -22,7 +15,7 @@ allprojects {
         mavenCentral()
     }
 
-    apply(plugin = com.example.util.simpletimetracker.BuildPlugins.ktlint)
+    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
 }
 
 tasks {

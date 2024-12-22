@@ -4,13 +4,12 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleLibrary)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlinParcelize)
+    alias(libs.plugins.gradleLibrary)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlinParcelize)
 }
 
 applyAndroidLibrary()
@@ -20,5 +19,5 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Google.gson)
+    implementation(libs.google.gson)
 }

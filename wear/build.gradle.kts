@@ -4,15 +4,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
-import com.example.util.simpletimetracker.Versions
 import com.example.util.simpletimetracker.applyAndroidWearLibrary
 
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleApplication)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-    id(com.example.util.simpletimetracker.BuildPlugins.hiltPlugin)
+    alias(libs.plugins.gradleApplication)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 applyAndroidWearLibrary()
@@ -55,7 +53,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose_kotlin_compiler
+        kotlinCompilerExtensionVersion = libs.versions.compose.kotlin.compiler.get()
     }
 }
 
@@ -63,28 +61,28 @@ dependencies {
     implementation(project(":wear_api"))
     implementation(project(":resources"))
 
-    implementation(Deps.Androidx.appcompat)
-    implementation(Deps.Google.services)
-    implementation(Deps.Google.gson)
-    implementation(Deps.Google.dagger)
-    implementation(Deps.Wear.complications)
-    implementation(Deps.Wear.wearOngoing)
-    coreLibraryDesugaring(Deps.Google.desugaring)
-    implementation(Deps.Compose.activity)
-    implementation(Deps.Compose.ui)
-    implementation(Deps.Compose.uiToolingPreview)
-    implementation(Deps.Compose.materialIcons)
-    implementation(Deps.Compose.wearNavigation)
-    implementation(Deps.Compose.wearMaterial)
-    implementation(Deps.Compose.wearFoundation)
-    implementation(Deps.Compose.wearToolingPreview)
-    implementation(Deps.Compose.horologist)
-    implementation(Deps.Compose.hilt)
-    debugImplementation(Deps.Compose.uiTooling)
-    ksp(Deps.Kapt.dagger)
-    ksp(Deps.Kapt.metadata)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.services)
+    implementation(libs.google.gson)
+    implementation(libs.google.dagger)
+    implementation(libs.wear.complications)
+    implementation(libs.wear.wearOngoing)
+    coreLibraryDesugaring(libs.google.desugaring)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.uiToolingPreview)
+    implementation(libs.compose.materialIcons)
+    implementation(libs.compose.wearNavigation)
+    implementation(libs.compose.wearMaterial)
+    implementation(libs.compose.wearFoundation)
+    implementation(libs.compose.wearToolingPreview)
+    implementation(libs.compose.horologist)
+    implementation(libs.compose.hilt)
+    debugImplementation(libs.compose.uiTooling)
+    ksp(libs.kapt.dagger)
+    ksp(libs.kapt.metadata)
 
-    testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.mockito)
-    testImplementation(Deps.Test.coroutines)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.mockito)
+    testImplementation(libs.test.coroutines)
 }

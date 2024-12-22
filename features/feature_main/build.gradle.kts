@@ -1,12 +1,11 @@
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleLibrary)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-    id(com.example.util.simpletimetracker.BuildPlugins.hiltPlugin)
+    alias(libs.plugins.gradleLibrary)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 applyAndroidLibrary()
@@ -22,6 +21,6 @@ dependencies {
     implementation(project(":feature_statistics"))
     implementation(project(":feature_settings"))
     implementation(project(":feature_goals"))
-    implementation(Deps.Google.dagger)
-    ksp(Deps.Kapt.dagger)
+    implementation(libs.google.dagger)
+    ksp(libs.kapt.dagger)
 }

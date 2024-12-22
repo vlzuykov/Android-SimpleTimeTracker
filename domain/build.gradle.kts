@@ -1,8 +1,6 @@
-import com.example.util.simpletimetracker.Deps
-
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.javaLibrary)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlinLibrary)
+    id(libs.plugins.javaLibrary.get().pluginId)
+    alias(libs.plugins.kotlinLibrary)
 }
 
 java {
@@ -11,11 +9,11 @@ java {
 }
 
 dependencies {
-    api(Deps.javax)
-    api(Deps.coroutines)
-    api(Deps.timber)
-    api(Deps.kotlin)
+    api(libs.javax)
+    api(libs.coroutines)
+    api(libs.timber)
+    api(libs.kotlin)
 
-    testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.mockitoKotlin)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.mockitoKotlin)
 }

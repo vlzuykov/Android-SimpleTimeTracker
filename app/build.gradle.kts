@@ -1,12 +1,11 @@
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id(com.example.util.simpletimetracker.BuildPlugins.gradleApplication)
-    id(com.example.util.simpletimetracker.BuildPlugins.kotlin)
-    id(com.example.util.simpletimetracker.BuildPlugins.ksp)
-    id(com.example.util.simpletimetracker.BuildPlugins.hiltPlugin)
+    alias(libs.plugins.gradleApplication)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 applyAndroidLibrary()
@@ -116,17 +115,17 @@ dependencies {
     implementation(project(":feature_change_goals:views"))
     "playImplementation"(project(":feature_wear"))
 
-    implementation(Deps.Androidx.room)
-    implementation(Deps.Ktx.navigationFragment)
-    implementation(Deps.Ktx.navigationUi)
-    implementation(Deps.Google.dagger)
+    implementation(libs.androidx.room)
+    implementation(libs.ktx.navigationFragment)
+    implementation(libs.ktx.navigationUi)
+    implementation(libs.google.dagger)
 
-    ksp(Deps.Kapt.dagger)
-    kspAndroidTest(Deps.Kapt.dagger)
+    ksp(libs.kapt.dagger)
+    kspAndroidTest(libs.kapt.dagger)
 
-    androidTestImplementation(Deps.UiTest.junit)
-    androidTestImplementation(Deps.UiTest.espresso)
-    androidTestImplementation(Deps.UiTest.espressoContrib)
-    androidTestImplementation(Deps.UiTest.dagger)
-    androidTestImplementation(Deps.UiTest.room)
+    androidTestImplementation(libs.uitest.junit)
+    androidTestImplementation(libs.uitest.espresso)
+    androidTestImplementation(libs.uitest.espressoContrib)
+    androidTestImplementation(libs.uitest.dagger)
+    androidTestImplementation(libs.uitest.room)
 }
