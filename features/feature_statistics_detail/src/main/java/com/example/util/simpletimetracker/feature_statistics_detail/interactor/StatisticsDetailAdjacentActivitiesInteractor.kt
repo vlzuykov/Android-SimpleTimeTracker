@@ -10,6 +10,7 @@ import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.model.RangeLength
+import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordBase
 import com.example.util.simpletimetracker.domain.model.RecordType
 import com.example.util.simpletimetracker.domain.model.RecordsFilter
@@ -42,7 +43,8 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
         val actualRecords = getRecords(rangeLength, rangePosition)
         val nextActivitiesIds = calculateAdjacentActivitiesInteractor
-            .calculateNextActivities(typeId, actualRecords)
+            .calculateNextActivities(listOf(typeId), actualRecords)
+            .getOrElse(typeId) { emptyList() }
         val multitaskingActivitiesIds = calculateAdjacentActivitiesInteractor
             .calculateMultitasking(typeId, actualRecords)
 
@@ -101,7 +103,7 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
     private suspend fun getRecords(
         rangeLength: RangeLength,
         rangePosition: Int,
-    ): List<RecordBase> {
+    ): List<Record> {
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
 

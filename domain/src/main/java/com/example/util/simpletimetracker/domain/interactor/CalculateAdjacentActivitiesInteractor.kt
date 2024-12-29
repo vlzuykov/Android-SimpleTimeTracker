@@ -1,40 +1,48 @@
 package com.example.util.simpletimetracker.domain.interactor
 
 import com.example.util.simpletimetracker.domain.extension.orZero
+import com.example.util.simpletimetracker.domain.model.Record
 import com.example.util.simpletimetracker.domain.model.RecordBase
 import javax.inject.Inject
 
 class CalculateAdjacentActivitiesInteractor @Inject constructor() {
 
     // Doesn't count multitasked activities.
-    // Only whose that started after current ended.
+    // Only those that started after current ended.
     fun calculateNextActivities(
-        typeId: Long,
-        records: List<RecordBase>,
-    ): List<CalculationResult> {
-        val counts = mutableMapOf<Long, Long>()
-
+        typeIds: List<Long>,
+        records: List<Record>,
+    ): Map<Long, List<CalculationResult>> {
+        val counts = mutableMapOf<Long, MutableMap<Long, Long>>()
         val recordsSorted = records.sortedBy { it.timeStarted }
-        var currentRecord: RecordBase? = null
+        val currentRecords: MutableMap<Long, Record> = mutableMapOf()
+
         recordsSorted.forEach { record ->
-            val currentTimeEnded = currentRecord?.timeEnded
-            if (currentTimeEnded != null &&
-                currentTimeEnded <= record.timeStarted
-            ) {
-                record.typeIds.firstOrNull()?.let { id ->
-                    counts[id] = counts[id].orZero() + 1
+            val typeId = record.typeId
+            val idsToRemoveFromCurrents = mutableListOf<Long>()
+
+            currentRecords.values.forEach { currentRecord ->
+                val currentTimeEnded = currentRecord.timeEnded
+                if (currentTimeEnded <= record.timeStarted) {
+                    counts[currentRecord.typeId] = counts[currentRecord.typeId]
+                        .orEmpty().toMutableMap()
+                        .also { it[typeId] = it[typeId].orZero() + 1 }
+                    idsToRemoveFromCurrents += currentRecord.typeId
                 }
-                currentRecord = null
             }
-            if (currentRecord == null && typeId in record.typeIds) {
-                currentRecord = record
+
+            idsToRemoveFromCurrents.forEach(currentRecords::remove)
+            if (typeId !in currentRecords && typeId in typeIds) {
+                currentRecords[typeId] = record
             }
         }
 
-        return counts.keys
-            .sortedByDescending { counts[it].orZero() }
-            .take(MAX_COUNT)
-            .map { CalculationResult(it, counts[it].orZero()) }
+        return counts.mapValues { (_, counts) ->
+            counts.keys
+                .sortedByDescending { counts[it].orZero() }
+                .take(MAX_COUNT)
+                .map { CalculationResult(it, counts[it].orZero()) }
+        }
     }
 
     // TODO make more precise calculations?
