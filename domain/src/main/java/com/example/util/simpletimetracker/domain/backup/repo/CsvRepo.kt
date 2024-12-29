@@ -1,4 +1,4 @@
-package com.example.util.simpletimetracker.domain.resolver
+package com.example.util.simpletimetracker.domain.backup.repo
 
 import com.example.util.simpletimetracker.domain.backup.model.ResultCode
 import com.example.util.simpletimetracker.domain.record.model.Range

@@ -13,7 +13,7 @@ import com.example.util.simpletimetracker.domain.base.UNCATEGORIZED_ITEM_ID
 import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType

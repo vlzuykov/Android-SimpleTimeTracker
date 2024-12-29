@@ -10,7 +10,7 @@ import com.example.util.simpletimetracker.domain.record.extension.hasMultitaskFi
 import com.example.util.simpletimetracker.domain.record.extension.hasSelectedTagsFilter
 import com.example.util.simpletimetracker.domain.record.extension.hasUntrackedFilter
 import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor

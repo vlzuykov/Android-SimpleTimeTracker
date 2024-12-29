@@ -15,7 +15,7 @@ import com.example.util.simpletimetracker.domain.backup.interactor.AutomaticBack
 import com.example.util.simpletimetracker.domain.backup.interactor.AutomaticExportInteractor
 import com.example.util.simpletimetracker.domain.backup.interactor.BackupInteractor
 import com.example.util.simpletimetracker.domain.backup.interactor.CsvExportInteractor
-import com.example.util.simpletimetracker.domain.interactor.IcsExportInteractor
+import com.example.util.simpletimetracker.domain.backup.interactor.IcsExportInteractor
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.statistics.interactor.SettingsDataUpdateInteractor
 import com.example.util.simpletimetracker.domain.backup.model.BackupOptionsData

@@ -15,8 +15,8 @@ import com.example.util.simpletimetracker.domain.recordTag.repo.RecordTagRepo
 import com.example.util.simpletimetracker.domain.category.repo.RecordTypeCategoryRepo
 import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeRepo
 import com.example.util.simpletimetracker.domain.backup.model.ResultCode
-import com.example.util.simpletimetracker.domain.resolver.IcsRepo
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.backup.repo.IcsRepo
+import com.example.util.simpletimetracker.domain.category.model.Category
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber

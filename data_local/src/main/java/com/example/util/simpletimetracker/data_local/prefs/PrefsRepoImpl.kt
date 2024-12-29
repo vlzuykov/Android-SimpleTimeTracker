@@ -3,10 +3,10 @@ package com.example.util.simpletimetracker.data_local.prefs
 import android.content.SharedPreferences
 import com.example.util.simpletimetracker.data_local.base.delegate
 import com.example.util.simpletimetracker.data_local.base.logPrefsDataAccess
+import com.example.util.simpletimetracker.domain.statistics.model.StatisticsWidgetData
 import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
 import com.example.util.simpletimetracker.domain.widget.model.QuickSettingsWidgetType
 import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
-import com.example.util.simpletimetracker.domain.statistics.model.StatisticsWidgetData
 import com.example.util.simpletimetracker.domain.prefs.repo.PrefsRepo
 import java.util.Calendar
 import javax.inject.Inject

@@ -10,9 +10,9 @@ import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.DaysInCalendar
 import com.example.util.simpletimetracker.domain.record.model.RepeatButtonType
-import com.example.util.simpletimetracker.domain.statistics.model.WidgetTransparencyPercent
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.count
 import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.statistics.model.WidgetTransparencyPercent
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.viewData.CardOrderViewData
 import com.example.util.simpletimetracker.feature_settings.viewData.DarkModeViewData

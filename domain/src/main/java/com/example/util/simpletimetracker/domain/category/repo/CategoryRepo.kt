@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.domain.category.repo
 
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 
 interface CategoryRepo {
 

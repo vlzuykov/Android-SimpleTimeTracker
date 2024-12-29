@@ -16,9 +16,9 @@ import com.example.util.simpletimetracker.domain.record.repo.RecordRepo
 import com.example.util.simpletimetracker.domain.recordTag.repo.RecordTagRepo
 import com.example.util.simpletimetracker.domain.category.repo.RecordTypeCategoryRepo
 import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeRepo
-import com.example.util.simpletimetracker.domain.resolver.CsvRepo
+import com.example.util.simpletimetracker.domain.backup.repo.CsvRepo
 import com.example.util.simpletimetracker.domain.backup.model.ResultCode
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import java.io.BufferedReader
 import java.io.FileOutputStream
 import java.io.IOException

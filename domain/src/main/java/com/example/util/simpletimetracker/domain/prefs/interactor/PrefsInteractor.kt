@@ -2,18 +2,18 @@ package com.example.util.simpletimetracker.domain.prefs.interactor
 
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.darkMode.model.DarkMode
-import com.example.util.simpletimetracker.domain.darkMode.interactor.IsSystemInDarkModeInteractor
 import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.DaysInCalendar
+import com.example.util.simpletimetracker.domain.darkMode.interactor.IsSystemInDarkModeInteractor
+import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.statistics.model.StatisticsWidgetData
 import com.example.util.simpletimetracker.domain.prefs.repo.PrefsRepo
 import com.example.util.simpletimetracker.domain.widget.model.QuickSettingsWidgetType
 import com.example.util.simpletimetracker.domain.record.model.Range
 import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import com.example.util.simpletimetracker.domain.record.model.RepeatButtonType
-import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
-import com.example.util.simpletimetracker.domain.statistics.model.StatisticsWidgetData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

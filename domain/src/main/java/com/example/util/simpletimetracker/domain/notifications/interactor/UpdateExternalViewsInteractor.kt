@@ -1,11 +1,11 @@
 package com.example.util.simpletimetracker.domain.notifications.interactor
 
+import com.example.util.simpletimetracker.domain.wear.WearInteractor
 import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.domain.widget.model.WidgetType
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.wear.WearInteractor
 import com.example.util.simpletimetracker.domain.widget.interactor.WidgetInteractor
 import javax.inject.Inject
 

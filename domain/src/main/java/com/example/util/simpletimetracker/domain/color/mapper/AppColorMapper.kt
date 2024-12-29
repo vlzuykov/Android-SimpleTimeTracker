@@ -1,4 +1,4 @@
-package com.example.util.simpletimetracker.domain.mapper
+package com.example.util.simpletimetracker.domain.color.mapper
 
 import com.example.util.simpletimetracker.domain.color.model.AppColor
 

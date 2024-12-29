@@ -3,7 +3,7 @@ package com.example.util.simpletimetracker.domain.backup.interactor
 import com.example.util.simpletimetracker.domain.backup.model.BackupOptionsData
 import com.example.util.simpletimetracker.domain.backup.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.domain.backup.model.ResultCode
-import com.example.util.simpletimetracker.domain.resolver.BackupPartialRepo
+import com.example.util.simpletimetracker.domain.backup.repo.BackupPartialRepo
 import com.example.util.simpletimetracker.domain.backup.repo.BackupRepo
 import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import javax.inject.Inject

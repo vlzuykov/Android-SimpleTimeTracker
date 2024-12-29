@@ -2,7 +2,7 @@ package com.example.util.simpletimetracker.data_local.category
 
 import com.example.util.simpletimetracker.data_local.base.withLockedCache
 import com.example.util.simpletimetracker.data_local.base.removeIf
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.category.repo.CategoryRepo
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject

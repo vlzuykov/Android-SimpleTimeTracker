@@ -1,4 +1,4 @@
-package com.example.util.simpletimetracker.domain.interactor
+package com.example.util.simpletimetracker.domain.record.interactor
 
 import com.example.util.simpletimetracker.domain.record.model.Range
 import com.example.util.simpletimetracker.domain.record.model.Record

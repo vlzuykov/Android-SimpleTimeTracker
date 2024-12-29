@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_records_filter.interactor
 
 import com.example.util.simpletimetracker.domain.base.UNCATEGORIZED_ITEM_ID
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.record.extension.getAllTypeIds
 import com.example.util.simpletimetracker.domain.record.extension.getCategoryItems

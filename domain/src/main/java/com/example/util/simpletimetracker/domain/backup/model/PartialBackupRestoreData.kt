@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.domain.backup.model
 
 import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
 import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
 import com.example.util.simpletimetracker.domain.favourite.model.FavouriteColor

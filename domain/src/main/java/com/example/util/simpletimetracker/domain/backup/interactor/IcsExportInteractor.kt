@@ -1,7 +1,7 @@
-package com.example.util.simpletimetracker.domain.interactor
+package com.example.util.simpletimetracker.domain.backup.interactor
 
 import com.example.util.simpletimetracker.domain.backup.model.ResultCode
-import com.example.util.simpletimetracker.domain.resolver.IcsRepo
+import com.example.util.simpletimetracker.domain.backup.repo.IcsRepo
 import com.example.util.simpletimetracker.domain.record.model.Range
 import javax.inject.Inject
 

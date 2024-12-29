@@ -1,10 +1,10 @@
 package com.example.util.simpletimetracker.domain.recordType.interactor
 
-import com.example.util.simpletimetracker.domain.mapper.AppColorMapper
+import com.example.util.simpletimetracker.domain.color.mapper.AppColorMapper
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.color.model.AppColor
-import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt

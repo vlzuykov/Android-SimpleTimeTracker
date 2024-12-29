@@ -39,10 +39,10 @@ import com.example.util.simpletimetracker.domain.recordTag.repo.RecordTypeToDefa
 import com.example.util.simpletimetracker.domain.recordTag.repo.RecordTypeToTagRepo
 import com.example.util.simpletimetracker.domain.record.repo.RunningRecordRepo
 import com.example.util.simpletimetracker.domain.recordTag.repo.RunningRecordToRecordTagRepo
-import com.example.util.simpletimetracker.domain.resolver.BackupPartialRepo
+import com.example.util.simpletimetracker.domain.backup.repo.BackupPartialRepo
 import com.example.util.simpletimetracker.domain.backup.repo.BackupRepo
-import com.example.util.simpletimetracker.domain.resolver.CsvRepo
-import com.example.util.simpletimetracker.domain.resolver.IcsRepo
+import com.example.util.simpletimetracker.domain.backup.repo.CsvRepo
+import com.example.util.simpletimetracker.domain.backup.repo.IcsRepo
 import com.example.util.simpletimetracker.domain.sharing.SharingRepo
 import dagger.Binds
 import dagger.Module

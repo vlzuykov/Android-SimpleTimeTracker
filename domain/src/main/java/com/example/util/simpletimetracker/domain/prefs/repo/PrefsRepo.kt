@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.domain.prefs.repo
 
-import com.example.util.simpletimetracker.domain.widget.model.QuickSettingsWidgetType
 import com.example.util.simpletimetracker.domain.statistics.model.StatisticsWidgetData
+import com.example.util.simpletimetracker.domain.widget.model.QuickSettingsWidgetType
 
 interface PrefsRepo {
 

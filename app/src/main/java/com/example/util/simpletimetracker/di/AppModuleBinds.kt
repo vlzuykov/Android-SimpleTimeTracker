@@ -5,10 +5,10 @@ import com.example.util.simpletimetracker.core.interactor.IsSystemInDarkModeInte
 import com.example.util.simpletimetracker.core.interactor.GetUntrackedRecordsInteractorImpl
 import com.example.util.simpletimetracker.core.mapper.AppColorMapperImpl
 import com.example.util.simpletimetracker.core.provider.ApplicationDataProvider
-import com.example.util.simpletimetracker.domain.mapper.AppColorMapper
-import com.example.util.simpletimetracker.domain.interactor.GetCurrentDayInteractor
+import com.example.util.simpletimetracker.domain.color.mapper.AppColorMapper
+import com.example.util.simpletimetracker.domain.daysOfWeek.interactor.GetCurrentDayInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.GetUntrackedRecordsInteractor
 import com.example.util.simpletimetracker.domain.darkMode.interactor.IsSystemInDarkModeInteractor
-import com.example.util.simpletimetracker.domain.interactor.GetUntrackedRecordsInteractor
 import com.example.util.simpletimetracker.provider.ApplicationDataProviderImpl
 import dagger.Binds
 import dagger.Module

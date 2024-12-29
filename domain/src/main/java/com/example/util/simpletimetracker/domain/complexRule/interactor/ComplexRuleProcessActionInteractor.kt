@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.domain.complexRule.interactor
 
-import com.example.util.simpletimetracker.domain.interactor.GetCurrentDayInteractor
+import com.example.util.simpletimetracker.domain.daysOfWeek.interactor.GetCurrentDayInteractor
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.base.ResultContainer
 import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule

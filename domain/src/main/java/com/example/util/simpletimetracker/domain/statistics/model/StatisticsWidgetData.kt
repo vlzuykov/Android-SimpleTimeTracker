@@ -1,7 +1,4 @@
-package com.example.util.simpletimetracker.domain.model
-
-import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+package com.example.util.simpletimetracker.domain.statistics.model
 
 data class StatisticsWidgetData(
     val chartFilterType: ChartFilterType,

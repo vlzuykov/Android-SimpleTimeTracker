@@ -1,4 +1,4 @@
-package com.example.util.simpletimetracker.domain.interactor
+package com.example.util.simpletimetracker.domain.wear
 
 interface WearInteractor {
 

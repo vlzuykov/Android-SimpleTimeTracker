@@ -13,7 +13,7 @@ import com.example.util.simpletimetracker.core.mapper.RecordViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.record.extension.getAllTypeIds
 import com.example.util.simpletimetracker.domain.record.extension.getCategoryIds
 import com.example.util.simpletimetracker.domain.record.extension.getCategoryItems

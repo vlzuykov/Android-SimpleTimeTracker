@@ -1,11 +1,11 @@
 package com.example.util.simpletimetracker.domain.category.interactor
 
-import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.category.repo.CategoryRepo
 import com.example.util.simpletimetracker.domain.category.repo.RecordTypeCategoryRepo
+import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.recordType.interactor.SortCardsInteractor
-import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
 import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeGoalRepo
 import javax.inject.Inject
 
