@@ -21,8 +21,8 @@ import com.example.util.simpletimetracker.GoalsTestUtils.getMonthlyDurationGoal
 import com.example.util.simpletimetracker.GoalsTestUtils.getSessionDurationGoal
 import com.example.util.simpletimetracker.GoalsTestUtils.getWeeklyCountGoal
 import com.example.util.simpletimetracker.GoalsTestUtils.getWeeklyDurationGoal
-import com.example.util.simpletimetracker.domain.extension.value
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.extension.value
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_change_record.R
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils

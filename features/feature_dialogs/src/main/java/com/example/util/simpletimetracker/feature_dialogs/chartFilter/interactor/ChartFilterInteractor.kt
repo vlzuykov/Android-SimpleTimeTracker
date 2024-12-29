@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_dialogs.chartFilter.interactor
 
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
 import com.example.util.simpletimetracker.navigation.params.screen.ChartFilterDialogParams
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.feature_notification.automaticExport.controller
 
-import com.example.util.simpletimetracker.domain.interactor.AutomaticExportInteractor
+import com.example.util.simpletimetracker.domain.backup.interactor.AutomaticExportInteractor
 import javax.inject.Inject
 
 class AutomaticExportBroadcastController @Inject constructor(

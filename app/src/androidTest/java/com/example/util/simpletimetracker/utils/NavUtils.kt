@@ -14,7 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.example.util.simpletimetracker.R
 import com.example.util.simpletimetracker.clickOnSettingsRecyclerText
 import com.example.util.simpletimetracker.domain.extension.padDuration
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_dialogs.dateTime.CustomDatePicker
 import com.example.util.simpletimetracker.feature_dialogs.dateTime.CustomTimePicker
 import com.example.util.simpletimetracker.scrollSettingsRecyclerToText

@@ -4,7 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.example.util.simpletimetracker.domain.model.WidgetType
+import com.example.util.simpletimetracker.domain.widget.model.WidgetType
 import com.example.util.simpletimetracker.feature_widget.quickSettings.WidgetQuickSettingsProvider
 import com.example.util.simpletimetracker.feature_widget.single.WidgetSingleProvider
 import com.example.util.simpletimetracker.feature_widget.statistics.WidgetStatisticsChartProvider

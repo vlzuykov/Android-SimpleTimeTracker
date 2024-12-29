@@ -2,11 +2,11 @@ package com.example.util.simpletimetracker.core.delegates.iconSelection.interact
 
 import com.example.util.simpletimetracker.core.delegates.iconSelection.mapper.IconSelectionMapper
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionStateViewData
-import com.example.util.simpletimetracker.domain.interactor.FavouriteIconInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.IconImageState
-import com.example.util.simpletimetracker.domain.model.IconType
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteIconInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.icon.IconImageState
+import com.example.util.simpletimetracker.domain.icon.IconType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

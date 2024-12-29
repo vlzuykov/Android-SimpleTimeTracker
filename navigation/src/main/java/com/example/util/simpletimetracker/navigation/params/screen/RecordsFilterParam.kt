@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.navigation.params.screen
 
 import android.os.Parcelable
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import kotlinx.parcelize.Parcelize
 
 sealed interface RecordsFilterParam : Parcelable {

@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.data_local.daysOfWeek
 
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import javax.inject.Inject
 
 class DaysOfWeekDataLocalMapper @Inject constructor() {

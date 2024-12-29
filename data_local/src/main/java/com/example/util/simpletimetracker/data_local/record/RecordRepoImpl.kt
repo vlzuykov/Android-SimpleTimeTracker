@@ -1,12 +1,12 @@
 package com.example.util.simpletimetracker.data_local.record
 
 import androidx.collection.LruCache
-import com.example.util.simpletimetracker.data_local.utils.logDataAccess
-import com.example.util.simpletimetracker.data_local.utils.withLockedCache
+import com.example.util.simpletimetracker.data_local.base.logDataAccess
+import com.example.util.simpletimetracker.data_local.base.withLockedCache
 import com.example.util.simpletimetracker.domain.extension.dropMillis
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.Record
-import com.example.util.simpletimetracker.domain.repo.RecordRepo
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.record.repo.RecordRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext

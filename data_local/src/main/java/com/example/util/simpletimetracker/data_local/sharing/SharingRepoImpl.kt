@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.core.content.FileProvider
 import com.example.util.simpletimetracker.core.provider.ApplicationDataProvider
-import com.example.util.simpletimetracker.domain.resolver.SharingRepo
+import com.example.util.simpletimetracker.domain.sharing.SharingRepo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -2,8 +2,8 @@ package com.example.util.simpletimetracker.feature_notification.pomodoro.mapper
 
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleSettings
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleType
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleSettings
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleType
 import com.example.util.simpletimetracker.feature_notification.R
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

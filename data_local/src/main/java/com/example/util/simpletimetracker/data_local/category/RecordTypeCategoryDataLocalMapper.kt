@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.data_local.category
 
-import com.example.util.simpletimetracker.domain.model.RecordTypeCategory
+import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
 import javax.inject.Inject
 
 class RecordTypeCategoryDataLocalMapper @Inject constructor() {

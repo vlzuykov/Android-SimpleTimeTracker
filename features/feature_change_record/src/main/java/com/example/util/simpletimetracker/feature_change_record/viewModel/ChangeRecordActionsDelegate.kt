@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import androidx.lifecycle.LiveData
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 
 interface ChangeRecordActionsDelegate {

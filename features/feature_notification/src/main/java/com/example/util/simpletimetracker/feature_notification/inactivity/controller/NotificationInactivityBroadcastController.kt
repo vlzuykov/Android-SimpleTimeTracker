@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_notification.inactivity.controller
 
-import com.example.util.simpletimetracker.domain.interactor.NotificationInactivityInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationInactivityInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject

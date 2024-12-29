@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.recordTag
 
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.RecordTag
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import javax.inject.Inject
 
 class RecordTagDataLocalMapper @Inject constructor() {

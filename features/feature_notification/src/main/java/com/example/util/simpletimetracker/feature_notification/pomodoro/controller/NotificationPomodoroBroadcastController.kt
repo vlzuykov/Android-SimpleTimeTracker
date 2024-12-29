@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.feature_notification.pomodoro.controller
 
-import com.example.util.simpletimetracker.domain.interactor.PomodoroCycleNotificationInteractor
+import com.example.util.simpletimetracker.domain.pomodoro.interactor.PomodoroCycleNotificationInteractor
 import com.example.util.simpletimetracker.feature_notification.pomodoro.interactor.ShowPomodoroNotificationInteractor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

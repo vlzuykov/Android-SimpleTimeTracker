@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.data_local.recordTag
 
-import com.example.util.simpletimetracker.domain.model.RecordTypeToDefaultTag
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToDefaultTag
 import javax.inject.Inject
 
 class RecordTypeToDefaultTagDataLocalMapper @Inject constructor() {

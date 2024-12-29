@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_settings.partialRestore.mapper
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
+import com.example.util.simpletimetracker.domain.backup.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
 import javax.inject.Inject

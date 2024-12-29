@@ -2,7 +2,7 @@ package com.example.util.simpletimetracker.core.interactor
 
 import android.content.Context
 import android.content.res.Configuration
-import com.example.util.simpletimetracker.domain.interactor.IsSystemInDarkModeInteractor
+import com.example.util.simpletimetracker.domain.darkMode.interactor.IsSystemInDarkModeInteractor
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

@@ -5,10 +5,10 @@ import com.example.util.simpletimetracker.core.mapper.TimeMapperTitleTest.Subjec
 import com.example.util.simpletimetracker.core.mapper.TimeMapperTitleTest.Subject.hourInMs
 import com.example.util.simpletimetracker.core.mapper.TimeMapperTitleTest.Subject.localeProvider
 import com.example.util.simpletimetracker.core.mapper.TimeMapperTitleTest.Subject.resourceRepo
-import com.example.util.simpletimetracker.domain.provider.CurrentTimestampProvider
+import com.example.util.simpletimetracker.domain.base.CurrentTimestampProvider
 import com.example.util.simpletimetracker.core.provider.LocaleProvider
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.Before

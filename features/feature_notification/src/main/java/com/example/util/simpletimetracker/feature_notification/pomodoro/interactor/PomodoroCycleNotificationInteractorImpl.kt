@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.feature_notification.pomodoro.interactor
 
-import com.example.util.simpletimetracker.domain.interactor.GetPomodoroSettingsInteractor
-import com.example.util.simpletimetracker.domain.interactor.PomodoroCycleNotificationInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.mapper.PomodoroCycleDurationsMapper
+import com.example.util.simpletimetracker.domain.pomodoro.interactor.GetPomodoroSettingsInteractor
+import com.example.util.simpletimetracker.domain.pomodoro.interactor.PomodoroCycleNotificationInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.pomodoro.mapper.PomodoroCycleDurationsMapper
 import com.example.util.simpletimetracker.feature_notification.pomodoro.manager.NotificationPomodoroManager
 import com.example.util.simpletimetracker.feature_notification.pomodoro.scheduler.NotificationPomodoroScheduler
 import javax.inject.Inject

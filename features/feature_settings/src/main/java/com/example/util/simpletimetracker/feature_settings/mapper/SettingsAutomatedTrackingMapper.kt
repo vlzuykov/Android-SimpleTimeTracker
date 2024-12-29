@@ -27,8 +27,8 @@ import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_STARTED
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_ICON
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TYPE_NOTE
 import com.example.util.simpletimetracker.domain.extension.indexesOf
-import com.example.util.simpletimetracker.domain.model.ExternalActionCommentMode
-import com.example.util.simpletimetracker.domain.model.ExternalActionFindRecordMode
+import com.example.util.simpletimetracker.domain.notifications.model.ExternalActionCommentMode
+import com.example.util.simpletimetracker.domain.notifications.model.ExternalActionFindRecordMode
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_views.extension.setClickableSpan
 import com.example.util.simpletimetracker.feature_views.extension.setImageSpan

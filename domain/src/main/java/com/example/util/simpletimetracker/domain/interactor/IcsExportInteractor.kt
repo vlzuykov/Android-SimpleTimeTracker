@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.domain.interactor
 
-import com.example.util.simpletimetracker.domain.model.Range
+import com.example.util.simpletimetracker.domain.backup.model.ResultCode
 import com.example.util.simpletimetracker.domain.resolver.IcsRepo
-import com.example.util.simpletimetracker.domain.resolver.ResultCode
+import com.example.util.simpletimetracker.domain.record.model.Range
 import javax.inject.Inject
 
 class IcsExportInteractor @Inject constructor(

@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.feature_widget.di
 
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
+import com.example.util.simpletimetracker.domain.widget.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.feature_widget.common.WidgetInteractorImpl
 import dagger.Binds
 import dagger.Module

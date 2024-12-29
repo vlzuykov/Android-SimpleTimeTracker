@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.data_local.favourite
 
-import com.example.util.simpletimetracker.data_local.utils.logDataAccess
-import com.example.util.simpletimetracker.domain.model.FavouriteColor
-import com.example.util.simpletimetracker.domain.repo.FavouriteColorRepo
+import com.example.util.simpletimetracker.data_local.base.logDataAccess
+import com.example.util.simpletimetracker.domain.favourite.model.FavouriteColor
+import com.example.util.simpletimetracker.domain.favourite.repo.FavouriteColorRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

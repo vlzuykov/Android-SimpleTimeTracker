@@ -1,11 +1,12 @@
 package com.example.util.simpletimetracker.domain.mapper
 
-import com.example.util.simpletimetracker.domain.mapper.PomodoroCycleDurationsMapper.Result
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleSettings
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleType.Break
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleType.Focus
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleType.LongBreak
-import com.example.util.simpletimetracker.domain.provider.CurrentTimestampProvider
+import com.example.util.simpletimetracker.domain.pomodoro.mapper.PomodoroCycleDurationsMapper.Result
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleSettings
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleType.Break
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleType.Focus
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleType.LongBreak
+import com.example.util.simpletimetracker.domain.pomodoro.mapper.PomodoroCycleDurationsMapper
+import com.example.util.simpletimetracker.domain.base.CurrentTimestampProvider
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

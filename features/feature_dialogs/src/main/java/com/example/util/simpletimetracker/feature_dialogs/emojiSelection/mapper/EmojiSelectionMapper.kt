@@ -2,7 +2,7 @@ package com.example.util.simpletimetracker.feature_dialogs.emojiSelection.mapper
 
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconEmojiMapper
-import com.example.util.simpletimetracker.domain.model.AppColor
+import com.example.util.simpletimetracker.domain.color.model.AppColor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.emoji.EmojiViewData
 import javax.inject.Inject

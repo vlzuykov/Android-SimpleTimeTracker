@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.complexRule
 
 import com.example.util.simpletimetracker.data_local.daysOfWeek.DaysOfWeekDataLocalMapper
-import com.example.util.simpletimetracker.domain.model.ComplexRule
+import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
 import javax.inject.Inject
 
 class ComplexRuleDataLocalMapper @Inject constructor(

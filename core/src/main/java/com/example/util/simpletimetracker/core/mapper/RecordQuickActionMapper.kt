@@ -4,16 +4,16 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.ADJUST
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.CHANGE_ACTIVITY
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.CHANGE_TAG
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.CONTINUE
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.DUPLICATE
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.MERGE
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.REPEAT
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.SPLIT
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction.STOP
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.ADJUST
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.CHANGE_ACTIVITY
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.CHANGE_TAG
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.CONTINUE
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.DUPLICATE
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.MERGE
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.REPEAT
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.SPLIT
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction.STOP
 import javax.inject.Inject
 
 class RecordQuickActionMapper @Inject constructor(

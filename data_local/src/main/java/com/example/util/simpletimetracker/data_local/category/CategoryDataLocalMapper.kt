@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.category
 
-import com.example.util.simpletimetracker.domain.model.AppColor
 import com.example.util.simpletimetracker.domain.model.Category
+import com.example.util.simpletimetracker.domain.color.model.AppColor
 import javax.inject.Inject
 
 class CategoryDataLocalMapper @Inject constructor() {

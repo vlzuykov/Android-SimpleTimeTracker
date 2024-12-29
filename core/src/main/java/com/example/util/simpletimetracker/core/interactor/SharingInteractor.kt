@@ -3,7 +3,7 @@ package com.example.util.simpletimetracker.core.interactor
 import android.view.View
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.resolver.SharingRepo
+import com.example.util.simpletimetracker.domain.sharing.SharingRepo
 import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
 import com.example.util.simpletimetracker.feature_views.extension.measureForSharing
 import com.example.util.simpletimetracker.navigation.Router

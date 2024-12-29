@@ -2,8 +2,8 @@ package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.plusAssign
-import com.example.util.simpletimetracker.domain.interactor.RecordActionDuplicateMediator
-import com.example.util.simpletimetracker.domain.model.RecordQuickAction
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionDuplicateMediator
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R

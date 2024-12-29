@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.core.viewData
 
-import com.example.util.simpletimetracker.domain.model.AppColor
+import com.example.util.simpletimetracker.domain.color.model.AppColor
 
 /**
  * Type, category or tag.

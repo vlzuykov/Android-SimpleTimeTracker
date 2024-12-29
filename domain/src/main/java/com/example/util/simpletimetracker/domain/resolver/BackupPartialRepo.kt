@@ -1,7 +1,8 @@
 package com.example.util.simpletimetracker.domain.resolver
 
-import com.example.util.simpletimetracker.domain.model.BackupOptionsData
-import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
+import com.example.util.simpletimetracker.domain.backup.model.BackupOptionsData
+import com.example.util.simpletimetracker.domain.backup.model.PartialBackupRestoreData
+import com.example.util.simpletimetracker.domain.backup.model.ResultCode
 
 interface BackupPartialRepo {
 

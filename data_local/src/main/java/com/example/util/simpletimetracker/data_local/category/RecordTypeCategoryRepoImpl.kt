@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.data_local.category
 
-import com.example.util.simpletimetracker.data_local.utils.removeIf
-import com.example.util.simpletimetracker.data_local.utils.withLockedCache
-import com.example.util.simpletimetracker.domain.model.RecordTypeCategory
-import com.example.util.simpletimetracker.domain.repo.RecordTypeCategoryRepo
+import com.example.util.simpletimetracker.data_local.base.removeIf
+import com.example.util.simpletimetracker.data_local.base.withLockedCache
+import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
+import com.example.util.simpletimetracker.domain.category.repo.RecordTypeCategoryRepo
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton

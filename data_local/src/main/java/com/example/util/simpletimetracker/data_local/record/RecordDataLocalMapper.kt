@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.record
 
 import com.example.util.simpletimetracker.domain.extension.dropMillis
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.record.model.Record
 import javax.inject.Inject
 
 class RecordDataLocalMapper @Inject constructor() {

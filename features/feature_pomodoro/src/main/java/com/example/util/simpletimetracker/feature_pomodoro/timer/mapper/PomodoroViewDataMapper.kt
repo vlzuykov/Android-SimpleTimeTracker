@@ -3,9 +3,9 @@ package com.example.util.simpletimetracker.feature_pomodoro.timer.mapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.dropMillis
 import com.example.util.simpletimetracker.domain.extension.toDuration
-import com.example.util.simpletimetracker.domain.mapper.PomodoroCycleDurationsMapper
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleSettings
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleType
+import com.example.util.simpletimetracker.domain.pomodoro.mapper.PomodoroCycleDurationsMapper
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleSettings
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleType
 import com.example.util.simpletimetracker.feature_pomodoro.R
 import com.example.util.simpletimetracker.feature_pomodoro.timer.model.PomodoroButtonState
 import com.example.util.simpletimetracker.feature_pomodoro.timer.model.PomodoroTimerState

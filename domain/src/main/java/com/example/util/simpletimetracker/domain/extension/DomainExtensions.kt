@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.domain.extension
 
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordTag
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 
 private const val MINUTE_IN_MILLIS = 60_000
 private const val SECOND_IN_MILLIS = 1_000

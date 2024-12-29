@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.data_local.activityFilter
 
-import com.example.util.simpletimetracker.data_local.utils.withLockedCache
-import com.example.util.simpletimetracker.data_local.utils.removeIf
-import com.example.util.simpletimetracker.domain.model.ActivityFilter
-import com.example.util.simpletimetracker.domain.repo.ActivityFilterRepo
+import com.example.util.simpletimetracker.data_local.base.withLockedCache
+import com.example.util.simpletimetracker.data_local.base.removeIf
+import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.activityFilter.repo.ActivityFilterRepo
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton

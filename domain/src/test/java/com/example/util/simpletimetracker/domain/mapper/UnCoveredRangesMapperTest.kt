@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.domain.mapper
 
-import com.example.util.simpletimetracker.domain.model.Range
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.record.mapper.UnCoveredRangesMapper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

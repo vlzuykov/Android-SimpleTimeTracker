@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.data_local.recordTag
 
-import com.example.util.simpletimetracker.data_local.utils.logDataAccess
-import com.example.util.simpletimetracker.domain.model.RecordToRecordTag
-import com.example.util.simpletimetracker.domain.repo.RecordToRecordTagRepo
+import com.example.util.simpletimetracker.data_local.base.logDataAccess
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordToRecordTag
+import com.example.util.simpletimetracker.domain.recordTag.repo.RecordToRecordTagRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -3,18 +3,18 @@ package com.example.util.simpletimetracker.core.interactor
 import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.viewData.StatisticsDataHolder
-import com.example.util.simpletimetracker.domain.UNCATEGORIZED_ITEM_ID
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsTagInteractor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.Statistics
+import com.example.util.simpletimetracker.domain.base.UNCATEGORIZED_ITEM_ID
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.statistics.interactor.StatisticsCategoryInteractor
+import com.example.util.simpletimetracker.domain.statistics.interactor.StatisticsInteractor
+import com.example.util.simpletimetracker.domain.statistics.interactor.StatisticsTagInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.statistics.model.Statistics
 import javax.inject.Inject
 
 class StatisticsMediator @Inject constructor(

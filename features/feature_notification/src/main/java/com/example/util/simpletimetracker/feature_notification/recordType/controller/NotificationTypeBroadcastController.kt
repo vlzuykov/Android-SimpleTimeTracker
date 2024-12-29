@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_notification.recordType.controller
 
-import com.example.util.simpletimetracker.domain.interactor.NotificationActivitySwitchInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationActivitySwitchInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationTypeInteractor
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.mapper.NotificationControlsMapper
 import com.example.util.simpletimetracker.feature_notification.recordType.interactor.ActivityStartStopFromBroadcastInteractor
 import kotlinx.coroutines.DelicateCoroutinesApi

@@ -4,7 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.example.util.simpletimetracker.core.utils.PendingIntents
-import com.example.util.simpletimetracker.domain.model.PomodoroCycleType
+import com.example.util.simpletimetracker.domain.pomodoro.model.PomodoroCycleType
 import com.example.util.simpletimetracker.feature_notification.core.AlarmManagerController
 import com.example.util.simpletimetracker.feature_notification.pomodoro.mapper.NotificationPomodoroMapper
 import com.example.util.simpletimetracker.feature_notification.recevier.NotificationReceiver

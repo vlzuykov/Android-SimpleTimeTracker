@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.domain.mapper
 
-import com.example.util.simpletimetracker.domain.interactor.CalculateAdjacentActivitiesInteractor
-import com.example.util.simpletimetracker.domain.interactor.CalculateAdjacentActivitiesInteractor.CalculationResult
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.record.interactor.CalculateAdjacentActivitiesInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.CalculateAdjacentActivitiesInteractor.CalculationResult
+import com.example.util.simpletimetracker.domain.record.model.Record
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -2,11 +2,11 @@ package com.example.util.simpletimetracker.feature_notification.automaticBackup.
 
 import com.example.util.simpletimetracker.core.extension.post
 import com.example.util.simpletimetracker.core.repo.AutomaticBackupRepo
-import com.example.util.simpletimetracker.domain.interactor.AutomaticBackupInteractor
-import com.example.util.simpletimetracker.domain.interactor.BackupInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.model.BackupOptionsData
-import com.example.util.simpletimetracker.domain.resolver.ResultCode
+import com.example.util.simpletimetracker.domain.backup.interactor.AutomaticBackupInteractor
+import com.example.util.simpletimetracker.domain.backup.interactor.BackupInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.backup.model.BackupOptionsData
+import com.example.util.simpletimetracker.domain.backup.model.ResultCode
 import com.example.util.simpletimetracker.feature_notification.automaticBackup.scheduler.AutomaticBackupScheduler
 import com.example.util.simpletimetracker.feature_notification.core.GetTimeToDayEndInteractor
 import javax.inject.Inject

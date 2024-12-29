@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_widget.common
 
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
-import com.example.util.simpletimetracker.domain.model.WidgetType
+import com.example.util.simpletimetracker.domain.widget.interactor.WidgetInteractor
+import com.example.util.simpletimetracker.domain.widget.model.WidgetType
 import javax.inject.Inject
 
 class WidgetInteractorImpl @Inject constructor(

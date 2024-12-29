@@ -1,12 +1,12 @@
 package com.example.util.simpletimetracker.data_local.recordType
 
-import com.example.util.simpletimetracker.data_local.utils.logDataAccess
-import com.example.util.simpletimetracker.data_local.utils.removeIf
-import com.example.util.simpletimetracker.data_local.utils.replaceWith
-import com.example.util.simpletimetracker.data_local.utils.withLockedCache
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal.IdData
-import com.example.util.simpletimetracker.domain.repo.RecordTypeGoalRepo
+import com.example.util.simpletimetracker.data_local.base.logDataAccess
+import com.example.util.simpletimetracker.data_local.base.removeIf
+import com.example.util.simpletimetracker.data_local.base.replaceWith
+import com.example.util.simpletimetracker.data_local.base.withLockedCache
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal.IdData
+import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeGoalRepo
 import javax.inject.Inject
 import kotlinx.coroutines.sync.Mutex
 

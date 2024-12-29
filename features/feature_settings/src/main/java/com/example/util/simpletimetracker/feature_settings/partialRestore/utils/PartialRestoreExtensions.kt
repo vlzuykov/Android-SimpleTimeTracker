@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.feature_settings.partialRestore.utils
 
-import com.example.util.simpletimetracker.domain.model.PartialBackupRestoreData
+import com.example.util.simpletimetracker.domain.backup.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
 
 fun PartialBackupRestoreData.getIds(

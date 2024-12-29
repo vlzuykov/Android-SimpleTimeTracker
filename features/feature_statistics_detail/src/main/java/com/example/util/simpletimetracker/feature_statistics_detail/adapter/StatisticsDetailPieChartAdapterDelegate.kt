@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.adapter
 
 import com.example.util.simpletimetracker.domain.extension.orFalse
-import com.example.util.simpletimetracker.domain.model.OneShotValue
+import com.example.util.simpletimetracker.domain.base.OneShotValue
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_views.pieChart.PiePortion

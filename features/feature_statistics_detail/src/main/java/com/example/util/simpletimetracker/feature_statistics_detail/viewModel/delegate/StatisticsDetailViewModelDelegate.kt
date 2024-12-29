@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate
 
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.navigation.params.screen.StatisticsDetailParams
 
 interface StatisticsDetailViewModelDelegate {

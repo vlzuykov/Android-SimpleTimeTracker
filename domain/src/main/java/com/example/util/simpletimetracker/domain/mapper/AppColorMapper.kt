@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.domain.mapper
 
-import com.example.util.simpletimetracker.domain.model.AppColor
+import com.example.util.simpletimetracker.domain.color.model.AppColor
 
 interface AppColorMapper {
 

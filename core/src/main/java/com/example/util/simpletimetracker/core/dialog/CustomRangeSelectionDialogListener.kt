@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.core.dialog
 
-import com.example.util.simpletimetracker.domain.model.Range
+import com.example.util.simpletimetracker.domain.record.model.Range
 
 interface CustomRangeSelectionDialogListener {
 

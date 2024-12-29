@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.data_local.favourite
 
-import com.example.util.simpletimetracker.domain.model.FavouriteIcon
+import com.example.util.simpletimetracker.domain.favourite.model.FavouriteIcon
 import javax.inject.Inject
 
 class FavouriteIconDataLocalMapper @Inject constructor() {

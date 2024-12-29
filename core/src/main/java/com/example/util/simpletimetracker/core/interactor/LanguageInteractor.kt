@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.AppLanguage
+import com.example.util.simpletimetracker.domain.language.AppLanguage
 import java.util.Locale
 import javax.inject.Inject
 

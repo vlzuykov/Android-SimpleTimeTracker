@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.feature_notification.pomodoro.interactor
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.GetPomodoroSettingsInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.pomodoro.interactor.GetPomodoroSettingsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.pomodoro.manager.NotificationPomodoroManager
 import com.example.util.simpletimetracker.feature_notification.pomodoro.manager.NotificationPomodoroParams

@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.data_local.complexRule
 
-import com.example.util.simpletimetracker.data_local.utils.removeIf
-import com.example.util.simpletimetracker.data_local.utils.withLockedCache
-import com.example.util.simpletimetracker.domain.model.ComplexRule
-import com.example.util.simpletimetracker.domain.repo.ComplexRuleRepo
+import com.example.util.simpletimetracker.data_local.base.removeIf
+import com.example.util.simpletimetracker.data_local.base.withLockedCache
+import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
+import com.example.util.simpletimetracker.domain.complexRule.repo.ComplexRuleRepo
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton

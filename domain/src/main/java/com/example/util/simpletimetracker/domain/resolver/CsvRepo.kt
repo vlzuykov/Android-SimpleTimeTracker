@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.domain.resolver
 
-import com.example.util.simpletimetracker.domain.model.Range
+import com.example.util.simpletimetracker.domain.backup.model.ResultCode
+import com.example.util.simpletimetracker.domain.record.model.Range
 
 interface CsvRepo {
 

@@ -20,9 +20,9 @@ import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.repo.DeviceRepo
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
-import com.example.util.simpletimetracker.domain.model.IconEmojiType
-import com.example.util.simpletimetracker.domain.model.IconImageState
-import com.example.util.simpletimetracker.domain.model.IconType
+import com.example.util.simpletimetracker.domain.icon.IconEmojiType
+import com.example.util.simpletimetracker.domain.icon.IconImageState
+import com.example.util.simpletimetracker.domain.icon.IconType
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData

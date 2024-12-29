@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.activityFilter
 
-import com.example.util.simpletimetracker.domain.model.ActivityFilter
-import com.example.util.simpletimetracker.domain.model.AppColor
+import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.color.model.AppColor
 import javax.inject.Inject
 
 class ActivityFilterDataLocalMapper @Inject constructor() {
