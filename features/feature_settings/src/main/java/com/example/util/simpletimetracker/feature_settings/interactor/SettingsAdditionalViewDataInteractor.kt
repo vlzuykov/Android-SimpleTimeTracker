@@ -182,6 +182,11 @@ class SettingsAdditionalViewDataInteractor @Inject constructor(
                 block = SettingsBlock.AdditionalComplexRules,
                 title = resourceRepo.getString(R.string.settings_complex_rules),
                 subtitle = "",
+            )
+            result += SettingsTextViewData(
+                block = SettingsBlock.AdditionalActivitySuggestions,
+                title = resourceRepo.getString(R.string.settings_activity_suggestions),
+                subtitle = "",
                 dividerIsVisible = false,
             )
         }

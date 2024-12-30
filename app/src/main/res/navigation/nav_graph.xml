@@ -38,6 +38,14 @@
         app:popExitAnim="@anim/slide_out_right" />
 
     <action
+        android:id="@+id/action_to_activitySuggestionsFragment"
+        app:destination="@id/activitySuggestionsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
         android:id="@+id/action_to_statisticsDetailFragment"
         app:destination="@id/statisticsDetailFragment"
         app:enterAnim="@anim/slide_in_right"
@@ -210,8 +218,13 @@
     <fragment
         android:id="@+id/complexRulesFragment"
         android:name="com.example.util.simpletimetracker.feature_complex_rules.view.ComplexRulesFragment"
-        android:label="DataEditFragment"
+        android:label="ComplexRulesFragment"
         tools:layout="@layout/complex_rules_fragment" />
+    <fragment
+        android:id="@+id/activitySuggestionsFragment"
+        android:name="com.example.util.simpletimetracker.feature_suggestions.view.ActivitySuggestionsFragment"
+        android:label="ActivitySuggestionsFragment"
+        tools:layout="@layout/activity_suggestions_fragment" />
     <fragment
         android:id="@+id/changeComplexRuleFragment"
         android:name="com.example.util.simpletimetracker.feature_change_complex_rule.view.ChangeComplexRuleFragment"

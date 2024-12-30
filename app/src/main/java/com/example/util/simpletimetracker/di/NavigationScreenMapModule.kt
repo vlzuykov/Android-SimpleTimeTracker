@@ -13,6 +13,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.view.Statist
 import com.example.util.simpletimetracker.navigation.NavigationData
 import com.example.util.simpletimetracker.navigation.bundleCreator.BundleCreator
 import com.example.util.simpletimetracker.navigation.bundleCreator.bundleCreatorDelegate
+import com.example.util.simpletimetracker.navigation.params.screen.ActivitySuggestionsParams
 import com.example.util.simpletimetracker.navigation.params.screen.ArchiveParams
 import com.example.util.simpletimetracker.navigation.params.screen.CategoriesParams
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeActivityFilterParams
@@ -158,6 +159,16 @@ class NavigationScreenMapModule {
     fun complexRules(): NavigationData {
         return NavigationData(
             R.id.action_to_complexRulesFragment,
+            BundleCreator.empty(),
+        )
+    }
+
+    @IntoMap
+    @Provides
+    @ScreenKey(ActivitySuggestionsParams::class)
+    fun activitySuggestions(): NavigationData {
+        return NavigationData(
+            R.id.action_to_activitySuggestionsFragment,
             BundleCreator.empty(),
         )
     }

@@ -41,10 +41,10 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
         val actualRecords = getRecords(rangeLength, rangePosition)
         val nextActivitiesIds = calculateAdjacentActivitiesInteractor
-            .calculateNextActivities(listOf(typeId), actualRecords)
+            .calculateNextActivities(listOf(typeId), actualRecords, MAX_COUNT)
             .getOrElse(typeId) { emptyList() }
         val multitaskingActivitiesIds = calculateAdjacentActivitiesInteractor
-            .calculateMultitasking(typeId, actualRecords)
+            .calculateMultitasking(typeId, actualRecords, MAX_COUNT)
 
         fun mapPreviews(typeToCounts: List<CalculationResult>): List<ViewHolderType> {
             val total = typeToCounts.sumOf(CalculationResult::count)
@@ -128,5 +128,9 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
 
     private fun getEmptyViewData(): List<ViewHolderType> {
         return emptyList()
+    }
+
+    companion object {
+        private const val MAX_COUNT = 5
     }
 }

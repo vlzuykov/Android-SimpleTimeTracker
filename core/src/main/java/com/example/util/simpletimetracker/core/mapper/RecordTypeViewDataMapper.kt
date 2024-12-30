@@ -6,6 +6,7 @@ import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.recordType.extension.getDaily
+import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.recordType.extension.value
 import com.example.util.simpletimetracker.domain.color.model.AppColor
@@ -95,7 +96,7 @@ class RecordTypeViewDataMapper @Inject constructor(
     }
 
     fun mapToAddItem(
-        numberOfCards: Int,
+        numberOfCards: Int?,
         isDarkTheme: Boolean,
     ): RunningRecordTypeSpecialViewData {
         return mapToSpecial(
@@ -209,7 +210,7 @@ class RecordTypeViewDataMapper @Inject constructor(
         type: RunningRecordTypeSpecialViewData.Type,
         @StringRes name: Int,
         icon: RecordTypeIcon,
-        numberOfCards: Int,
+        numberOfCards: Int?, // TODO SUG revert?
         isDarkTheme: Boolean,
         checkState: GoalCheckmarkView.CheckState,
     ): RunningRecordTypeSpecialViewData {
@@ -218,9 +219,9 @@ class RecordTypeViewDataMapper @Inject constructor(
             name = name.let(resourceRepo::getString),
             iconId = icon,
             color = colorMapper.toInactiveColor(isDarkTheme),
-            width = recordTypeCardSizeMapper.toCardWidth(numberOfCards),
-            height = recordTypeCardSizeMapper.toCardHeight(numberOfCards),
-            asRow = recordTypeCardSizeMapper.toCardAsRow(numberOfCards),
+            width = numberOfCards?.let(recordTypeCardSizeMapper::toCardWidth),
+            height = numberOfCards?.let(recordTypeCardSizeMapper::toCardHeight),
+            asRow = numberOfCards?.let(recordTypeCardSizeMapper::toCardAsRow).orFalse(),
             checkState = checkState,
         )
     }

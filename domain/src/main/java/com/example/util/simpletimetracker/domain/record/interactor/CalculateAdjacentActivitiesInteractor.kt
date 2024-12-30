@@ -12,6 +12,7 @@ class CalculateAdjacentActivitiesInteractor @Inject constructor() {
     fun calculateNextActivities(
         typeIds: List<Long>,
         records: List<Record>,
+        maxCount: Int,
     ): Map<Long, List<CalculationResult>> {
         val counts = mutableMapOf<Long, MutableMap<Long, Long>>()
         val recordsSorted = records.sortedBy { it.timeStarted }
@@ -40,7 +41,7 @@ class CalculateAdjacentActivitiesInteractor @Inject constructor() {
         return counts.mapValues { (_, counts) ->
             counts.keys
                 .sortedByDescending { counts[it].orZero() }
-                .take(MAX_COUNT)
+                .take(maxCount)
                 .map { CalculationResult(it, counts[it].orZero()) }
         }
     }
@@ -49,6 +50,7 @@ class CalculateAdjacentActivitiesInteractor @Inject constructor() {
     fun calculateMultitasking(
         typeId: Long,
         records: List<RecordBase>,
+        maxCount: Int,
     ): List<CalculationResult> {
         val counts = mutableMapOf<Long, Long>()
 
@@ -76,7 +78,7 @@ class CalculateAdjacentActivitiesInteractor @Inject constructor() {
 
         return counts.keys
             .sortedByDescending { counts[it].orZero() }
-            .take(MAX_COUNT)
+            .take(maxCount)
             .map { CalculationResult(it, counts[it].orZero()) }
     }
 
@@ -84,8 +86,4 @@ class CalculateAdjacentActivitiesInteractor @Inject constructor() {
         val typeId: Long,
         val count: Long,
     )
-
-    companion object {
-        private const val MAX_COUNT = 5
-    }
 }

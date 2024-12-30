@@ -10,8 +10,8 @@ data class RunningRecordTypeSpecialViewData(
     val name: String,
     val iconId: RecordTypeIcon,
     @ColorInt val color: Int,
-    val width: Int,
-    val height: Int,
+    val width: Int?,
+    val height: Int?,
     val asRow: Boolean = false,
     val checkState: CheckState = CheckState.HIDDEN,
 ) : ViewHolderType {

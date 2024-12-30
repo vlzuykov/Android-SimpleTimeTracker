@@ -18,6 +18,7 @@ import com.example.util.simpletimetracker.feature_settings.mapper.SettingsAutoma
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.feature_settings.viewModel.SettingsViewModel
 import com.example.util.simpletimetracker.navigation.Router
+import com.example.util.simpletimetracker.navigation.params.screen.ActivitySuggestionsParams
 import com.example.util.simpletimetracker.navigation.params.screen.ComplexRulesParams
 import com.example.util.simpletimetracker.navigation.params.screen.DataEditParams
 import com.example.util.simpletimetracker.navigation.params.screen.DurationDialogParams
@@ -71,6 +72,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             SettingsBlock.AdditionalKeepScreenOn -> onKeepScreenOnClicked()
             SettingsBlock.AdditionalDataEdit -> onDataEditClick()
             SettingsBlock.AdditionalComplexRules -> onComplexRulesClick()
+            SettingsBlock.AdditionalActivitySuggestions -> onActivitySuggestionsClick()
             else -> {
                 // Do nothing
             }
@@ -260,6 +262,10 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
 
     private fun onComplexRulesClick() {
         router.navigate(ComplexRulesParams)
+    }
+
+    private fun onActivitySuggestionsClick() {
+        router.navigate(ActivitySuggestionsParams)
     }
 
     private fun onAutomatedTrackingHelpClick() {

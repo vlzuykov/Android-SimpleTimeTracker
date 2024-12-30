@@ -67,6 +67,7 @@ class TypesSelectionViewModel @Inject constructor(
     }
 
     fun onShowAllClick() {
+        dataIdsSelected.clear()
         dataIdsSelected.addAll(viewDataCache.map(TypesSelectionCacheHolder::id))
         updateViewData()
     }

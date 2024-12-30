@@ -109,6 +109,7 @@ dependencies {
     implementation(project(":feature_goals"))
     implementation(project(":feature_pomodoro"))
     implementation(project(":feature_complex_rules"))
+    implementation(project(":feature_suggestions"))
     implementation(project(":feature_change_complex_rule"))
     implementation(project(":feature_change_goals"))
     implementation(project(":feature_change_goals:api"))

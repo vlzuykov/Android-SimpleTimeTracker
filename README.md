@@ -100,6 +100,7 @@ Simple app that helps track how much time you spend on all the useless activitie
     │   ├── feature_settings                  # One of main tabs, settings.
     │   ├── feature_statistics                # One of main tabs, statistics.
     │   ├── feature_statistics_detail         # Screen showing detailed statistics.
+    │   ├── feature_suggestions               # Screen for activity suggestions.
     │   ├── feature_tag_selection             # Screen for selecting tags.
     │   ├── feature_views                     # Custom views.
     │   ├── feature_wear                      # Phone app logic to connect to wear app.

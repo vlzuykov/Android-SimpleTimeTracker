@@ -16,8 +16,8 @@ fun createRunningRecordTypeSpecialAdapterDelegate(
         item as ViewData
 
         layoutParams = layoutParams.also { params ->
-            params.width = item.width.dpToPx()
-            params.height = item.height.dpToPx()
+            item.width?.dpToPx()?.let { params.width = it }
+            item.height?.dpToPx()?.let { params.height = it }
         }
 
         itemIsRow = item.asRow

@@ -23,6 +23,7 @@ class CalculateAdjacentActivitiesInteractorTest(
         val actual = subject.calculateNextActivities(
             typeIds = input.first,
             records = input.second,
+            maxCount = 5,
         )
 
         assertEquals(
