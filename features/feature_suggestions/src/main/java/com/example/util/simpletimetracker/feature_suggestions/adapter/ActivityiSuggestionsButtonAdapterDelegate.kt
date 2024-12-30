@@ -12,6 +12,8 @@ import com.example.util.simpletimetracker.feature_suggestions.databinding.ItemAc
 // TODO SUG refactor with record quick actions button, and complex rules button.
 // TODO SUG remove ripple from icon background if background is transparent.
 // TODO SUG change button background color to appInactive color.
+// TODO SUG add backup tests
+// TODO GOAL add backup tests, raise test file version
 fun createActivitySuggestionsButtonAdapterDelegate(
     onClick: (ViewData) -> Unit,
 ) = createRecyclerBindingAdapterDelegate<ViewData, Binding>(

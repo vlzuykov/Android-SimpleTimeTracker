@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.domain.backup.model
 
 import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
 import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
 import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
@@ -31,6 +32,7 @@ data class PartialBackupRestoreData(
     val favouriteIcon: Map<Long, Holder<FavouriteIcon>>,
     val goals: Map<Long, Holder<RecordTypeGoal>>,
     val rules: Map<Long, Holder<ComplexRule>>,
+    val activitySuggestions: Map<Long, Holder<ActivitySuggestion>>,
 ) {
 
     data class Holder<T>(

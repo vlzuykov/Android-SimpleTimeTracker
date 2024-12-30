@@ -191,6 +191,19 @@ class PartialRestoreViewModel @Inject constructor(
             id to item.copy(data = newData)
         }.toMap()
 
+        // Check suggestions
+        val activitySuggestions = data.activitySuggestions.filter {
+            it.value.data.forTypeId in typesIds
+        }.mapNotNull { (id, item) ->
+            val newIds = item.data.suggestionIds.filter {
+                it in typesIds
+            }.takeIf {
+                it.isNotEmpty()
+            } ?: return@mapNotNull null
+            val newData = item.data.copy(suggestionIds = newIds)
+            id to item.copy(data = newData)
+        }.toMap()
+
         return@withContext PartialBackupRestoreData(
             types = types,
             records = records,
@@ -206,6 +219,7 @@ class PartialRestoreViewModel @Inject constructor(
             favouriteIcon = data.favouriteIcon,
             goals = goals,
             rules = rules,
+            activitySuggestions = activitySuggestions,
         )
     }
 

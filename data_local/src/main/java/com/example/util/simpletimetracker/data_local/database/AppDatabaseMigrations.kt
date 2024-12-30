@@ -32,6 +32,7 @@ class AppDatabaseMigrations {
                 migration_21_22,
                 migration_22_23,
                 migration_23_24,
+                migration_24_25,
             )
 
         private val migration_1_2 = object : Migration(1, 2) {
@@ -304,6 +305,14 @@ class AppDatabaseMigrations {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL(
                     "ALTER TABLE recordTypeGoals ADD COLUMN goalType INTEGER NOT NULL DEFAULT 0",
+                )
+            }
+        }
+
+        private val migration_24_25 = object : Migration(24, 25) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `activitySuggestion` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `forTypeId` INTEGER NOT NULL, `suggestionIds` TEXT NOT NULL)"
                 )
             }
         }

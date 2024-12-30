@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.util.simpletimetracker.core.extension.allowDiskWrite
 import com.example.util.simpletimetracker.data_local.activityFilter.ActivityFilterDao
+import com.example.util.simpletimetracker.data_local.activitySuggestion.ActivitySuggestionDao
 import com.example.util.simpletimetracker.data_local.database.AppDatabase
 import com.example.util.simpletimetracker.data_local.database.AppDatabaseMigrations
 import com.example.util.simpletimetracker.data_local.category.CategoryDao
@@ -123,6 +124,12 @@ class DataLocalModule {
     @Singleton
     fun getActivityFilterDao(database: AppDatabase): ActivityFilterDao {
         return database.activityFilterDao()
+    }
+
+    @Provides
+    @Singleton
+    fun getActivitySuggestionDao(database: AppDatabase): ActivitySuggestionDao {
+        return database.activitySuggestionDao()
     }
 
     @Provides

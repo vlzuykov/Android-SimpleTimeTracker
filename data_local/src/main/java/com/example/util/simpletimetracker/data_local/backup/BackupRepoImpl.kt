@@ -27,6 +27,8 @@ import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToDefaultTag
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToTag
 import com.example.util.simpletimetracker.domain.activityFilter.repo.ActivityFilterRepo
+import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
+import com.example.util.simpletimetracker.domain.activitySuggestion.repo.ActivitySuggestionRepo
 import com.example.util.simpletimetracker.domain.category.repo.CategoryRepo
 import com.example.util.simpletimetracker.domain.complexRule.repo.ComplexRuleRepo
 import com.example.util.simpletimetracker.domain.favourite.repo.FavouriteColorRepo
@@ -71,6 +73,7 @@ class BackupRepoImpl @Inject constructor(
     private val recordToRecordTagRepo: RecordToRecordTagRepo,
     private val recordTagRepo: RecordTagRepo,
     private val activityFilterRepo: ActivityFilterRepo,
+    private val activitySuggestionRepo: ActivitySuggestionRepo,
     private val favouriteCommentRepo: FavouriteCommentRepo,
     private val favouriteColorRepo: FavouriteColorRepo,
     private val favouriteIconRepo: FavouriteIconRepo,
@@ -152,6 +155,9 @@ class BackupRepoImpl @Inject constructor(
             complexRuleRepo.getAll().forEach {
                 fileOutputStream?.write(it.let(::toBackupString).toByteArray())
             }
+            activitySuggestionRepo.getAll().forEach {
+                fileOutputStream?.write(it.let(::toBackupString).toByteArray())
+            }
             backupPrefsRepo.saveToBackupString().let {
                 fileOutputStream?.write(it.toByteArray())
             }
@@ -210,6 +216,7 @@ class BackupRepoImpl @Inject constructor(
                 favouriteIcon = favouriteIconRepo::add,
                 goals = recordTypeGoalRepo::add,
                 rules = complexRuleRepo::add,
+                activitySuggestion = activitySuggestionRepo::add,
                 settings = { if (restoreSettings) backupPrefsRepo.restoreFromBackupString(it) },
             ),
         )
@@ -341,6 +348,12 @@ class BackupRepoImpl @Inject constructor(
                     ROW_COMPLEX_RULE -> {
                         complexRuleFromBackupString(parts).let {
                             dataHandler.rules.invoke(it)
+                        }
+                    }
+
+                    ROW_ACTIVITY_SUGGESTION -> {
+                        activitySuggestionFromBackupString(parts).let {
+                            dataHandler.activitySuggestion.invoke(listOf(it))
                         }
                     }
 
@@ -543,6 +556,15 @@ class BackupRepoImpl @Inject constructor(
             complexRule.conditionStartingTypeIds.joinToString(separator = ","),
             complexRule.conditionCurrentTypeIds.joinToString(separator = ","),
             daysOfWeekString,
+        )
+    }
+
+    private fun toBackupString(activitySuggestion: ActivitySuggestion): String {
+        return String.format(
+            "$ROW_ACTIVITY_SUGGESTION\t%s\t%s\t%s\n",
+            activitySuggestion.id.toString(),
+            activitySuggestion.forTypeId.toString(),
+            activitySuggestion.suggestionIds.joinToString(separator = ","),
         )
     }
 
@@ -798,6 +820,15 @@ class BackupRepoImpl @Inject constructor(
         )
     }
 
+    private fun activitySuggestionFromBackupString(parts: List<String>): ActivitySuggestion {
+        return ActivitySuggestion(
+            id = parts.getOrNull(1)?.toLongOrNull().orZero(),
+            forTypeId = parts.getOrNull(2)?.toLongOrNull().orZero(),
+            suggestionIds = parts.getOrNull(3)?.split(",")
+                ?.mapNotNull { it.toLongOrNull() }.orEmpty(),
+        )
+    }
+
     fun migrateTags(
         types: List<RecordType>,
         data: List<Pair<RecordTag, Long>>,
@@ -845,6 +876,7 @@ class BackupRepoImpl @Inject constructor(
         val favouriteIcon: suspend (FavouriteIcon) -> Unit,
         val goals: suspend (RecordTypeGoal) -> Unit,
         val rules: suspend (ComplexRule) -> Unit,
+        val activitySuggestion: suspend (List<ActivitySuggestion>) -> Unit,
         val settings: suspend (List<String>) -> Unit,
     )
 
@@ -859,6 +891,7 @@ class BackupRepoImpl @Inject constructor(
         private const val ROW_TYPE_TO_RECORD_TAG = "typeToRecordTag"
         private const val ROW_TYPE_TO_DEFAULT_TAG = "typeToDefaultTag"
         private const val ROW_ACTIVITY_FILTER = "activityFilter"
+        private const val ROW_ACTIVITY_SUGGESTION = "activitySuggestion"
         private const val ROW_FAVOURITE_COMMENT = "favouriteComment"
         private const val ROW_FAVOURITE_COLOR = "favouriteColor"
         private const val ROW_FAVOURITE_ICON = "favouriteIcon"

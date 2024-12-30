@@ -17,6 +17,7 @@ fun PartialBackupRestoreData.getIds(
         is PartialRestoreFilterType.FavouriteColors -> favouriteColors
         is PartialRestoreFilterType.FavouriteIcons -> favouriteIcon
         is PartialRestoreFilterType.ComplexRules -> rules
+        is PartialRestoreFilterType.ActivitySuggestions -> activitySuggestions
     }.filter {
         if (existing) it.value.exist else !it.value.exist
     }.keys

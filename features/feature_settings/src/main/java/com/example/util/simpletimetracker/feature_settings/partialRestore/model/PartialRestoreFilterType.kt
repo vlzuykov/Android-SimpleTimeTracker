@@ -31,4 +31,7 @@ sealed interface PartialRestoreFilterType : FilterViewData.Type, Parcelable {
 
     @Parcelize
     object ComplexRules : PartialRestoreFilterType
+
+    @Parcelize
+    object ActivitySuggestions : PartialRestoreFilterType
 }

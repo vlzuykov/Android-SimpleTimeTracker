@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.data_local.di
 
 import com.example.util.simpletimetracker.data_local.activityFilter.ActivityFilterRepoImpl
+import com.example.util.simpletimetracker.data_local.activitySuggestion.ActivitySuggestionRepoImpl
 import com.example.util.simpletimetracker.data_local.category.CategoryRepoImpl
 import com.example.util.simpletimetracker.data_local.category.RecordTypeCategoryRepoImpl
 import com.example.util.simpletimetracker.data_local.complexRule.ComplexRuleRepoImpl
@@ -23,6 +24,7 @@ import com.example.util.simpletimetracker.data_local.file.CsvRepoImpl
 import com.example.util.simpletimetracker.data_local.file.IcsRepoImpl
 import com.example.util.simpletimetracker.data_local.sharing.SharingRepoImpl
 import com.example.util.simpletimetracker.domain.activityFilter.repo.ActivityFilterRepo
+import com.example.util.simpletimetracker.domain.activitySuggestion.repo.ActivitySuggestionRepo
 import com.example.util.simpletimetracker.domain.category.repo.CategoryRepo
 import com.example.util.simpletimetracker.domain.complexRule.repo.ComplexRuleRepo
 import com.example.util.simpletimetracker.domain.favourite.repo.FavouriteColorRepo
@@ -121,6 +123,10 @@ interface DataLocalModuleBinds {
     @Binds
     @Singleton
     fun bindActivityFilterRepo(impl: ActivityFilterRepoImpl): ActivityFilterRepo
+
+    @Binds
+    @Singleton
+    fun bindActivitySuggestionRepo(impl: ActivitySuggestionRepoImpl): ActivitySuggestionRepo
 
     @Binds
     @Singleton

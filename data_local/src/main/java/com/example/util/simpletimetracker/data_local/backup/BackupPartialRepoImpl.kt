@@ -23,6 +23,8 @@ import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToTag
 import com.example.util.simpletimetracker.domain.backup.model.getExistingValues
 import com.example.util.simpletimetracker.domain.backup.model.getNotExistingValues
 import com.example.util.simpletimetracker.domain.activityFilter.repo.ActivityFilterRepo
+import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
+import com.example.util.simpletimetracker.domain.activitySuggestion.repo.ActivitySuggestionRepo
 import com.example.util.simpletimetracker.domain.category.repo.CategoryRepo
 import com.example.util.simpletimetracker.domain.complexRule.repo.ComplexRuleRepo
 import com.example.util.simpletimetracker.domain.favourite.repo.FavouriteColorRepo
@@ -54,6 +56,7 @@ class BackupPartialRepoImpl @Inject constructor(
     private val recordToRecordTagRepo: RecordToRecordTagRepo,
     private val recordTagRepo: RecordTagRepo,
     private val activityFilterRepo: ActivityFilterRepo,
+    private val activitySuggestionRepo: ActivitySuggestionRepo,
     private val favouriteCommentRepo: FavouriteCommentRepo,
     private val favouriteColorRepo: FavouriteColorRepo,
     private val favouriteIconRepo: FavouriteIconRepo,
@@ -242,6 +245,8 @@ class BackupPartialRepoImpl @Inject constructor(
         val goalsCurrent: List<RecordTypeGoal> = recordTypeGoalRepo.getAllTypeGoals()
         val rules: MutableList<ComplexRule> = mutableListOf()
         val rulesCurrent: List<ComplexRule> = complexRuleRepo.getAll()
+        val activitySuggestions: MutableList<ActivitySuggestion> = mutableListOf()
+        val activitySuggestionsCurrent: List<ActivitySuggestion> = activitySuggestionRepo.getAll()
         val settings: MutableList<List<String>> = mutableListOf()
 
         val result = backupRepo.readBackup(
@@ -270,6 +275,7 @@ class BackupPartialRepoImpl @Inject constructor(
                 favouriteIcon = favouriteIcon::add,
                 goals = goals::add,
                 rules = rules::add,
+                activitySuggestion = activitySuggestions::addAll,
                 settings = settings::add,
             ),
         )
@@ -411,6 +417,20 @@ class BackupPartialRepoImpl @Inject constructor(
             mapToHolder(it, rulesCurrent)
         }.list
 
+        val newActivitySuggestions = activitySuggestions.mapNotNull { item ->
+            val newForTypeId = originalTypeIdToExistingId[item.forTypeId]
+                ?: return@mapNotNull null
+            val newSuggestionIds = item.suggestionIds.mapNotNull {
+                originalTypeIdToExistingId[it]
+            }
+            item.copy(
+                forTypeId = newForTypeId,
+                suggestionIds = newSuggestionIds,
+            )
+        }.let {
+            mapToHolder(it, activitySuggestionsCurrent)
+        }.list
+
         // Fill tags after all data processed, with actual tagIds.
         val newRecordToTagMap = newRecordToTag.groupBy {
             it.data.recordId
@@ -436,6 +456,7 @@ class BackupPartialRepoImpl @Inject constructor(
             favouriteIcon = newFavouriteIcon.associateBy { it.data.id },
             goals = newGoals.associateBy { it.data.id },
             rules = newRules.associateBy { it.data.id },
+            activitySuggestions = newActivitySuggestions.associateBy { it.data.id },
         )
     }
 

@@ -24,6 +24,7 @@ class PartialRestoreViewDataMapper @Inject constructor(
             PartialRestoreFilterType.FavouriteColors -> R.string.change_record_favourite_colors_hint
             PartialRestoreFilterType.FavouriteIcons -> R.string.change_record_favourite_icons_hint
             PartialRestoreFilterType.ComplexRules -> R.string.settings_complex_rules
+            PartialRestoreFilterType.ActivitySuggestions -> R.string.settings_activity_suggestions
         }.let(resourceRepo::getString)
         val countText = selectedIds.size
             .takeUnless { it == 0 }
@@ -61,6 +62,8 @@ class PartialRestoreViewDataMapper @Inject constructor(
             goals = data.goals,
             rules = data.rules
                 .filter { it.key !in filters[PartialRestoreFilterType.ComplexRules].orEmpty() },
+            activitySuggestions = data.activitySuggestions
+                .filter { it.key !in filters[PartialRestoreFilterType.ActivitySuggestions].orEmpty() },
         )
     }
 }

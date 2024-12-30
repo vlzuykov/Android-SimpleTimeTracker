@@ -4,6 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.util.simpletimetracker.data_local.activityFilter.ActivityFilterDao
 import com.example.util.simpletimetracker.data_local.activityFilter.ActivityFilterDBO
+import com.example.util.simpletimetracker.data_local.activitySuggestion.ActivitySuggestionDBO
+import com.example.util.simpletimetracker.data_local.activitySuggestion.ActivitySuggestionDao
 import com.example.util.simpletimetracker.data_local.category.CategoryDao
 import com.example.util.simpletimetracker.data_local.category.CategoryDBO
 import com.example.util.simpletimetracker.data_local.category.RecordTypeCategoryDao
@@ -53,8 +55,9 @@ import com.example.util.simpletimetracker.data_local.recordType.RecordTypeGoalDa
         FavouriteIconDBO::class,
         ComplexRuleDBO::class,
         FavouriteColorDBO::class,
+        ActivitySuggestionDBO::class,
     ],
-    version = 24,
+    version = 25,
     exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -80,6 +83,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun recordTypeToDefaultTagDao(): RecordTypeToDefaultTagDao
 
     abstract fun activityFilterDao(): ActivityFilterDao
+
+    abstract fun activitySuggestionDao(): ActivitySuggestionDao
 
     abstract fun favouriteCommentDao(): FavouriteCommentDao
 
