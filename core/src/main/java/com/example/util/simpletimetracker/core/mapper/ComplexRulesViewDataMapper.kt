@@ -7,9 +7,9 @@ import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleAddViewData
-import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleElementContentViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleElementTitleViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleViewData
+import com.example.util.simpletimetracker.feature_base_adapter.listElement.ListElementViewData
 import javax.inject.Inject
 
 class ComplexRulesViewDataMapper @Inject constructor(
@@ -119,7 +119,7 @@ class ComplexRulesViewDataMapper @Inject constructor(
             text = mapActionTitle(action),
         )
         result += data.map {
-            ComplexRuleElementContentViewData(
+            ListElementViewData(
                 text = it.name,
                 icon = recordTagViewDataMapper.mapIcon(
                     tag = it,
@@ -187,7 +187,7 @@ class ComplexRulesViewDataMapper @Inject constructor(
         val result = mutableListOf<ViewHolderType>()
         result += ComplexRuleElementTitleViewData(title)
         result += data.map {
-            ComplexRuleElementContentViewData(
+            ListElementViewData(
                 text = it.name,
                 icon = iconMapper.mapIcon(it.icon),
                 color = colorMapper.mapToColorInt(
@@ -211,7 +211,7 @@ class ComplexRulesViewDataMapper @Inject constructor(
             text = resourceRepo.getString(R.string.range_day),
         )
         result += data.map {
-            ComplexRuleElementContentViewData(
+            ListElementViewData(
                 text = it,
                 icon = null,
                 color = resourceRepo.getColor(R.color.colorSecondary),

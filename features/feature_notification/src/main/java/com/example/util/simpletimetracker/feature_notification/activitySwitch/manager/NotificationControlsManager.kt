@@ -80,11 +80,12 @@ class NotificationControlsManager @Inject constructor(
 
         // Types buttons
         val currentTypes = params.types.drop(params.typesShift).take(TYPES_LIST_SIZE)
-        currentTypes.forEach {
+
+        fun addPresentType(data: NotificationControlsParams.Type.Present) {
             val recordTypeId = (from as? From.ActivityNotification)?.recordTypeId
             val action = when (from) {
                 is From.ActivityNotification -> {
-                    if (it.id == recordTypeId) {
+                    if (data.id == recordTypeId) {
                         ACTION_NOTIFICATION_CONTROLS_STOP
                     } else {
                         ACTION_NOTIFICATION_CONTROLS_TYPE_CLICK
@@ -94,26 +95,26 @@ class NotificationControlsManager @Inject constructor(
                     ACTION_NOTIFICATION_CONTROLS_TYPE_CLICK
                 }
             }
-            val color = if (recordTypeId == it.id) {
+            val color = if (recordTypeId == data.id) {
                 params.filteredTypeColor
             } else {
-                it.color
+                data.color
             }
             getTypeControlView(
-                icon = it.icon,
+                icon = data.icon,
                 color = color,
-                checkState = it.checkState,
-                isComplete = it.isComplete,
+                checkState = data.checkState,
+                isComplete = data.isComplete,
                 intent = getPendingSelfIntent(
                     context = context,
                     action = action,
                     requestCode = getRequestCode(
                         from = from,
-                        additionalInfo = RequestCode.AdditionalInfo.TypeId(it.id),
+                        additionalInfo = RequestCode.AdditionalInfo.TypeId(data.id),
                     ),
                     from = from,
                     recordTypesShift = params.typesShift,
-                    selectedTypeId = it.id,
+                    selectedTypeId = data.id,
                 ),
             ).let {
                 addView(R.id.containerNotificationTypes, it)
@@ -121,7 +122,7 @@ class NotificationControlsManager @Inject constructor(
         }
 
         // Populate container with empty items to preserve prev next controls position
-        repeat(TYPES_LIST_SIZE - currentTypes.size) {
+        fun addEmptyType() {
             getTypeControlView(
                 icon = null,
                 color = null,
@@ -130,6 +131,13 @@ class NotificationControlsManager @Inject constructor(
                 intent = null,
             ).let {
                 addView(R.id.containerNotificationTypes, it)
+            }
+        }
+
+        currentTypes.forEach {
+            when (it) {
+                is NotificationControlsParams.Type.Present -> addPresentType(it)
+                is NotificationControlsParams.Type.Empty -> addEmptyType()
             }
         }
 
@@ -198,7 +206,6 @@ class NotificationControlsManager @Inject constructor(
             }
         }
 
-        // Populate container with empty items to preserve prev next controls position
         repeat(TAGS_LIST_SIZE - currentTags.size) {
             getTagControlView(
                 text = "",
@@ -368,7 +375,7 @@ class NotificationControlsManager @Inject constructor(
         const val ARGS_TYPES_SHIFT = "typesShift"
         const val ARGS_TAGS_SHIFT = "tagsShift"
 
-        private const val TYPES_LIST_SIZE = 6
+        const val TYPES_LIST_SIZE = 6
         private const val TAGS_LIST_SIZE = 4
     }
 }

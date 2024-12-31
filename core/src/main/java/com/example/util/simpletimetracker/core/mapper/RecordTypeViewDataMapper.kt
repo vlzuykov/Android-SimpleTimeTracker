@@ -210,7 +210,7 @@ class RecordTypeViewDataMapper @Inject constructor(
         type: RunningRecordTypeSpecialViewData.Type,
         @StringRes name: Int,
         icon: RecordTypeIcon,
-        numberOfCards: Int?, // TODO SUG revert?
+        numberOfCards: Int?,
         isDarkTheme: Boolean,
         checkState: GoalCheckmarkView.CheckState,
     ): RunningRecordTypeSpecialViewData {

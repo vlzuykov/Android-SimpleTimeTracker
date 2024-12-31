@@ -190,6 +190,8 @@
 
     <!--  Activity suggestions  -->
     <string name="activity_suggestions_hint">Shows suggestions for the next activity based on current or last activity</string>
+    <string name="activity_suggestions_calculate">Calculate from statistics</string>
+    <string name="activity_suggestions_select_activity_hint">Suggestions will be shown for selected activities</string>
 
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Activity filters</string>

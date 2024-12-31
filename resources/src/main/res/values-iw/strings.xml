@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">בחר פעולה</string>
     <string name="change_complex_rule_choose_condition">בחר תנאים</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">מציג הצעות לפעילות הבאה על סמך הפעילות הנוכחית או האחרונה</string>
+    <string name="activity_suggestions_calculate">חשב מתוך סטטיסטיקה</string>
+    <string name="activity_suggestions_select_activity_hint">הצעות יוצגו עבור פעילויות נבחרות</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">מסנני פעילות</string>
     <string name="change_activity_filter_removed">מסנן הוסר</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">ארכיון</string>
     <string name="settings_data_edit">עריכת נתונים</string>
     <string name="settings_complex_rules">כללים מורכבים</string>
+    <string name="settings_activity_suggestions">הצעות פעילות</string>
     <string name="settings_edit_categories">ערוך קטגוריות ותגיות</string>
     <string name="settings_edit_categories_hint">הקצה קטגוריות לפעילויות ותגיות לרשומות.</string>
     <string name="settings_show_record_tag_selection">הצג בחירת תגית רשומה</string>

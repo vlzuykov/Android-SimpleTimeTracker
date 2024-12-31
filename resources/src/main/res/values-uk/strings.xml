@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Виберіть дію</string>
     <string name="change_complex_rule_choose_condition">Виберіть умови</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Показує пропозиції щодо наступної дії на основі поточної чи останньої дії</string>
+    <string name="activity_suggestions_calculate">Обчисліть зі статистики</string>
+    <string name="activity_suggestions_select_activity_hint">Для вибраних дій будуть показані пропозиції</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Фільтри активності</string>
     <string name="change_activity_filter_removed">Фільтр видалений</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Архів</string>
     <string name="settings_data_edit">Редагування даних</string>
     <string name="settings_complex_rules">Складні правила</string>
+    <string name="settings_activity_suggestions">Пропозиції щодо діяльності</string>
     <string name="settings_edit_categories">Редагувати категорії та теги</string>
     <string name="settings_edit_categories_hint">Призначайте категорії діям і теги записам.</string>
     <string name="settings_show_record_tag_selection">Показувати діалог вибору тега для запису</string>

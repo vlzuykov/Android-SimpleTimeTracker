@@ -12,7 +12,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.emptySpace.create
 import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
-import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionAdapterDelegate
+import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionListAdapterDelegate
 import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionSpecialAdapterDelegate
 import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionsButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_suggestions.viewModel.ActivitySuggestionsViewModel
@@ -44,7 +44,7 @@ class ActivitySuggestionsFragment :
             createLoaderAdapterDelegate(),
             createHintAdapterDelegate(),
             createRecordTypeAdapterDelegate(),
-            createActivitySuggestionAdapterDelegate(),
+            createActivitySuggestionListAdapterDelegate(),
             createActivitySuggestionSpecialAdapterDelegate(throttle(viewModel::onSpecialSuggestionClick)),
             createActivitySuggestionsButtonAdapterDelegate(throttle(viewModel::onItemButtonClick)),
         )

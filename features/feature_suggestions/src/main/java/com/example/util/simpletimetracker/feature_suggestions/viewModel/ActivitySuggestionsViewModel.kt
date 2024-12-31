@@ -6,6 +6,9 @@ import com.example.util.simpletimetracker.core.base.BaseViewModel
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.ActivitySuggestionInteractor
+import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_suggestions.R
@@ -13,7 +16,6 @@ import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySu
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionsButtonViewData
 import com.example.util.simpletimetracker.feature_suggestions.interactor.ActivitySuggestionsCalculateInteractor
 import com.example.util.simpletimetracker.feature_suggestions.interactor.ActivitySuggestionsViewDataInteractor
-import com.example.util.simpletimetracker.feature_suggestions.model.ActivitySuggestionModel
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.TypesSelectionDialogParams
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,50 +26,38 @@ import javax.inject.Inject
 class ActivitySuggestionsViewModel @Inject constructor(
     private val router: Router,
     private val resourceRepo: ResourceRepo,
+    private val activitySuggestionInteractor: ActivitySuggestionInteractor,
     private val activitySuggestionsViewDataInteractor: ActivitySuggestionsViewDataInteractor,
     private val activitySuggestionsCalculateInteractor: ActivitySuggestionsCalculateInteractor,
+    private val updateExternalViewsInteractor: UpdateExternalViewsInteractor,
 ) : BaseViewModel() {
 
     val viewData: LiveData<List<ViewHolderType>> by lazySuspend {
-        listOf(LoaderViewData()).also { updateViewData() }
+        listOf(LoaderViewData()).also { initialize() }
     }
 
-    private var suggestions: List<ActivitySuggestionModel> = emptyList()
+    private var suggestions: Map<Long, List<Long>> = emptyMap()
     private var selectingSuggestionsForTypeId: Long = 0L
 
     fun onTypesSelected(typeIds: List<Long>, tag: String?) = viewModelScope.launch {
         when (tag) {
             ACTIVITY_SUGGESTIONS_TYPE_SELECTION_TAG -> {
-                suggestions = typeIds.map { typeId ->
-                    ActivitySuggestionModel(
-                        typeId = typeId,
-                        suggestions = suggestions.firstOrNull {
-                            it.typeId == typeId
-                        }?.suggestions.orEmpty(),
-                    )
-                }
-                updateViewData()
+                onNewTypesSelected(
+                    typeIds = typeIds,
+                )
             }
             ACTIVITY_SUGGESTIONS_SUGGESTION_SELECTION_TAG -> {
-                suggestions = suggestions.map { suggestion ->
-                    val newSuggestions = if (
-                        suggestion.typeId == selectingSuggestionsForTypeId
-                    ) {
-                        typeIds
-                    } else {
-                        suggestion.suggestions
-                    }
-                    ActivitySuggestionModel(
-                        typeId = suggestion.typeId,
-                        suggestions = newSuggestions,
-                    )
-                }
-                updateViewData()
+                onSuggestionsForTypeChanged(
+                    forTypeId = selectingSuggestionsForTypeId,
+                    newSuggestions = typeIds,
+                )
             }
         }
     }
 
-    fun onSpecialSuggestionClick(item: ActivitySuggestionSpecialViewData) {
+    fun onSpecialSuggestionClick(
+        item: ActivitySuggestionSpecialViewData,
+    ) = viewModelScope.launch {
         when (item.id.type) {
             is ActivitySuggestionSpecialViewData.Type.Add -> {
                 val forTypeId = item.id.forTypeId
@@ -75,11 +65,9 @@ class ActivitySuggestionsViewModel @Inject constructor(
                 TypesSelectionDialogParams(
                     tag = ACTIVITY_SUGGESTIONS_SUGGESTION_SELECTION_TAG,
                     title = resourceRepo.getString(R.string.change_record_message_choose_type),
-                    subtitle = "", // TODO SUG add hint
+                    subtitle = "",
                     type = TypesSelectionDialogParams.Type.Activity,
-                    selectedTypeIds = suggestions.firstOrNull {
-                        it.typeId == forTypeId
-                    }?.suggestions.orEmpty(),
+                    selectedTypeIds = suggestions[forTypeId].orEmpty(),
                     isMultiSelectAvailable = true,
                     idsShouldBeVisible = emptyList(),
                     showHints = true,
@@ -87,14 +75,15 @@ class ActivitySuggestionsViewModel @Inject constructor(
             }
             is ActivitySuggestionSpecialViewData.Type.Calculate -> viewModelScope.launch {
                 val forTypeId = item.id.forTypeId
-                selectingSuggestionsForTypeId = forTypeId
                 val newData = activitySuggestionsCalculateInteractor
                     .execute(listOf(forTypeId))
                     .firstOrNull { it.typeId == forTypeId }
                     ?.suggestions
                     .orEmpty()
-                // TODO SUG do better
-                onTypesSelected(newData, ACTIVITY_SUGGESTIONS_SUGGESTION_SELECTION_TAG)
+                onSuggestionsForTypeChanged(
+                    forTypeId = forTypeId,
+                    newSuggestions = newData,
+                )
             }
         }
     }
@@ -105,17 +94,22 @@ class ActivitySuggestionsViewModel @Inject constructor(
                 TypesSelectionDialogParams(
                     tag = ACTIVITY_SUGGESTIONS_TYPE_SELECTION_TAG,
                     title = resourceRepo.getString(R.string.change_record_message_choose_type),
-                    subtitle = "Suggestions will be shown for selected activities", // TODO SUG
+                    subtitle = resourceRepo.getString(R.string.activity_suggestions_select_activity_hint),
                     type = TypesSelectionDialogParams.Type.Activity,
-                    selectedTypeIds = suggestions.map { it.typeId },
+                    selectedTypeIds = suggestions.keys.toList(),
                     isMultiSelectAvailable = true,
                     idsShouldBeVisible = emptyList(),
                     showHints = true,
                 ).let(router::navigate)
             }
             ActivitySuggestionsButtonViewData.Block.CALCULATE -> viewModelScope.launch {
-                val selectedTypeIds = suggestions.map { it.typeId }
-                suggestions = activitySuggestionsCalculateInteractor.execute(selectedTypeIds)
+                val selectedTypeIds = suggestions.keys.toList()
+                val calculated = activitySuggestionsCalculateInteractor.execute(selectedTypeIds)
+                    .associateBy { it.typeId }
+                suggestions = suggestions.map { (typeId, _) ->
+                    val newSuggestions = calculated[typeId]?.suggestions.orEmpty()
+                    typeId to newSuggestions
+                }.toMap()
                 updateViewData()
             }
         }
@@ -123,19 +117,61 @@ class ActivitySuggestionsViewModel @Inject constructor(
 
     fun onSaveClick() {
         viewModelScope.launch {
-            // TODO SUG
+            // Remove all.
+            activitySuggestionInteractor.getAll().map {
+                it.id
+            }.let {
+                activitySuggestionInteractor.remove(it)
+            }
+            // Add new.
+            suggestions.map { (typeId, suggestions) ->
+                ActivitySuggestion(
+                    id = 0L,
+                    forTypeId = typeId,
+                    suggestionIds = suggestions,
+                )
+            }.let {
+                activitySuggestionInteractor.add(it)
+            }
+            updateExternalViewsInteractor.onActivitySuggestionsChanged()
             router.back()
         }
     }
 
-    private fun updateViewData() = viewModelScope.launch {
+    private suspend fun onNewTypesSelected(
+        typeIds: List<Long>,
+    ) {
+        suggestions = typeIds.associateWith { typeId ->
+            suggestions[typeId].orEmpty()
+        }
+        updateViewData()
+    }
+
+    private suspend fun onSuggestionsForTypeChanged(
+        forTypeId: Long,
+        newSuggestions: List<Long>,
+    ) {
+        suggestions = suggestions.toMutableMap().apply {
+            put(forTypeId, newSuggestions)
+        }
+        updateViewData()
+    }
+
+    private fun initialize() = viewModelScope.launch {
+        suggestions = activitySuggestionInteractor.getAll().associate {
+            it.forTypeId to it.suggestionIds
+        }
+        updateViewData()
+    }
+
+    private suspend fun updateViewData() {
         val data = loadViewData()
         viewData.set(data)
     }
 
     private suspend fun loadViewData(): List<ViewHolderType> {
         return activitySuggestionsViewDataInteractor.getViewData(
-            suggestions = suggestions,
+            suggestionsMap = suggestions,
         )
     }
 

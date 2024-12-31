@@ -75,6 +75,7 @@ class PartialRestoreViewDataInteractor @Inject constructor(
             PartialRestoreFilterType.FavouriteColors,
             PartialRestoreFilterType.FavouriteIcons,
             PartialRestoreFilterType.ComplexRules,
+            PartialRestoreFilterType.ActivitySuggestions,
         )
     }
 }

@@ -15,6 +15,7 @@ import com.example.util.simpletimetracker.core.extension.setSkipCollapsed
 import com.example.util.simpletimetracker.core.utils.fragmentArgumentDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.createActivityFilterAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.activitySuggestion.createActivitySuggestionAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.category.createCategoryAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.color.createColorAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.createComplexRuleAdapterDelegate
@@ -50,6 +51,7 @@ class PartialRestoreSelectionFragment : BaseBottomSheetFragment<Binding>() {
                 onItemClick = viewModel::onComplexRuleClick,
                 onDisableClick = {}, // Do nothing.
             ),
+            createActivitySuggestionAdapterDelegate(viewModel::onActivitySuggestionClick),
             createIconSelectionAdapterDelegate(viewModel::onIconClick),
             createEmojiAdapterDelegate(viewModel::onEmojiClick),
             createColorAdapterDelegate(viewModel::onColorClick),

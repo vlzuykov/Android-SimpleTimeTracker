@@ -27,7 +27,6 @@ import com.example.util.simpletimetracker.feature_base_adapter.recordType.Record
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.RunningRecordViewData
 import com.example.util.simpletimetracker.feature_running_records.interactor.RunningRecordsViewDataInteractor
-import com.example.util.simpletimetracker.feature_views.TransitionNames
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeActivityFilterParams
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordTypeParams
@@ -96,10 +95,10 @@ class RunningRecordsViewModel @Inject constructor(
         }
     }
 
-    fun onRecordTypeLongClick(item: RecordTypeViewData, sharedElements: Map<Any, String>) {
+    fun onRecordTypeLongClick(item: RecordTypeViewData, sharedElements: Pair<Any, String>) {
         router.navigate(
             data = ChangeRecordTypeParams.Change(
-                transitionName = TransitionNames.RECORD_TYPE + item.id,
+                transitionName = sharedElements.second,
                 id = item.id,
                 sizePreview = ChangeRecordTypeParams.SizePreview(
                     width = item.width,
@@ -112,7 +111,7 @@ class RunningRecordsViewModel @Inject constructor(
                     color = item.color,
                 ),
             ),
-            sharedElements = sharedElements,
+            sharedElements = mapOf(sharedElements),
         )
     }
 

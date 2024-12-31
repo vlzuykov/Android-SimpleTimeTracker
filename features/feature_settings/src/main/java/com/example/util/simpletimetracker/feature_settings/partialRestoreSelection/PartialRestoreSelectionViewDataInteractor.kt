@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_settings.partialRestoreSelect
 
 import com.example.util.simpletimetracker.core.delegates.iconSelection.mapper.IconSelectionMapper
 import com.example.util.simpletimetracker.core.mapper.ActivityFilterViewDataMapper
+import com.example.util.simpletimetracker.core.mapper.ActivitySuggestionViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.ComplexRulesViewDataMapper
@@ -20,10 +21,10 @@ import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import com.example.util.simpletimetracker.domain.backup.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.domain.backup.model.getNotExistingValues
 import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.color.ColorViewData
-import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_settings.partialRestore.model.PartialRestoreFilterType
 import com.example.util.simpletimetracker.feature_settings.partialRestoreSelection.model.PartialRestoreSelectionDialogParams
 import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
@@ -36,6 +37,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val activityFilterViewDataMapper: ActivityFilterViewDataMapper,
     private val complexRulesViewDataMapper: ComplexRulesViewDataMapper,
+    private val activitySuggestionViewDataMapper: ActivitySuggestionViewDataMapper,
     private val iconSelectionMapper: IconSelectionMapper,
     private val colorMapper: ColorMapper,
     private val recordTypeInteractor: RecordTypeInteractor,
@@ -62,15 +64,10 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
         return when (extra.type) {
             is PartialRestoreFilterType.Activities -> {
                 data.types.values.getNotExistingValues().let {
-                    // Ordered by name.
-                    sortCardsInteractor.sort(
-                        cardOrder = CardOrder.NAME,
-                        manualOrderProvider = { emptyMap() },
-                        data = it.map(recordTypeInteractor::mapForSort),
-                    )
+                    sortTypes(it)
                 }.map {
                     recordTypeViewDataMapper.mapFiltered(
-                        recordType = it.data,
+                        recordType = it,
                         numberOfCards = numberOfCards,
                         isDarkTheme = isDarkTheme,
                         isFiltered = it.id in dataIdsFiltered,
@@ -222,8 +219,10 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
             }
             is PartialRestoreFilterType.ComplexRules -> {
                 val typesMap = data.types.mapValues { it.value.data }
-                val typesOrder = data.types.keys.toList()
+                val typesOrder = typesMap.values.toList()
+                    .let { sortTypes(it) }.map { it.id }
                 val tagsMap = data.tags.mapValues { it.value.data }
+                // TODO wrong tags order.
                 val tagsOrder = data.tags.keys.toList()
                 data.rules.values.getNotExistingValues().map { rule ->
                     complexRulesViewDataMapper.mapRuleFiltered(
@@ -239,14 +238,20 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 }
             }
             is PartialRestoreFilterType.ActivitySuggestions -> {
-                // TODO SUG wrong order? also for rules.
-                val typesOrder = data.types.keys.toList()
-                data.activitySuggestions.values.getNotExistingValues()
-                    .sortedBy { typesOrder.indexOf(it.forTypeId) }
-                    .map {
-                        // TODO SUG
-                        LoaderViewData()
-                    }
+                val typesMap = data.types.mapValues { it.value.data }
+                val typesOrder = typesMap.values.toList()
+                    .let { sortTypes(it) }.map { it.id }
+                data.activitySuggestions.values.getNotExistingValues().sortedBy {
+                    typesOrder.indexOf(it.forTypeId)
+                }.map { suggestion ->
+                    activitySuggestionViewDataMapper.mapSuggestionFiltered(
+                        suggestion = suggestion,
+                        isDarkTheme = isDarkTheme,
+                        typesMap = typesMap,
+                        typesOrder = typesOrder,
+                        isFiltered = suggestion.id in dataIdsFiltered,
+                    )
+                }
             }
         }
     }
@@ -259,6 +264,19 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
             colorMapper.toInactiveColor(isDarkTheme)
         } else {
             colorMapper.toActiveColor(isDarkTheme)
+        }
+    }
+
+    private suspend fun sortTypes(
+        data: List<RecordType>,
+    ): List<RecordType> {
+        // Ordered by name.
+        return sortCardsInteractor.sort(
+            cardOrder = CardOrder.NAME,
+            manualOrderProvider = { emptyMap() },
+            data = data.map(recordTypeInteractor::mapForSort),
+        ).map {
+            it.data
         }
     }
 }

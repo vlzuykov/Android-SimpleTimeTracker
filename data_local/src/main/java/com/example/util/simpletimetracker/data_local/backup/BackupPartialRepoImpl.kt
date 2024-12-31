@@ -203,6 +203,25 @@ class BackupPartialRepoImpl @Inject constructor(
                 it.hasActions && it.hasConditions
             }?.let { complexRuleRepo.add(it) }
         }
+        params.data.activitySuggestions.values.getNotExistingValues().forEach { suggestion ->
+            val newForTypeId = originalTypeIdToAddedId[suggestion.forTypeId]
+                ?: return@forEach
+            val newSuggestionIds = suggestion.suggestionIds.mapNotNull {
+                originalTypeIdToAddedId[it]
+            }.takeIf {
+                it.isNotEmpty()
+            } ?: return@forEach
+            // Remove already existing suggestions for this typeId
+            // to avoid duplications.
+            activitySuggestionRepo.getByTypeId(newForTypeId)
+                .map { it.id }
+                .let { activitySuggestionRepo.remove(it) }
+            suggestion.copy(
+                id = 0,
+                forTypeId = newForTypeId,
+                suggestionIds = newSuggestionIds,
+            ).let { activitySuggestionRepo.add(listOf(it)) }
+        }
         return@withContext ResultCode.Success(
             resourceRepo.getString(R.string.message_import_complete),
         )
@@ -479,6 +498,7 @@ class BackupPartialRepoImpl @Inject constructor(
             is FavouriteIcon -> IdData<FavouriteIcon>({ copy(id = it) }, { id })
             is RecordTypeGoal -> IdData<RecordTypeGoal>({ copy(id = it) }, { id })
             is ComplexRule -> IdData<ComplexRule>({ copy(id = it) }, { id })
+            is ActivitySuggestion -> IdData<ActivitySuggestion>({ copy(id = it) }, { id })
             else -> IdData({ this }, { 0 })
         } as IdData<T>
     }

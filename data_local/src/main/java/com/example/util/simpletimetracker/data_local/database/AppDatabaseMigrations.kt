@@ -312,7 +312,7 @@ class AppDatabaseMigrations {
         private val migration_24_25 = object : Migration(24, 25) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL(
-                    "CREATE TABLE IF NOT EXISTS `activitySuggestion` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `forTypeId` INTEGER NOT NULL, `suggestionIds` TEXT NOT NULL)"
+                    "CREATE TABLE IF NOT EXISTS `activitySuggestion` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `forTypeId` INTEGER NOT NULL, `suggestionIds` TEXT NOT NULL)",
                 )
             }
         }

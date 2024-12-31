@@ -6,6 +6,7 @@ import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.GetCurrentActivitySuggestionsInteractor
 import com.example.util.simpletimetracker.domain.recordTag.interactor.GetSelectableTagsInteractor
 import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationActivitySwitchInteractor
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
@@ -41,6 +42,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
     private val getNotificationActivitySwitchControlsInteractor: GetNotificationActivitySwitchControlsInteractor,
     private val recordInteractor: RecordInteractor,
     private val notificationCommonMapper: NotificationCommonMapper,
+    private val getCurrentActivitySuggestionsInteractor: GetCurrentActivitySuggestionsInteractor,
 ) : NotificationActivitySwitchInteractor {
 
     override suspend fun updateNotification(
@@ -85,8 +87,13 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         } else {
             emptyList()
         }
+        val runningRecords = runningRecordInteractor.getAll()
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
         val recordTags = recordTagInteractor.getAll()
+        val suggestions = getCurrentActivitySuggestionsInteractor.execute(
+            recordTypesMap = recordTypes,
+            runningRecords = runningRecords,
+        )
         val prevRecord = if (retroactiveTrackingModeEnabled) {
             // TODO several previous?
             recordInteractor.getAllPrev(timeStarted = System.currentTimeMillis())
@@ -103,7 +110,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         val allDailyCurrents = if (goals.isNotEmpty()) {
             getCurrentRecordsDurationInteractor.getAllDailyCurrents(
                 typeIds = recordTypes.keys.toList(),
-                runningRecords = runningRecordInteractor.getAll(),
+                runningRecords = runningRecords,
             )
         } else {
             // No goals - no need to calculate durations.
@@ -113,6 +120,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
             hint = "", // Replaced later.
             isDarkTheme = isDarkTheme,
             types = recordTypes.values.toList(),
+            suggestions = suggestions,
             showRepeatButton = showRepeatButton,
             typesShift = typesShift,
             tags = viewedTags,

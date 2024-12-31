@@ -10,6 +10,7 @@ import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.backup.model.PartialBackupRestoreData
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterViewData
+import com.example.util.simpletimetracker.feature_base_adapter.activitySuggestion.ActivitySuggestionViewData
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.color.ColorViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleViewData
@@ -60,6 +61,10 @@ class PartialRestoreSelectionViewModel @Inject constructor(
     }
 
     fun onComplexRuleClick(item: ComplexRuleViewData) {
+        addOrRemoveId(item.id)
+    }
+
+    fun onActivitySuggestionClick(item: ActivitySuggestionViewData) {
         addOrRemoveId(item.id)
     }
 

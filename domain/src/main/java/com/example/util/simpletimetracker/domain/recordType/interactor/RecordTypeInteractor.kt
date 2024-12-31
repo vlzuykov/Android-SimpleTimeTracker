@@ -1,6 +1,7 @@
 package com.example.util.simpletimetracker.domain.recordType.interactor
 
 import com.example.util.simpletimetracker.domain.activityFilter.interactor.ActivityFilterInteractor
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.ActivitySuggestionInteractor
 import com.example.util.simpletimetracker.domain.record.repo.RecordRepo
 import com.example.util.simpletimetracker.domain.recordTag.repo.RecordTagRepo
 import com.example.util.simpletimetracker.domain.recordTag.repo.RecordToRecordTagRepo
@@ -28,6 +29,7 @@ class RecordTypeInteractor @Inject constructor(
     private val recordTypeGoalRepo: RecordTypeGoalRepo,
     private val complexRuleInteractor: ComplexRuleInteractor,
     private val activityFilterInteractor: ActivityFilterInteractor,
+    private val activitySuggestionInteractor: ActivitySuggestionInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val sortCardsInteractor: SortCardsInteractor,
 ) {
@@ -93,6 +95,7 @@ class RecordTypeInteractor @Inject constructor(
         recordTypeGoalRepo.removeByType(id)
         complexRuleInteractor.removeTypeId(id)
         activityFilterInteractor.removeTypeId(id)
+        activitySuggestionInteractor.removeTypeId(id)
         recordTypeRepo.remove(id)
     }
 

@@ -21,6 +21,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.hintBig.createHin
 import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.createRunningRecordTypeSpecialAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSuggestion.createRecordTypeSuggestionAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordWithHint.createRecordWithHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.createRunningRecordAdapterDelegate
 import com.example.util.simpletimetracker.feature_running_records.viewModel.RunningRecordsViewModel
@@ -68,6 +69,10 @@ class RunningRecordsFragment :
                 onItemClick = viewModel::onRecordTypeClick,
                 onItemLongClick = viewModel::onRecordTypeLongClick,
                 withTransition = true,
+            ),
+            createRecordTypeSuggestionAdapterDelegate(
+                onItemClick = viewModel::onRecordTypeClick,
+                onItemLongClick = viewModel::onRecordTypeLongClick,
             ),
             createRecordWithHintAdapterDelegate(),
             createRunningRecordTypeSpecialAdapterDelegate(throttle(viewModel::onSpecialRecordTypeClick)),

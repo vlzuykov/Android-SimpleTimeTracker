@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Kies actie</string>
     <string name="change_complex_rule_choose_condition">Kies voorwaarden</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Geeft suggesties voor de volgende activiteit op basis van de huidige of laatste activiteit</string>
+    <string name="activity_suggestions_calculate">Berekenen vanuit statistieken</string>
+    <string name="activity_suggestions_select_activity_hint">Er worden suggesties getoond voor geselecteerde activiteiten</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Activiteitsfilters</string>
     <string name="change_activity_filter_removed">Filter verwijderd</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Archief</string>
     <string name="settings_data_edit">Gegevens bewerken</string>
     <string name="settings_complex_rules">Complexe regels</string>
+    <string name="settings_activity_suggestions">Suggesties voor activiteiten</string>
     <string name="settings_edit_categories">Categorieën en labels bewerken</string>
     <string name="settings_edit_categories_hint">Wijs categorieën toe aan activiteiten en labels aan records.</string>
     <string name="settings_show_record_tag_selection">Toon opname label selectie</string>

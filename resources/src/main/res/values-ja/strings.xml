@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">アクションを選択してください</string>
     <string name="change_complex_rule_choose_condition">条件を選択してください</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">現在のアクティビティまたは最後のアクティビティに基づいて次のアクティビティの提案を表示します</string>
+    <string name="activity_suggestions_calculate">統計から計算する</string>
+    <string name="activity_suggestions_select_activity_hint">選択したアクティビティの提案が表示されます</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">アクティビティフィルター</string>
     <string name="change_activity_filter_removed">フィルタを取り外しました</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">アーカイブ</string>
     <string name="settings_data_edit">データ編集</string>
     <string name="settings_complex_rules">複雑なルール</string>
+    <string name="settings_activity_suggestions">アクティビティの提案</string>
     <string name="settings_edit_categories">カテゴリとタグを編集する</string>
     <string name="settings_edit_categories_hint">アクティビティにカテゴリを割り当て、レコードにタグを割り当てます。</string>
     <string name="settings_show_record_tag_selection">記録タグの選択を表示</string>

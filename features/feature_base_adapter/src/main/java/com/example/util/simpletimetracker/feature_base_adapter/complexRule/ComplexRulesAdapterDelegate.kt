@@ -5,18 +5,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.listElement.createListElementAdapter
 import com.example.util.simpletimetracker.feature_views.ColorUtils
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
 import com.example.util.simpletimetracker.feature_views.extension.visible
-import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleElementContentViewData as ContentViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleElementTitleViewData as TitleViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleViewData as ViewData
-import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemComplexRuleElementContentBinding as ContentBinding
 import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemComplexRuleElementTitleBinding as TitleBinding
 import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemComplexRuleLayoutBinding as Binding
 
@@ -30,7 +28,7 @@ fun createComplexRuleAdapterDelegate(
     fun createAdapter(): BaseRecyclerAdapter {
         return BaseRecyclerAdapter(
             createElementTitleAdapter(),
-            createElementContentAdapter(),
+            createListElementAdapter(),
         )
     }
 
@@ -90,17 +88,6 @@ data class ComplexRuleElementTitleViewData(
     override fun isValidType(other: ViewHolderType): Boolean = other is TitleViewData
 }
 
-data class ComplexRuleElementContentViewData(
-    val text: String,
-    val icon: RecordTypeIcon?,
-    @ColorInt val color: Int,
-) : ViewHolderType {
-
-    override fun getUniqueId(): Long = text.hashCode().toLong()
-
-    override fun isValidType(other: ViewHolderType): Boolean = other is ContentViewData
-}
-
 private fun createElementTitleAdapter() = createRecyclerBindingAdapterDelegate<TitleViewData, TitleBinding>(
     TitleBinding::inflate,
 ) { binding, item, _ ->
@@ -110,22 +97,5 @@ private fun createElementTitleAdapter() = createRecyclerBindingAdapterDelegate<T
         (binding.root.layoutParams as? FlexboxLayoutManager.LayoutParams)
             ?.apply { isWrapBefore = true }
         tvComplexRuleElementItemTitle.text = item.text
-    }
-}
-
-private fun createElementContentAdapter() = createRecyclerBindingAdapterDelegate<ContentViewData, ContentBinding>(
-    ContentBinding::inflate,
-) { binding, item, _ ->
-    with(binding) {
-        item as ContentViewData
-
-        tvComplexRuleElementItemContent.text = item.text
-        cvComplexRuleElementItemContent.setCardBackgroundColor(item.color)
-        if (item.icon != null) {
-            ivComplexRuleElementItemContent.visible = true
-            ivComplexRuleElementItemContent.itemIcon = item.icon
-        } else {
-            ivComplexRuleElementItemContent.visible = false
-        }
     }
 }

@@ -18,14 +18,14 @@ interface ActivitySuggestionDao {
     suspend fun get(id: Long): ActivitySuggestionDBO?
 
     @Transaction
-    @Query("SELECT * FROM activitySuggestion WHERE :typeId in (forTypeId)")
+    @Query("SELECT * FROM activitySuggestion WHERE forTypeId = :typeId")
     suspend fun getByTypeId(typeId: Long): List<ActivitySuggestionDBO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(activityFilters: List<ActivitySuggestionDBO>)
 
-    @Query("DELETE FROM activitySuggestion WHERE id = :id")
-    suspend fun delete(id: Long)
+    @Query("DELETE FROM activitySuggestion WHERE id in (:ids)")
+    suspend fun delete(ids: List<Long>)
 
     @Query("DELETE FROM activitySuggestion")
     suspend fun clear()

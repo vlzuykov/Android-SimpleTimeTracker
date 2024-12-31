@@ -44,7 +44,7 @@
         android:paddingTop="6dp"
         app:layout_constraintBottom_toTopOf="@id/dividerActivitySuggestionsButton"
         app:layout_constraintTop_toBottomOf="@id/dividerActivitySuggestions"
-        tools:listitem="@layout/item_activity_suggestion_layout" />
+        tools:listitem="@layout/item_activity_suggestion_list_layout" />
 
     <View
         android:id="@+id/dividerActivitySuggestionsButton"

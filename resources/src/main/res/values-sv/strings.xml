@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Välj åtgärd</string>
     <string name="change_complex_rule_choose_condition">Välj villkor</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Visar förslag för nästa aktivitet baserat på aktuell eller senaste aktivitet</string>
+    <string name="activity_suggestions_calculate">Beräkna från statistik</string>
+    <string name="activity_suggestions_select_activity_hint">Förslag kommer att visas för utvalda aktiviteter</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Aktivitetsfilter</string>
     <string name="change_activity_filter_removed">Filter borttaget</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Arkiv</string>
     <string name="settings_data_edit">Dataredigering</string>
     <string name="settings_complex_rules">Komplicerade regler</string>
+    <string name="settings_activity_suggestions">Aktivitetsförslag</string>
     <string name="settings_edit_categories">Redigera kategorier och taggar</string>
     <string name="settings_edit_categories_hint">Tilldela kategorier till aktiviteter och taggar till poster.</string>
     <string name="settings_show_record_tag_selection">Dialog för händelsetagg</string>

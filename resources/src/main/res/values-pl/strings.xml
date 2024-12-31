@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Wybrać działanie</string>
     <string name="change_complex_rule_choose_condition">Wybierz warunki</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Pokazuje sugestie dotyczące następnej aktywności na podstawie bieżącej lub ostatniej aktywności</string>
+    <string name="activity_suggestions_calculate">Oblicz ze statystyk</string>
+    <string name="activity_suggestions_select_activity_hint">Sugestie będą wyświetlane dla wybranych działań</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Filtry aktywności</string>
     <string name="change_activity_filter_removed">Filtr usunięty</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Archiwum</string>
     <string name="settings_data_edit">Edycja danych</string>
     <string name="settings_complex_rules">Złożone zasady</string>
+    <string name="settings_activity_suggestions">Sugestie dotyczące aktywności</string>
     <string name="settings_edit_categories">Edytuj kategorie i tagi</string>
     <string name="settings_edit_categories_hint">Przypisz kategorie do aktywności i tagi do rekordów.</string>
     <string name="settings_show_record_tag_selection">Pokaż wybór tagu dla rekordu</string>

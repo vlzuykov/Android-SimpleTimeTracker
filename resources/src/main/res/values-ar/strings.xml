@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">اختر الإجراء</string>
     <string name="change_complex_rule_choose_condition">اختر الشروط</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">يعرض اقتراحات للنشاط التالي استنادًا إلى النشاط الحالي أو الأخير</string>
+    <string name="activity_suggestions_calculate">احسب من الإحصائيات</string>
+    <string name="activity_suggestions_select_activity_hint">سيتم عرض الاقتراحات للأنشطة المحددة</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">مرشحات النشاط</string>
     <string name="change_activity_filter_removed">تم إزالة المرشِّح</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">اﻷرشيف</string>
     <string name="settings_data_edit">تعديل البيانات</string>
     <string name="settings_complex_rules">قواعد معقدة</string>
+    <string name="settings_activity_suggestions">اقتراحات النشاط</string>
     <string name="settings_edit_categories">تعديل التصنيفات والوسوم</string>
     <string name="settings_edit_categories_hint">عين تصنيفات للأنشطة ووسوم إلى التتبعات.</string>
     <string name="settings_show_record_tag_selection">إظهار اختيار وسم التتبع</string>

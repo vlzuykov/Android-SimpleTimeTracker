@@ -12,7 +12,7 @@ interface ActivitySuggestionRepo {
 
     suspend fun add(activityFilters: List<ActivitySuggestion>)
 
-    suspend fun remove(id: Long)
+    suspend fun remove(ids: List<Long>)
 
     suspend fun clear()
 }

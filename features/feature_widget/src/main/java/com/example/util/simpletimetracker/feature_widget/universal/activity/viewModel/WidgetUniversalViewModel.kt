@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toParams
 import com.example.util.simpletimetracker.core.interactor.ActivityFilterViewDataInteractor
+import com.example.util.simpletimetracker.core.interactor.ActivitySuggestionViewDataInteractor
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
@@ -53,6 +54,7 @@ class WidgetUniversalViewModel @Inject constructor(
     private val recordTypeGoalInteractor: RecordTypeGoalInteractor,
     private val getCurrentRecordsDurationInteractor: GetCurrentRecordsDurationInteractor,
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
+    private val activitySuggestionViewDataInteractor: ActivitySuggestionViewDataInteractor,
 ) : ViewModel() {
 
     val recordTypes: LiveData<List<ViewHolderType>> by lazy {
@@ -151,6 +153,7 @@ class WidgetUniversalViewModel @Inject constructor(
     private suspend fun loadRecordTypesViewData(): List<ViewHolderType> {
         val runningRecords = runningRecordInteractor.getAll()
         val recordTypes = recordTypeInteractor.getAll()
+        val recordTypesMap = recordTypes.associateBy(RecordType::id)
         val recordTypesRunning = runningRecords.map(RunningRecord::id)
         val numberOfCards = prefsInteractor.getNumberOfCards()
         val isDarkTheme = prefsInteractor.getDarkMode()
@@ -173,7 +176,21 @@ class WidgetUniversalViewModel @Inject constructor(
             filter = filter,
             isDarkTheme = isDarkTheme,
             appendAddButton = false,
-        )
+        ).let {
+            if (it.isNotEmpty()) it + DividerViewData(1) else it
+        }
+
+        val suggestionsViewData = activitySuggestionViewDataInteractor.getSuggestionsViewData(
+            recordTypesMap = recordTypesMap,
+            goals = goals,
+            runningRecords = runningRecords,
+            allDailyCurrents = allDailyCurrents,
+            completeTypeIds = completeTypeIds,
+            numberOfCards = numberOfCards,
+            isDarkTheme = isDarkTheme,
+        ).let {
+            if (it.isNotEmpty()) it + DividerViewData(2) else it
+        }
 
         val recordTypesViewData = recordTypes
             .filterNot { it.hidden }
@@ -200,11 +217,8 @@ class WidgetUniversalViewModel @Inject constructor(
         )
 
         return mutableListOf<ViewHolderType>().apply {
-            if (filtersViewData.isNotEmpty()) {
-                filtersViewData.let(::addAll)
-                DividerViewData(1).let(::add)
-            }
-
+            filtersViewData.let(::addAll)
+            suggestionsViewData.let(::addAll)
             if (recordTypesViewData.isEmpty()) {
                 recordTypeViewDataMapper.mapToEmpty().let(::addAll)
             } else {

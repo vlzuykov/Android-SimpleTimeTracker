@@ -1,12 +1,10 @@
 package com.example.util.simpletimetracker.feature_suggestions.adapter
 
-import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
-import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionSpecialViewData as ViewData
-import com.example.util.simpletimetracker.feature_suggestions.databinding.ItemActivitySuggestionLayoutBinding as Binding
+import com.example.util.simpletimetracker.feature_suggestions.databinding.ItemActivitySuggestionListLayoutBinding as Binding
 
 fun createActivitySuggestionSpecialAdapterDelegate(
     onItemClick: ((ViewData) -> Unit),
@@ -14,21 +12,21 @@ fun createActivitySuggestionSpecialAdapterDelegate(
     Binding::inflate,
 ) { binding, item, _ ->
 
-    with(binding.viewActivitySuggestionItem) {
+    with(binding) {
         item as ViewData
 
-        itemColor = item.color
-        itemIcon = item.iconId
-        itemName = item.name
-        setOnClickWith(item, onItemClick)
+        activitySuggestionListAdapterBindDelegate(
+            item = item.data,
+            binding = this,
+        )
+
+        root.setOnClickWith(item, onItemClick)
     }
 }
 
 data class ActivitySuggestionSpecialViewData(
     val id: Id,
-    val name: String,
-    val iconId: RecordTypeIcon,
-    @ColorInt val color: Int,
+    val data: ActivitySuggestionListViewData,
 ) : ViewHolderType {
 
     override fun getUniqueId(): Long = id.hashCode().toLong()

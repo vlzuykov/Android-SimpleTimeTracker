@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">कार्रवाई का चयन</string>
     <string name="change_complex_rule_choose_condition">शर्तें चुनें</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">वर्तमान या पिछली गतिविधि के आधार पर अगली गतिविधि के लिए सुझाव दिखाता है</string>
+    <string name="activity_suggestions_calculate">आंकड़ों से गणना करें</string>
+    <string name="activity_suggestions_select_activity_hint">चयनित गतिविधियों के लिए सुझाव दिखाए जाएंगे</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">गतिविधि फ़िल्टर</string>
     <string name="change_activity_filter_removed">फ़िल्टर हटा दिया गया</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">संग्रहालय</string>
     <string name="settings_data_edit">डेटा संपादित करें</string>
     <string name="settings_complex_rules">जटिल नियम</string>
+    <string name="settings_activity_suggestions">गतिविधि सुझाव</string>
     <string name="settings_edit_categories">श्रेणियां और टैग संपादित करें</string>
     <string name="settings_edit_categories_hint">गतिविधियों और टैग को दर्कज करने के लिए श्रेणियां नियुक्त करें।</string>
     <string name="settings_show_record_tag_selection">चयन रिकॉर्ड टैग दिखाएं</string>

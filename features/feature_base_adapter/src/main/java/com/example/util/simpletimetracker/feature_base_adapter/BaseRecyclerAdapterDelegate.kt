@@ -38,7 +38,7 @@ inline fun <reified T : ViewHolderType, B : ViewBinding> createRecyclerBindingAd
 }
 
 class BaseRecyclerBindingViewHolder<B : ViewBinding>(
-    private val binding: B,
+    val binding: B,
     private val onBind: (B, ViewHolderType, List<Any>) -> Unit,
 ) : BaseRecyclerViewHolder(binding.root) {
 

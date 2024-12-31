@@ -13,9 +13,8 @@ import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
 import com.example.util.simpletimetracker.feature_suggestions.R
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionSpecialViewData
-import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionViewData
+import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionListViewData
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionsButtonViewData
-import com.example.util.simpletimetracker.feature_suggestions.model.ActivitySuggestionModel
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
@@ -26,16 +25,14 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
 ) {
 
-    // TODO SUG translate strings
     suspend fun getViewData(
-        suggestions: List<ActivitySuggestionModel>,
+        suggestionsMap: Map<Long, List<Long>>,
     ): List<ViewHolderType> {
         val isDarkTheme = prefsInteractor.getDarkMode()
         val recordTypes = recordTypeInteractor.getAll().filter { !it.hidden }
         val typesOrder = recordTypes.map(RecordType::id)
         val recordTypesMap = recordTypes.associateBy(RecordType::id)
-        val selectedActivities = suggestions.map { it.typeId }
-        val suggestionsMap = suggestions.associateBy(ActivitySuggestionModel::typeId)
+        val selectedActivities = suggestionsMap.keys
 
         val result: MutableList<ViewHolderType> = mutableListOf()
 
@@ -51,7 +48,7 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
         if (selectedActivities.isNotEmpty()) {
             result += ActivitySuggestionsButtonViewData(
                 block = ActivitySuggestionsButtonViewData.Block.CALCULATE,
-                text = "Calculate from statistics", // TODO SUG
+                text = resourceRepo.getString(R.string.activity_suggestions_calculate),
                 icon = R.drawable.statistics,
                 iconColor = resourceRepo.getThemedAttr(R.attr.appLightTextColor, isDarkTheme),
                 iconBackgroundColor = resourceRepo.getColor(R.color.transparent),
@@ -89,7 +86,7 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
                     gravity = HintViewData.Gravity.START,
                 )
             }
-            val thisTypeSuggestions = suggestionsMap[typeId]?.suggestions.orEmpty()
+            val thisTypeSuggestions = suggestionsMap[typeId].orEmpty()
             thisTypeSuggestions.forEach { suggestion ->
                 result += mapSuggestion(
                     forTypeId = typeId,
@@ -120,19 +117,18 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
         suggestionTypeId: Long,
         recordTypesMap: Map<Long, RecordType>,
         isDarkTheme: Boolean,
-    ): ActivitySuggestionViewData? {
+    ): ActivitySuggestionListViewData? {
         return recordTypeViewDataMapper.map(
             recordType = recordTypesMap[suggestionTypeId] ?: return null,
             isDarkTheme = isDarkTheme,
         ).let {
-            ActivitySuggestionViewData(
-                id = ActivitySuggestionViewData.Id(
+            ActivitySuggestionListViewData(
+                id = ActivitySuggestionListViewData.Id(
                     suggestionTypeId = suggestionTypeId,
                     forTypeId = forTypeId,
                 ),
-                name = it.name,
-                iconId = it.iconId,
-                iconColor = it.iconColor,
+                text = it.name,
+                icon = it.iconId,
                 color = it.color,
             )
         }
@@ -152,9 +148,12 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
                     forTypeId = forTypeId,
                     type = ActivitySuggestionSpecialViewData.Type.Add,
                 ),
-                name = it.name,
-                iconId = it.iconId,
-                color = it.color,
+                data = ActivitySuggestionListViewData(
+                    id = ActivitySuggestionListViewData.Id(0, 0),
+                    text = it.name,
+                    icon = it.iconId,
+                    color = it.color,
+                ),
             )
         }
     }
@@ -175,9 +174,12 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
                     forTypeId = forTypeId,
                     type = ActivitySuggestionSpecialViewData.Type.Calculate,
                 ),
-                name = it.name,
-                iconId = it.iconId,
-                color = it.color,
+                data = ActivitySuggestionListViewData(
+                    id = ActivitySuggestionListViewData.Id(0, 0),
+                    text = it.name,
+                    icon = it.iconId,
+                    color = it.color,
+                ),
             )
         }
     }

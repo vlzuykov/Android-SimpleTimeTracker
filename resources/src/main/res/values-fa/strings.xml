@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">اقدام را انتخاب کنید</string>
     <string name="change_complex_rule_choose_condition">شرایط را انتخاب کنید</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">پیشنهاداتی را برای فعالیت بعدی بر اساس فعالیت فعلی یا آخرین نشان می دهد</string>
+    <string name="activity_suggestions_calculate">از آمار محاسبه کنید</string>
+    <string name="activity_suggestions_select_activity_hint">پیشنهادات برای فعالیت های انتخاب شده نشان داده می شود</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">فیلترهای فعالیت</string>
     <string name="change_activity_filter_removed">فیلتر حذف شد</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">بایگانی</string>
     <string name="settings_data_edit">ویرایش اطلاعات</string>
     <string name="settings_complex_rules">قوانین پیچیده</string>
+    <string name="settings_activity_suggestions">پیشنهادات فعالیت</string>
     <string name="settings_edit_categories">ویرایش دسته بندی ها و برچسب ها</string>
     <string name="settings_edit_categories_hint">اختصاص دسته بندی ها به فعالیت ها و برچسب ها به تاریخچه ها</string>
     <string name="settings_show_record_tag_selection">نمایش برچسب تاریخچه انتخابی</string>

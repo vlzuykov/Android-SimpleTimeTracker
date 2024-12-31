@@ -6,6 +6,7 @@ import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.GetCurrentActivitySuggestionsInteractor
 import com.example.util.simpletimetracker.domain.recordType.extension.getDailyDuration
 import com.example.util.simpletimetracker.domain.recordType.extension.getSessionDuration
 import com.example.util.simpletimetracker.domain.recordType.extension.hasDailyDuration
@@ -46,6 +47,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
     private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val getNotificationActivitySwitchControlsInteractor: GetNotificationActivitySwitchControlsInteractor,
     private val notificationCommonMapper: NotificationCommonMapper,
+    private val getCurrentActivitySuggestionsInteractor: GetCurrentActivitySuggestionsInteractor,
 ) : NotificationTypeInteractor {
 
     // TODO merge with update function?
@@ -90,7 +92,12 @@ class NotificationTypeInteractorImpl @Inject constructor(
             emptyList()
         }
         val controls = if (showControls) {
+            val runningRecords = runningRecordInteractor.getAll()
             val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
+            val suggestions = getCurrentActivitySuggestionsInteractor.execute(
+                recordTypesMap = recordTypes,
+                runningRecords = runningRecords,
+            )
             val goals = filterGoalsByDayOfWeekInteractor.execute(
                 goals = recordTypeGoalInteractor.getAllTypeGoals(),
                 range = range,
@@ -99,7 +106,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
             val allDailyCurrents = if (goals.isNotEmpty()) {
                 getCurrentRecordsDurationInteractor.getAllDailyCurrents(
                     typeIds = recordTypes.keys.toList(),
-                    runningRecords = runningRecordInteractor.getAll(),
+                    runningRecords = runningRecords,
                 )
             } else {
                 // No goals - no need to calculate durations.
@@ -109,6 +116,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
                 hint = resourceRepo.getString(R.string.running_records_empty),
                 isDarkTheme = isDarkTheme,
                 types = recordTypes.values.toList(),
+                suggestions = suggestions,
                 showRepeatButton = showRepeatButton,
                 typesShift = typesShift,
                 tags = viewedTags,
@@ -157,6 +165,10 @@ class NotificationTypeInteractorImpl @Inject constructor(
         val showSeconds = prefsInteractor.getShowSeconds()
         val showControls = prefsInteractor.getShowNotificationsControls()
         val showRepeatButton = prefsInteractor.getEnableRepeatButton()
+        val suggestions = getCurrentActivitySuggestionsInteractor.execute(
+            recordTypesMap = recordTypes,
+            runningRecords = runningRecords,
+        )
         val goals = filterGoalsByDayOfWeekInteractor
             .execute(recordTypeGoalInteractor.getAllTypeGoals())
             .groupBy { it.idData.value }
@@ -174,6 +186,7 @@ class NotificationTypeInteractorImpl @Inject constructor(
                 hint = resourceRepo.getString(R.string.running_records_empty),
                 isDarkTheme = isDarkTheme,
                 types = recordTypes.values.toList(),
+                suggestions = suggestions,
                 showRepeatButton = showRepeatButton,
                 goals = goals,
                 allDailyCurrents = allDailyCurrents,

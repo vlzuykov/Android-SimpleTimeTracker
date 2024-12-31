@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">选择行动</string>
     <string name="change_complex_rule_choose_condition">选择条件</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">根据当前或上一个活动显示下一个活动的建议</string>
+    <string name="activity_suggestions_calculate">根据统计数据计算</string>
+    <string name="activity_suggestions_select_activity_hint">将显示针对所选活动的建议</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">活动过滤器</string>
     <string name="change_activity_filter_removed">过滤器已移除</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">存档</string>
     <string name="settings_data_edit">数据编辑</string>
     <string name="settings_complex_rules">复杂的规则</string>
+    <string name="settings_activity_suggestions">活动建议</string>
     <string name="settings_edit_categories">编辑类别和标签</string>
     <string name="settings_edit_categories_hint">将类别分配给活动，将标签分配给记录。</string>
     <string name="settings_show_record_tag_selection">显示记录标签选择</string>

@@ -1,18 +1,19 @@
 package com.example.util.simpletimetracker.feature_running_records.interactor
 
 import com.example.util.simpletimetracker.core.interactor.ActivityFilterViewDataInteractor
+import com.example.util.simpletimetracker.core.interactor.ActivitySuggestionViewDataInteractor
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.interactor.GetRunningRecordViewDataMediator
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
 import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
-import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_running_records.mapper.RunningRecordsViewDataMapper
@@ -31,6 +32,7 @@ class RunningRecordsViewDataInteractor @Inject constructor(
     private val getRunningRecordViewDataMediator: GetRunningRecordViewDataMediator,
     private val getCurrentRecordsDurationInteractor: GetCurrentRecordsDurationInteractor,
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
+    private val activitySuggestionViewDataInteractor: ActivitySuggestionViewDataInteractor,
 ) {
 
     suspend fun getViewData(
@@ -108,6 +110,8 @@ class RunningRecordsViewDataInteractor @Inject constructor(
                         mapper.mapToHasRunningRecords(),
                     )
             }
+        }.let {
+            it + DividerViewData(1)
         }
 
         val filter = activityFilterViewDataInteractor.getFilter()
@@ -117,6 +121,18 @@ class RunningRecordsViewDataInteractor @Inject constructor(
             appendAddButton = true,
         ).let {
             if (it.isNotEmpty()) it + DividerViewData(2) else it
+        }
+
+        val suggestionsViewData = activitySuggestionViewDataInteractor.getSuggestionsViewData(
+            recordTypesMap = recordTypesMap,
+            goals = goals,
+            runningRecords = runningRecords,
+            allDailyCurrents = allDailyCurrents,
+            completeTypeIds = completeTypeIds,
+            numberOfCards = numberOfCards,
+            isDarkTheme = isDarkTheme,
+        ).let {
+            if (it.isNotEmpty()) it + DividerViewData(3) else it
         }
 
         val recordTypesViewData = recordTypes
@@ -170,8 +186,8 @@ class RunningRecordsViewDataInteractor @Inject constructor(
             }
 
         return runningRecordsViewData +
-            listOf(DividerViewData(1)) +
             filtersViewData +
+            suggestionsViewData +
             recordTypesViewData
     }
 }

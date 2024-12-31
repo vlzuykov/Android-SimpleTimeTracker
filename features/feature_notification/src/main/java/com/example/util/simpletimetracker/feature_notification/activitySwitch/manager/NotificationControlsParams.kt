@@ -4,7 +4,7 @@ import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 sealed interface NotificationControlsParams {
-    object Disabled : NotificationControlsParams
+    data object Disabled : NotificationControlsParams
 
     data class Enabled(
         val hint: String,
@@ -19,13 +19,17 @@ sealed interface NotificationControlsParams {
         val selectedTypeId: Long?,
     ) : NotificationControlsParams
 
-    data class Type(
-        val id: Long,
-        val icon: RecordTypeIcon,
-        val color: Int,
-        val checkState: GoalCheckmarkView.CheckState,
-        val isComplete: Boolean,
-    )
+    sealed interface Type {
+        data class Present(
+            val id: Long,
+            val icon: RecordTypeIcon,
+            val color: Int,
+            val checkState: GoalCheckmarkView.CheckState,
+            val isComplete: Boolean,
+        ) : Type
+
+        data object Empty : Type
+    }
 
     data class Tag(
         val id: Long,

@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Pilih tindakan</string>
     <string name="change_complex_rule_choose_condition">Pilih kondisi</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Menampilkan saran untuk aktivitas berikutnya berdasarkan aktivitas saat ini atau terakhir</string>
+    <string name="activity_suggestions_calculate">Hitung dari statistik</string>
+    <string name="activity_suggestions_select_activity_hint">Saran akan ditampilkan untuk aktivitas yang dipilih</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Filter aktivitas</string>
     <string name="change_activity_filter_removed">Filter dihapus</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Arsip</string>
     <string name="settings_data_edit">Pengeditan data</string>
     <string name="settings_complex_rules">Aturan yang rumit</string>
+    <string name="settings_activity_suggestions">Saran aktivitas</string>
     <string name="settings_edit_categories">Sunting kategori dan label</string>
     <string name="settings_edit_categories_hint">Tetapkan kategori untuk aktivitas dan label untuk rekaman.</string>
     <string name="settings_show_record_tag_selection">Tampilkan pilihan label rekor</string>

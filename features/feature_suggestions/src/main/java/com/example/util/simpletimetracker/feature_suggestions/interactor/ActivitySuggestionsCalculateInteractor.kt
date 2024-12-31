@@ -5,7 +5,6 @@ import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteracto
 import com.example.util.simpletimetracker.domain.record.interactor.CalculateAdjacentActivitiesInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
 import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
-import com.example.util.simpletimetracker.feature_suggestions.model.ActivitySuggestionModel
 import javax.inject.Inject
 
 class ActivitySuggestionsCalculateInteractor @Inject constructor(
@@ -17,8 +16,8 @@ class ActivitySuggestionsCalculateInteractor @Inject constructor(
 
     suspend fun execute(
         typeIds: List<Long>,
-    ): List<ActivitySuggestionModel> {
-        // TODO SUG selectable range?
+    ): List<Result> {
+        // TODO selectable range and number of suggestions?
         val range = timeMapper.getRangeStartAndEnd(
             rangeLength = RangeLength.Year,
             shift = 0,
@@ -30,16 +29,25 @@ class ActivitySuggestionsCalculateInteractor @Inject constructor(
         val data = calculateAdjacentActivitiesInteractor.calculateNextActivities(
             typeIds = typeIds,
             records = records,
-            maxCount = Int.MAX_VALUE,
+            maxCount = MAX_COUNT,
         )
 
         return typeIds.mapNotNull { typeId ->
             val thisTypeSuggestions = data[typeId]
                 ?: return@mapNotNull null
-            ActivitySuggestionModel(
+            Result(
                 typeId = typeId,
                 suggestions = thisTypeSuggestions.map { it.typeId },
             )
         }
+    }
+
+    data class Result(
+        val typeId: Long,
+        val suggestions: List<Long>,
+    )
+
+    companion object {
+        private const val MAX_COUNT = 5
     }
 }

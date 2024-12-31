@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Chọn hành động</string>
     <string name="change_complex_rule_choose_condition">Chọn điều kiện</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Hiển thị các gợi ý cho hoạt động tiếp theo dựa trên hoạt động hiện tại hoặc hoạt động cuối cùng</string>
+    <string name="activity_suggestions_calculate">Tính toán từ số liệu thống kê</string>
+    <string name="activity_suggestions_select_activity_hint">Gợi ý sẽ được hiển thị cho các hoạt động đã chọn</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Bộ lọc hoạt động</string>
     <string name="change_activity_filter_removed">Đã xóa bộ lọc</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Lưu trữ</string>
     <string name="settings_data_edit">Chỉnh sửa dữ liệu</string>
     <string name="settings_complex_rules">Quy tắc phức tạp</string>
+    <string name="settings_activity_suggestions">Đề xuất hoạt động</string>
     <string name="settings_edit_categories">Chỉnh sửa danh mục và thẻ</string>
     <string name="settings_edit_categories_hint">Gán danh mục cho hoạt động và gắn thẻ cho bản ghi.</string>
     <string name="settings_show_record_tag_selection">Hiển thị lựa chọn thẻ bản ghi</string>

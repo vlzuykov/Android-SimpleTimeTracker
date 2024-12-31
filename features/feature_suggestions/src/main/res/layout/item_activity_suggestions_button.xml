@@ -6,7 +6,7 @@
     style="@style/EditScreenControlButton"
     android:layout_width="match_parent"
     android:layout_height="@dimen/button_height"
-    app:cardBackgroundColor="?appActiveColor">
+    app:cardBackgroundColor="?appInactiveColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

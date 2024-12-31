@@ -42,10 +42,10 @@ class ActivitySuggestionRepoImpl @Inject constructor(
         afterSourceAccess = { cache = null },
     )
 
-    override suspend fun remove(id: Long) = mutex.withLockedCache(
+    override suspend fun remove(ids: List<Long>) = mutex.withLockedCache(
         logMessage = "remove",
-        accessSource = { dao.delete(id) },
-        afterSourceAccess = { cache = cache?.removeIf { it.id == id } },
+        accessSource = { dao.delete(ids) },
+        afterSourceAccess = { cache = cache?.removeIf { it.id in ids } },
     )
 
     override suspend fun clear() = mutex.withLockedCache(

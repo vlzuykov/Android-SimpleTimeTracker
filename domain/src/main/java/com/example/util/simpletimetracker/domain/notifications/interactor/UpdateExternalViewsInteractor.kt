@@ -55,6 +55,7 @@ class UpdateExternalViewsInteractor @Inject constructor(
     ) {
         runUpdates(
             Update.NotificationTypes,
+            Update.NotificationWithControls,
             Update.GoalReschedule(listOf(typeId)),
             Update.WidgetSingleTypes,
             Update.WidgetUniversal,
@@ -215,6 +216,14 @@ class UpdateExternalViewsInteractor @Inject constructor(
     }
 
     suspend fun onTagArchive() {
+        runUpdates(
+            Update.NotificationTypes,
+            Update.NotificationWithControls,
+            Update.Wear,
+        )
+    }
+
+    suspend fun onActivitySuggestionsChanged() {
         runUpdates(
             Update.NotificationTypes,
             Update.NotificationWithControls,
@@ -475,21 +484,21 @@ class UpdateExternalViewsInteractor @Inject constructor(
     }
 
     private sealed interface Update {
-        object NotificationTypes : Update
+        data object NotificationTypes : Update
         data class NotificationType(val typeId: Long) : Update
         data class NotificationTypeHide(val typeId: Long) : Update
-        object NotificationWithControls : Update
-        object WidgetStatistics : Update
-        object WidgetQuickSettings : Update
-        object WidgetUniversal : Update
-        object WidgetSingleTypes : Update
+        data object NotificationWithControls : Update
+        data object WidgetStatistics : Update
+        data object WidgetQuickSettings : Update
+        data object WidgetUniversal : Update
+        data object WidgetSingleTypes : Update
         data class WidgetSingleType(val typeId: Long) : Update
-        object Wear : Update
+        data object Wear : Update
         data class GoalReschedule(val typeIds: List<Long> = emptyList()) : Update
         data class GoalCancel(val idData: RecordTypeGoal.IdData) : Update
-        object ActivityReminderCancel : Update
-        object ActivityReminderReschedule : Update
-        object InactivityReminderCancel : Update
-        object InactivityReminderReschedule : Update
+        data object ActivityReminderCancel : Update
+        data object ActivityReminderReschedule : Update
+        data object InactivityReminderCancel : Update
+        data object InactivityReminderReschedule : Update
     }
 }

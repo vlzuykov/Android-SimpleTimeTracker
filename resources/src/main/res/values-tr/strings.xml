@@ -188,6 +188,11 @@
     <string name="change_complex_rule_choose_action">Eylem seçin</string>
     <string name="change_complex_rule_choose_condition">Koşulları seçin</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Mevcut veya son aktiviteye göre bir sonraki aktivite için öneriler gösterir</string>
+    <string name="activity_suggestions_calculate">İstatistiklerden hesapla</string>
+    <string name="activity_suggestions_select_activity_hint">Seçili aktiviteler için öneriler gösterilecek</string>
+
     <!--  Activity filters  -->
     <string name="change_activity_filters_hint">Etkinlik filtreleri</string>
     <string name="change_activity_filter_removed">Filtre kaldırıldı</string>
@@ -326,6 +331,7 @@
     <string name="settings_archive">Arşiv</string>
     <string name="settings_data_edit">Veri düzenleme</string>
     <string name="settings_complex_rules">Karmaşık kurallar</string>
+    <string name="settings_activity_suggestions">Etkinlik önerileri</string>
     <string name="settings_edit_categories">Kategorileri ve etiketleri düzenle</string>
     <string name="settings_edit_categories_hint">Etkinliklere kategoriler ve kayıtlara etiketler atayın.</string>
     <string name="settings_show_record_tag_selection">Kayıt etiketi seçimini göster</string>
