@@ -60,7 +60,9 @@ class ActivitiesViewModel @Inject constructor(
 
     fun onItemClick(item: ActivityChipState) {
         when (item.type) {
-            is ActivityChipType.Base -> {
+            is ActivityChipType.Base,
+            is ActivityChipType.Suggestion,
+            -> {
                 if (item.isRunning) {
                     stopActivity(item.id)
                 } else {
@@ -139,7 +141,10 @@ class ActivitiesViewModel @Inject constructor(
         val currentState = _state.value as? ActivitiesListState.Content
             ?: return
         val newItems = currentState.items.map {
-            if (it.id == activityId) it.copy(isLoading = isLoading) else it
+            if (it !is ActivitiesListState.Content.Item.Button) return@map it
+            if (it.data.id != activityId) return@map it
+            val newData = it.data.copy(isLoading = isLoading)
+            it.copy(data = newData)
         }
         _state.value = currentState.copy(items = newItems)
     }
@@ -164,6 +169,7 @@ class ActivitiesViewModel @Inject constructor(
                 _state.value = activitiesViewDataMapper.mapContentState(
                     activities = activities.getOrNull().orEmpty(),
                     currentActivities = currentState.getOrNull()?.currentActivities.orEmpty(),
+                    suggestionIds = currentState.getOrNull()?.suggestionIds.orEmpty(),
                     lastRecords = currentState.getOrNull()?.lastRecords.orEmpty(),
                     settings = settings.getOrNull(),
                     showCompactList = wearPrefsInteractor.getWearShowCompactList(),

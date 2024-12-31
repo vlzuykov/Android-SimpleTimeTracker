@@ -36,6 +36,7 @@ class WearDataLocalMapper @Inject constructor() {
         return WearCurrentState(
             currentActivities = dto.currentActivities.map(::map),
             lastRecords = dto.lastRecords.map(::map),
+            suggestionIds = dto.suggestionIds,
         )
     }
 

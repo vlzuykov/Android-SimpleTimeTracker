@@ -6,6 +6,7 @@
 package com.example.util.simpletimetracker.feature_wear
 
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.GetCurrentActivitySuggestionsInteractor
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.record.interactor.AddRunningRecordMediator
 import com.example.util.simpletimetracker.domain.recordTag.interactor.GetSelectableTagsInteractor
@@ -21,6 +22,7 @@ import com.example.util.simpletimetracker.domain.notifications.interactor.Update
 import com.example.util.simpletimetracker.domain.widget.interactor.WidgetInteractor
 import com.example.util.simpletimetracker.domain.record.model.RecordDataSelectionDialogResult
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.domain.widget.model.WidgetType
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
@@ -52,6 +54,7 @@ class WearDataRepo @Inject constructor(
     private val widgetInteractor: WidgetInteractor,
     private val settingsDataUpdateInteractor: SettingsDataUpdateInteractor,
     private val wearDataLocalMapper: WearDataLocalMapper,
+    private val getCurrentActivitySuggestionsInteractor: GetCurrentActivitySuggestionsInteractor,
 ) : WearCommunicationAPI {
 
     override suspend fun queryActivities(): List<WearActivityDTO> {
@@ -72,17 +75,27 @@ class WearDataRepo @Inject constructor(
             }
         }
 
-        val runningRecords = runningRecordInteractor.getAll().map { record ->
+        val recordTypesMapProvider: suspend () -> Map<Long, RecordType> = {
+            recordTypeInteractor.getAll().associateBy(RecordType::id)
+        }
+        val runningRecords = runningRecordInteractor.getAll()
+        val runningRecordsData = runningRecords.map { record ->
             wearDataLocalMapper.map(record, mapTags(record.tagIds))
         }
-        val prevRecords = recordInteractor
+        val prevRecordsData = recordInteractor
             .getAllPrev(timeStarted = System.currentTimeMillis())
             .map { record ->
                 wearDataLocalMapper.map(record, mapTags(record.tagIds))
             }
+        val suggestionsData = getCurrentActivitySuggestionsInteractor.execute(
+            recordTypesMapProvider = recordTypesMapProvider,
+            runningRecords = runningRecords,
+        ).map(RecordType::id)
+
         return WearCurrentStateDTO(
-            currentActivities = runningRecords,
-            lastRecords = prevRecords,
+            currentActivities = runningRecordsData,
+            lastRecords = prevRecordsData,
+            suggestionIds = suggestionsData,
         )
     }
 

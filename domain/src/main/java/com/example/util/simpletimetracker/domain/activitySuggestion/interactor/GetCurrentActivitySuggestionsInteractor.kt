@@ -14,7 +14,21 @@ class GetCurrentActivitySuggestionsInteractor @Inject constructor(
         recordTypesMap: Map<Long, RecordType>,
         runningRecords: List<RunningRecord>,
     ): List<RecordType> {
-        return execute(runningRecords).mapNotNull { typeId ->
+        return execute(
+            recordTypesMapProvider = { recordTypesMap },
+            runningRecords = runningRecords,
+        )
+    }
+
+    // Types provided lazily, to avoid it if not needed.
+    suspend fun execute(
+        recordTypesMapProvider: suspend () -> Map<Long, RecordType>,
+        runningRecords: List<RunningRecord>,
+    ): List<RecordType> {
+        val ids = execute(runningRecords)
+        if (ids.isEmpty()) return emptyList()
+        val recordTypesMap = recordTypesMapProvider.invoke()
+        return ids.mapNotNull { typeId ->
             recordTypesMap[typeId]?.takeIf { !it.hidden }
         }
     }

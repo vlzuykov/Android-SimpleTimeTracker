@@ -51,8 +51,14 @@ sealed interface ActivitiesListState {
     data class Content(
         val hint: String,
         val isCompact: Boolean,
-        val items: List<ActivityChipState>,
-    ) : ActivitiesListState
+        val items: List<Item>,
+    ) : ActivitiesListState {
+
+        sealed interface Item {
+            data object Divider : Item
+            data class Button(val data: ActivityChipState) : Item
+        }
+    }
 }
 
 @Composable
@@ -166,8 +172,8 @@ private fun ScalingLazyListScope.renderContentFull(
             Hint(HintState(state.hint))
         }
     }
-    for (itemState in state.items) {
-        item(key = itemState.id) {
+    fun renderItem(itemState: ActivityChipState) {
+        item(key = itemState.uniqueId) {
             val onClick = remember(itemState) {
                 { onItemClick(itemState) }
             }
@@ -175,6 +181,16 @@ private fun ScalingLazyListScope.renderContentFull(
                 state = itemState,
                 onClick = onClick,
             )
+        }
+    }
+    for (itemState in state.items) {
+        when (itemState) {
+            is ActivitiesListState.Content.Item.Divider -> {
+                item { Divider() }
+            }
+            is ActivitiesListState.Content.Item.Button -> {
+                renderItem(itemState.data)
+            }
         }
     }
 }
@@ -188,12 +204,15 @@ private fun ScalingLazyListScope.renderContentCompact(
             Hint(HintState(state.hint))
         }
     }
-    state.items
+    fun renderItems(
+        items: List<ActivitiesListState.Content.Item.Button>,
+    ) = items
+        .map { it.data }
         .withIndex()
         .groupBy { it.index / ACTIVITY_LIST_COMPACT_CHIP_COUNT }
         .map { it.value.map { part -> part.value } }
         .forEach { part ->
-            item(key = part.firstOrNull()?.id.orZero()) {
+            item(key = part.firstOrNull()?.uniqueId.orZero()) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
@@ -223,6 +242,21 @@ private fun ScalingLazyListScope.renderContentCompact(
                 }
             }
         }
+
+    val currentPack = mutableListOf<ActivitiesListState.Content.Item.Button>()
+    for (itemsState in state.items) {
+        when (itemsState) {
+            is ActivitiesListState.Content.Item.Divider -> {
+                renderItems(currentPack)
+                currentPack.clear()
+                item { Divider() }
+            }
+            is ActivitiesListState.Content.Item.Button -> {
+                currentPack += itemsState
+            }
+        }
+    }
+    renderItems(currentPack)
 }
 
 @Composable
@@ -280,7 +314,9 @@ private fun ContentFull() {
             } else {
                 ActivityChipState.TimeHint.None
             },
-        )
+        ).let {
+            ActivitiesListState.Content.Item.Button(it)
+        }
     }
     ActivitiesList(
         state = ActivitiesListState.Content(
@@ -307,7 +343,9 @@ private fun ContentCompact() {
             } else {
                 ActivityChipState.TimeHint.None
             },
-        )
+        ).let {
+            ActivitiesListState.Content.Item.Button(it)
+        }
     }
     ActivitiesList(
         state = ActivitiesListState.Content(
@@ -351,6 +389,8 @@ private fun ContentFullRetroactiveMode() {
                     ""
                 },
             )
+        }.let {
+            ActivitiesListState.Content.Item.Button(it)
         }
     }
     ActivitiesList(
@@ -397,12 +437,92 @@ private fun ContentCompactRetroactiveMode() {
                     ActivityChipState.TimeHint.None
                 },
             )
+        }.let {
+            ActivitiesListState.Content.Item.Button(it)
         }
     }
     ActivitiesList(
         state = ActivitiesListState.Content(
             isCompact = true,
             hint = "Retroactive mode hint",
+            items = items,
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+private fun ContentFullWithSuggestions() {
+    val items = List<ActivitiesListState.Content.Item>(5) {
+        ActivityChipState(
+            id = UUID.randomUUID().hashCode().toLong(),
+            name = "Sleep",
+            icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
+            color = 0xFF0000FA,
+            type = if (it == 0) {
+                ActivityChipType.Suggestion(isLast = true)
+            } else {
+                ActivityChipType.Base
+            },
+            timeHint = if (it == 1) {
+                ActivityChipState.TimeHint.Timer(
+                    Instant.now().toEpochMilli() - 36500000,
+                )
+            } else {
+                ActivityChipState.TimeHint.None
+            },
+        ).let {
+            ActivitiesListState.Content.Item.Button(it)
+        }
+    }.toMutableList().apply {
+        add(
+            index = 1,
+            element = ActivitiesListState.Content.Item.Divider,
+        )
+    }
+    ActivitiesList(
+        state = ActivitiesListState.Content(
+            isCompact = false,
+            hint = "",
+            items = items,
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+private fun ContentCompactWithSuggestions() {
+    val items = List<ActivitiesListState.Content.Item>(5) {
+        ActivityChipState(
+            id = UUID.randomUUID().hashCode().toLong(),
+            name = "Sleep",
+            icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
+            color = 0xFF0000FA,
+            type = if (it == 0) {
+                ActivityChipType.Suggestion(isLast = true)
+            } else {
+                ActivityChipType.Base
+            },
+            timeHint = if (it == 1) {
+                ActivityChipState.TimeHint.Timer(
+                    Instant.now().toEpochMilli() - 36500000,
+                )
+            } else {
+                ActivityChipState.TimeHint.None
+            },
+        ).let {
+            ActivitiesListState.Content.Item.Button(it)
+        }
+    }.toMutableList().apply {
+        add(
+            index = 1,
+            element = ActivitiesListState.Content.Item.Divider,
+        )
+    }
+    ActivitiesList(
+        state = ActivitiesListState.Content(
+            isCompact = true,
+            hint = "",
             items = items,
         ),
     )

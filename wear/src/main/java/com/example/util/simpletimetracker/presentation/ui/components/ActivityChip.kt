@@ -50,6 +50,13 @@ data class ActivityChipState(
     val hint: String = "",
 ) {
 
+    val uniqueId: Int = UniqueId(id, type).hashCode()
+
+    data class UniqueId(
+        private val id: Long,
+        private val type: ActivityChipType = ActivityChipType.Base,
+    )
+
     sealed interface TimeHint {
         object None : TimeHint
         data class Timer(val startedAt: Long) : TimeHint
