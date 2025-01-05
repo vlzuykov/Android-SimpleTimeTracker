@@ -85,10 +85,11 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
     }
 
     private suspend fun loadViewData(): List<ViewHolderType> {
-        val useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat()
-        val showSeconds = prefsInteractor.getShowSeconds()
         val params = parent?.getViewDataParams()
             ?: return emptyList()
+        val useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat()
+        val showSeconds = prefsInteractor.getShowSeconds()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         val hintText = if (params.isTimeEndedAvailable) {
@@ -144,6 +145,7 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
         result += changeRecordViewDataMapper.mapRecordActionButton(
             action = RecordQuickAction.ADJUST,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }

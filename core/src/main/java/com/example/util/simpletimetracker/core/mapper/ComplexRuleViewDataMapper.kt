@@ -6,28 +6,18 @@ import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
-import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleAddViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleElementTitleViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleViewData
 import com.example.util.simpletimetracker.feature_base_adapter.listElement.ListElementViewData
 import javax.inject.Inject
 
-class ComplexRulesViewDataMapper @Inject constructor(
+class ComplexRuleViewDataMapper @Inject constructor(
     private val timeMapper: TimeMapper,
     private val iconMapper: IconMapper,
     private val colorMapper: ColorMapper,
     private val resourceRepo: ResourceRepo,
     private val recordTagViewDataMapper: RecordTagViewDataMapper,
 ) {
-
-    fun mapAddItem(
-        isDarkTheme: Boolean,
-    ): ComplexRuleAddViewData {
-        return ComplexRuleAddViewData(
-            name = resourceRepo.getString(R.string.running_records_add_type),
-            color = colorMapper.toInactiveColor(isDarkTheme),
-        )
-    }
 
     fun mapRule(
         rule: ComplexRule,

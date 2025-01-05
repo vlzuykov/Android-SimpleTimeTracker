@@ -7,6 +7,7 @@ import com.example.util.simpletimetracker.core.base.BaseFragment
 import com.example.util.simpletimetracker.core.dialog.TypesSelectionDialogListener
 import com.example.util.simpletimetracker.core.utils.InsetConfiguration
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
+import com.example.util.simpletimetracker.feature_base_adapter.button.createButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.divider.createDividerAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.emptySpace.createEmptySpaceAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
@@ -14,7 +15,6 @@ import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoad
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
 import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionListAdapterDelegate
 import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionSpecialAdapterDelegate
-import com.example.util.simpletimetracker.feature_suggestions.adapter.createActivitySuggestionsButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_suggestions.viewModel.ActivitySuggestionsViewModel
 import com.example.util.simpletimetracker.feature_views.extension.setOnClick
 import com.google.android.flexbox.FlexDirection
@@ -46,7 +46,7 @@ class ActivitySuggestionsFragment :
             createRecordTypeAdapterDelegate(),
             createActivitySuggestionListAdapterDelegate(),
             createActivitySuggestionSpecialAdapterDelegate(throttle(viewModel::onSpecialSuggestionClick)),
-            createActivitySuggestionsButtonAdapterDelegate(throttle(viewModel::onItemButtonClick)),
+            createButtonAdapterDelegate(throttle(viewModel::onItemButtonClick)),
         )
     }
 

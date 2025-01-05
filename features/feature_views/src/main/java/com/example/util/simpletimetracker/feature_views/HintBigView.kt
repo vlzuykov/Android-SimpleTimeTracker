@@ -2,10 +2,10 @@ package com.example.util.simpletimetracker.feature_views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.example.util.simpletimetracker.feature_views.databinding.HintBigViewLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.setOnClick
 
 class HintBigView @JvmOverloads constructor(
@@ -18,8 +18,7 @@ class HintBigView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: HintBigViewLayoutBinding = HintBigViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = HintBigViewLayoutBinding.inflate(layoutInflater, this)
 
     var itemText: String = ""
         set(value) {

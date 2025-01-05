@@ -11,9 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.util.simpletimetracker.core.utils.getLifecycleObserverAdapter
 import com.example.util.simpletimetracker.domain.base.Coordinates
 import java.util.Calendar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 inline fun <T, R> T.allowDiskWrite(block: T.() -> R): R {
@@ -87,14 +85,12 @@ fun Calendar.shiftTimeStamp(timestamp: Long, shift: Long): Long {
     return timeInMillis
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 fun BroadcastReceiver.goAsync(
-    coroutineScope: CoroutineScope = GlobalScope,
     finally: () -> Unit,
     block: suspend () -> Unit,
 ) {
     val result = goAsync()
-    coroutineScope.launch {
+    allowDiskRead { MainScope() }.launch {
         try {
             block()
         } finally {

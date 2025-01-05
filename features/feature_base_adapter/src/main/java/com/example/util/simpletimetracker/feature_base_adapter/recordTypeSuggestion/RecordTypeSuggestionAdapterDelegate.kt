@@ -1,12 +1,12 @@
 package com.example.util.simpletimetracker.feature_base_adapter.recordTypeSuggestion
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerBindingViewHolder
 import com.example.util.simpletimetracker.feature_base_adapter.RecyclerAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
 import com.example.util.simpletimetracker.feature_views.TransitionNames
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemRecordTypeLayoutBinding as BaseBinding
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData as BaseViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSuggestion.RecordTypeSuggestionViewData as ViewData
@@ -33,11 +33,10 @@ fun createRecordTypeSuggestionAdapterDelegate(
         override fun onCreateViewHolder(parent: ViewGroup): BaseRecyclerBindingViewHolder<BaseBinding> {
             val baseViewHolder = baseAdapter.onCreateViewHolder(parent)
                 as? BaseRecyclerBindingViewHolder<*>
-            // TODO SUG add extension for layoutInflater
             // Just in case, so it wouldn't crash.
             // Worst case - it would show unbound layout.
             val fallbackBinding by lazy {
-                BaseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                BaseBinding.inflate(parent.layoutInflater, parent, false)
             }
 
             return BaseRecyclerBindingViewHolder(

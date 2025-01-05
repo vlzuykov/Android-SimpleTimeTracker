@@ -3,7 +3,6 @@ package com.example.util.simpletimetracker.feature_base_adapter.multitaskRecord.
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
@@ -12,6 +11,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemM
 import com.example.util.simpletimetracker.feature_base_adapter.databinding.MultitaskRecordViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.getThemedAttr
 import com.example.util.simpletimetracker.feature_views.R
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 class MultitaskRecordView @JvmOverloads constructor(
@@ -27,8 +27,7 @@ class MultitaskRecordView @JvmOverloads constructor(
     private val adapter: BaseRecyclerAdapter by lazy {
         BaseRecyclerAdapter(createAdapterDelegate())
     }
-    private val binding: MultitaskRecordViewLayoutBinding = MultitaskRecordViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = MultitaskRecordViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         initProps()

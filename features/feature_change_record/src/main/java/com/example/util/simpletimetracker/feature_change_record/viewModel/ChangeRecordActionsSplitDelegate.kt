@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.AddRecordMediator
 import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
@@ -24,6 +25,7 @@ import kotlinx.coroutines.ensureActive
 
 class ChangeRecordActionsSplitDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val changeRecordViewDataInteractor: ChangeRecordViewDataInteractor,
     private val addRecordMediator: AddRecordMediator,
     private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
@@ -72,6 +74,7 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
         val newTimeStarted = params.newTimeStarted
         val newTimeEnded = params.splitPreviewTimeEnded
         val showTimeEnded = params.showTimeEndedOnSplitPreview
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(resourceRepo.getString(R.string.change_record_split_hint))
@@ -109,6 +112,7 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
         result += changeRecordViewDataMapper.mapRecordActionButton(
             action = RecordQuickAction.SPLIT,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }

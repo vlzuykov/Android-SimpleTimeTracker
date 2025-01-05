@@ -5,11 +5,12 @@ import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeDoublePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
+import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordQuickActionsButtonViewData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -75,8 +76,9 @@ class ChangeRecordActionsDelegateImpl @Inject constructor(
         delegateHolder.adjustDelegate.onChangePreviewCheckClick(item)
     }
 
-    fun onItemButtonClick(viewData: ChangeRecordButtonViewData) {
-        when (viewData.block) {
+    fun onItemButtonClick(viewData: ButtonViewData) {
+        val id = viewData.id as? ChangeRecordQuickActionsButtonViewData ?: return
+        when (id.block) {
             ChangeRecordActionsBlock.SplitButton -> onSplitClick()
             ChangeRecordActionsBlock.AdjustButton -> onAdjustClick()
             ChangeRecordActionsBlock.ContinueButton -> onContinueClick()

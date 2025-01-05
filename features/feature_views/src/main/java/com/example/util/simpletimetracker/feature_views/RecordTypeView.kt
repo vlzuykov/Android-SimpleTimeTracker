@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintSet
@@ -12,6 +11,7 @@ import androidx.core.view.isVisible
 import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
 import com.example.util.simpletimetracker.feature_views.databinding.RecordTypeViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.animateAlpha
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.setMargins
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
@@ -25,8 +25,7 @@ class RecordTypeView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: RecordTypeViewLayoutBinding = RecordTypeViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = RecordTypeViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
 

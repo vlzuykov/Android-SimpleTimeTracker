@@ -1,14 +1,13 @@
 package com.example.util.simpletimetracker.feature_notification.goalTime.controller
 
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
 import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationGoalTimeInteractor
 import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(DelicateCoroutinesApi::class)
 class NotificationGoalTimeBroadcastController @Inject constructor(
     private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
     private val externalViewsInteractor: UpdateExternalViewsInteractor,
@@ -18,7 +17,7 @@ class NotificationGoalTimeBroadcastController @Inject constructor(
         idData: RecordTypeGoal.IdData,
         goalRange: RecordTypeGoal.Range,
     ) {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             notificationGoalTimeInteractor.show(idData, goalRange)
             if (idData is RecordTypeGoal.IdData.Type) {
                 externalViewsInteractor.onGoalTimeReached(idData.value)
@@ -27,20 +26,20 @@ class NotificationGoalTimeBroadcastController @Inject constructor(
     }
 
     fun onRangeEndReminder() {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             reschedule()
             externalViewsInteractor.onGoalRangeEnd()
         }
     }
 
     fun onBootCompleted() {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             reschedule()
         }
     }
 
     fun onExactAlarmPermissionStateChanged() {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             reschedule()
         }
     }

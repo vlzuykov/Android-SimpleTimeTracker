@@ -1,14 +1,13 @@
 package com.example.util.simpletimetracker.feature_notification.external
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@OptIn(DelicateCoroutinesApi::class)
 @Singleton
 class NotificationExternalBroadcastController @Inject constructor(
     private val externalBroadcastInteractor: ExternalBroadcastInteractor,
@@ -21,7 +20,7 @@ class NotificationExternalBroadcastController @Inject constructor(
         comment: String?,
         tagNames: List<String>,
         timeStarted: String?,
-    ) = GlobalScope.launch {
+    ) = allowDiskRead { MainScope() }.launch {
         name ?: return@launch
         mutex.withLock {
             externalBroadcastInteractor.onActionActivityStart(
@@ -36,7 +35,7 @@ class NotificationExternalBroadcastController @Inject constructor(
     fun onActionExternalActivityStop(
         name: String?,
         timeEnded: String?,
-    ) = GlobalScope.launch {
+    ) = allowDiskRead { MainScope() }.launch {
         name ?: return@launch
         mutex.withLock {
             externalBroadcastInteractor.onActionActivityStopByName(
@@ -46,19 +45,19 @@ class NotificationExternalBroadcastController @Inject constructor(
         }
     }
 
-    fun onActionExternalActivityStopAll() = GlobalScope.launch {
+    fun onActionExternalActivityStopAll() = allowDiskRead { MainScope() }.launch {
         mutex.withLock {
             externalBroadcastInteractor.onActionActivityStopAll()
         }
     }
 
-    fun onActionExternalActivityStopShortest() = GlobalScope.launch {
+    fun onActionExternalActivityStopShortest() = allowDiskRead { MainScope() }.launch {
         mutex.withLock {
             externalBroadcastInteractor.onActionActivityStopShortest()
         }
     }
 
-    fun onActionExternalActivityStopLongest() = GlobalScope.launch {
+    fun onActionExternalActivityStopLongest() = allowDiskRead { MainScope() }.launch {
         mutex.withLock {
             externalBroadcastInteractor.onActionActivityStopLongest()
         }
@@ -67,7 +66,7 @@ class NotificationExternalBroadcastController @Inject constructor(
     fun onActionExternalActivityRestart(
         comment: String?,
         tagNames: List<String>,
-    ) = GlobalScope.launch {
+    ) = allowDiskRead { MainScope() }.launch {
         mutex.withLock {
             externalBroadcastInteractor.onActionActivityRestart(
                 comment = comment, tagNames = tagNames,
@@ -81,7 +80,7 @@ class NotificationExternalBroadcastController @Inject constructor(
         timeEnded: String?,
         comment: String?,
         tagNames: List<String>,
-    ) = GlobalScope.launch {
+    ) = allowDiskRead { MainScope() }.launch {
         name ?: return@launch
         timeStarted ?: return@launch
         timeEnded ?: return@launch
@@ -101,7 +100,7 @@ class NotificationExternalBroadcastController @Inject constructor(
         name: String?,
         comment: String?,
         commentMode: String?,
-    ) = GlobalScope.launch {
+    ) = allowDiskRead { MainScope() }.launch {
         mutex.withLock {
             externalBroadcastInteractor.onRecordChange(
                 findModeData = findMode,

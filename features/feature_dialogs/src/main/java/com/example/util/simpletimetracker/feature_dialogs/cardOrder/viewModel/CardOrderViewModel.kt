@@ -19,7 +19,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.recordType.Record
 import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.navigation.params.screen.CardOrderDialogParams
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,7 +45,7 @@ class CardOrderViewModel @Inject constructor(
         }
     }
 
-    fun onDismiss(newList: List<ViewHolderType>) = GlobalScope.launch {
+    fun onDismiss(newList: List<ViewHolderType>) = MainScope().launch {
         val dataIds: List<Long> = when (extra.type) {
             is CardOrderDialogParams.Type.RecordType -> {
                 newList.filterIsInstance<RecordTypeViewData>().map { it.id }

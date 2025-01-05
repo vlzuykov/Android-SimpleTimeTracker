@@ -26,9 +26,7 @@ import com.example.util.simpletimetracker.feature_widget.universal.customView.Wi
 import com.example.util.simpletimetracker.feature_widget.universal.customView.WidgetUniversalViewData
 import com.example.util.simpletimetracker.feature_widget.universal.mapper.WidgetUniversalViewDataMapper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -60,7 +58,6 @@ class WidgetUniversalProvider : AppWidgetProvider() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun updateAppWidget(
         context: Context?,
         appWidgetManager: AppWidgetManager?,
@@ -68,7 +65,7 @@ class WidgetUniversalProvider : AppWidgetProvider() {
     ) {
         if (context == null || appWidgetManager == null) return
 
-        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
+        allowDiskRead { MainScope() }.launch {
             val runningRecords: List<RunningRecord> = runningRecordInteractor.getAll()
             val recordTypes = recordTypeInteractor.getAll().associateBy { it.id }
             val isDarkTheme = prefsInteractor.getDarkMode()

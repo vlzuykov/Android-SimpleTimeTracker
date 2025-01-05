@@ -12,10 +12,11 @@ import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordDateTimeFieldsState
+import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordQuickActionsButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordSimpleViewData
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordViewData
 import javax.inject.Inject
@@ -123,13 +124,21 @@ class ChangeRecordViewDataMapper @Inject constructor(
     fun mapRecordActionButton(
         action: RecordQuickAction,
         isEnabled: Boolean,
-    ): ChangeRecordButtonViewData? {
-        return ChangeRecordButtonViewData(
-            block = mapRecordAction(action) ?: return null,
+        isDarkTheme: Boolean,
+    ): ButtonViewData? {
+        return ButtonViewData(
+            id = ChangeRecordQuickActionsButtonViewData(
+                block = mapRecordAction(action) ?: return null,
+            ),
             text = recordQuickActionMapper.mapText(action),
-            icon = recordQuickActionMapper.mapIcon(action),
-            iconColor = recordQuickActionMapper.mapColor(action),
+            icon = ButtonViewData.Icon.Present(
+                icon = recordQuickActionMapper.mapIcon(action),
+                iconColor = resourceRepo.getThemedAttr(R.attr.appCardBackgroundColor, isDarkTheme),
+                iconBackgroundColor = recordQuickActionMapper.mapColor(action),
+            ),
+            backgroundColor = resourceRepo.getThemedAttr(R.attr.appActiveColor, isDarkTheme),
             isEnabled = isEnabled,
+            marginHorizontalDp = 4,
         )
     }
 

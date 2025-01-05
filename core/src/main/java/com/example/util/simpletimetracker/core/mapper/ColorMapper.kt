@@ -20,6 +20,7 @@ class ColorMapper @Inject constructor(
         }
     }
 
+    // TODO use resourceRepo getThemedAttr, also others
     fun toUntrackedColor(isDarkTheme: Boolean): Int {
         return if (isDarkTheme) {
             R.color.colorUntrackedDark

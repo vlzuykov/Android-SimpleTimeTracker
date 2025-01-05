@@ -8,9 +8,11 @@ import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.domain.complexRule.interactor.ComplexRuleInteractor
 import com.example.util.simpletimetracker.domain.complexRule.interactor.ComplexRulesDataUpdateInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_base_adapter.complexRule.ComplexRuleViewData
 import com.example.util.simpletimetracker.feature_complex_rules.interactor.ComplexRulesViewDataInteractor
+import com.example.util.simpletimetracker.feature_complex_rules.viewData.ComplexRulesButtonViewData
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeComplexRuleParams
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,8 +55,13 @@ class ComplexRulesViewModel @Inject constructor(
         }
     }
 
-    fun onAddRuleClick() {
-        router.navigate(data = ChangeComplexRuleParams.New)
+    fun onItemButtonClick(viewData: ButtonViewData) {
+        val id = viewData.id as? ComplexRulesButtonViewData ?: return
+        when (id.block) {
+            ComplexRulesButtonViewData.Block.ADD -> {
+                router.navigate(data = ChangeComplexRuleParams.New)
+            }
+        }
     }
 
     private fun subscribeToUpdates() {

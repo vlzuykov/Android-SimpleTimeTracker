@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_views.extension
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.MeasureSpec
 import android.view.ViewGroup
@@ -21,6 +22,9 @@ var View.visible: Boolean
     get() {
         return visibility == View.VISIBLE
     }
+
+val View.layoutInflater: LayoutInflater
+    get() = LayoutInflater.from(context)
 
 fun View.setOnClick(listener: (() -> Unit)) {
     setOnClickListener { listener.invoke() }

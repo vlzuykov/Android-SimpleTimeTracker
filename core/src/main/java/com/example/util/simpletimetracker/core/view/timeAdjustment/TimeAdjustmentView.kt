@@ -2,7 +2,6 @@ package com.example.util.simpletimetracker.core.view.timeAdjustment
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.view.updatePadding
 import com.example.util.simpletimetracker.core.databinding.TimeAdjustmentItemLayoutBinding
@@ -11,6 +10,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapt
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -35,8 +35,7 @@ class TimeAdjustmentView @JvmOverloads constructor(
         )
     }
 
-    private val binding: TimeAdjustmentViewLayoutBinding = TimeAdjustmentViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = TimeAdjustmentViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         initRecycler()

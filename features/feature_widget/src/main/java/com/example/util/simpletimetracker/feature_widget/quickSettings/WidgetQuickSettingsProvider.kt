@@ -23,9 +23,7 @@ import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.feature_widget.R
 import com.example.util.simpletimetracker.feature_widget.quickSettings.customView.WidgetQuickSettingsView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,14 +56,12 @@ class WidgetQuickSettingsProvider : AppWidgetProvider() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
+        allowDiskRead { MainScope() }.launch {
             appWidgetIds?.forEach { prefsInteractor.removeQuickSettingsWidget(it) }
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun updateAppWidget(
         context: Context?,
         appWidgetManager: AppWidgetManager?,
@@ -73,7 +69,7 @@ class WidgetQuickSettingsProvider : AppWidgetProvider() {
     ) {
         if (context == null || appWidgetManager == null) return
 
-        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
+        allowDiskRead { MainScope() }.launch {
             val backgroundTransparency = prefsInteractor.getWidgetBackgroundTransparencyPercent()
             val name: String
             val isChecked: Boolean
@@ -156,11 +152,10 @@ class WidgetQuickSettingsProvider : AppWidgetProvider() {
         view.measureExactly(width = width, height = height)
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun onClick(
         widgetId: Int,
     ) {
-        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
+        allowDiskRead { MainScope() }.launch {
             when (prefsInteractor.getQuickSettingsWidget(widgetId)) {
                 is QuickSettingsWidgetType.AllowMultitasking -> {
                     val newValue = !prefsInteractor.getAllowMultitasking()

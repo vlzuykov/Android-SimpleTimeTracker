@@ -16,7 +16,7 @@ import com.example.util.simpletimetracker.feature_dialogs.cardSize.mapper.CardSi
 import com.example.util.simpletimetracker.feature_dialogs.cardSize.viewData.CardSizeButtonsViewData
 import com.example.util.simpletimetracker.feature_dialogs.cardSize.viewData.CardSizeDefaultButtonViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -57,7 +57,7 @@ class CardSizeViewModel @Inject constructor(
     private var types: List<RecordType> = emptyList()
 
     fun onDismiss() {
-        GlobalScope.launch {
+        MainScope().launch {
             prefsInteractor.setNumberOfCards(numberOfCards)
         }
     }

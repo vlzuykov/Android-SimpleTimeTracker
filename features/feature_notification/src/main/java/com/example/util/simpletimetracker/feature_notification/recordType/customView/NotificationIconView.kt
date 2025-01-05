@@ -5,12 +5,12 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.databinding.NotificationIconViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 class NotificationIconView @JvmOverloads constructor(
@@ -23,8 +23,7 @@ class NotificationIconView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: NotificationIconViewLayoutBinding = NotificationIconViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = NotificationIconViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         context.obtainStyledAttributes(

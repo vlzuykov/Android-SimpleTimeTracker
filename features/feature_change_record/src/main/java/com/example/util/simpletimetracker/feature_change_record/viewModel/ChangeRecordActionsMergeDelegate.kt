@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionMergeMediator
 import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class ChangeRecordActionsMergeDelegate @Inject constructor(
     private val router: Router,
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val changeRecordViewDataInteractor: ChangeRecordViewDataInteractor,
     private val recordActionMergeMediator: RecordActionMergeMediator,
     private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
@@ -44,6 +46,7 @@ class ChangeRecordActionsMergeDelegate @Inject constructor(
         val params = parent?.getViewDataParams()
             ?: return emptyList()
         if (!params.mergeAvailable) return emptyList()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         val previewData = loadMergePreviewViewData(
@@ -67,6 +70,7 @@ class ChangeRecordActionsMergeDelegate @Inject constructor(
             result += changeRecordViewDataMapper.mapRecordActionButton(
                 action = RecordQuickAction.MERGE,
                 isEnabled = params.isButtonEnabled,
+                isDarkTheme = isDarkTheme,
             )
         }
         return result

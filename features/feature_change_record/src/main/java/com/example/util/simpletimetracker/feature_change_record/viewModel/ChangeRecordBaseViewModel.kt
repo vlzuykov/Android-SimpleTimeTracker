@@ -19,10 +19,10 @@ import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordType
 import com.example.util.simpletimetracker.domain.favourite.model.FavouriteComment
 import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordCommentViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordSliderViewData
@@ -266,7 +266,7 @@ abstract class ChangeRecordBaseViewModel(
         )
     }
 
-    fun onItemButtonClick(viewData: ChangeRecordButtonViewData) {
+    fun onItemButtonClick(viewData: ButtonViewData) {
         changeRecordActionsDelegate.onItemButtonClick(viewData)
     }
 

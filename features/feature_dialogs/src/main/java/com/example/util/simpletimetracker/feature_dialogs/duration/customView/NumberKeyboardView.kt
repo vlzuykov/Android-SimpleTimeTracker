@@ -5,11 +5,11 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.util.simpletimetracker.feature_views.extension.setOnClick
 import com.example.util.simpletimetracker.feature_dialogs.R
 import com.example.util.simpletimetracker.feature_dialogs.databinding.NumberKeyboardLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 
 class NumberKeyboardView @JvmOverloads constructor(
     context: Context,
@@ -23,8 +23,7 @@ class NumberKeyboardView @JvmOverloads constructor(
 
     var listener: ((Button) -> Unit)? = null
 
-    private val binding: NumberKeyboardLayoutBinding = NumberKeyboardLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = NumberKeyboardLayoutBinding.inflate(layoutInflater, this)
 
     private val textViews by lazy {
         with(binding) {

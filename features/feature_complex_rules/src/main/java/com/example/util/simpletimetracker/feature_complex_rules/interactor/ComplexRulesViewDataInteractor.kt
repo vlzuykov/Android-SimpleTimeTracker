@@ -1,13 +1,14 @@
 package com.example.util.simpletimetracker.feature_complex_rules.interactor
 
+import com.example.util.simpletimetracker.core.mapper.ComplexRuleViewDataMapper
 import com.example.util.simpletimetracker.domain.complexRule.interactor.ComplexRuleInteractor
+import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
 import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
-import com.example.util.simpletimetracker.core.mapper.ComplexRulesViewDataMapper
+import com.example.util.simpletimetracker.feature_complex_rules.mapper.ComplexRulesViewDataMapper
 import javax.inject.Inject
 
 class ComplexRulesViewDataInteractor @Inject constructor(
@@ -15,6 +16,7 @@ class ComplexRulesViewDataInteractor @Inject constructor(
     private val recordTagInteractor: RecordTagInteractor,
     private val recordTypeInteractor: RecordTypeInteractor,
     private val complexRuleInteractor: ComplexRuleInteractor,
+    private val complexRuleViewDataMapper: ComplexRuleViewDataMapper,
     private val complexRulesViewDataMapper: ComplexRulesViewDataMapper,
 ) {
 
@@ -44,12 +46,12 @@ class ComplexRulesViewDataInteractor @Inject constructor(
             if (shouldAddHints) {
                 val anyAction = group.firstOrNull()?.action
                 if (anyAction != null) {
-                    val hint = complexRulesViewDataMapper.mapActionTitle(anyAction)
+                    val hint = complexRuleViewDataMapper.mapActionTitle(anyAction)
                     result += HintViewData(hint)
                 }
             }
             group.forEach { rule ->
-                result += complexRulesViewDataMapper.mapRule(
+                result += complexRuleViewDataMapper.mapRule(
                     rule = rule,
                     isDarkTheme = isDarkTheme,
                     typesMap = typesMap,

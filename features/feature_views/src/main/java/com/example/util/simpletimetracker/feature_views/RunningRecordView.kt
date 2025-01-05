@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.example.util.simpletimetracker.feature_views.databinding.RecordRunningViewLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.setForegroundSpan
 import com.example.util.simpletimetracker.feature_views.extension.toSpannableString
 import com.example.util.simpletimetracker.feature_views.extension.visible
@@ -25,8 +25,7 @@ class RunningRecordView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: RecordRunningViewLayoutBinding = RecordRunningViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = RecordRunningViewLayoutBinding.inflate(layoutInflater, this)
 
     var itemName: String = ""
         set(value) {

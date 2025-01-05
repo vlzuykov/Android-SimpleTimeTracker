@@ -3,11 +3,11 @@ package com.example.util.simpletimetracker.feature_views
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.example.util.simpletimetracker.feature_views.databinding.GoalCheckmarkViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.getThemedAttr
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 
 class GoalCheckmarkView @JvmOverloads constructor(
     context: Context,
@@ -19,8 +19,7 @@ class GoalCheckmarkView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: GoalCheckmarkViewLayoutBinding = GoalCheckmarkViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = GoalCheckmarkViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
 

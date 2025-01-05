@@ -10,10 +10,11 @@ import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.A
 import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
 import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
+import com.example.util.simpletimetracker.feature_suggestions.viewData.ActivitySuggestionsButtonViewData
 import com.example.util.simpletimetracker.feature_suggestions.R
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionSpecialViewData
-import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionsButtonViewData
 import com.example.util.simpletimetracker.feature_suggestions.interactor.ActivitySuggestionsCalculateInteractor
 import com.example.util.simpletimetracker.feature_suggestions.interactor.ActivitySuggestionsViewDataInteractor
 import com.example.util.simpletimetracker.navigation.Router
@@ -88,8 +89,9 @@ class ActivitySuggestionsViewModel @Inject constructor(
         }
     }
 
-    fun onItemButtonClick(viewData: ActivitySuggestionsButtonViewData) {
-        when (viewData.block) {
+    fun onItemButtonClick(viewData: ButtonViewData) {
+        val id = viewData.id as? ActivitySuggestionsButtonViewData ?: return
+        when (id.block) {
             ActivitySuggestionsButtonViewData.Block.ADD -> {
                 TypesSelectionDialogParams(
                     tag = ACTIVITY_SUGGESTIONS_TYPE_SELECTION_TAG,

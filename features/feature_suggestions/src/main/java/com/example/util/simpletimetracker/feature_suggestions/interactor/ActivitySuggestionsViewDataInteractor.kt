@@ -7,14 +7,15 @@ import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteracto
 import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.emptySpace.EmptySpaceViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
+import com.example.util.simpletimetracker.feature_suggestions.viewData.ActivitySuggestionsButtonViewData
 import com.example.util.simpletimetracker.feature_suggestions.R
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionSpecialViewData
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionListViewData
-import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionsButtonViewData
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
@@ -36,23 +37,35 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
 
         val result: MutableList<ViewHolderType> = mutableListOf()
 
-        result += ActivitySuggestionsButtonViewData(
-            block = ActivitySuggestionsButtonViewData.Block.ADD,
+        result += ButtonViewData(
+            id = ActivitySuggestionsButtonViewData(
+                block = ActivitySuggestionsButtonViewData.Block.ADD,
+            ),
             text = resourceRepo.getString(R.string.change_record_message_choose_type),
-            icon = R.drawable.action_change_item,
-            iconColor = resourceRepo.getThemedAttr(R.attr.appLightTextColor, isDarkTheme),
-            iconBackgroundColor = resourceRepo.getColor(R.color.transparent),
+            icon = ButtonViewData.Icon.Present(
+                icon = R.drawable.action_change_item,
+                iconColor = resourceRepo.getThemedAttr(R.attr.appLightTextColor, isDarkTheme),
+                iconBackgroundColor = resourceRepo.getColor(R.color.transparent),
+            ),
+            backgroundColor = resourceRepo.getThemedAttr(R.attr.appInactiveColor, isDarkTheme),
             isEnabled = true,
+            marginHorizontalDp = 0,
         )
 
         if (selectedActivities.isNotEmpty()) {
-            result += ActivitySuggestionsButtonViewData(
-                block = ActivitySuggestionsButtonViewData.Block.CALCULATE,
+            result += ButtonViewData(
+                id = ActivitySuggestionsButtonViewData(
+                    block = ActivitySuggestionsButtonViewData.Block.CALCULATE,
+                ),
                 text = resourceRepo.getString(R.string.activity_suggestions_calculate),
-                icon = R.drawable.statistics,
-                iconColor = resourceRepo.getThemedAttr(R.attr.appLightTextColor, isDarkTheme),
-                iconBackgroundColor = resourceRepo.getColor(R.color.transparent),
+                icon = ButtonViewData.Icon.Present(
+                    icon = R.drawable.statistics,
+                    iconColor = resourceRepo.getThemedAttr(R.attr.appLightTextColor, isDarkTheme),
+                    iconBackgroundColor = resourceRepo.getColor(R.color.transparent),
+                ),
+                backgroundColor = resourceRepo.getThemedAttr(R.attr.appInactiveColor, isDarkTheme),
                 isEnabled = true,
+                marginHorizontalDp = 0,
             )
         }
 

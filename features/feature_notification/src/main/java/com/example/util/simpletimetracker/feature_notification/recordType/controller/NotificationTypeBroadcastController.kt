@@ -1,16 +1,15 @@
 package com.example.util.simpletimetracker.feature_notification.recordType.controller
 
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
 import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationActivitySwitchInteractor
 import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationTypeInteractor
 import com.example.util.simpletimetracker.feature_notification.activitySwitch.mapper.NotificationControlsMapper
 import com.example.util.simpletimetracker.feature_notification.recordType.interactor.ActivityStartStopFromBroadcastInteractor
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@OptIn(DelicateCoroutinesApi::class)
 @Singleton
 class NotificationTypeBroadcastController @Inject constructor(
     private val notificationTypeInteractor: NotificationTypeInteractor,
@@ -23,7 +22,7 @@ class NotificationTypeBroadcastController @Inject constructor(
         typeId: Long,
     ) {
         if (typeId == 0L) return
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             activityStartStopFromBroadcastInteractor.onActionActivityStop(
                 typeId = typeId,
             )
@@ -36,7 +35,7 @@ class NotificationTypeBroadcastController @Inject constructor(
         selectedTypeId: Long,
         typesShift: Int,
     ) {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             activityStartStopFromBroadcastInteractor.onActionTypeClick(
                 from = notificationControlsMapper.mapExtraToFrom(
                     extra = from,
@@ -55,7 +54,7 @@ class NotificationTypeBroadcastController @Inject constructor(
         tagId: Long,
         typesShift: Int,
     ) {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             activityStartStopFromBroadcastInteractor.onActionTagClick(
                 from = notificationControlsMapper.mapExtraToFrom(
                     extra = from,
@@ -75,7 +74,7 @@ class NotificationTypeBroadcastController @Inject constructor(
         typesShift: Int,
         tagsShift: Int,
     ) {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             activityStartStopFromBroadcastInteractor.onRequestUpdate(
                 from = notificationControlsMapper.mapExtraToFrom(
                     extra = from,
@@ -89,7 +88,7 @@ class NotificationTypeBroadcastController @Inject constructor(
     }
 
     fun onBootCompleted() {
-        GlobalScope.launch {
+        allowDiskRead { MainScope() }.launch {
             notificationTypeInteractor.updateNotifications()
             notificationActivitySwitchInteractor.updateNotification()
         }

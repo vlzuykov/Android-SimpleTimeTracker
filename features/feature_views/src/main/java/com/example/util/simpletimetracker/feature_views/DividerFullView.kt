@@ -2,9 +2,9 @@ package com.example.util.simpletimetracker.feature_views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.util.simpletimetracker.feature_views.databinding.DividerFullViewBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 
 class DividerFullView @JvmOverloads constructor(
     context: Context,
@@ -17,6 +17,6 @@ class DividerFullView @JvmOverloads constructor(
 ) {
 
     init {
-        DividerFullViewBinding.inflate(LayoutInflater.from(context), this)
+        DividerFullViewBinding.inflate(layoutInflater, this)
     }
 }

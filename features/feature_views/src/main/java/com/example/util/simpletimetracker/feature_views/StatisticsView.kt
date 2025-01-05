@@ -3,11 +3,11 @@ package com.example.util.simpletimetracker.feature_views
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.feature_views.ColorUtils.normalizeLightness
 import com.example.util.simpletimetracker.feature_views.databinding.StatisticsViewLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.visible
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
@@ -21,8 +21,7 @@ class StatisticsView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: StatisticsViewLayoutBinding = StatisticsViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = StatisticsViewLayoutBinding.inflate(layoutInflater, this)
 
     var itemName: String = ""
         set(value) {

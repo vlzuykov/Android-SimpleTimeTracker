@@ -34,9 +34,8 @@ import com.example.util.simpletimetracker.feature_widget.R
 import com.example.util.simpletimetracker.feature_widget.common.WidgetViewsHolder
 import com.example.util.simpletimetracker.navigation.Router
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -78,9 +77,8 @@ class WidgetStatisticsChartProvider : AppWidgetProvider() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
+        allowDiskRead { MainScope() }.launch {
             appWidgetIds?.forEach { prefsInteractor.removeStatisticsWidget(it) }
         }
     }
@@ -95,7 +93,6 @@ class WidgetStatisticsChartProvider : AppWidgetProvider() {
         updateAppWidget(context, appWidgetManager, appWidgetId)
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun updateAppWidget(
         context: Context?,
         appWidgetManager: AppWidgetManager?,
@@ -103,7 +100,7 @@ class WidgetStatisticsChartProvider : AppWidgetProvider() {
     ) {
         if (context == null || appWidgetManager == null) return
 
-        GlobalScope.launch(allowDiskRead { Dispatchers.Main }) {
+        allowDiskRead { MainScope() }.launch {
             val view = prepareView(context, appWidgetId)
             val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
             measureView(context, options, view)

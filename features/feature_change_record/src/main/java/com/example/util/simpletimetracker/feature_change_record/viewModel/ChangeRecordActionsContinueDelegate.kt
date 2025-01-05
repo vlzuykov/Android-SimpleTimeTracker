@@ -66,6 +66,7 @@ class ChangeRecordActionsContinueDelegate @Inject constructor(
             ?: return emptyList()
         if (!params.isAvailable) return emptyList()
         if (prefsInteractor.getRetroactiveTrackingMode()) return emptyList()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
@@ -74,6 +75,7 @@ class ChangeRecordActionsContinueDelegate @Inject constructor(
         result += changeRecordViewDataMapper.mapRecordActionButton(
             action = RecordQuickAction.CONTINUE,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }

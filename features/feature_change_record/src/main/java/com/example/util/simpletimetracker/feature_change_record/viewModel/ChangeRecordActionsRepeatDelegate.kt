@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionRepeatMediator
 import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class ChangeRecordActionsRepeatDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val recordActionRepeatMediator: RecordActionRepeatMediator,
     private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
 ) : ChangeRecordActionsSubDelegate<ChangeRecordActionsRepeatDelegate.Parent> {
@@ -46,10 +48,11 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
         )
     }
 
-    private fun loadRepeatViewData(): List<ViewHolderType> {
+    private suspend fun loadRepeatViewData(): List<ViewHolderType> {
         val params = parent?.getViewDataParams()
             ?: return emptyList()
         if (!params.isAvailable) return emptyList()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
@@ -58,6 +61,7 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
         result += changeRecordViewDataMapper.mapRecordActionButton(
             action = RecordQuickAction.REPEAT,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }

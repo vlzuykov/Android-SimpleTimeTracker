@@ -2,10 +2,10 @@ package com.example.util.simpletimetracker.feature_widget.universal.customView
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.feature_views.ColorUtils
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_widget.R
 import com.example.util.simpletimetracker.feature_widget.databinding.WidgetUniversalViewLayoutBinding
 
@@ -19,8 +19,7 @@ class WidgetUniversalView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: WidgetUniversalViewLayoutBinding = WidgetUniversalViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = WidgetUniversalViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         ContextCompat.getColor(context, R.color.widget_universal_background_color).let(::setCardBackgroundColor)

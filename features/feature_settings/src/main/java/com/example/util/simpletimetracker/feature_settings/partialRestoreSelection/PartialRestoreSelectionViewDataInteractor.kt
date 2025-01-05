@@ -5,7 +5,7 @@ import com.example.util.simpletimetracker.core.mapper.ActivityFilterViewDataMapp
 import com.example.util.simpletimetracker.core.mapper.ActivitySuggestionViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
-import com.example.util.simpletimetracker.core.mapper.ComplexRulesViewDataMapper
+import com.example.util.simpletimetracker.core.mapper.ComplexRuleViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.DateDividerViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordViewDataMapper
@@ -36,7 +36,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val activityFilterViewDataMapper: ActivityFilterViewDataMapper,
-    private val complexRulesViewDataMapper: ComplexRulesViewDataMapper,
+    private val complexRuleViewDataMapper: ComplexRuleViewDataMapper,
     private val activitySuggestionViewDataMapper: ActivitySuggestionViewDataMapper,
     private val iconSelectionMapper: IconSelectionMapper,
     private val colorMapper: ColorMapper,
@@ -225,7 +225,7 @@ class PartialRestoreSelectionViewDataInteractor @Inject constructor(
                 // TODO wrong tags order.
                 val tagsOrder = data.tags.keys.toList()
                 data.rules.values.getNotExistingValues().map { rule ->
-                    complexRulesViewDataMapper.mapRuleFiltered(
+                    complexRuleViewDataMapper.mapRuleFiltered(
                         rule = rule,
                         isDarkTheme = isDarkTheme,
                         typesMap = typesMap,
