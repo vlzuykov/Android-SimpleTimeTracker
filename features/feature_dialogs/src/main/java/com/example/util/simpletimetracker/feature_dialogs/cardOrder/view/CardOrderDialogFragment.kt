@@ -11,6 +11,10 @@ import com.example.util.simpletimetracker.core.base.BaseBottomSheetFragment
 import com.example.util.simpletimetracker.core.extension.onItemMoved
 import com.example.util.simpletimetracker.core.extension.setFullScreen
 import com.example.util.simpletimetracker.core.extension.setSkipCollapsed
+import com.example.util.simpletimetracker.core.utils.ITEM_ALPHA_DEFAULT
+import com.example.util.simpletimetracker.core.utils.ITEM_ALPHA_SELECTED
+import com.example.util.simpletimetracker.core.utils.ITEM_SCALE_DEFAULT
+import com.example.util.simpletimetracker.core.utils.ITEM_SCALE_SELECTED
 import com.example.util.simpletimetracker.core.utils.fragmentArgumentDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.category.createCategoryAdapterDelegate
@@ -91,12 +95,6 @@ class CardOrderDialogFragment : BaseBottomSheetFragment<Binding>() {
     }
 
     companion object {
-        private const val ITEM_ALPHA_SELECTED = 0.7f
-        private const val ITEM_ALPHA_DEFAULT = 1.0f
-
-        private const val ITEM_SCALE_SELECTED = 1.1f
-        private const val ITEM_SCALE_DEFAULT = 1.0f
-
         private const val ARGS_PARAMS = "args_card_order_params"
 
         fun createBundle(data: CardOrderDialogParams): Bundle = Bundle().apply {

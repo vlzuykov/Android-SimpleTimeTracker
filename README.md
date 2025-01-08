@@ -110,7 +110,7 @@ Simple app that helps track how much time you spend on all the useless activitie
 
 **Android App**
 
-Copyright (C) 2020-2024
+Copyright (C) 2020-2025
 Anton Razinkov devrazeeman@gmail.com
 
 This program is free software: you can redistribute it and/or modify
@@ -128,7 +128,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 **Wear OS App**
 
-Copyright (C) 2023-2024
+Copyright (C) 2023-2025
 Joseph Hale https://jhale.dev, [@kantahrek](https://github.com/kantahrek), Anton Razinkov devrazeeman@gmail.com
 
 This Source Code Form is subject to the terms of the Mozilla Public

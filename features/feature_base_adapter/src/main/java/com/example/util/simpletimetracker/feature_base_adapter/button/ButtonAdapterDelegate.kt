@@ -13,7 +13,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemB
 
 // TODO remove ripple from icon background if background is transparent.
 // TODO SUG add backup tests
-// TODO SUG add reorder
+// TODO SUG add reorder hint
 // TODO GOAL add backup tests, raise test file version
 fun createButtonAdapterDelegate(
     onClick: (ViewData) -> Unit,

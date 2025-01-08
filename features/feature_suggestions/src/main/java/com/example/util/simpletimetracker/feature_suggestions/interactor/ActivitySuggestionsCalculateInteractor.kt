@@ -19,7 +19,7 @@ class ActivitySuggestionsCalculateInteractor @Inject constructor(
     ): List<Result> {
         // TODO selectable range and number of suggestions?
         val range = timeMapper.getRangeStartAndEnd(
-            rangeLength = RangeLength.Year,
+            rangeLength = RangeLength.Last(365),
             shift = 0,
             firstDayOfWeek = prefsInteractor.getFirstDayOfWeek(),
             startOfDayShift = prefsInteractor.getStartOfDayShift(),

@@ -14,6 +14,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonView
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_suggestions.viewData.ActivitySuggestionsButtonViewData
 import com.example.util.simpletimetracker.feature_suggestions.R
+import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionListViewData
 import com.example.util.simpletimetracker.feature_suggestions.adapter.ActivitySuggestionSpecialViewData
 import com.example.util.simpletimetracker.feature_suggestions.interactor.ActivitySuggestionsCalculateInteractor
 import com.example.util.simpletimetracker.feature_suggestions.interactor.ActivitySuggestionsViewDataInteractor
@@ -114,6 +115,24 @@ class ActivitySuggestionsViewModel @Inject constructor(
                 }.toMap()
                 updateViewData()
             }
+        }
+    }
+
+    fun onItemMoved(
+        items: List<ViewHolderType>,
+        toPosition: Int,
+    ) {
+        val movedItem = items.getOrNull(toPosition)
+            as? ActivitySuggestionListViewData ?: return
+        val forTypeId = movedItem.id.forTypeId
+        val newOrder = items
+            .filterIsInstance<ActivitySuggestionListViewData>()
+            .filter { it.id.forTypeId == forTypeId }
+        val newSuggestions = suggestions[forTypeId].orEmpty().sortedBy { suggestionId ->
+            newOrder.indexOfFirst { it.id.suggestionTypeId == suggestionId }
+        }
+        suggestions = suggestions.toMutableMap().apply {
+            put(forTypeId, newSuggestions)
         }
     }
 
