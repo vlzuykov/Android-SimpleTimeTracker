@@ -7,7 +7,8 @@ import javax.inject.Inject
 
 class CalculateAdjacentActivitiesInteractor @Inject constructor() {
 
-    // Doesn't count multitasked activities.
+    // TODO count multitask also
+    // Doesn't count multitask activities.
     // Only those that started after current ended.
     fun calculateNextActivities(
         typeIds: List<Long>,

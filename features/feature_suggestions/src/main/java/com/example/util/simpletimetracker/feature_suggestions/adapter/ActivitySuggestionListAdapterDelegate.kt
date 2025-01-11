@@ -36,7 +36,6 @@ fun activitySuggestionListAdapterBindDelegate(
     }
 }
 
-// TODO refactor with list element from rules?
 data class ActivitySuggestionListViewData(
     val id: Id,
     val text: String,

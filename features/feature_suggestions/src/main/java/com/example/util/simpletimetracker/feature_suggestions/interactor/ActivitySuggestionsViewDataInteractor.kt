@@ -93,7 +93,9 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
             )
             if (index == 0) {
                 result += HintViewData(
-                    text = resourceRepo.getString(R.string.settings_activity_suggestions),
+                    text = resourceRepo.getString(R.string.settings_activity_suggestions) +
+                        " " +
+                        resourceRepo.getString(R.string.card_order_hint).let { "($it)" },
                     paddingTop = 0,
                     paddingBottom = 0,
                     gravity = HintViewData.Gravity.START,
