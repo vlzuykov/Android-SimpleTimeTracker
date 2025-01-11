@@ -8,6 +8,7 @@ import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
@@ -202,7 +203,7 @@ class ChangeCategoryViewModel @Inject constructor(
             // Zero id creates new record
             Category(
                 id = categoryId,
-                name = newName,
+                name = newName.trimIfNotBlank(),
                 color = colorSelectionViewModelDelegateImpl.newColor,
                 note = newNote,
             ).let {

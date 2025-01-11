@@ -8,6 +8,7 @@ import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSel
 import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.ActivityFilterViewDataMapper
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
@@ -171,7 +172,7 @@ class ChangeActivityFilterViewModel @Inject constructor(
                 id = filterId,
                 selectedIds = newSelectedIds,
                 type = newType,
-                name = newName,
+                name = newName.trimIfNotBlank(),
                 color = colorSelectionViewModelDelegateImpl.newColor,
                 selected = wasSelected,
             ).let {

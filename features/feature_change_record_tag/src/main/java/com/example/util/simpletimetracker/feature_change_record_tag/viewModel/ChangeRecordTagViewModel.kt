@@ -9,6 +9,7 @@ import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSel
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
@@ -272,7 +273,7 @@ class ChangeRecordTagViewModel @Inject constructor(
             // Zero id creates new record
             RecordTag(
                 id = recordTagId,
-                name = newName,
+                name = newName.trimIfNotBlank(),
                 icon = iconSelectionViewModelDelegateImpl.newIcon,
                 color = colorSelectionViewModelDelegateImpl.newColor,
                 iconColorSource = newIconColorSource,
