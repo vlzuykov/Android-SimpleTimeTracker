@@ -33,6 +33,8 @@ abstract class BaseFragment<T : ViewBinding> : Fragment(), Throttler {
         // This also somehow fixes memory leaks occurring on navigation
         // from main to some edit screen and back.
         // If this ever changes - need to also fix these memory leaks.
+        // Also ViewPagers has isSaveEnabled set to false, to avoid crash
+        // "Expected the adapter to be 'fresh' while restoring state".
         return _binding?.root?.also {
             initialized = true
         } ?: run {

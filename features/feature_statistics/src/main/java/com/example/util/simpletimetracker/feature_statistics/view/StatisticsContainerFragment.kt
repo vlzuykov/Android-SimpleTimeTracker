@@ -53,7 +53,10 @@ class StatisticsContainerFragment :
 
     override fun initUi(): Unit = with(binding) {
         pagerStatisticsContainer.apply {
-            adapter = SafeFragmentStateAdapter(StatisticsContainerAdapter(this@StatisticsContainerFragment))
+            isSaveEnabled = false // See BaseFragment.
+            adapter = SafeFragmentStateAdapter(
+                StatisticsContainerAdapter(this@StatisticsContainerFragment),
+            )
             offscreenPageLimit = 1
             isUserInputEnabled = false
         }
