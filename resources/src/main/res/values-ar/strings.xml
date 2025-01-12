@@ -542,6 +542,7 @@
     <string name="data_edit_success_message">تم تغيير البيانات</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">الازدواجية</string>
     <string name="records_filter_select_tags">اختيار الوسوم</string>
     <string name="records_filter_filter_tags">استبعاد العلامات</string>
     <string name="records_filter_manually_filtered">تمت التصفية</string>
@@ -551,6 +552,9 @@
     <string name="records_filter_invert_selection">عكس الاختيار</string>
     <string name="records_filter_duration_min">الحد الأدنى</string>
     <string name="records_filter_duration_max">الحد الأقصى</string>
+    <string name="records_filter_duplications_same_activity">نفس النشاط</string>
+    <string name="records_filter_duplications_same_times">نفس الوقت</string>
+    <string name="records_filter_duplications_manually_fitler">تصفية التكرارات</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">التركيز</string>

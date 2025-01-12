@@ -542,6 +542,7 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="data_edit_success_message">Veri değişti</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Çoğaltmalar</string>
     <string name="records_filter_select_tags">Etiketleri seçin</string>
     <string name="records_filter_filter_tags">Etiketleri hariç tut</string>
     <string name="records_filter_manually_filtered">Filtrelendi</string>
@@ -551,6 +552,9 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="records_filter_invert_selection">Zıt seçim</string>
     <string name="records_filter_duration_min">Asgari</string>
     <string name="records_filter_duration_max">Maksimum</string>
+    <string name="records_filter_duplications_same_activity">Aynı aktivite</string>
+    <string name="records_filter_duplications_same_times">Aynı zaman</string>
+    <string name="records_filter_duplications_manually_fitler">Kopyaları filtrele</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Odaklanma</string>

@@ -30,6 +30,8 @@ sealed interface RecordsFilter {
 
     data class Duration(val range: Range) : RecordsFilter // duration-from, duration-to in range.
 
+    data class Duplications(val items: List<DuplicationsItem>) : RecordsFilter
+
     sealed interface CommentItem {
         object NoComment : CommentItem
         object AnyComment : CommentItem
@@ -44,5 +46,10 @@ sealed interface RecordsFilter {
     sealed interface TagItem {
         data class Tagged(val tagId: Long) : TagItem
         object Untagged : TagItem
+    }
+
+    sealed interface DuplicationsItem {
+        object SameActivity : DuplicationsItem
+        object SameTimes : DuplicationsItem
     }
 }

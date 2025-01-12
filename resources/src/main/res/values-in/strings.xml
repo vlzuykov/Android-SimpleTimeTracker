@@ -542,6 +542,7 @@ Contoh:<br/>
     <string name="data_edit_success_message">Data berubah</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplikasi</string>
     <string name="records_filter_select_tags">Pilih tag</string>
     <string name="records_filter_filter_tags">Kecualikan tag</string>
     <string name="records_filter_manually_filtered">Tersaring</string>
@@ -551,6 +552,9 @@ Contoh:<br/>
     <string name="records_filter_invert_selection">Pilihan sebaliknya</string>
     <string name="records_filter_duration_min">Minimum</string>
     <string name="records_filter_duration_max">Maksimum</string>
+    <string name="records_filter_duplications_same_activity">Aktivitas yang sama</string>
+    <string name="records_filter_duplications_same_times">Waktu yang sama</string>
+    <string name="records_filter_duplications_manually_fitler">Filter duplikat</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Fokus</string>

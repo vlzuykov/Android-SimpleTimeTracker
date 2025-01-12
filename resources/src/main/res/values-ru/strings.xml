@@ -542,6 +542,7 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="data_edit_success_message">Данные изменены</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Дублирование</string>
     <string name="records_filter_select_tags">Выбрать теги</string>
     <string name="records_filter_filter_tags">Исключить теги</string>
     <string name="records_filter_manually_filtered">Отфильтровано</string>
@@ -551,6 +552,9 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="records_filter_invert_selection">Инвертировать выбор</string>
     <string name="records_filter_duration_min">Минимум</string>
     <string name="records_filter_duration_max">Максимум</string>
+    <string name="records_filter_duplications_same_activity">Та же деятельность</string>
+    <string name="records_filter_duplications_same_times">В то же время</string>
+    <string name="records_filter_duplications_manually_fitler">Фильтровать дубликаты</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Фокус</string>

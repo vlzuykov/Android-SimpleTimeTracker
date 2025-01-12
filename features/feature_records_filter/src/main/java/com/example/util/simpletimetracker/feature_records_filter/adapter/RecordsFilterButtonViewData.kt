@@ -14,5 +14,6 @@ data class RecordsFilterButtonViewData(
 
     enum class Type {
         INVERT_SELECTION,
+        FILTER_DUPLICATES,
     }
 }

@@ -42,6 +42,9 @@ sealed interface RecordsFilterParam : Parcelable {
     @Parcelize
     data class Duration(val range: RangeParams) : RecordsFilterParam
 
+    @Parcelize
+    data class Duplications(val items: List<DuplicationsItem>) : RecordsFilterParam
+
     sealed interface CommentItem : Parcelable {
         @Parcelize
         object NoComment : CommentItem
@@ -67,5 +70,13 @@ sealed interface RecordsFilterParam : Parcelable {
 
         @Parcelize
         object Untagged : TagItem
+    }
+
+    sealed interface DuplicationsItem : Parcelable {
+        @Parcelize
+        object SameActivity : DuplicationsItem
+
+        @Parcelize
+        object SameTimes : DuplicationsItem
     }
 }

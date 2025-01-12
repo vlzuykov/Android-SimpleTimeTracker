@@ -125,6 +125,7 @@ fun RecordsFilterParam.toModel(): RecordsFilter {
         is RecordsFilterParam.DaysOfWeek -> RecordsFilter.DaysOfWeek(items)
         is RecordsFilterParam.TimeOfDay -> RecordsFilter.TimeOfDay(range.toModel())
         is RecordsFilterParam.Duration -> RecordsFilter.Duration(range.toModel())
+        is RecordsFilterParam.Duplications -> RecordsFilter.Duplications(items.map { it.toModel() })
     }
 }
 
@@ -142,6 +143,7 @@ fun RecordsFilter.toParams(): RecordsFilterParam {
         is RecordsFilter.DaysOfWeek -> RecordsFilterParam.DaysOfWeek(items)
         is RecordsFilter.TimeOfDay -> RecordsFilterParam.TimeOfDay(range.toParams())
         is RecordsFilter.Duration -> RecordsFilterParam.Duration(range.toParams())
+        is RecordsFilter.Duplications -> RecordsFilterParam.Duplications(items.map { it.toParams() })
     }
 }
 
@@ -186,6 +188,20 @@ fun RecordsFilter.TagItem.toParams(): RecordsFilterParam.TagItem {
     return when (this) {
         is RecordsFilter.TagItem.Tagged -> RecordsFilterParam.TagItem.Tagged(tagId)
         is RecordsFilter.TagItem.Untagged -> RecordsFilterParam.TagItem.Untagged
+    }
+}
+
+fun RecordsFilterParam.DuplicationsItem.toModel(): RecordsFilter.DuplicationsItem {
+    return when (this) {
+        is RecordsFilterParam.DuplicationsItem.SameActivity -> RecordsFilter.DuplicationsItem.SameActivity
+        is RecordsFilterParam.DuplicationsItem.SameTimes -> RecordsFilter.DuplicationsItem.SameTimes
+    }
+}
+
+fun RecordsFilter.DuplicationsItem.toParams(): RecordsFilterParam.DuplicationsItem {
+    return when (this) {
+        is RecordsFilter.DuplicationsItem.SameActivity -> RecordsFilterParam.DuplicationsItem.SameActivity
+        is RecordsFilter.DuplicationsItem.SameTimes -> RecordsFilterParam.DuplicationsItem.SameTimes
     }
 }
 

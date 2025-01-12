@@ -542,6 +542,7 @@
     <string name="data_edit_success_message">Дані змінено</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Дублювання</string>
     <string name="records_filter_select_tags">Вибрати теги</string>
     <string name="records_filter_filter_tags">Виключити теги</string>
     <string name="records_filter_manually_filtered">Відфільтрований</string>
@@ -551,6 +552,9 @@
     <string name="records_filter_invert_selection">Інвертувати виділення</string>
     <string name="records_filter_duration_min">Мінімум</string>
     <string name="records_filter_duration_max">Максимум</string>
+    <string name="records_filter_duplications_same_activity">Така сама діяльність</string>
+    <string name="records_filter_duplications_same_times">Той самий час</string>
+    <string name="records_filter_duplications_manually_fitler">Фільтр дублікатів</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Фокус</string>

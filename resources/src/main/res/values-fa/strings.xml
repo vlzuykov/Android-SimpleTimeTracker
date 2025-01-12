@@ -542,6 +542,7 @@
     <string name="data_edit_success_message">اطلاعات تغییر کردند</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">تکراری ها</string>
     <string name="records_filter_select_tags">انتخاب برچسب ها</string>
     <string name="records_filter_filter_tags">حذف برچسب ها</string>
     <string name="records_filter_manually_filtered">فیلتر شده</string>
@@ -551,6 +552,9 @@
     <string name="records_filter_invert_selection">معکوس کردن موارد انتخابی</string>
     <string name="records_filter_duration_min">حداقل</string>
     <string name="records_filter_duration_max">حداکثر</string>
+    <string name="records_filter_duplications_same_activity">همان فعالیت</string>
+    <string name="records_filter_duplications_same_times">همان زمان</string>
+    <string name="records_filter_duplications_manually_fitler">فیلترهای تکراری</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">تمرکز</string>

@@ -95,10 +95,13 @@ class DataEditViewModel @Inject constructor(
         RecordsFilterParams(
             tag = FILTER_TAG,
             title = resourceRepo.getString(R.string.chart_filter_hint),
-            dateSelectionAvailable = true,
-            untrackedSelectionAvailable = false,
-            multitaskSelectionAvailable = false,
-            addRunningRecords = false,
+            flags = RecordsFilterParams.Flags(
+                dateSelectionAvailable = true,
+                untrackedSelectionAvailable = false,
+                multitaskSelectionAvailable = false,
+                duplicationsSelectionAvailable = true,
+                addRunningRecords = false,
+            ),
             filters = filters.map(RecordsFilter::toParams),
             defaultLastDaysNumber = 7,
         ).let(router::navigate)

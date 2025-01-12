@@ -542,6 +542,7 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="data_edit_success_message">डेटा बदल गया</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">दोहराव</string>
     <string name="records_filter_select_tags">टैग चुनें</string>
     <string name="records_filter_filter_tags">टैग हटाएं</string>
     <string name="records_filter_manually_filtered">छाना हुआ</string>
@@ -551,6 +552,9 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="records_filter_invert_selection">उलट चयन</string>
     <string name="records_filter_duration_min">न्यूनतम</string>
     <string name="records_filter_duration_max">अधिकतम</string>
+    <string name="records_filter_duplications_same_activity">वही गतिविधि</string>
+    <string name="records_filter_duplications_same_times">उसी समय</string>
+    <string name="records_filter_duplications_manually_fitler">डुप्लिकेट फ़िल्टर करें</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">फोकस</string>

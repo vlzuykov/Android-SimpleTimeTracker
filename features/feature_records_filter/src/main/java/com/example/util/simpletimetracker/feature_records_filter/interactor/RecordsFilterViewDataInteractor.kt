@@ -44,6 +44,7 @@ import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
+import com.example.util.simpletimetracker.domain.record.extension.hasDuplicationsFilter
 import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToTag
 import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
@@ -60,6 +61,7 @@ import com.example.util.simpletimetracker.feature_records_filter.adapter.Records
 import com.example.util.simpletimetracker.feature_records_filter.adapter.RecordsFilterRangeViewData
 import com.example.util.simpletimetracker.feature_records_filter.mapper.RecordsFilterViewDataMapper
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterCommentType
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDuplicationsType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordsFilterSelectedRecordsViewData
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordsFilterSelectionState
@@ -147,47 +149,58 @@ class RecordsFilterViewDataInteractor @Inject constructor(
         val useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat()
         val useProportionalMinutes = prefsInteractor.getUseProportionalMinutes()
         val showSeconds = prefsInteractor.getShowSeconds()
+        val manuallyFilteredIds = filters.getManuallyFilteredRecordIds()
+            .keys.toList()
         val finalFilters = filters
             .takeUnless {
                 // If date isn't available and no other filters -
                 // show empty records even if date is present.
-                !extra.dateSelectionAvailable && filters.none { it !is RecordsFilter.Date }
+                !extra.flags.dateSelectionAvailable &&
+                    filters.none { it !is RecordsFilter.Date }
             }
             .orEmpty()
-        val records = recordFilterInteractor.getByFilter(finalFilters)
-            .let { if (extra.addRunningRecords) it else it.filterIsInstance<Record>() }
-        val manuallyFilteredRecords = filters
-            .getManuallyFilteredRecordIds()
-            .mapNotNull { recordInteractor.get(it) } // TODO do better
-            .mapNotNull { record ->
-                val mapped = recordViewDataMapper.mapFilteredRecord(
-                    record = record,
-                    recordTypes = recordTypes,
-                    allRecordTags = recordTags,
-                    isDarkTheme = isDarkTheme,
-                    useMilitaryTime = useMilitaryTime,
-                    useProportionalMinutes = useProportionalMinutes,
-                    showSeconds = showSeconds,
-                    isFiltered = true,
-                ) ?: return@mapNotNull null
-                record.timeStarted to mapped
+            .toMutableList()
+            .apply {
+                // Filtered records are marked separately here, so need records with them.
+                // But of only manual filter selected - leave filter, otherwise records would be empty.
+                if (filters.any { it !is RecordsFilter.ManuallyFiltered }) {
+                    removeAll { it is RecordsFilter.ManuallyFiltered }
+                }
             }
 
+        val records = recordFilterInteractor.getByFilter(finalFilters)
+            .let { if (extra.flags.addRunningRecords) it else it.filterIsInstance<Record>() }
+
         var count: Int
+        var filtered = 0
         val viewData = records
             .mapNotNull { record ->
                 ensureActive()
                 val viewData = when (record) {
                     is Record -> if (record.typeId != UNTRACKED_ITEM_ID) {
-                        recordViewDataMapper.map(
-                            record = record,
-                            recordType = recordTypes[record.typeId] ?: return@mapNotNull null,
-                            recordTags = recordTags.filter { it.id in record.tagIds },
-                            isDarkTheme = isDarkTheme,
-                            useMilitaryTime = useMilitaryTime,
-                            useProportionalMinutes = useProportionalMinutes,
-                            showSeconds = showSeconds,
-                        )
+                        if (record.id in manuallyFilteredIds) {
+                            filtered += 1
+                            recordViewDataMapper.mapFilteredRecord(
+                                record = record,
+                                recordTypes = recordTypes,
+                                allRecordTags = recordTags,
+                                isDarkTheme = isDarkTheme,
+                                useMilitaryTime = useMilitaryTime,
+                                useProportionalMinutes = useProportionalMinutes,
+                                showSeconds = showSeconds,
+                                isFiltered = true,
+                            ) ?: return@mapNotNull null
+                        } else {
+                            recordViewDataMapper.map(
+                                record = record,
+                                recordType = recordTypes[record.typeId] ?: return@mapNotNull null,
+                                recordTags = recordTags.filter { it.id in record.tagIds },
+                                isDarkTheme = isDarkTheme,
+                                useMilitaryTime = useMilitaryTime,
+                                useProportionalMinutes = useProportionalMinutes,
+                                showSeconds = showSeconds,
+                            )
+                        }
                     } else {
                         recordViewDataMapper.mapToUntracked(
                             timeStarted = record.timeStarted,
@@ -223,8 +236,7 @@ class RecordsFilterViewDataInteractor @Inject constructor(
                 }
                 record.timeStarted to viewData
             }
-            .also { count = it.size }
-            .plus(manuallyFilteredRecords)
+            .also { count = it.size - filtered }
             .sortedByDescending { (timeStarted, _) -> timeStarted }
             .let(dateDividerViewDataMapper::addDateViewData)
             .ifEmpty { listOf(recordViewDataMapper.mapToEmpty()) }
@@ -264,10 +276,11 @@ class RecordsFilterViewDataInteractor @Inject constructor(
             RecordFilterType.Comment.takeUnless { hasUntracked || hasMultitask },
             RecordFilterType.SelectedTags.takeUnless { hasUntracked || hasMultitask },
             RecordFilterType.FilteredTags.takeUnless { hasUntracked || hasMultitask },
-            RecordFilterType.Date.takeIf { extra.dateSelectionAvailable },
+            RecordFilterType.Date.takeIf { extra.flags.dateSelectionAvailable },
             RecordFilterType.DaysOfWeek,
             RecordFilterType.TimeOfDay,
             RecordFilterType.Duration,
+            RecordFilterType.Duplications.takeIf { extra.flags.duplicationsSelectionAvailable },
             RecordFilterType.ManuallyFiltered.takeIf {
                 filters.hasManuallyFiltered() && !hasUntracked && !hasMultitask
             },
@@ -375,20 +388,20 @@ class RecordsFilterViewDataInteractor @Inject constructor(
         }
 
         if (
-            extra.untrackedSelectionAvailable ||
-            extra.multitaskSelectionAvailable
+            extra.flags.untrackedSelectionAvailable ||
+            extra.flags.multitaskSelectionAvailable
         ) {
             DividerViewData(2).let(result::add)
         }
 
-        if (extra.untrackedSelectionAvailable) {
+        if (extra.flags.untrackedSelectionAvailable) {
             categoryViewDataMapper.mapToTagUntrackedItem(
                 isFiltered = !filters.hasUntrackedFilter(),
                 isDarkTheme = isDarkTheme,
             ).let(result::add)
         }
 
-        if (extra.multitaskSelectionAvailable) {
+        if (extra.flags.multitaskSelectionAvailable) {
             categoryViewDataMapper.mapToMultitaskItem(
                 isFiltered = !filters.hasMultitaskFilter(),
                 isDarkTheme = isDarkTheme,
@@ -430,6 +443,40 @@ class RecordsFilterViewDataInteractor @Inject constructor(
             id = 1L, // Only one at the time.
             text = comment.orEmpty(),
         )
+
+        return@withContext result
+    }
+
+    suspend fun getDuplicationsFilterSelectionViewData(
+        filters: List<RecordsFilter>,
+    ): List<ViewHolderType> = withContext(Dispatchers.Default) {
+        val result: MutableList<ViewHolderType> = mutableListOf()
+        val isDarkTheme = prefsInteractor.getDarkMode()
+        val duplicationsFilters = listOf(
+            RecordFilterDuplicationsType.SameActivity,
+            RecordFilterDuplicationsType.SameTimes,
+        )
+        val button = RecordsFilterButtonViewData(
+            type = RecordsFilterButtonViewData.Type.FILTER_DUPLICATES,
+            text = resourceRepo.getString(R.string.records_filter_duplications_manually_fitler),
+        )
+
+        result += EmptySpaceViewData(
+            id = 1,
+            width = EmptySpaceViewData.ViewDimension.MatchParent,
+            height = EmptySpaceViewData.ViewDimension.ExactSizeDp(6),
+        )
+        result += duplicationsFilters.map {
+            mapper.mapDuplicationsFilter(
+                type = it,
+                filters = filters,
+                isDarkTheme = isDarkTheme,
+            )
+        }
+        if (filters.hasDuplicationsFilter()) {
+            result += DividerViewData(1)
+            result += button
+        }
 
         return@withContext result
     }
@@ -563,6 +610,7 @@ class RecordsFilterViewDataInteractor @Inject constructor(
         return@withContext result
     }
 
+    // TODO add loader when a lot of records filtered.
     suspend fun getManualFilterSelectionViewData(
         filters: List<RecordsFilter>,
         recordTypes: Map<Long, RecordType>,
@@ -572,14 +620,19 @@ class RecordsFilterViewDataInteractor @Inject constructor(
         val useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat()
         val useProportionalMinutes = prefsInteractor.getUseProportionalMinutes()
         val showSeconds = prefsInteractor.getShowSeconds()
+        val manuallyFilteredIds = filters.getManuallyFilteredRecordIds()
+            .keys.toList()
         val button = RecordsFilterButtonViewData(
             type = RecordsFilterButtonViewData.Type.INVERT_SELECTION,
             text = resourceRepo.getString(R.string.records_filter_invert_selection),
         )
+        val manuallyFilteredRecords = if (manuallyFilteredIds.size > 10) {
+            recordInteractor.getAll().filter { it.id in manuallyFilteredIds }
+        } else {
+            manuallyFilteredIds.mapNotNull { recordInteractor.get(it) }
+        }
 
-        return@withContext button.let(::listOf) + filters
-            .getManuallyFilteredRecordIds()
-            .mapNotNull { recordInteractor.get(it) } // TODO do better
+        return@withContext button.let(::listOf) + manuallyFilteredRecords
             .mapNotNull { record ->
                 val mapped = recordViewDataMapper.mapFilteredRecord(
                     record = record,

@@ -82,10 +82,11 @@ fun List<RecordsFilter>.getFilteredTags(): List<RecordsFilter.TagItem> {
         .flatten()
 }
 
-fun List<RecordsFilter>.getManuallyFilteredRecordIds(): List<Long> {
+fun List<RecordsFilter>.getManuallyFilteredRecordIds(): Map<Long, Boolean> {
     return filterIsInstance<RecordsFilter.ManuallyFiltered>()
         .map(RecordsFilter.ManuallyFiltered::recordIds)
         .flatten()
+        .associateWith { true }
 }
 
 fun List<RecordsFilter>.getDaysOfWeek(): List<DayOfWeek> {
@@ -158,4 +159,22 @@ fun List<RecordsFilter.CategoryItem>.hasUncategorizedItem(): Boolean {
 
 fun List<RecordsFilter>.hasManuallyFiltered(): Boolean {
     return any { it is RecordsFilter.ManuallyFiltered }
+}
+
+fun List<RecordsFilter>.hasDuplicationsFilter(): Boolean {
+    return any { it is RecordsFilter.Duplications }
+}
+
+fun List<RecordsFilter>.getDuplicationItems(): List<RecordsFilter.DuplicationsItem> {
+    return filterIsInstance<RecordsFilter.Duplications>()
+        .map(RecordsFilter.Duplications::items)
+        .flatten()
+}
+
+fun List<RecordsFilter.DuplicationsItem>.hasSameActivity(): Boolean {
+    return any { it is RecordsFilter.DuplicationsItem.SameActivity }
+}
+
+fun List<RecordsFilter.DuplicationsItem>.hasSameTimes(): Boolean {
+    return any { it is RecordsFilter.DuplicationsItem.SameTimes }
 }

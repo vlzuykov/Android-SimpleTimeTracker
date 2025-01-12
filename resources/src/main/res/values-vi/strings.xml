@@ -542,6 +542,7 @@ Ví dụ:<br/>
     <string name="data_edit_success_message">Dữ liệu đã thay đổi</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Bản sao</string>
     <string name="records_filter_select_tags">Chọn thẻ</string>
     <string name="records_filter_filter_tags">Loại trừ thẻ</string>
     <string name="records_filter_manually_filtered">Đã lọc</string>
@@ -551,6 +552,9 @@ Ví dụ:<br/>
     <string name="records_filter_invert_selection">Đảo ngược lựa chọn</string>
     <string name="records_filter_duration_min">Tối thiểu</string>
     <string name="records_filter_duration_max">Tối đa</string>
+    <string name="records_filter_duplications_same_activity">Hoạt động tương tự</string>
+    <string name="records_filter_duplications_same_times">Cùng thời gian</string>
+    <string name="records_filter_duplications_manually_fitler">Lọc trùng lặp</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Tiêu điểm</string>

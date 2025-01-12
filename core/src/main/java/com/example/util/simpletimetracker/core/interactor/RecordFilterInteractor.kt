@@ -29,6 +29,9 @@ import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTyp
 import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.record.mapper.RangeMapper
 import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.extension.getDuplicationItems
+import com.example.util.simpletimetracker.domain.record.extension.hasDuplicationsFilter
+import com.example.util.simpletimetracker.domain.record.interactor.GetDuplicatedRecordsInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.GetUntrackedRecordsInteractor
 import com.example.util.simpletimetracker.domain.record.model.Range
 import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
@@ -49,6 +52,7 @@ class RecordFilterInteractor @Inject constructor(
     private val runningRecordInteractor: RunningRecordInteractor,
     private val getUntrackedRecordsInteractor: GetUntrackedRecordsInteractor,
     private val getMultitaskRecordsInteractor: GetMultitaskRecordsInteractor,
+    private val getDuplicatedRecordsInteractor: GetDuplicatedRecordsInteractor,
     private val timeMapper: TimeMapper,
     private val rangeMapper: RangeMapper,
     private val prefsInteractor: PrefsInteractor,
@@ -104,10 +108,11 @@ class RecordFilterInteractor @Inject constructor(
         val filteredTagItems: List<RecordsFilter.TagItem> = filters.getFilteredTags()
         val filteredTaggedIds: List<Long> = filteredTagItems.getTaggedIds()
         val filteredUntagged: Boolean = filteredTagItems.hasUntaggedItem()
-        val manuallyFilteredIds: List<Long> = filters.getManuallyFilteredRecordIds()
+        val manuallyFilteredIds: Map<Long, Boolean> = filters.getManuallyFilteredRecordIds()
         val daysOfWeek: List<DayOfWeek> = filters.getDaysOfWeek()
         val timeOfDay: Range? = filters.getTimeOfDay()
         val durations: List<Range> = filters.getDuration()?.let(::listOf).orEmpty()
+        val duplicationItems: List<RecordsFilter.DuplicationsItem> = filters.getDuplicationItems()
 
         // TODO Use different queries for optimization.
         // TODO by tag (tagged, untagged).
@@ -166,6 +171,17 @@ class RecordFilterInteractor @Inject constructor(
             }
         }
 
+        val duplicationIds: Map<Long, Boolean> = if (filters.hasDuplicationsFilter()) {
+            getDuplicatedRecordsInteractor.execute(
+                filters = duplicationItems,
+                records = records,
+            ).let {
+                it.original + it.duplications
+            }.associateWith { true }
+        } else {
+            emptyMap()
+        }
+
         // TODO multitask filters.
 
         fun RecordBase.selectedByActivity(): Boolean {
@@ -209,6 +225,12 @@ class RecordFilterInteractor @Inject constructor(
             if (manuallyFilteredIds.isEmpty()) return false
             if (this !is Record) return false
             return id in manuallyFilteredIds
+        }
+
+        fun RecordBase.selectedByDuplications(): Boolean {
+            if (duplicationItems.isEmpty()) return true
+            if (this !is Record) return true
+            return id in duplicationIds
         }
 
         fun RecordBase.selectedByDayOfWeek(): Boolean {
@@ -292,7 +314,8 @@ class RecordFilterInteractor @Inject constructor(
                 !record.isManuallyFiltered() &&
                 record.selectedByDayOfWeek() &&
                 record.selectedByTimeOfDay() &&
-                record.selectedByDuration()
+                record.selectedByDuration() &&
+                record.selectedByDuplications()
         }
     }
 

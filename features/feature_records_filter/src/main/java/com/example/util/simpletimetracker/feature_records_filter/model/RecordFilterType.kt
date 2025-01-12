@@ -15,4 +15,5 @@ sealed interface RecordFilterType : FilterViewData.Type {
     object DaysOfWeek : RecordFilterType
     object TimeOfDay : RecordFilterType
     object Duration : RecordFilterType
+    object Duplications : RecordFilterType
 }

@@ -542,6 +542,7 @@ Examplu:<br/>
     <string name="data_edit_success_message">Informații modificate</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplicări</string>
     <string name="records_filter_select_tags">Alege etichetele</string>
     <string name="records_filter_filter_tags">Exclude etichete</string>
     <string name="records_filter_manually_filtered">Filtrate</string>
@@ -551,6 +552,9 @@ Examplu:<br/>
     <string name="records_filter_invert_selection">Inversează selecția</string>
     <string name="records_filter_duration_min">Minim</string>
     <string name="records_filter_duration_max">Maxim</string>
+    <string name="records_filter_duplications_same_activity">Aceeași activitate</string>
+    <string name="records_filter_duplications_same_times">Același timp</string>
+    <string name="records_filter_duplications_manually_fitler">Filtrați duplicatele</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Concentrare</string>

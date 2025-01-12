@@ -1,12 +1,16 @@
 package com.example.util.simpletimetracker.feature_records_filter.interactor
 
+import com.example.util.simpletimetracker.core.interactor.RecordFilterInteractor
 import com.example.util.simpletimetracker.domain.base.UNCATEGORIZED_ITEM_ID
 import com.example.util.simpletimetracker.domain.category.model.Category
+import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.record.extension.getAllTypeIds
 import com.example.util.simpletimetracker.domain.record.extension.getCategoryItems
 import com.example.util.simpletimetracker.domain.record.extension.getCommentItems
 import com.example.util.simpletimetracker.domain.record.extension.getDaysOfWeek
+import com.example.util.simpletimetracker.domain.record.extension.getDuplicationItems
 import com.example.util.simpletimetracker.domain.record.extension.getFilteredTags
 import com.example.util.simpletimetracker.domain.record.extension.getManuallyFilteredRecordIds
 import com.example.util.simpletimetracker.domain.record.extension.getSelectedTags
@@ -14,21 +18,21 @@ import com.example.util.simpletimetracker.domain.record.extension.getTypeIds
 import com.example.util.simpletimetracker.domain.record.extension.getTypeIdsFromCategories
 import com.example.util.simpletimetracker.domain.record.extension.hasMultitaskFilter
 import com.example.util.simpletimetracker.domain.record.extension.hasUntrackedFilter
-import com.example.util.simpletimetracker.domain.recordTag.interactor.FilterSelectableTagsInteractor
-import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.interactor.GetDuplicatedRecordsInteractor
 import com.example.util.simpletimetracker.domain.record.model.Range
-import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
-import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
-import com.example.util.simpletimetracker.domain.recordType.model.RecordType
-import com.example.util.simpletimetracker.domain.category.model.RecordTypeCategory
-import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToTag
 import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.recordTag.interactor.FilterSelectableTagsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTypeToTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.record.RecordViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
 import com.example.util.simpletimetracker.feature_records_filter.mapper.RecordsFilterViewDataMapper
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterCommentType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDateType
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDuplicationsType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordsFilterSelectedRecordsViewData
 import com.example.util.simpletimetracker.feature_records_filter.viewData.RecordsFilterSelectionButtonType
@@ -37,6 +41,8 @@ import javax.inject.Inject
 class RecordsFilterUpdateInteractor @Inject constructor(
     private val filterSelectableTagsInteractor: FilterSelectableTagsInteractor,
     private val recordsFilterViewDataMapper: RecordsFilterViewDataMapper,
+    private val getDuplicatedRecordsInteractor: GetDuplicatedRecordsInteractor,
+    private val recordFilterInteractor: RecordFilterInteractor,
 ) {
 
     fun handleTypeClick(
@@ -148,6 +154,47 @@ class RecordsFilterUpdateInteractor @Inject constructor(
         return filters
     }
 
+    fun handleDuplicationsFilterClick(
+        currentFilters: List<RecordsFilter>,
+        itemType: FilterViewData.Type,
+    ): List<RecordsFilter> {
+        val filters = currentFilters.toMutableList()
+        val currentItems = filters.getDuplicationItems()
+
+        val clickedItem = when (itemType) {
+            is RecordFilterDuplicationsType.SameActivity -> {
+                RecordsFilter.DuplicationsItem.SameActivity
+            }
+            is RecordFilterDuplicationsType.SameTimes -> {
+                RecordsFilter.DuplicationsItem.SameTimes
+            }
+            else -> return currentFilters
+        }
+        val hasDefaultItem = currentItems.any { it is RecordsFilter.DuplicationsItem.SameTimes }
+        val defaultItemIsClicked = clickedItem is RecordsFilter.DuplicationsItem.SameTimes
+        val newItems = currentItems.toMutableList().apply {
+            when {
+                hasDefaultItem && defaultItemIsClicked -> {
+                    // Remove all filters if default will be removed.
+                    clear()
+                }
+                !hasDefaultItem && !defaultItemIsClicked -> {
+                    // Add default filter if it is not added.
+                    add(RecordsFilter.DuplicationsItem.SameTimes)
+                    addOrRemove(clickedItem)
+                }
+                else -> {
+                    addOrRemove(clickedItem)
+                }
+            }
+        }
+
+        filters.removeAll { it is RecordsFilter.Duplications }
+        if (newItems.isNotEmpty()) filters.add(RecordsFilter.Duplications(newItems))
+
+        return filters
+    }
+
     fun handleCommentFilterClick(
         currentFilters: List<RecordsFilter>,
         itemType: FilterViewData.Type,
@@ -194,10 +241,10 @@ class RecordsFilterUpdateInteractor @Inject constructor(
     ): List<RecordsFilter> {
         val filters = currentFilters.toMutableList()
         val newIds = filters.getManuallyFilteredRecordIds()
-            .toMutableList()
-            .apply { addOrRemove(id) }
+            .toMutableMap()
+            .apply { addOrRemove(id, true) }
         filters.removeAll { it is RecordsFilter.ManuallyFiltered }
-        if (newIds.isNotEmpty()) filters.add(RecordsFilter.ManuallyFiltered(newIds))
+        if (newIds.isNotEmpty()) filters.add(RecordsFilter.ManuallyFiltered(newIds.keys.toList()))
         return filters
     }
 
@@ -205,17 +252,41 @@ class RecordsFilterUpdateInteractor @Inject constructor(
         currentFilters: List<RecordsFilter>,
         recordsViewData: RecordsFilterSelectedRecordsViewData?,
     ): List<RecordsFilter> {
+        if (recordsViewData == null || recordsViewData.isLoading) return currentFilters
+
         val filters = currentFilters.toMutableList()
         val filteredIds = filters.getManuallyFilteredRecordIds()
-            .toMutableList()
         val selectedIds = recordsViewData
-            ?.recordsViewData
-            .orEmpty()
+            .recordsViewData
             .filterIsInstance<RecordViewData.Tracked>()
             .filter { it.id !in filteredIds }
             .map { it.id }
 
         filters.removeAll { it is RecordsFilter.ManuallyFiltered }
+        if (selectedIds.isNotEmpty()) filters.add(RecordsFilter.ManuallyFiltered(selectedIds))
+        return filters
+    }
+
+    suspend fun handleFilterDuplicates(
+        currentFilters: List<RecordsFilter>,
+        recordsViewData: RecordsFilterSelectedRecordsViewData?,
+    ): List<RecordsFilter> {
+        if (recordsViewData == null || recordsViewData.isLoading) return currentFilters
+
+        val filters = currentFilters.toMutableList()
+        filters.removeAll { it is RecordsFilter.ManuallyFiltered }
+        val records = recordFilterInteractor.getByFilter(filters)
+        val result = getDuplicatedRecordsInteractor.execute(
+            filters = filters.getDuplicationItems(),
+            records = records,
+        )
+        val selectedIds = recordsViewData
+            .recordsViewData
+            .mapNotNull {
+                if (it !is RecordViewData.Tracked) return@mapNotNull null
+                if (it.id in result.duplications) it.id else null
+            }
+
         if (selectedIds.isNotEmpty()) filters.add(RecordsFilter.ManuallyFiltered(selectedIds))
         return filters
     }

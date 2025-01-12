@@ -542,6 +542,7 @@ Exemple:<br/>
     <string name="data_edit_success_message">Dades canviades</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplicacions</string>
     <string name="records_filter_select_tags">Seleccioneu etiquetes</string>
     <string name="records_filter_filter_tags">Exclou etiquetes</string>
     <string name="records_filter_manually_filtered">Filtrat</string>
@@ -551,6 +552,9 @@ Exemple:<br/>
     <string name="records_filter_invert_selection">Inverteix la selecció</string>
     <string name="records_filter_duration_min">Mínim</string>
     <string name="records_filter_duration_max">Màxim</string>
+    <string name="records_filter_duplications_same_activity">La mateixa activitat</string>
+    <string name="records_filter_duplications_same_times">El mateix temps</string>
+    <string name="records_filter_duplications_manually_fitler">Filtra els duplicats</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Enfocament</string>

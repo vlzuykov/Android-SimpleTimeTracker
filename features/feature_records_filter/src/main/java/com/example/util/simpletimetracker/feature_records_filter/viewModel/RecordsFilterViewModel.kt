@@ -46,6 +46,7 @@ import com.example.util.simpletimetracker.feature_records_filter.interactor.Reco
 import com.example.util.simpletimetracker.feature_records_filter.mapper.RecordsFilterViewDataMapper
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterCommentType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDateType
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDuplicationsType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterType
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordsFilterSelectedRecordsViewData
 import com.example.util.simpletimetracker.feature_records_filter.model.RecordsFilterSelectionState
@@ -104,7 +105,7 @@ class RecordsFilterViewModel @Inject constructor(
     val recordsViewData: LiveData<RecordsFilterSelectedRecordsViewData> by lazy {
         return@lazy MutableLiveData<RecordsFilterSelectedRecordsViewData>().let { initial ->
             viewModelScope.launch {
-                initial.value = RecordsFilterSelectedRecordsViewData.Loading
+                initial.value = getRecordsLoadState(showLoader = true)
                 initial.value = loadRecordsViewData()
             }
             initial
@@ -124,6 +125,7 @@ class RecordsFilterViewModel @Inject constructor(
     private var filtersLoadJob: Job? = null
     private var filtersSelectionLoadJob: Job? = null
     private var recordsLoadJob: Job? = null
+    private var filterDuplicationsJob: Job? = null
 
     // Cache
     private var types: List<RecordType> = emptyList()
@@ -227,6 +229,7 @@ class RecordsFilterViewModel @Inject constructor(
         when (item.type) {
             is RecordFilterCommentType -> handleCommentFilterClick(item)
             is RecordFilterDateType -> onDateRangeClick(item)
+            is RecordFilterDuplicationsType -> handleDuplicationsFilterClick(item)
             else -> {
                 // Do nothing.
             }
@@ -297,7 +300,7 @@ class RecordsFilterViewModel @Inject constructor(
     ) {
         if (item is RecordViewData.Untracked) return // TODO manually filter untracked records?
         handleRecordClick(item.getUniqueId())
-        updateViewDataOnFiltersChanged()
+        updateViewDataOnFiltersChanged(showLoader = false)
     }
 
     fun onInnerFilterButtonClick(viewData: RecordsFilterButtonViewData) {
@@ -305,8 +308,10 @@ class RecordsFilterViewModel @Inject constructor(
             RecordsFilterButtonViewData.Type.INVERT_SELECTION -> {
                 handleInvertSelection()
             }
+            RecordsFilterButtonViewData.Type.FILTER_DUPLICATES -> {
+                handleFilterDuplicates()
+            }
         }
-        updateViewDataOnFiltersChanged()
     }
 
     fun onDayOfWeekClick(viewData: DayOfWeekViewData) {
@@ -369,6 +374,13 @@ class RecordsFilterViewModel @Inject constructor(
         )
     }
 
+    private fun handleDuplicationsFilterClick(item: FilterViewData) {
+        filters = recordsFilterUpdateInteractor.handleDuplicationsFilterClick(
+            currentFilters = filters,
+            itemType = item.type,
+        )
+    }
+
     private fun handleCommentChange(text: String) {
         filters = recordsFilterUpdateInteractor.handleCommentChange(
             currentFilters = filters,
@@ -423,6 +435,19 @@ class RecordsFilterViewModel @Inject constructor(
             recordsViewData = recordsViewData.value,
         )
         checkManualFilterVisibility()
+        updateViewDataOnFiltersChanged()
+    }
+
+    private fun handleFilterDuplicates() {
+        filterDuplicationsJob?.cancel()
+        filterDuplicationsJob = viewModelScope.launch {
+            filters = recordsFilterUpdateInteractor.handleFilterDuplicates(
+                currentFilters = filters,
+                recordsViewData = recordsViewData.value,
+            )
+            checkManualFilterVisibility()
+            updateViewDataOnFiltersChanged()
+        }
     }
 
     private fun handleDayOfWeekClick(dayOfWeek: DayOfWeek) {
@@ -550,10 +575,12 @@ class RecordsFilterViewModel @Inject constructor(
         updateViewDataOnFiltersChanged()
     }
 
-    private fun updateViewDataOnFiltersChanged() {
+    private fun updateViewDataOnFiltersChanged(
+        showLoader: Boolean = true,
+    ) {
         updateFilters()
         updateFilterSelectionViewData()
-        updateRecords()
+        updateRecords(showLoader)
     }
 
     private suspend fun getCurrentRange(): Range {
@@ -564,6 +591,23 @@ class RecordsFilterViewModel @Inject constructor(
         } else {
             recordFilterInteractor.getRange(filter)
         }
+    }
+
+    private fun getRecordsLoadState(
+        showLoader: Boolean,
+    ): RecordsFilterSelectedRecordsViewData {
+        val currentState = recordsViewData.value
+
+        return RecordsFilterSelectedRecordsViewData(
+            isLoading = true,
+            selectedRecordsCount = "",
+            showListButtonIsVisible = false,
+            recordsViewData = if (showLoader) {
+                listOf(LoaderViewData())
+            } else {
+                currentState?.recordsViewData.orEmpty()
+            },
+        )
     }
 
     private suspend fun getTypesCache(): List<RecordType> {
@@ -632,10 +676,12 @@ class RecordsFilterViewModel @Inject constructor(
         )
     }
 
-    private fun updateRecords() {
+    private fun updateRecords(
+        showLoader: Boolean,
+    ) {
         recordsLoadJob?.cancel()
         recordsLoadJob = viewModelScope.launch {
-            recordsViewData.set(RecordsFilterSelectedRecordsViewData.Loading)
+            recordsViewData.set(getRecordsLoadState(showLoader))
             val data = loadRecordsViewData()
             recordsViewData.set(data)
         }
@@ -652,6 +698,7 @@ class RecordsFilterViewModel @Inject constructor(
     }
 
     private fun updateFilterSelectionViewData() {
+        if (filterSelectionState is RecordsFilterSelectionState.Hidden) return
         filtersSelectionLoadJob?.cancel()
         filtersSelectionLoadJob = viewModelScope.launch {
             val data = loadFilterSelectionViewData()
@@ -722,6 +769,11 @@ class RecordsFilterViewModel @Inject constructor(
                 viewDataInteractor.getDurationFilterSelectionViewData(
                     filters = filters,
                     defaultRange = defaultDurationRange,
+                )
+            }
+            RecordFilterType.Duplications -> {
+                viewDataInteractor.getDuplicationsFilterSelectionViewData(
+                    filters = filters,
                 )
             }
         }

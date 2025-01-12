@@ -542,6 +542,7 @@
     <string name="data_edit_success_message">נתונים שונו</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">כפילויות</string>
     <string name="records_filter_select_tags">בחר תגיות</string>
     <string name="records_filter_filter_tags">החרג תגיות</string>
     <string name="records_filter_manually_filtered">מסונן</string>
@@ -551,6 +552,9 @@
     <string name="records_filter_invert_selection">הפוך בחירה</string>
     <string name="records_filter_duration_min">מִינִימוּם</string>
     <string name="records_filter_duration_max">מַקסִימוּם</string>
+    <string name="records_filter_duplications_same_activity">אותה פעילות</string>
+    <string name="records_filter_duplications_same_times">אותו זמן</string>
+    <string name="records_filter_duplications_manually_fitler">סנן כפילויות</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">פוקוס</string>

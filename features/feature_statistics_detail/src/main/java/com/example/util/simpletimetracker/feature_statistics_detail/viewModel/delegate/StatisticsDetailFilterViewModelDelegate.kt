@@ -118,10 +118,13 @@ class StatisticsDetailFilterViewModelDelegate @Inject constructor(
             RecordsFilterParams(
                 tag = tag,
                 title = title,
-                dateSelectionAvailable = false,
-                untrackedSelectionAvailable = true,
-                multitaskSelectionAvailable = true,
-                addRunningRecords = true,
+                flags = RecordsFilterParams.Flags(
+                    dateSelectionAvailable = false,
+                    untrackedSelectionAvailable = true,
+                    multitaskSelectionAvailable = true,
+                    duplicationsSelectionAvailable = false,
+                    addRunningRecords = true,
+                ),
                 filters = filters
                     .plus(parent.getDateFilter())
                     .map(RecordsFilter::toParams).toList(),
