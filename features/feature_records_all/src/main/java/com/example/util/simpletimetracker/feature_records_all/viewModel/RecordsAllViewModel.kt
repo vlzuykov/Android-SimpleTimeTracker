@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toModel
-import com.example.util.simpletimetracker.core.extension.toParams
-import com.example.util.simpletimetracker.core.extension.toRecordParams
-import com.example.util.simpletimetracker.core.mapper.ChangeRecordDateTimeMapper
+import com.example.util.simpletimetracker.core.interactor.GetChangeRecordNavigationParamsInteractor
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
@@ -35,7 +33,7 @@ class RecordsAllViewModel @Inject constructor(
     private val recordsAllViewDataInteractor: RecordsAllViewDataInteractor,
     private val recordsAllViewDataMapper: RecordsAllViewDataMapper,
     private val prefsInteractor: PrefsInteractor,
-    private val changeRecordDateTimeMapper: ChangeRecordDateTimeMapper,
+    private val getChangeRecordNavigationParamsInteractor: GetChangeRecordNavigationParamsInteractor,
 ) : ViewModel() {
 
     lateinit var extra: RecordsAllParams
@@ -65,28 +63,12 @@ class RecordsAllViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val useMilitaryTimeFormat = prefsInteractor.getUseMilitaryTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
-
-        val params = ChangeRunningRecordParams(
-            transitionName = sharedElements.second,
-            id = item.id,
+        val params = getChangeRecordNavigationParamsInteractor.execute(
+            item = item,
             from = ChangeRunningRecordParams.From.Records,
-            preview = ChangeRunningRecordParams.Preview(
-                name = item.name,
-                tagName = item.tagName,
-                timeStarted = item.timeStarted,
-                timeStartedDateTime = changeRecordDateTimeMapper.map(
-                    param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeStartedTimestamp),
-                    field = ChangeRecordDateTimeMapper.Field.Start,
-                    useMilitaryTimeFormat = useMilitaryTimeFormat,
-                    showSeconds = showSeconds,
-                ).toRecordParams(),
-                duration = item.timer,
-                durationTotal = item.timerTotal,
-                goalTime = item.goalTime.toParams(),
-                iconId = item.iconId.toParams(),
-                color = item.color,
-                comment = item.comment,
-            ),
+            useMilitaryTimeFormat = useMilitaryTimeFormat,
+            showSeconds = showSeconds,
+            sharedElements = sharedElements,
         )
         router.navigate(
             data = ChangeRunningRecordFromRecordsAllParams(params),
@@ -100,46 +82,14 @@ class RecordsAllViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val useMilitaryTimeFormat = prefsInteractor.getUseMilitaryTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
-
-        val preview = ChangeRecordParams.Preview(
-            name = item.name,
-            tagName = item.tagName,
-            timeStarted = item.timeStarted,
-            timeFinished = item.timeFinished,
-            timeStartedDateTime = changeRecordDateTimeMapper.map(
-                param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeStartedTimestamp),
-                field = ChangeRecordDateTimeMapper.Field.Start,
-                useMilitaryTimeFormat = useMilitaryTimeFormat,
-                showSeconds = showSeconds,
-            ).toRecordParams(),
-            timeEndedDateTime = changeRecordDateTimeMapper.map(
-                param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeEndedTimestamp),
-                field = ChangeRecordDateTimeMapper.Field.End,
-                useMilitaryTimeFormat = useMilitaryTimeFormat,
-                showSeconds = showSeconds,
-            ).toRecordParams(),
-            duration = item.duration,
-            iconId = item.iconId.toParams(),
-            color = item.color,
-            comment = item.comment,
+        val params = getChangeRecordNavigationParamsInteractor.execute(
+            item = item,
+            from = ChangeRecordParams.From.RecordsAll,
+            shift = 0,
+            useMilitaryTimeFormat = useMilitaryTimeFormat,
+            showSeconds = showSeconds,
+            sharedElements = sharedElements,
         )
-
-        val params = when (item) {
-            is RecordViewData.Tracked -> ChangeRecordParams.Tracked(
-                transitionName = sharedElements.second,
-                id = item.id,
-                from = ChangeRecordParams.From.RecordsAll,
-                daysFromToday = 0,
-                preview = preview,
-            )
-            is RecordViewData.Untracked -> ChangeRecordParams.Untracked(
-                transitionName = sharedElements.second,
-                timeStarted = item.timeStartedTimestamp,
-                timeEnded = item.timeEndedTimestamp,
-                daysFromToday = 0,
-                preview = preview,
-            )
-        }
         router.navigate(
             data = ChangeRecordFromRecordsAllParams(params),
             sharedElements = mapOf(sharedElements),
