@@ -16,7 +16,7 @@ import com.example.util.simpletimetracker.GoalsTestUtils.checkRunningGoal
 import com.example.util.simpletimetracker.GoalsTestUtils.checkStatisticsGoal
 import com.example.util.simpletimetracker.GoalsTestUtils.checkTypeMark
 import com.example.util.simpletimetracker.core.R
-import com.example.util.simpletimetracker.data_local.base.removeIf
+import com.example.util.simpletimetracker.domain.extension.removeIf
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
 import com.example.util.simpletimetracker.utils.checkViewDoesNotExist

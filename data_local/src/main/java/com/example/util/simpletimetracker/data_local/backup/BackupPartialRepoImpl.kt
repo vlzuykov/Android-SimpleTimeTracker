@@ -155,6 +155,7 @@ class BackupPartialRepoImpl @Inject constructor(
         params.data.activityFilters.values.getNotExistingValues().forEach { activityFilter ->
             val newTypeIds = activityFilter.selectedIds
                 .mapNotNull { originalTypeIdToAddedId[it] }
+                .toSet()
             activityFilter.copy(
                 id = 0,
                 selectedIds = newTypeIds,
@@ -210,7 +211,7 @@ class BackupPartialRepoImpl @Inject constructor(
                 originalTypeIdToAddedId[it]
             }.takeIf {
                 it.isNotEmpty()
-            } ?: return@forEach
+            }?.toSet() ?: return@forEach
             // Remove already existing suggestions for this typeId
             // to avoid duplications.
             activitySuggestionRepo.getByTypeId(newForTypeId)
@@ -384,7 +385,7 @@ class BackupPartialRepoImpl @Inject constructor(
                 } else {
                     it
                 }
-            }
+            }.toSet()
             item.copy(
                 selectedIds = newTypeIds,
             )
@@ -441,7 +442,7 @@ class BackupPartialRepoImpl @Inject constructor(
                 ?: return@mapNotNull null
             val newSuggestionIds = item.suggestionIds.mapNotNull {
                 originalTypeIdToExistingId[it]
-            }
+            }.toSet()
             item.copy(
                 forTypeId = newForTypeId,
                 suggestionIds = newSuggestionIds,
@@ -479,6 +480,18 @@ class BackupPartialRepoImpl @Inject constructor(
         )
     }
 
+    @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
+    private fun <T> getCleanItem(
+        value: T,
+    ): T {
+        return when (value) {
+            is RecordType -> value.copy(hidden = false)
+            is RecordTag -> value.copy(archived = false)
+            is ComplexRule -> value.copy(disabled = false)
+            else -> value
+        } as T
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun <T> getIdData(
         value: T?,
@@ -508,13 +521,18 @@ class BackupPartialRepoImpl @Inject constructor(
         currentData: List<T>,
     ): ReadData<T> {
         if (dataFromFile.isEmpty()) return ReadData(emptyList(), emptyMap())
+
         val idData = getIdData(dataFromFile.firstOrNull())
         val replaceId: T.(Long) -> T = { id -> idData.idSetter(this, id) }
         val id: T.() -> Long = { idData.idGetter(this) }
-        val currentDataClean: Map<T, Long> = currentData.associate { it.replaceId(0) to it.id() }
+        val clean: T.() -> T = { getCleanItem(this) }
+
+        val currentDataClean: Map<T, Long> = currentData.associate {
+            it.replaceId(0).clean() to it.id()
+        }
         val originalIdsToExistingId = mutableMapOf<Long, Long>()
         val list = dataFromFile.map { item ->
-            val cleanItem = item.replaceId(0)
+            val cleanItem = item.replaceId(0).clean()
             val existingId = currentDataClean[cleanItem]
             val itemId = item.id()
             if (itemId != 0L) {

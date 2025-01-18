@@ -38,7 +38,7 @@ class ActivitySuggestionsViewModel @Inject constructor(
         listOf(LoaderViewData()).also { initialize() }
     }
 
-    private var suggestions: Map<Long, List<Long>> = emptyMap()
+    private var suggestions: Map<Long, Set<Long>> = emptyMap()
     private var selectingSuggestionsForTypeId: Long = 0L
 
     fun onTypesSelected(typeIds: List<Long>, tag: String?) = viewModelScope.launch {
@@ -51,7 +51,7 @@ class ActivitySuggestionsViewModel @Inject constructor(
             ACTIVITY_SUGGESTIONS_SUGGESTION_SELECTION_TAG -> {
                 onSuggestionsForTypeChanged(
                     forTypeId = selectingSuggestionsForTypeId,
-                    newSuggestions = typeIds,
+                    newSuggestions = typeIds.toSet(),
                 )
             }
         }
@@ -69,7 +69,7 @@ class ActivitySuggestionsViewModel @Inject constructor(
                     title = resourceRepo.getString(R.string.change_record_message_choose_type),
                     subtitle = "",
                     type = TypesSelectionDialogParams.Type.Activity,
-                    selectedTypeIds = suggestions[forTypeId].orEmpty(),
+                    selectedTypeIds = suggestions[forTypeId].orEmpty().toList(),
                     isMultiSelectAvailable = true,
                     idsShouldBeVisible = emptyList(),
                     showHints = true,
@@ -130,7 +130,7 @@ class ActivitySuggestionsViewModel @Inject constructor(
             .filter { it.id.forTypeId == forTypeId }
         val newSuggestions = suggestions[forTypeId].orEmpty().sortedBy { suggestionId ->
             newOrder.indexOfFirst { it.id.suggestionTypeId == suggestionId }
-        }
+        }.toSet()
         suggestions = suggestions.toMutableMap().apply {
             put(forTypeId, newSuggestions)
         }
@@ -170,7 +170,7 @@ class ActivitySuggestionsViewModel @Inject constructor(
 
     private suspend fun onSuggestionsForTypeChanged(
         forTypeId: Long,
-        newSuggestions: List<Long>,
+        newSuggestions: Set<Long>,
     ) {
         suggestions = suggestions.toMutableMap().apply {
             put(forTypeId, newSuggestions)

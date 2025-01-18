@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class DaysOfWeekDataLocalMapper @Inject constructor() {
 
-    fun mapDaysOfWeek(dbo: String): List<DayOfWeek> {
+    fun mapDaysOfWeek(dbo: String): Set<DayOfWeek> {
         return daysOfWeek.mapIndexedNotNull { index, dayOfWeek ->
             when (dbo.getOrNull(index)) {
                 // Selected days are marked with 1, days that are not selected - with 0,
@@ -15,10 +15,10 @@ class DaysOfWeekDataLocalMapper @Inject constructor() {
                 '0' -> null
                 else -> null
             }
-        }
+        }.toSet()
     }
 
-    fun mapDaysOfWeek(domain: List<DayOfWeek>): String {
+    fun mapDaysOfWeek(domain: Set<DayOfWeek>): String {
         return daysOfWeek.map { dayOfWeek ->
             if (dayOfWeek in domain) '1' else '0'
         }.joinToString(separator = "")

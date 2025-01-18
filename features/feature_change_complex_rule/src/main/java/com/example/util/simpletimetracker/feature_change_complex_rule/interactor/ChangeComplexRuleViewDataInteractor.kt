@@ -106,7 +106,7 @@ class ChangeComplexRuleViewDataInteractor @Inject constructor(
     ): ChangeComplexRuleTypesChooserViewData {
         val isDarkTheme = prefsInteractor.getDarkMode()
         val viewData = dayOfWeekViewDataMapper.mapViewData(
-            selectedDaysOfWeek = daysOfWeek.toList(),
+            selectedDaysOfWeek = daysOfWeek,
             isDarkTheme = isDarkTheme,
             width = DayOfWeekViewData.Width.MatchParent,
             paddingHorizontalDp = 2,

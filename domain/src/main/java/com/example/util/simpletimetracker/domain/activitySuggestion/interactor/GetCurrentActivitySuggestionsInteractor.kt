@@ -35,7 +35,7 @@ class GetCurrentActivitySuggestionsInteractor @Inject constructor(
 
     private suspend fun execute(
         runningRecords: List<RunningRecord>,
-    ): List<Long> {
+    ): Set<Long> {
         val currentOrLast = runningRecords.minByOrNull { it.timeStarted }
             ?: recordInteractor.getAllPrev(System.currentTimeMillis()).firstOrNull()
 
@@ -46,5 +46,6 @@ class GetCurrentActivitySuggestionsInteractor @Inject constructor(
             ?.firstOrNull()
             ?.suggestionIds
             .orEmpty()
+            .toSet()
     }
 }

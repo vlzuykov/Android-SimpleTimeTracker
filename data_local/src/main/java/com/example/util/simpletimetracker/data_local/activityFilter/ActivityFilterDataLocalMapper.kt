@@ -9,7 +9,10 @@ class ActivityFilterDataLocalMapper @Inject constructor() {
     fun map(dbo: ActivityFilterDBO): ActivityFilter {
         return ActivityFilter(
             id = dbo.id,
-            selectedIds = dbo.selectedIds.split(',').mapNotNull(String::toLongOrNull),
+            selectedIds = dbo.selectedIds
+                .split(',')
+                .mapNotNull(String::toLongOrNull)
+                .toSet(),
             type = when (dbo.type) {
                 0L -> ActivityFilter.Type.Activity
                 1L -> ActivityFilter.Type.Category
@@ -27,7 +30,8 @@ class ActivityFilterDataLocalMapper @Inject constructor() {
     fun map(domain: ActivityFilter): ActivityFilterDBO {
         return ActivityFilterDBO(
             id = domain.id,
-            selectedIds = domain.selectedIds.joinToString(separator = ","),
+            selectedIds = domain.selectedIds
+                .joinToString(separator = ","),
             type = when (domain.type) {
                 is ActivityFilter.Type.Activity -> 0L
                 is ActivityFilter.Type.Category -> 1L

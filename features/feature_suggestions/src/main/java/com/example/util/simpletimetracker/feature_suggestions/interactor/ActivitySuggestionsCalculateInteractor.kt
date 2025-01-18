@@ -37,14 +37,14 @@ class ActivitySuggestionsCalculateInteractor @Inject constructor(
                 ?: return@mapNotNull null
             Result(
                 typeId = typeId,
-                suggestions = thisTypeSuggestions.map { it.typeId },
+                suggestions = thisTypeSuggestions.map { it.typeId }.toSet(),
             )
         }
     }
 
     data class Result(
         val typeId: Long,
-        val suggestions: List<Long>,
+        val suggestions: Set<Long>,
     )
 
     companion object {

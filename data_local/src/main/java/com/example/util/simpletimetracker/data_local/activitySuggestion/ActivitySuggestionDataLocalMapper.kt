@@ -9,7 +9,10 @@ class ActivitySuggestionDataLocalMapper @Inject constructor() {
         return ActivitySuggestion(
             id = dbo.id,
             forTypeId = dbo.forTypeId,
-            suggestionIds = dbo.suggestionIds.split(',').mapNotNull(String::toLongOrNull),
+            suggestionIds = dbo.suggestionIds
+                .split(',')
+                .mapNotNull(String::toLongOrNull)
+                .toSet(),
         )
     }
 
@@ -17,7 +20,8 @@ class ActivitySuggestionDataLocalMapper @Inject constructor() {
         return ActivitySuggestionDBO(
             id = domain.id,
             forTypeId = domain.forTypeId,
-            suggestionIds = domain.suggestionIds.joinToString(separator = ","),
+            suggestionIds = domain.suggestionIds
+                .joinToString(separator = ","),
         )
     }
 }

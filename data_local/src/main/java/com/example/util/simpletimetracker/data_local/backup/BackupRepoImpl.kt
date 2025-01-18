@@ -545,7 +545,7 @@ class BackupRepoImpl @Inject constructor(
             is ComplexRule.Action.AssignTag -> 2L
         }.toString()
         val daysOfWeekString = daysOfWeekDataLocalMapper
-            .mapDaysOfWeek(complexRule.conditionDaysOfWeek.toList())
+            .mapDaysOfWeek(complexRule.conditionDaysOfWeek)
 
         return String.format(
             "$ROW_COMPLEX_RULE\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
@@ -577,7 +577,7 @@ class BackupRepoImpl @Inject constructor(
         val weeklyGoalTime = parts.getOrNull(9)?.toLongOrNull().orZero()
         val monthlyGoalTime = parts.getOrNull(10)?.toLongOrNull().orZero()
         // Didn't exist when goal time was in type db, no need to migrate.
-        val daysOfWeek = DayOfWeek.entries
+        val daysOfWeek = DayOfWeek.entries.toSet()
         val subtype = RecordTypeGoal.Subtype.Goal
 
         val goalTimes = mutableListOf<RecordTypeGoal>().apply {
@@ -719,7 +719,7 @@ class BackupRepoImpl @Inject constructor(
         return ActivityFilter(
             id = parts.getOrNull(1)?.toLongOrNull().orZero(),
             selectedIds = parts.getOrNull(2)?.split(",")
-                ?.mapNotNull { it.toLongOrNull() }.orEmpty(),
+                ?.mapNotNull { it.toLongOrNull() }.orEmpty().toSet(),
             type = parts.getOrNull(3)?.toLongOrNull()?.let {
                 when (it) {
                     0L -> ActivityFilter.Type.Activity
@@ -825,7 +825,7 @@ class BackupRepoImpl @Inject constructor(
             id = parts.getOrNull(1)?.toLongOrNull().orZero(),
             forTypeId = parts.getOrNull(2)?.toLongOrNull().orZero(),
             suggestionIds = parts.getOrNull(3)?.split(",")
-                ?.mapNotNull { it.toLongOrNull() }.orEmpty(),
+                ?.mapNotNull { it.toLongOrNull() }.orEmpty().toSet(),
         )
     }
 

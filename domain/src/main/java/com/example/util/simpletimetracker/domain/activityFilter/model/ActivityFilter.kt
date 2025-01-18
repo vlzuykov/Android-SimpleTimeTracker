@@ -4,7 +4,7 @@ import com.example.util.simpletimetracker.domain.color.model.AppColor
 
 data class ActivityFilter(
     val id: Long = 0,
-    val selectedIds: List<Long>,
+    val selectedIds: Set<Long>,
     val type: Type,
     val name: String,
     val color: AppColor,

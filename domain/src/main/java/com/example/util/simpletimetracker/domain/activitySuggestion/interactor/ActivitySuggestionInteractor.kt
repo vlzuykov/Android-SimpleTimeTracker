@@ -39,7 +39,7 @@ class ActivitySuggestionInteractor @Inject constructor(
             }
             if (id in suggestion.suggestionIds) {
                 val newSuggestions = suggestion.suggestionIds
-                    .toMutableList()
+                    .toMutableSet()
                     .apply { removeAll { it == id } }
                 suggestionsToChange += suggestion.copy(
                     suggestionIds = newSuggestions,

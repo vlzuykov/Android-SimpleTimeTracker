@@ -219,7 +219,7 @@ object GoalsTestUtils {
             range = range,
             type = RecordTypeGoal.Type.Duration(duration),
             subtype = RecordTypeGoal.Subtype.Goal,
-            daysOfWeek = DayOfWeek.entries,
+            daysOfWeek = DayOfWeek.entries.toSet(),
         )
     }
 
@@ -240,7 +240,7 @@ object GoalsTestUtils {
             range = range,
             type = RecordTypeGoal.Type.Count(count),
             subtype = RecordTypeGoal.Subtype.Goal,
-            daysOfWeek = DayOfWeek.entries,
+            daysOfWeek = DayOfWeek.entries.toSet(),
         )
     }
 

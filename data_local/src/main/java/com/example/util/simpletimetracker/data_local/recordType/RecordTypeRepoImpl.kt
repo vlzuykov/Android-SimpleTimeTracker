@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.recordType
 
 import com.example.util.simpletimetracker.data_local.base.withLockedCache
-import com.example.util.simpletimetracker.data_local.base.removeIf
+import com.example.util.simpletimetracker.domain.extension.removeIf
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeRepo
 import kotlinx.coroutines.sync.Mutex

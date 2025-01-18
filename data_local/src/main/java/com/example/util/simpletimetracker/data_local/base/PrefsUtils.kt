@@ -108,17 +108,3 @@ internal inline fun logDataAccess(logMessage: String) {
 internal inline fun logPrefsDataAccess(logMessage: String) {
     logDataAccessInternal("$LOG_MESSAGE_PREFS_PREFIX $logMessage")
 }
-
-/**
- * Produces a new list from original list by removing elements satisfying filter block.
- */
-inline fun <T> List<T>.removeIf(crossinline filter: (T) -> Boolean): List<T> {
-    return this.toMutableList().apply { removeAll { filter(it) } }
-}
-
-/**
- * Produces a new list from original list by replacing elements satisfying filter block with new element.
- */
-inline fun <T> List<T>.replaceWith(new: T, crossinline filter: (T) -> Boolean): List<T> {
-    return this.removeIf(filter).toMutableList().apply { add(new) }
-}

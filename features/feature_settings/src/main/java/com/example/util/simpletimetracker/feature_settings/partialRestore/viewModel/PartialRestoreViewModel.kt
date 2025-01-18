@@ -163,7 +163,7 @@ class PartialRestoreViewModel @Inject constructor(
                     is ActivityFilter.Type.Activity -> it in typesIds
                     is ActivityFilter.Type.Category -> it in categoriesIds
                 }
-            }
+            }.toSet()
             val newData = item.data.copy(selectedIds = newIds)
             item.copy(data = newData)
         }
@@ -199,7 +199,7 @@ class PartialRestoreViewModel @Inject constructor(
                 it in typesIds
             }.takeIf {
                 it.isNotEmpty()
-            } ?: return@mapNotNull null
+            }?.toSet() ?: return@mapNotNull null
             val newData = item.data.copy(suggestionIds = newIds)
             id to item.copy(data = newData)
         }.toMap()

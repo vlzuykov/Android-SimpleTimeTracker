@@ -83,7 +83,7 @@ class GoalsViewDataMapper @Inject constructor(
             daily = getDefaultGoal(),
             weekly = getDefaultGoal(),
             monthly = getDefaultGoal(),
-            daysOfWeek = DayOfWeek.entries,
+            daysOfWeek = DayOfWeek.entries.toSet(),
         )
     }
 
@@ -157,7 +157,7 @@ class GoalsViewDataMapper @Inject constructor(
 
     private fun mapDaysOfWeekViewData(
         goal: RecordTypeGoal.Type,
-        selectedDaysOfWeek: List<DayOfWeek>,
+        selectedDaysOfWeek: Set<DayOfWeek>,
         isDarkTheme: Boolean,
     ): List<ViewHolderType> {
         if (goal.value == 0L) return emptyList()

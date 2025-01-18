@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.data_local.activitySuggestion
 
-import com.example.util.simpletimetracker.data_local.base.removeIf
 import com.example.util.simpletimetracker.data_local.base.withLockedCache
 import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
 import com.example.util.simpletimetracker.domain.activitySuggestion.repo.ActivitySuggestionRepo
+import com.example.util.simpletimetracker.domain.extension.removeIf
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton

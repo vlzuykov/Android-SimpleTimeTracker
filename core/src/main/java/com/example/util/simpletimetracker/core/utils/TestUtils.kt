@@ -257,7 +257,7 @@ class TestUtils @Inject constructor(
                     availableCategories.firstOrNull { it.name == name }?.id
                 }
             }
-        }
+        }.toSet()
 
         val data = ActivityFilter(
             selectedIds = selectedIds,

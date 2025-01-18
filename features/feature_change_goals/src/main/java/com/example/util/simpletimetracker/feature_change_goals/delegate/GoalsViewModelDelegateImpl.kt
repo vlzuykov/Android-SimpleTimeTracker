@@ -127,7 +127,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
 
     override fun onDayOfWeekClick(data: DayOfWeekViewData) {
         val current = newGoalsState.daysOfWeek
-        val new = current.toMutableList().apply { addOrRemove(data.dayOfWeek) }
+        val new = current.toMutableSet().apply { addOrRemove(data.dayOfWeek) }
         newGoalsState = newGoalsState.copy(daysOfWeek = new)
         updateGoalsViewData()
     }
@@ -145,7 +145,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
             goalId: Long,
             state: ChangeRecordTypeGoalsState.GoalState,
             goalRange: RecordTypeGoal.Range,
-            daysOfWeek: List<DayOfWeek>,
+            daysOfWeek: Set<DayOfWeek>,
         ) {
             val type = state.type
             val goalType = state.subtype
@@ -169,7 +169,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
             goalId = goals.getSession()?.id.orZero(),
             state = newGoalsState.session,
             goalRange = RecordTypeGoal.Range.Session,
-            daysOfWeek = emptyList(),
+            daysOfWeek = emptySet(),
         )
         processGoal(
             goalId = goals.getDaily()?.id.orZero(),
@@ -181,13 +181,13 @@ class GoalsViewModelDelegateImpl @Inject constructor(
             goalId = goals.getWeekly()?.id.orZero(),
             state = newGoalsState.weekly,
             goalRange = RecordTypeGoal.Range.Weekly,
-            daysOfWeek = emptyList(),
+            daysOfWeek = emptySet(),
         )
         processGoal(
             goalId = goals.getMonthly()?.id.orZero(),
             state = newGoalsState.monthly,
             goalRange = RecordTypeGoal.Range.Monthly,
-            daysOfWeek = emptyList(),
+            daysOfWeek = emptySet(),
         )
     }
 
@@ -211,7 +211,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
             daily = goals.getDaily()?.let(::mapState) ?: defaultGoal,
             weekly = goals.getWeekly()?.let(::mapState) ?: defaultGoal,
             monthly = goals.getMonthly()?.let(::mapState) ?: defaultGoal,
-            daysOfWeek = goals.getDaily()?.daysOfWeek ?: DayOfWeek.entries,
+            daysOfWeek = goals.getDaily()?.daysOfWeek ?: DayOfWeek.entries.toSet(),
         )
 
         updateGoalsViewData()

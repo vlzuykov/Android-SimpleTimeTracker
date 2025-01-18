@@ -8,7 +8,7 @@ data class ChangeRecordTypeGoalsState(
     val daily: GoalState,
     val weekly: GoalState,
     val monthly: GoalState,
-    val daysOfWeek: List<DayOfWeek>,
+    val daysOfWeek: Set<DayOfWeek>,
 ) {
 
     data class GoalState(

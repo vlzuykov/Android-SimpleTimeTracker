@@ -308,7 +308,7 @@ class ChangeRecordTypeViewModel @Inject constructor(
             goalsViewModelDelegate.saveGoals(RecordTypeGoal.IdData.Type(addedId))
             activityFilterInteractor.getByTypeId(recordTypeId).forEach { filter ->
                 val newFilter = filter.copy(
-                    selectedIds = (filter.selectedIds + addedId).toSet().toList(),
+                    selectedIds = (filter.selectedIds + addedId).toSet(),
                 )
                 activityFilterInteractor.add(newFilter)
             }

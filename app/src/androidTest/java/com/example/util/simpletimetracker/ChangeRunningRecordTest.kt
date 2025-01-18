@@ -70,7 +70,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
                     range = RecordTypeGoal.Range.Session,
                     type = RecordTypeGoal.Type.Duration(firstGoalTime),
                     subtype = RecordTypeGoal.Subtype.Goal,
-                    daysOfWeek = emptyList(),
+                    daysOfWeek = emptySet(),
                 ),
             ),
         )

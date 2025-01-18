@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.data_local.recordType
 
 import com.example.util.simpletimetracker.data_local.base.logDataAccess
-import com.example.util.simpletimetracker.data_local.base.removeIf
-import com.example.util.simpletimetracker.data_local.base.replaceWith
 import com.example.util.simpletimetracker.data_local.base.withLockedCache
+import com.example.util.simpletimetracker.domain.extension.removeIf
+import com.example.util.simpletimetracker.domain.extension.replaceWith
 import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal.IdData
 import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeGoalRepo

@@ -89,10 +89,11 @@ fun List<RecordsFilter>.getManuallyFilteredRecordIds(): Map<Long, Boolean> {
         .associateWith { true }
 }
 
-fun List<RecordsFilter>.getDaysOfWeek(): List<DayOfWeek> {
+fun List<RecordsFilter>.getDaysOfWeek(): Set<DayOfWeek> {
     return filterIsInstance<RecordsFilter.DaysOfWeek>()
         .map(RecordsFilter.DaysOfWeek::items)
         .flatten()
+        .toSet()
 }
 
 fun List<RecordsFilter>.getTimeOfDay(): Range? {

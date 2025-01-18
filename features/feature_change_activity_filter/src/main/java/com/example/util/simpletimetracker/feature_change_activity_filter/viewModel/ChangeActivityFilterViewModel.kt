@@ -87,13 +87,13 @@ class ChangeActivityFilterViewModel @Inject constructor(
     val keyboardVisibility: LiveData<Boolean> by lazy { MutableLiveData(filterId == 0L) }
 
     private val filterId: Long get() = (extra as? ChangeActivityFilterParams.Change)?.id.orZero()
-    private val newSelectedIds: List<Long>
+    private val newSelectedIds: Set<Long>
         get() = when (newType) {
             is ActivityFilter.Type.Activity -> newTypeIds
             is ActivityFilter.Type.Category -> newCategoryIds
         }
-    private var newTypeIds: MutableList<Long> = mutableListOf()
-    private var newCategoryIds: MutableList<Long> = mutableListOf()
+    private var newTypeIds: MutableSet<Long> = mutableSetOf()
+    private var newCategoryIds: MutableSet<Long> = mutableSetOf()
     private var newType: ActivityFilter.Type = ActivityFilter.Type.Activity
     private var newName: String = ""
     private var wasSelected: Boolean = true
@@ -231,10 +231,10 @@ class ChangeActivityFilterViewModel @Inject constructor(
             activityFilterInteractor.get(filterId)?.let {
                 when (it.type) {
                     is ActivityFilter.Type.Activity -> {
-                        newTypeIds = it.selectedIds.toMutableList()
+                        newTypeIds = it.selectedIds.toMutableSet()
                     }
                     is ActivityFilter.Type.Category -> {
-                        newCategoryIds = it.selectedIds.toMutableList()
+                        newCategoryIds = it.selectedIds.toMutableSet()
                     }
                 }
                 newType = it.type

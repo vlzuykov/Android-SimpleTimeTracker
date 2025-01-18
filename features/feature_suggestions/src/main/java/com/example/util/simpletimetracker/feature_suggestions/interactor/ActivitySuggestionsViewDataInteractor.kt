@@ -27,7 +27,7 @@ class ActivitySuggestionsViewDataInteractor @Inject constructor(
 ) {
 
     suspend fun getViewData(
-        suggestionsMap: Map<Long, List<Long>>,
+        suggestionsMap: Map<Long, Set<Long>>,
     ): List<ViewHolderType> {
         val isDarkTheme = prefsInteractor.getDarkMode()
         val recordTypes = recordTypeInteractor.getAll().filter { !it.hidden }

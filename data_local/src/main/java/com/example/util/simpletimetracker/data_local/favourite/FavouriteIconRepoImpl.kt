@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.data_local.favourite
 
-import com.example.util.simpletimetracker.data_local.base.removeIf
 import com.example.util.simpletimetracker.data_local.base.withLockedCache
+import com.example.util.simpletimetracker.domain.extension.removeIf
 import com.example.util.simpletimetracker.domain.favourite.model.FavouriteIcon
 import com.example.util.simpletimetracker.domain.favourite.repo.FavouriteIconRepo
 import kotlinx.coroutines.sync.Mutex

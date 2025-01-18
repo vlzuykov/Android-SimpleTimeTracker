@@ -24,7 +24,7 @@ class ChangeActivityFilterViewDataInteractor @Inject constructor(
 
     suspend fun getTypesViewData(
         type: ActivityFilter.Type,
-        selectedIds: List<Long>,
+        selectedIds: Set<Long>,
     ): ChangeActivityFilterTypesViewData {
         val numberOfCards = prefsInteractor.getNumberOfCards()
         val isDarkTheme = prefsInteractor.getDarkMode()

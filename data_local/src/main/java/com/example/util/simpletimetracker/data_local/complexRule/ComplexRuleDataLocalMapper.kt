@@ -30,7 +30,7 @@ class ComplexRuleDataLocalMapper @Inject constructor(
             conditionStartingTypeIds = mapIds(domain.conditionStartingTypeIds),
             conditionCurrentTypeIds = mapIds(domain.conditionCurrentTypeIds),
             conditionDaysOfWeek = daysOfWeekDataLocalMapper
-                .mapDaysOfWeek(domain.conditionDaysOfWeek.toList()),
+                .mapDaysOfWeek(domain.conditionDaysOfWeek),
         )
     }
 

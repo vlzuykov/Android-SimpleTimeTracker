@@ -90,6 +90,7 @@ class GetNotificationActivitySwitchControlsInteractor @Inject constructor(
             data: List<NotificationControlsParams.Type>,
         ): List<NotificationControlsParams.Type> {
             if (data.isEmpty()) return data
+            if (data.size % TYPES_LIST_SIZE == 0) return data
             val emptyCount = TYPES_LIST_SIZE - (data.size % TYPES_LIST_SIZE)
             val emptyData = List(emptyCount) { NotificationControlsParams.Type.Empty }
             return data + emptyData

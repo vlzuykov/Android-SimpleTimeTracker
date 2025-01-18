@@ -8,7 +8,7 @@ data class RecordTypeGoal(
     val range: Range,
     val type: Type,
     val subtype: Subtype,
-    val daysOfWeek: List<DayOfWeek>,
+    val daysOfWeek: Set<DayOfWeek>,
 ) {
 
     sealed interface IdData {

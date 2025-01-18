@@ -109,7 +109,7 @@ class RecordFilterInteractor @Inject constructor(
         val filteredTaggedIds: List<Long> = filteredTagItems.getTaggedIds()
         val filteredUntagged: Boolean = filteredTagItems.hasUntaggedItem()
         val manuallyFilteredIds: Map<Long, Boolean> = filters.getManuallyFilteredRecordIds()
-        val daysOfWeek: List<DayOfWeek> = filters.getDaysOfWeek()
+        val daysOfWeek: Set<DayOfWeek> = filters.getDaysOfWeek()
         val timeOfDay: Range? = filters.getTimeOfDay()
         val durations: List<Range> = filters.getDuration()?.let(::listOf).orEmpty()
         val duplicationItems: List<RecordsFilter.DuplicationsItem> = filters.getDuplicationItems()

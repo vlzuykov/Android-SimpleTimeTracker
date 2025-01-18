@@ -11,12 +11,12 @@ class DayOfWeekViewDataMapper @Inject constructor(
 ) {
 
     fun mapViewData(
-        selectedDaysOfWeek: List<DayOfWeek>,
+        selectedDaysOfWeek: Set<DayOfWeek>,
         isDarkTheme: Boolean,
         width: DayOfWeekViewData.Width,
         paddingHorizontalDp: Int,
     ): List<ViewHolderType> {
-        return DayOfWeek.values().map {
+        return DayOfWeek.entries.map {
             val selected = it in selectedDaysOfWeek
             DayOfWeekViewData(
                 dayOfWeek = it,

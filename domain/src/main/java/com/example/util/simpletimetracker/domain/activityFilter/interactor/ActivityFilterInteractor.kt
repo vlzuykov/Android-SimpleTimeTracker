@@ -41,7 +41,7 @@ class ActivityFilterInteractor @Inject constructor(
         getByTypeId(id).forEach { filter ->
             val newFilter = filter.copy(
                 selectedIds = filter.selectedIds
-                    .toMutableList()
+                    .toMutableSet()
                     .apply { removeAll { it == id } },
             )
             add(newFilter)
