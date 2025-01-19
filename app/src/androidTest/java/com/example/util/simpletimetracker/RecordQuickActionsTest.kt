@@ -6,8 +6,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
+import com.example.util.simpletimetracker.utils.checkViewDoesNotExist
 import com.example.util.simpletimetracker.utils.checkViewIsDisplayed
-import com.example.util.simpletimetracker.utils.checkViewIsNotDisplayed
 import com.example.util.simpletimetracker.utils.clickOnViewWithText
 import com.example.util.simpletimetracker.utils.longClickOnView
 import com.example.util.simpletimetracker.utils.tryAction
@@ -40,7 +40,7 @@ class RecordQuickActionsTest : BaseUiTest() {
         checkViewIsDisplayed(withText(R.string.change_record_continue))
         checkViewIsDisplayed(withText(R.string.change_record_repeat))
         checkViewIsDisplayed(withText(R.string.change_record_duplicate))
-        checkViewIsNotDisplayed(withText(R.string.change_record_merge))
+        checkViewDoesNotExist(withText(R.string.change_record_merge))
     }
 
     @Test
@@ -55,13 +55,18 @@ class RecordQuickActionsTest : BaseUiTest() {
 
         // Check statistics navigation
         NavUtils.openRecordsScreen()
-        longClickOnView(allOf(withText(com.example.util.simpletimetracker.core.R.string.untracked_time_name), isCompletelyDisplayed()))
+        longClickOnView(
+            allOf(
+                withText(com.example.util.simpletimetracker.core.R.string.untracked_time_name),
+                isCompletelyDisplayed(),
+            ),
+        )
 
         checkViewIsDisplayed(withText(R.string.shortcut_navigation_statistics))
-        checkViewIsNotDisplayed(withText(R.string.archive_dialog_delete))
-        checkViewIsNotDisplayed(withText(R.string.change_record_continue))
-        checkViewIsNotDisplayed(withText(R.string.change_record_repeat))
-        checkViewIsNotDisplayed(withText(R.string.change_record_duplicate))
+        checkViewDoesNotExist(withText(R.string.archive_dialog_delete))
+        checkViewDoesNotExist(withText(R.string.change_record_continue))
+        checkViewDoesNotExist(withText(R.string.change_record_repeat))
+        checkViewDoesNotExist(withText(R.string.change_record_duplicate))
         checkViewIsDisplayed(withText(R.string.change_record_merge))
     }
 
@@ -80,9 +85,9 @@ class RecordQuickActionsTest : BaseUiTest() {
 
         checkViewIsDisplayed(withText(R.string.shortcut_navigation_statistics))
         checkViewIsDisplayed(withText(R.string.archive_dialog_delete))
-        checkViewIsNotDisplayed(withText(R.string.change_record_continue))
-        checkViewIsNotDisplayed(withText(R.string.change_record_repeat))
-        checkViewIsNotDisplayed(withText(R.string.change_record_duplicate))
-        checkViewIsNotDisplayed(withText(R.string.change_record_merge))
+        checkViewDoesNotExist(withText(R.string.change_record_continue))
+        checkViewDoesNotExist(withText(R.string.change_record_repeat))
+        checkViewDoesNotExist(withText(R.string.change_record_duplicate))
+        checkViewDoesNotExist(withText(R.string.change_record_merge))
     }
 }

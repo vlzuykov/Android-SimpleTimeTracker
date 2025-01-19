@@ -331,7 +331,7 @@ class AddRecordTest : BaseUiTest() {
         closeSoftKeyboard()
         checkViewDoesNotExist(withText(coreR.string.change_record_last_comments_hint))
         checkViewDoesNotExist(withText(coreR.string.change_record_favourite_comments_hint))
-        checkViewIsNotDisplayed(withId(changeRecordR.id.btnChangeRecordFavouriteComment))
+        checkViewIsDisplayed(withId(changeRecordR.id.btnChangeRecordFavouriteComment))
 
         // Add favourite
         typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment1)
@@ -392,7 +392,7 @@ class AddRecordTest : BaseUiTest() {
 
         checkViewIsDisplayed(withId(changeRecordR.id.etChangeRecordCommentField))
 
-        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "comment")
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "comm")
         tryAction {
             checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordItemComment), withText(comment1)))
         }

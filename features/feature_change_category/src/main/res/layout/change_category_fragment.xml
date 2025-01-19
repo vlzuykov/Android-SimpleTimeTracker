@@ -285,6 +285,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvChangeCategoryGoalHint"
                         style="@style/EditScreenField"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

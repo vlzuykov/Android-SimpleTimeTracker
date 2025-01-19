@@ -71,7 +71,10 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         )
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_duplicate))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_duplicate)),
+        )
         checkViewIsDisplayed(withText(coreR.string.change_record_duplicate))
     }
 
@@ -120,7 +123,10 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         clickOnViewWithText(fullName)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_duplicate))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_duplicate)),
+        )
         clickOnViewWithText(coreR.string.change_record_duplicate)
 
         tryAction {
@@ -176,7 +182,10 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         // Duplicate untracked doesn't work
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_duplicate))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_duplicate)),
+        )
         clickOnViewWithText(coreR.string.change_record_duplicate)
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
@@ -193,7 +202,10 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         // Duplicate
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_duplicate))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_duplicate)),
+        )
         clickOnViewWithText(coreR.string.change_record_duplicate)
 
         tryAction {
@@ -236,7 +248,10 @@ class RecordActionsDuplicateTest : BaseUiTest() {
 
         // Duplicate untracked doesn't work
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_duplicate))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_duplicate)),
+        )
         clickOnViewWithText(coreR.string.change_record_duplicate)
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
@@ -253,7 +268,10 @@ class RecordActionsDuplicateTest : BaseUiTest() {
         // Duplicate
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_duplicate))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_duplicate)),
+        )
         clickOnViewWithText(coreR.string.change_record_duplicate)
 
         tryAction {

@@ -28,6 +28,7 @@ import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
 import com.example.util.simpletimetracker.utils.checkViewIsDisplayed
 import com.example.util.simpletimetracker.utils.clickOnView
+import com.example.util.simpletimetracker.utils.clickOnViewWithId
 import com.example.util.simpletimetracker.utils.clickOnViewWithText
 import com.example.util.simpletimetracker.utils.longClickOnView
 import com.example.util.simpletimetracker.utils.nestedScrollTo
@@ -113,6 +114,7 @@ class GoalsTabTest : BaseUiTest() {
             clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
             goalsToAdd.forEach { goal ->
                 NavUtils.addGoalToActivity(goal)
+                runCatching { clickOnViewWithId(com.google.android.material.R.id.snackbar_text) }
                 checkGoal(goal)
             }
             clickOnViewWithText(coreR.string.change_record_type_save)

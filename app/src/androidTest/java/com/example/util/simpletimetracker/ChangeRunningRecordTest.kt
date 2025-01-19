@@ -107,7 +107,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         checkViewIsNotDisplayed(withId(changeRecordR.id.rvChangeRecordCategories))
         checkViewIsDisplayed(withId(changeRecordR.id.containerChangeRecordTimeStartedAdjust))
         checkViewIsNotDisplayed(withId(changeRecordR.id.containerChangeRecordTimeEndedAdjust))
-        checkViewIsNotDisplayed(allOf(withId(changeRecordR.id.etChangeRecordCommentField), withText("")))
+        checkViewIsNotDisplayed(withId(changeRecordR.id.rvChangeRecordComments))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedDate), withText(timeStarted.date)))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedTime), withText(timeStarted.time)))
 

@@ -163,7 +163,7 @@ class ChangeRecordTypeTest : BaseUiTest() {
         clickOnRecyclerItem(changeRecordTypeR.id.rvIconSelection, withTag(lastIcon))
         clickOnViewWithId(changeRecordTypeR.id.fieldChangeRecordTypeIcon)
 
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
         clickOnView(
             allOf(
                 isDescendantOfA(withId(changeRecordTypeR.id.layoutChangeRecordTypeGoalSession)),
@@ -176,7 +176,7 @@ class ChangeRecordTypeTest : BaseUiTest() {
         clickOnViewWithId(dialogsR.id.tvNumberKeyboard0)
         clickOnViewWithText(coreR.string.duration_dialog_save)
         tryAction { checkViewIsDisplayed(withText("10$minuteString")) }
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
 
         clickOnViewWithText(coreR.string.change_record_type_save)
 
@@ -269,4 +269,13 @@ class ChangeRecordTypeTest : BaseUiTest() {
 
     private fun checkPreviewUpdated(matcher: Matcher<View>) =
         checkViewIsDisplayed(allOf(withId(changeRecordTypeR.id.previewChangeRecordType), matcher))
+
+    private fun openGoals() {
+        clickOnView(
+            allOf(
+                withId(changeRecordTypeR.id.tvChangeRecordTypeGoalHint),
+                withText(coreR.string.change_record_type_goal_time_hint),
+            ),
+        )
+    }
 }

@@ -89,7 +89,10 @@ class RecordActionsMergeTest : BaseUiTest() {
         clickOnView(allOf(withText(coreR.string.untracked_time_name), isCompletelyDisplayed()))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_merge))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_merge)),
+        )
         checkViewIsDisplayed(withText(coreR.string.change_record_merge))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
@@ -147,7 +150,10 @@ class RecordActionsMergeTest : BaseUiTest() {
         )
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_merge))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_merge)),
+        )
         clickOnViewWithText(coreR.string.change_record_merge)
 
         // Check records

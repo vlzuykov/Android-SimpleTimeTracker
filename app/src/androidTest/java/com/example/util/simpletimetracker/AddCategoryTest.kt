@@ -128,7 +128,7 @@ class AddCategoryTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.change_category_types_hint)
 
         // Selecting goal time
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
         clickOnView(
             allOf(
                 isDescendantOfA(withId(R.id.layoutChangeRecordTypeGoalSession)),
@@ -141,7 +141,7 @@ class AddCategoryTest : BaseUiTest() {
         clickOnViewWithId(dialogsR.id.tvNumberKeyboard0)
         clickOnViewWithText(coreR.string.duration_dialog_save)
         checkViewIsDisplayed(withText("10$minuteString"))
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
 
         // Adding note
         onView(withId(changeCategoryR.id.etChangeRecordCategoryNote)).perform(nestedScrollTo())
@@ -164,9 +164,9 @@ class AddCategoryTest : BaseUiTest() {
 
         // Check goals saved
         Thread.sleep(1000)
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
         checkViewIsDisplayed(withText("10$minuteString"))
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
 
         // Check note saved
         onView(withId(changeCategoryR.id.etChangeRecordCategoryNote)).perform(nestedScrollTo())
@@ -180,7 +180,7 @@ class AddCategoryTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.categories_add_category)
 
         // Goal time is disabled
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
         checkViewIsDisplayed(
             allOf(
                 isDescendantOfA(withId(R.id.layoutChangeRecordTypeGoalSession)),
@@ -188,7 +188,7 @@ class AddCategoryTest : BaseUiTest() {
                 withText(coreR.string.change_record_type_goal_time_disabled),
             ),
         )
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
 
         // Open activity chooser
         clickOnViewWithText(coreR.string.change_category_types_hint)
@@ -264,4 +264,13 @@ class AddCategoryTest : BaseUiTest() {
 
     private fun checkPreviewUpdated(matcher: Matcher<View>) =
         checkViewIsDisplayed(allOf(withId(changeCategoryR.id.previewChangeCategory), matcher))
+
+    private fun openGoals() {
+        clickOnView(
+            allOf(
+                withId(changeCategoryR.id.tvChangeCategoryGoalHint),
+                withText(coreR.string.change_record_type_goal_time_hint),
+            ),
+        )
+    }
 }

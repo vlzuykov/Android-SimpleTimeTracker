@@ -593,6 +593,7 @@ class SettingsTest : BaseUiTest() {
         )
         clickOnSettingsSpinnerBesideText(coreR.string.settings_dark_mode)
         clickOnViewWithText(coreR.string.settings_dark_mode_enabled)
+        NavUtils.openSettingsScreen()
         checkViewIsDisplayed(
             settingsSpinnerValueBesideText(
                 coreR.string.settings_dark_mode,
@@ -616,6 +617,7 @@ class SettingsTest : BaseUiTest() {
         )
         clickOnSettingsSpinnerBesideText(coreR.string.settings_dark_mode)
         clickOnViewWithText(coreR.string.settings_inactivity_reminder_disabled)
+        NavUtils.openSettingsScreen()
         checkViewIsDisplayed(
             settingsSpinnerValueBesideText(
                 coreR.string.settings_dark_mode,

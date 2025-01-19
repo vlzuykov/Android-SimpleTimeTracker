@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toParams
 import com.example.util.simpletimetracker.core.interactor.ActivityFilterViewDataInteractor
@@ -59,7 +60,7 @@ class WidgetUniversalViewModel @Inject constructor(
 
     val recordTypes: LiveData<List<ViewHolderType>> by lazy {
         return@lazy MutableLiveData<List<ViewHolderType>>().let { initial ->
-            viewModelScope.launch {
+            allowDiskRead { viewModelScope }.launch {
                 initial.value = listOf(LoaderViewData())
                 initial.value = loadRecordTypesViewData()
             }

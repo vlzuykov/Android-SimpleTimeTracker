@@ -55,6 +55,7 @@ class GoalCheckmarkView @JvmOverloads constructor(
     private fun setCheckmark() = with(binding) {
         when (itemCheckState) {
             CheckState.HIDDEN -> {
+                binding.root.isVisible = false
                 ivGoalCheckmarkItemCheckOutline.isVisible = false
                 ivGoalCheckmarkItemCheckBorder.isVisible = false
                 ivGoalCheckmarkItemCheck.isVisible = false

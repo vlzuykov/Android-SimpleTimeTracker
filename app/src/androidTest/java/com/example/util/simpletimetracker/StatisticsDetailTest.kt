@@ -457,6 +457,8 @@ class StatisticsDetailTest : BaseUiTest() {
         )
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag, "2$hourString 0$minuteString", "67%")
         checkTagItem(
             viewsR.color.colorUntracked,
@@ -559,6 +561,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(3)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkNoTagItem(tag)
         checkTagItem(
             viewsR.color.colorUntracked,
@@ -673,6 +677,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(3)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag, "3$hourString 0$minuteString", "100%")
         checkNoTagItem(getString(coreR.string.change_record_untagged))
 
@@ -803,6 +809,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(3)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag1, "1$hourString 0$minuteString", "33%")
         checkTagItem(lastColor, tag2, "2$hourString 0$minuteString", "67%")
         checkNoTagItem("Untagged")
@@ -1037,6 +1045,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(4)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag, "3$hourString 0$minuteString", "100%")
         checkNoTagItem(getString(coreR.string.change_record_untagged))
     }
