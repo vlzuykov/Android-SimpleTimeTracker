@@ -1,6 +1,5 @@
 import com.example.util.simpletimetracker.Base
 import com.example.util.simpletimetracker.applyAndroidLibrary
-import dagger.hilt.android.plugin.util.capitalize
 
 plugins {
     alias(libs.plugins.gradleApplication)

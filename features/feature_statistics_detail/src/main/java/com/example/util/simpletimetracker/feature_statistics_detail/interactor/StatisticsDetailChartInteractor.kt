@@ -187,7 +187,13 @@ class StatisticsDetailChartInteractor @Inject constructor(
         splitSortMode: ChartSplitSortMode,
     ): List<ChartBarDataDuration> {
         fun mapEmpty(): List<ChartBarDataDuration> {
-            return ranges.map { ChartBarDataDuration(legend = it.legend, durations = listOf(0L to 0)) }
+            return ranges.map {
+                ChartBarDataDuration(
+                    rangeStart = it.rangeStart,
+                    legend = it.legend,
+                    durations = listOf(0L to 0),
+                )
+            }
         }
 
         fun mapRangesToValue(list: List<Range>): Long {
@@ -244,6 +250,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
                 }
 
                 ChartBarDataDuration(
+                    rangeStart = data.rangeStart,
                     legend = data.legend,
                     durations = durations,
                 )

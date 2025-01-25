@@ -46,6 +46,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.viewData.Sta
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailPreviewViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailSplitGroupingViewData
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.abs
@@ -511,15 +512,15 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         }
 
         val average = getAverage(data)
-        val nonEmptyData = data.filter { it.durations.sumOf { it.first } != 0L }
+        val nonEmptyData = data.filter { it.totalDuration != 0L }
         val averageByNonEmpty = getAverage(nonEmptyData)
 
         val comparisonAverage = getAverage(compareData)
-        val comparisonNonEmptyData = compareData.filter { it.durations.sumOf { it.first } != 0L }
+        val comparisonNonEmptyData = compareData.filter { it.totalDuration != 0L }
         val comparisonAverageByNonEmpty = getAverage(comparisonNonEmptyData)
 
         val prevAverage = getAverage(prevData)
-        val prevNonEmptyData = prevData.filter { it.durations.sumOf { it.first } != 0L }
+        val prevNonEmptyData = prevData.filter { it.totalDuration != 0L }
         val prevAverageByNonEmpty = getAverage(prevNonEmptyData)
 
         val title = resourceRepo.getString(
@@ -682,13 +683,17 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         )
     }
 
-    fun mapGoalData(
+    private fun mapGoalData(
         data: List<ChartBarDataDuration>,
         goalValue: Long,
         goalSubtype: RecordTypeGoal.Subtype,
+        goalRange: RecordTypeGoal.Range,
+        goalDaysOfWeek: Set<DayOfWeek>,
         isDarkTheme: Boolean,
+        startOfDayShift: Long,
     ): List<ChartBarDataDuration> {
         if (goalValue == 0L) return emptyList()
+        val shouldAccountForDays = goalRange is RecordTypeGoal.Range.Daily
         val greenColor = resourceRepo.getThemedAttr(R.attr.appPositiveColor, isDarkTheme)
         val redColor = resourceRepo.getThemedAttr(R.attr.appNegativeColor, isDarkTheme)
         val positiveColor = when (goalSubtype) {
@@ -699,14 +704,30 @@ class StatisticsDetailViewDataMapper @Inject constructor(
             is RecordTypeGoal.Subtype.Goal -> redColor
             is RecordTypeGoal.Subtype.Limit -> greenColor
         }
+        val calendar = Calendar.getInstance()
+        val current = System.currentTimeMillis()
 
         return data.map { dataPart ->
-            val totalDuration = dataPart.durations.sumOf { it.first }
-            // Show difference from goal value only on days
-            // when there were records tracked.
-            val goalDuration = if (totalDuration != 0L) totalDuration - goalValue else 0L
+            val totalDuration = dataPart.totalDuration
+            val goalDuration = if (dataPart.rangeStart > current) {
+                0
+            } else if (shouldAccountForDays) {
+                val currentPartDay = timeMapper.getDayOfWeek(
+                    timestamp = dataPart.rangeStart,
+                    calendar = calendar,
+                    startOfDayShift = startOfDayShift,
+                )
+                if (currentPartDay in goalDaysOfWeek) {
+                    totalDuration - goalValue
+                } else {
+                    0
+                }
+            } else {
+                totalDuration - goalValue
+            }
             val color = if (goalDuration >= 0) positiveColor else negativeColor
             ChartBarDataDuration(
+                rangeStart = dataPart.rangeStart,
                 legend = dataPart.legend,
                 durations = listOf(goalDuration to color),
             )
@@ -772,23 +793,32 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
         isDarkTheme: Boolean,
+        startOfDayShift: Long,
     ): List<ViewHolderType> {
         val goalValue = getGoalValue(chartGoal)
         if (goalValue == 0L) return emptyList()
+        val goalRange = chartGoal?.range ?: return emptyList()
+        val goalSubtype = chartGoal.subtype
+        val goalDaysOfWeek = chartGoal.daysOfWeek
 
         val items = mutableListOf<ViewHolderType>()
-        val goalSubtype = chartGoal?.subtype ?: RecordTypeGoal.Subtype.Goal
         val goalData = mapGoalData(
             data = data,
             goalValue = goalValue,
+            goalRange = goalRange,
+            goalDaysOfWeek = goalDaysOfWeek,
             goalSubtype = goalSubtype,
             isDarkTheme = isDarkTheme,
+            startOfDayShift = startOfDayShift,
         )
         val goalChartPrevData = mapGoalData(
             data = prevData,
             goalValue = goalValue,
+            goalRange = goalRange,
+            goalDaysOfWeek = goalDaysOfWeek,
             goalSubtype = goalSubtype,
             isDarkTheme = isDarkTheme,
+            startOfDayShift = startOfDayShift,
         )
         val chartData = mapChartData(
             data = goalData,
@@ -886,7 +916,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         data: List<ChartBarDataDuration>,
     ): Pair<String, Boolean> {
         val isMinutes = data
-            .maxOfOrNull { barPart -> abs(barPart.durations.sumOf { it.first }) }
+            .maxOfOrNull { barPart -> abs(barPart.totalDuration) }
             .orZero()
             .let(TimeUnit.MILLISECONDS::toHours) == 0L
 
@@ -976,7 +1006,7 @@ class StatisticsDetailViewDataMapper @Inject constructor(
         useProportionalMinutes: Boolean,
         showSeconds: Boolean,
     ): List<StatisticsDetailCardInternalViewData> {
-        val barValues = goalData.map { bar -> bar.durations.sumOf { it.first } }
+        val barValues = goalData.map { bar -> bar.totalDuration }
         val negativeValue = barValues.filter { it < 0L }.sum()
         val positiveValue = barValues.filter { it > 0L }.sum()
         val total = negativeValue + positiveValue

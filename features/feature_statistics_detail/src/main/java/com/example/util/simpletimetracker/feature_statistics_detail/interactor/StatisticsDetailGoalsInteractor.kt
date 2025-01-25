@@ -121,6 +121,7 @@ class StatisticsDetailGoalsInteractor @Inject constructor(
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
             isDarkTheme = isDarkTheme,
+            startOfDayShift = startOfDayShift,
         )
 
         return@withContext StatisticsDetailGoalsCompositeViewData(

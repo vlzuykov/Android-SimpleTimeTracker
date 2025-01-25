@@ -38,7 +38,7 @@ class RecordQuickActionsInteractor @Inject constructor(
                     newTagIds = getTagsAfterActivityChange(
                         currentTags = record.tagIds,
                         newTypeId = newTypeId,
-                    )
+                    ),
                 )
             }
             is Type.RecordUntracked -> {
@@ -64,7 +64,7 @@ class RecordQuickActionsInteractor @Inject constructor(
                     newTagIds = getTagsAfterActivityChange(
                         currentTags = record.tagIds,
                         newTypeId = newTypeId,
-                    )
+                    ),
                 )
             }
         }

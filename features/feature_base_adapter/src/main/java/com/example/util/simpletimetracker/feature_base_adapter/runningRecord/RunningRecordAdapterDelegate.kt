@@ -2,7 +2,6 @@ package com.example.util.simpletimetracker.feature_base_adapter.runningRecord
 
 import androidx.core.view.ViewCompat
 import com.example.util.simpletimetracker.domain.extension.orFalse
-import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor.GoalState
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.GoalTimeViewData.Subtype
 import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState

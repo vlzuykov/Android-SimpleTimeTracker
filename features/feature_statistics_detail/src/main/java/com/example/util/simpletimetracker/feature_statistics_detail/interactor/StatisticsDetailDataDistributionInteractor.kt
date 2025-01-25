@@ -235,6 +235,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
         return when {
             statistics.id == UNTRACKED_ITEM_ID -> {
                 ChartBarDataDuration(
+                    rangeStart = 0, // Not needed.
                     legend = "",
                     durations = listOf(
                         statistics.data.duration to
@@ -244,6 +245,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             }
             statistics.id == UNCATEGORIZED_ITEM_ID -> {
                 ChartBarDataDuration(
+                    rangeStart = 0,
                     legend = "",
                     durations = listOf(
                         statistics.data.duration to
@@ -253,6 +255,7 @@ class StatisticsDetailDataDistributionInteractor @Inject constructor(
             }
             dataHolder != null -> {
                 ChartBarDataDuration(
+                    rangeStart = 0,
                     legend = "",
                     durations = listOf(
                         statistics.data.duration to
