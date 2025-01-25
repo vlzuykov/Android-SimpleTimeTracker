@@ -55,13 +55,14 @@ class GoalCheckmarkView @JvmOverloads constructor(
     private fun setCheckmark() = with(binding) {
         when (itemCheckState) {
             CheckState.HIDDEN -> {
-                binding.root.isVisible = false
+                root.isVisible = false
                 ivGoalCheckmarkItemCheckOutline.isVisible = false
                 ivGoalCheckmarkItemCheckBorder.isVisible = false
                 ivGoalCheckmarkItemCheck.isVisible = false
                 ivGoalCheckmarkItemCheckFiltered.isVisible = false
             }
             CheckState.GOAL_NOT_REACHED -> {
+                root.isVisible = true
                 ivGoalCheckmarkItemCheckOutline.isVisible = true
                 val color = ColorStateList.valueOf(context.getThemedAttr(R.attr.colorSecondary))
                 ivGoalCheckmarkItemCheckOutline.imageTintList = color
@@ -69,6 +70,7 @@ class GoalCheckmarkView @JvmOverloads constructor(
                 ivGoalCheckmarkItemCheck.isVisible = false
             }
             CheckState.GOAL_REACHED, CheckState.LIMIT_NOT_REACHED -> {
+                root.isVisible = true
                 ivGoalCheckmarkItemCheckOutline.isVisible = true
                 val color = ColorStateList.valueOf(context.getThemedAttr(R.attr.appIconColor))
                 ivGoalCheckmarkItemCheckOutline.imageTintList = color
@@ -77,6 +79,7 @@ class GoalCheckmarkView @JvmOverloads constructor(
                 ivGoalCheckmarkItemCheck.setImageResource(R.drawable.record_type_check_mark)
             }
             CheckState.LIMIT_REACHED -> {
+                root.isVisible = true
                 ivGoalCheckmarkItemCheckOutline.isVisible = true
                 val color = ColorStateList.valueOf(context.getThemedAttr(R.attr.colorSecondary))
                 ivGoalCheckmarkItemCheckOutline.imageTintList = color

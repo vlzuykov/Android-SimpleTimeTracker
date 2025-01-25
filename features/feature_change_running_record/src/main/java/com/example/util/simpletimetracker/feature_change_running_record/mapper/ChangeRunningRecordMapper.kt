@@ -17,8 +17,8 @@ class ChangeRunningRecordMapper @Inject constructor() {
             timer = recordPreview.timer,
             timerTotal = recordPreview.timerTotal,
             goalText = recordPreview.goalTime.text,
-            goalComplete = recordPreview.goalTime.complete,
             goalState = when (recordPreview.goalTime.state) {
+                is Subtype.Hidden -> GoalState.Hidden
                 is Subtype.Goal -> GoalState.Goal
                 is Subtype.Limit -> GoalState.Limit
             },

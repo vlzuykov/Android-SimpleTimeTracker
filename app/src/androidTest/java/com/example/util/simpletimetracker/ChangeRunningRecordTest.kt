@@ -76,6 +76,7 @@ class ChangeRunningRecordTest : BaseUiTest() {
         )
         testUtils.addActivity(name = name2, color = lastColor, text = lastEmoji)
         testUtils.addRecordTag(tag2, name2)
+        Thread.sleep(1000)
 
         // Start timer
         tryAction { clickOnViewWithText(name1) }

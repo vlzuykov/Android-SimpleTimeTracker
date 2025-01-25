@@ -59,6 +59,7 @@ class ChangeRecordTest : BaseUiTest() {
         testUtils.addActivity(name = newName, color = lastColor, text = lastEmoji)
         testUtils.addRecordTag(tag1, name)
         testUtils.addRecordTag(tag2, newName)
+        Thread.sleep(1000)
 
         // Add record
         NavUtils.openRecordsScreen()

@@ -7,10 +7,10 @@ import com.example.util.simpletimetracker.core.viewData.StatisticsDataHolder
 import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.recordType.extension.value
-import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import com.example.util.simpletimetracker.domain.statistics.model.Statistics
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.GoalTimeViewData
 import com.example.util.simpletimetracker.feature_base_adapter.statisticsGoal.StatisticsGoalViewData
@@ -33,8 +33,7 @@ class GoalViewDataMapper @Inject constructor(
     ): GoalTimeViewData {
         val noGoal = GoalTimeViewData(
             text = "",
-            complete = false,
-            state = GoalTimeViewData.Subtype.Goal,
+            state = GoalTimeViewData.Subtype.Hidden,
         )
         if (goal == null || goal.value <= 0L || !goalsVisible) {
             return noGoal
@@ -80,14 +79,14 @@ class GoalViewDataMapper @Inject constructor(
             "$typeString $formatted"
         }
 
-        val state = when (goal.subtype) {
-            is RecordTypeGoal.Subtype.Goal -> GoalTimeViewData.Subtype.Goal
-            is RecordTypeGoal.Subtype.Limit -> GoalTimeViewData.Subtype.Limit
+        val state = when {
+            complete && goal.subtype is RecordTypeGoal.Subtype.Goal -> GoalTimeViewData.Subtype.Goal
+            complete && goal.subtype is RecordTypeGoal.Subtype.Limit -> GoalTimeViewData.Subtype.Limit
+            else -> GoalTimeViewData.Subtype.Hidden
         }
 
         return GoalTimeViewData(
             text = durationLeftString,
-            complete = complete,
             state = state,
         )
     }

@@ -154,8 +154,8 @@ class ChangeRunningRecordFragment :
             itemTimer = item.recordPreview.timer
             itemTimerTotal = item.recordPreview.timerTotal
             itemGoalTime = item.recordPreview.goalTime.text
-            itemGoalTimeComplete = item.recordPreview.goalTime.complete
             itemGoalTimeCheck = when (item.recordPreview.goalTime.state) {
+                is Subtype.Hidden -> CheckState.HIDDEN
                 is Subtype.Goal -> CheckState.GOAL_REACHED
                 is Subtype.Limit -> CheckState.LIMIT_REACHED
             }

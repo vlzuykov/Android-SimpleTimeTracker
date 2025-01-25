@@ -29,11 +29,13 @@ data class ChangeRunningRecordParams(
         @Parcelize
         data class GoalTimeParams(
             val text: String,
-            val complete: Boolean,
             val state: GoalSubtypeParams,
         ) : Parcelable
 
         sealed interface GoalSubtypeParams : Parcelable {
+            @Parcelize
+            data object Hidden : GoalSubtypeParams
+
             @Parcelize
             data object Goal : GoalSubtypeParams
 
