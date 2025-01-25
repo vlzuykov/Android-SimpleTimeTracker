@@ -5,7 +5,7 @@ import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 data class NotificationActivitySwitchParams(
     val icon: RecordTypeIcon,
     val color: Int,
-    val title: String,
+    val title: CharSequence,
     val subtitle: String,
     val untrackedStartedTimeStamp: Long?,
     val prevRecordDuration: Long?,

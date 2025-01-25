@@ -7,7 +7,7 @@ data class NotificationTypeParams(
     val id: Long,
     val icon: RecordTypeIcon,
     val color: Int,
-    val text: String,
+    val text: CharSequence,
     val timeStarted: String,
     val startedTimeStamp: Long,
     val totalDuration: Long?,

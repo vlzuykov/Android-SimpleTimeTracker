@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_notification.activitySwitch.interactor
 
+import androidx.core.text.buildSpannedString
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
@@ -132,7 +133,7 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
         val hint: String
         val icon: RecordTypeIcon?
         val color: Int?
-        val title: String
+        val title: CharSequence
         val subtitle: String
         val untrackedTimeStarted: Long?
         val prevRecordDuration: Long?
@@ -146,7 +147,11 @@ class NotificationActivitySwitchInteractorImpl @Inject constructor(
                     recordType = prevRecordType,
                     recordTags = recordTags.filter { it.id in prevRecord.tagIds },
                 )
-                title = "$namePrefix - $fullName"
+                title = buildSpannedString {
+                    append(namePrefix)
+                    append(" - ")
+                    append(fullName)
+                }
                 subtitle = timeMapper.formatTime(
                     time = prevRecord.timeEnded,
                     useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat(),
