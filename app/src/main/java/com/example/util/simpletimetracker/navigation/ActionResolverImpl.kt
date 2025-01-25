@@ -21,6 +21,7 @@ import com.example.util.simpletimetracker.navigation.params.action.OpenSystemSet
 import com.example.util.simpletimetracker.navigation.params.action.RequestPermissionParams
 import com.example.util.simpletimetracker.navigation.params.action.SendEmailParams
 import com.example.util.simpletimetracker.navigation.params.action.ShareFileParams
+import timber.log.Timber
 import javax.inject.Inject
 
 class ActionResolverImpl @Inject constructor(
@@ -42,8 +43,8 @@ class ActionResolverImpl @Inject constructor(
         when (data) {
             is OpenMarketParams -> openMarket(activity, data)
             is SendEmailParams -> sendEmail(activity, data)
-            is CreateFileParams -> createFile(activity, data)
-            is OpenFileParams -> openFile(activity, data)
+            is CreateFileParams -> createFile(data)
+            is OpenFileParams -> openFile(data)
             is OpenSystemSettings -> openSystemSettings(activity, data)
             is ShareFileParams -> shareFile(activity, data)
             is RequestPermissionParams -> requestPermission(data)
@@ -96,27 +97,29 @@ class ActionResolverImpl @Inject constructor(
         }
     }
 
-    private fun openFile(activity: Activity?, data: OpenFileParams) {
+    private fun openFile(data: OpenFileParams) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             .addCategory(Intent.CATEGORY_OPENABLE)
             .setType(data.type)
 
-        if (activity.checkIfIntentResolves(intent)) {
+        runCatching {
             openFileResultLauncher?.launch(intent)
-        } else {
+        }.onFailure {
+            Timber.e(it)
             data.notHandledCallback()
         }
     }
 
-    private fun createFile(activity: Activity?, data: CreateFileParams) {
+    private fun createFile(data: CreateFileParams) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
             .addCategory(Intent.CATEGORY_OPENABLE)
             .setType(data.type)
             .putExtra(Intent.EXTRA_TITLE, data.fileName)
 
-        if (activity.checkIfIntentResolves(intent)) {
+        runCatching {
             createFileResultLauncher?.launch(intent)
-        } else {
+        }.onFailure {
+            Timber.e(it)
             data.notHandledCallback()
         }
     }
@@ -181,11 +184,6 @@ class ActionResolverImpl @Inject constructor(
         return registerForActivityResult(RequestPermission()) { result ->
             resultContainer.sendResult(key, result)
         }
-    }
-
-    private fun Activity?.checkIfIntentResolves(intent: Intent): Boolean {
-        if (this == null) return false
-        return packageManager?.let(intent::resolveActivity) != null
     }
 
     companion object {
