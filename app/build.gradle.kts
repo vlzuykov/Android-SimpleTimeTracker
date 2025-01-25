@@ -1,5 +1,6 @@
 import com.example.util.simpletimetracker.Base
 import com.example.util.simpletimetracker.applyAndroidLibrary
+import dagger.hilt.android.plugin.util.capitalize
 
 plugins {
     alias(libs.plugins.gradleApplication)
@@ -52,17 +53,27 @@ android {
     }
 
     flavorDimensions += "version"
-
+    val baseFlavor = "base"
+    val playFlavor = "play"
     productFlavors {
         // F-Droid version, no google play services, no Wear OS support.
-        create("base") {
+        create(baseFlavor) {
             dimension = "version"
         }
         // Google Play version, with google play services, Wear OS support.
-        create("play") {
+        create(playFlavor) {
             dimension = "version"
             isDefault = true
         }
+    }
+
+    // Disables dependency metadata when building APKs.
+    // If enabled, creates a file in app/build/outputs/sdk-dependencies/
+    dependenciesInfo {
+        val taskName = gradle.startParameter.taskRequests.toString().lowercase()
+        val enabled = taskName.contains("assemble${playFlavor}release")
+        includeInApk = enabled
+        includeInBundle = enabled
     }
 
     buildFeatures {

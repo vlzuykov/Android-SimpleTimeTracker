@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker
 
-import com.example.util.simpletimetracker.domain.interactor.WearInteractor
+import com.example.util.simpletimetracker.domain.wear.WearInteractor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
