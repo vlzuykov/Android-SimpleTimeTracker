@@ -13,7 +13,6 @@ import com.example.util.simpletimetracker.utils.longClickOnView
 import com.example.util.simpletimetracker.utils.tryAction
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.allOf
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,21 +25,26 @@ class RecordQuickActionsTest : BaseUiTest() {
     @Test
     fun recordQuickActions() {
         val name = "Test"
+        val tag = "Tag"
 
         // Add data
         testUtils.addActivity(name)
         testUtils.addRecord(name)
+        testUtils.addRecordTag(tag)
 
         // Check
         NavUtils.openRecordsScreen()
-        longClickOnView(CoreMatchers.allOf(withText(name), isCompletelyDisplayed()))
+        longClickOnView(allOf(withText(name), isCompletelyDisplayed()))
 
         checkViewIsDisplayed(withText(R.string.shortcut_navigation_statistics))
         checkViewIsDisplayed(withText(R.string.archive_dialog_delete))
         checkViewIsDisplayed(withText(R.string.change_record_continue))
         checkViewIsDisplayed(withText(R.string.change_record_repeat))
         checkViewIsDisplayed(withText(R.string.change_record_duplicate))
+        checkViewIsDisplayed(withText(R.string.data_edit_change_activity))
+        checkViewIsDisplayed(withText(R.string.data_edit_change_tag))
         checkViewDoesNotExist(withText(R.string.change_record_merge))
+        checkViewDoesNotExist(withText(R.string.notification_record_type_stop))
     }
 
     @Test
@@ -67,15 +71,20 @@ class RecordQuickActionsTest : BaseUiTest() {
         checkViewDoesNotExist(withText(R.string.change_record_continue))
         checkViewDoesNotExist(withText(R.string.change_record_repeat))
         checkViewDoesNotExist(withText(R.string.change_record_duplicate))
+        checkViewIsDisplayed(withText(R.string.data_edit_change_activity))
+        checkViewDoesNotExist(withText(R.string.data_edit_change_tag))
         checkViewIsDisplayed(withText(R.string.change_record_merge))
+        checkViewDoesNotExist(withText(R.string.notification_record_type_stop))
     }
 
     @Test
     fun runningRecordQuickActions() {
         val name = "Test"
+        val tag = "Tag"
 
         // Add data
         testUtils.addActivity(name)
+        testUtils.addRecordTag(tag)
         Thread.sleep(1000)
         tryAction { clickOnViewWithText(name) }
 
@@ -88,6 +97,9 @@ class RecordQuickActionsTest : BaseUiTest() {
         checkViewDoesNotExist(withText(R.string.change_record_continue))
         checkViewDoesNotExist(withText(R.string.change_record_repeat))
         checkViewDoesNotExist(withText(R.string.change_record_duplicate))
+        checkViewIsDisplayed(withText(R.string.data_edit_change_activity))
+        checkViewIsDisplayed(withText(R.string.data_edit_change_tag))
         checkViewDoesNotExist(withText(R.string.change_record_merge))
+        checkViewIsDisplayed(withText(R.string.notification_record_type_stop))
     }
 }

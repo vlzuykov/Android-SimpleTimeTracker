@@ -8,6 +8,8 @@ import com.example.util.simpletimetracker.domain.record.interactor.RunningRecord
 import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.domain.record.model.RunningRecord
+import com.example.util.simpletimetracker.domain.recordTag.interactor.GetSelectableTagsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import com.example.util.simpletimetracker.navigation.params.screen.RecordQuickActionsParams.Type
 import javax.inject.Inject
 
@@ -18,6 +20,7 @@ class RecordQuickActionsInteractor @Inject constructor(
     private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val removeRunningRecordMediator: RemoveRunningRecordMediator,
     private val runningRecordInteractor: RunningRecordInteractor,
+    private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
 ) {
 
     suspend fun changeType(
@@ -32,7 +35,10 @@ class RecordQuickActionsInteractor @Inject constructor(
                 changeRecord(
                     old = record,
                     newTypeId = newTypeId,
-                    newTagIds = emptyList(), // Reset tags.
+                    newTagIds = getTagsAfterActivityChange(
+                        currentTags = record.tagIds,
+                        newTypeId = newTypeId,
+                    )
                 )
             }
             is Type.RecordUntracked -> {
@@ -55,7 +61,10 @@ class RecordQuickActionsInteractor @Inject constructor(
                 changeRunningRecord(
                     old = record,
                     newTypeId = newTypeId,
-                    newTagIds = emptyList(), // Reset tags
+                    newTagIds = getTagsAfterActivityChange(
+                        currentTags = record.tagIds,
+                        newTypeId = newTypeId,
+                    )
                 )
             }
         }
@@ -124,5 +133,14 @@ class RecordQuickActionsInteractor @Inject constructor(
             comment = old.comment,
             tagIds = newTagIds,
         )
+    }
+
+    private suspend fun getTagsAfterActivityChange(
+        currentTags: List<Long>,
+        newTypeId: Long,
+    ): List<Long> {
+        val selectableTags = getSelectableTagsInteractor.execute(newTypeId)
+            .map(RecordTag::id)
+        return currentTags.filter { it in selectableTags }
     }
 }

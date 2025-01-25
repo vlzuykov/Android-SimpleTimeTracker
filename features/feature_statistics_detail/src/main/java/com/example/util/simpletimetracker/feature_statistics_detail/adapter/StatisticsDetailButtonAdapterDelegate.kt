@@ -19,6 +19,7 @@ fun createStatisticsDetailButtonAdapterDelegate(
     with(binding) {
         item as ViewData
 
+        root.tag = item.data.block
         root.setMargins(top = item.marginTopDp)
 
         btnStatisticsDetailButtonItem.text = item.data.text
