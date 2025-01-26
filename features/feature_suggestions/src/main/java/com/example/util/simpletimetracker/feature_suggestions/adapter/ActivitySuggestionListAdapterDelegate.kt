@@ -15,6 +15,7 @@ fun createActivitySuggestionListAdapterDelegate() = createRecyclerBindingAdapter
     with(binding) {
         item as ViewData
 
+        root.tag = item.id.forTypeId
         activitySuggestionListAdapterBindDelegate(
             item = item,
             binding = this,

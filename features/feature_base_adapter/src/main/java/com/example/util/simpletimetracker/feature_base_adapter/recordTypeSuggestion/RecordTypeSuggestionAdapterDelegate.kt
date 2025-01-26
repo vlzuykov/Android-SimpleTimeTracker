@@ -41,7 +41,8 @@ fun createRecordTypeSuggestionAdapterDelegate(
 
             return BaseRecyclerBindingViewHolder(
                 binding = baseViewHolder?.binding as? BaseBinding ?: fallbackBinding,
-                onBind = { _, item, payload ->
+                onBind = { binding, item, payload ->
+                    binding.root.tag = ViewData.TEST_TAG
                     item as ViewData
                     baseViewHolder?.bind(item.data, payload)
                 },

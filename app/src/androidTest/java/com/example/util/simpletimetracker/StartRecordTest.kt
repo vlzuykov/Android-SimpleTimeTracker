@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker
 
+import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
@@ -154,6 +155,7 @@ class StartRecordTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.change_record_comment_field)
         typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         clickOnViewWithText(coreR.string.change_record_comment_field)
+        closeSoftKeyboard()
         clickOnViewWithText(coreR.string.change_record_save)
 
         // Stop timer

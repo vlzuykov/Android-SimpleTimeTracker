@@ -10,4 +10,8 @@ data class RecordTypeSuggestionViewData(
     override fun getUniqueId(): Long = data.id
 
     override fun isValidType(other: ViewHolderType): Boolean = other is RecordTypeSuggestionViewData
+
+    companion object {
+        const val TEST_TAG = "RecordTypeSuggestionViewData"
+    }
 }

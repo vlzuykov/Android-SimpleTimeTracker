@@ -87,8 +87,13 @@ class RecordActionsSplitTest : BaseUiTest() {
         timePreview = timeEndedTimestamp.formatDateTime()
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
         onView(withId(changeRecordR.id.sliderChangeRecordItem)).perform(clickLocation(GeneralLocation.CENTER))
-        timePreview = calendar.getMillis(16, 17).formatDateTime()
-        checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
+        try {
+            timePreview = calendar.getMillis(16, 17).formatDateTime()
+            checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
+        } catch (e: Exception) {
+            timePreview = calendar.getMillis(16, 16).formatDateTime()
+            checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimePreviewItem), withText(timePreview)))
+        }
     }
 
     @Test

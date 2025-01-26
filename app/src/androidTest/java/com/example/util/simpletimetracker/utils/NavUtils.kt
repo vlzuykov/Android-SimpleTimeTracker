@@ -103,6 +103,11 @@ object NavUtils {
         clickOnSettingsRecyclerText(coreR.string.settings_complex_rules)
     }
 
+    fun openSuggestions() {
+        scrollSettingsRecyclerToText(coreR.string.settings_activity_suggestions)
+        clickOnSettingsRecyclerText(coreR.string.settings_activity_suggestions)
+    }
+
     fun openCardSizeScreen() {
         scrollSettingsRecyclerToText(coreR.string.settings_change_card_size)
         clickOnSettingsRecyclerText(coreR.string.settings_change_card_size)

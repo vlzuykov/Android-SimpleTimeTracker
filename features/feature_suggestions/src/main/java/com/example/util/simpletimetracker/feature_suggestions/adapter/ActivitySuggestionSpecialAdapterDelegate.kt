@@ -15,6 +15,7 @@ fun createActivitySuggestionSpecialAdapterDelegate(
     with(binding) {
         item as ViewData
 
+        root.tag = item.id.forTypeId
         activitySuggestionListAdapterBindDelegate(
             item = item.data,
             binding = this,

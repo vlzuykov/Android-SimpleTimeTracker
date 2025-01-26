@@ -20,6 +20,8 @@ import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordType
 import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.ActivitySuggestionInteractor
+import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
 import com.example.util.simpletimetracker.domain.category.model.Category
 import com.example.util.simpletimetracker.domain.color.model.AppColor
 import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
@@ -51,6 +53,7 @@ class TestUtils @Inject constructor(
     private val favouriteIconInteractor: FavouriteIconInteractor,
     private val favouriteColorInteractor: FavouriteColorInteractor,
     private val complexRuleInteractor: ComplexRuleInteractor,
+    private val activitySuggestionInteractor: ActivitySuggestionInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val iconImageMapper: IconImageMapper,
     private val clearDataInteractor: ClearDataInteractor,
@@ -296,13 +299,6 @@ class TestUtils @Inject constructor(
         daysOfWeek: List<DayOfWeek> = emptyList(),
     ) = runBlocking {
         val availableTypes = recordTypeInteractor.getAll()
-
-        fun getTypeIds(names: List<String>): Set<Long> {
-            return names.mapNotNull { name ->
-                availableTypes.firstOrNull { it.name == name }?.id
-            }.toSet()
-        }
-
         val assignTagIds = recordTagInteractor.getAll()
             .filter { it.name in assignTagNames }
             .map { it.id }
@@ -312,11 +308,40 @@ class TestUtils @Inject constructor(
             disabled = false,
             action = action,
             actionAssignTagIds = assignTagIds,
-            conditionStartingTypeIds = getTypeIds(startingTypeNames),
-            conditionCurrentTypeIds = getTypeIds(currentTypeNames),
+            conditionStartingTypeIds = getTypeIds(availableTypes, startingTypeNames),
+            conditionCurrentTypeIds = getTypeIds(availableTypes, currentTypeNames),
             conditionDaysOfWeek = daysOfWeek.toSet(),
         )
 
         complexRuleInteractor.add(data)
+    }
+
+    fun addSuggestion(
+        forTypeName: String,
+        names: List<String> = emptyList(),
+    ) = runBlocking {
+        val availableTypes = recordTypeInteractor.getAll()
+
+        val data = ActivitySuggestion(
+            forTypeId = getTypeIds(
+                availableTypes = availableTypes,
+                names = listOf(forTypeName),
+            ).firstOrNull() ?: return@runBlocking,
+            suggestionIds = getTypeIds(
+                availableTypes = availableTypes,
+                names = names,
+            ),
+        )
+
+        activitySuggestionInteractor.add(listOf(data))
+    }
+
+    private fun getTypeIds(
+        availableTypes: List<RecordType>,
+        names: List<String>,
+    ): Set<Long> {
+        return names.mapNotNull { name ->
+            availableTypes.firstOrNull { it.name == name }?.id
+        }.toSet()
     }
 }
