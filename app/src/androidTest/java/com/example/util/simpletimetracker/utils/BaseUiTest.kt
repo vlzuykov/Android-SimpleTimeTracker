@@ -19,6 +19,7 @@ import com.example.util.simpletimetracker.core.utils.TestUtils
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.complexRule.repo.ComplexRuleRepo
 import com.example.util.simpletimetracker.domain.backup.repo.BackupRepo
+import com.example.util.simpletimetracker.domain.recordType.repo.RecordTypeRepo
 import com.example.util.simpletimetracker.feature_records.view.RecordsContainerFragment
 import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.SettingsFileWorkDelegate
 import com.example.util.simpletimetracker.feature_statistics.view.StatisticsContainerFragment
@@ -61,6 +62,9 @@ open class BaseUiTest {
 
     @Inject
     lateinit var backupRepo: BackupRepo
+
+    @Inject
+    lateinit var recordTypeRepo: RecordTypeRepo
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)

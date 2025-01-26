@@ -28,8 +28,10 @@ class ActivityStartStopFromBroadcastInteractor @Inject constructor(
     suspend fun onActionActivityStop(
         typeId: Long,
     ) {
-        val runningRecord = runningRecordInteractor.get(typeId)
-            ?: return // Not running.
+        val runningRecord = runningRecordInteractor.get(typeId) ?: run {
+            notificationTypeInteractor.checkAndHide(typeId)
+            return // Not running.
+        }
 
         removeRunningRecordMediator.removeWithRecordAdd(
             runningRecord = runningRecord,

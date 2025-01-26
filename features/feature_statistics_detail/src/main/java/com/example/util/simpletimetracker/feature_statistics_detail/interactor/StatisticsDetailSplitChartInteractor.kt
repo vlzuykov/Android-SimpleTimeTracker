@@ -231,6 +231,9 @@ class StatisticsDetailSplitChartInteractor @Inject constructor(
         startOfDayShift: Long,
         splitRecords: MutableList<Range> = mutableListOf(),
     ): List<Range> {
+        // Avoid infinite loop.
+        if (record.duration < 0) return emptyList()
+
         val rangeCheck = when (splitChartGrouping) {
             SplitChartGrouping.HOURLY -> timeMapper.sameHour(
                 date1 = record.timeStarted,
