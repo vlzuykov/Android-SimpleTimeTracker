@@ -101,7 +101,7 @@
     <string name="change_record_tag_default_types_hint">Тег буде призначено за замовчуванням під час запуску таймера з вибраними діями</string>
 
     <!--  Change record  -->
-    <string name="change_record_message_choose_type">Оберіть активність</string>
+    <string name="change_record_message_choose_type">Оберати активність</string>
     <string name="change_record_type_field">Активність</string>
     <string name="change_record_tag_field">Тег</string>
     <string name="change_record_comment_field">Коментар</string>
@@ -121,7 +121,7 @@
     <string name="change_record_continue_hint">Буде видалено поточний запис і продовжено відстеження цієї активності</string>
     <string name="change_record_repeat">@string/running_records_repeat</string>
     <string name="change_record_repeat_hint">Буде повторено відстеження цієї активності</string>
-    <string name="change_record_duplicate">Дублікат</string>
+    <string name="change_record_duplicate">Дублювати</string>
     <string name="change_record_duplicate_hint">Буде створено копію цього запису</string>
     <string name="change_record_merge">Об’єднати</string>
     <string name="change_record_merge_hint">Додасть цей час до попереднього запису</string>
@@ -149,8 +149,8 @@
     <string name="change_record_type_icon_text_hint">Текст</string>
     <string name="change_record_type_icon_emoji_hint">Смайл</string>
     <string name="change_record_type_icon_search_hint">Пошук (англійською)</string>
-    <string name="change_record_type_no_icon">Немає значка</string>
-    <string name="change_record_favourite_icons_hint">Улюблені значки</string>
+    <string name="change_record_type_no_icon">Немає іконки</string>
+    <string name="change_record_favourite_icons_hint">Улюблені іконки</string>
     <string name="change_record_type_save">Зберегти</string>
     <string name="change_record_message_choose_name">Оберіть ім\'я</string>
     <string name="change_record_message_name_exist">Назва вже використана</string>
@@ -190,7 +190,7 @@
 
     <!--  Activity suggestions  -->
     <string name="activity_suggestions_hint">Показує пропозиції щодо наступної дії на основі поточної чи останньої дії</string>
-    <string name="activity_suggestions_calculate">Обчисліть зі статистики</string>
+    <string name="activity_suggestions_calculate">Обчислити зі статистики</string>
     <string name="activity_suggestions_select_activity_hint">Для вибраних дій будуть показані пропозиції</string>
 
     <!--  Activity filters  -->
@@ -269,7 +269,7 @@
     <string name="settings_sort_by_name">Ім\'я</string>
     <string name="settings_sort_by_color">Колір</string>
     <string name="settings_sort_manually">Вручну</string>
-    <string name="settings_sort_activity">Порядок діяльності</string>
+    <string name="settings_sort_activity">Порядок активності</string>
     <string name="settings_first_day_of_week">Перший день тижня</string>
     <string name="settings_show_repeat_button">Показувати кнопку повтору на головному екрані</string>
     <string name="settings_repeat_button_type">Режим</string>
@@ -302,8 +302,8 @@
     <string name="settings_show_notification_even_with_no_timers">Показувати, навіть якщо таймери не працюють</string>
     <string name="settings_keep_statistics_range">Зберігайте діапазон статистики</string>
     <string name="settings_keep_statistics_range_hint">Якщо ввімкнено, буде відкрита детальна статистика з тим самим діапазоном часу, вибраним у статистиці.</string>
-    <string name="settings_retroactive_tracking_mode">Увімкнути ретроактивне відстеження часу</string>
-    <string name="settings_retroactive_tracking_mode_hint">Відстежуйте час, вибираючи, які дії були виконані з останнього разу, а не дії, які будуть виконані відтепер.</string>
+    <string name="settings_retroactive_tracking_mode">Увімкнути ретроспективне відстеження часу</string>
+    <string name="settings_retroactive_tracking_mode_hint">Відстежуйте час, вибираючи, які дії були виконані з останнього разу, а не дії, які виконуватимуться зараз.</string>
     <string name="settings_start_of_day">Зміщення початку дня</string>
     <string name="settings_start_of_day_hint">Початок дня буде зміщено на вказану кількість часу вперед або назад залежно від знака.</string>
     <string name="settings_start_of_day_hint_value">Початок сьогоднішного дня: %s</string>
@@ -331,14 +331,14 @@
     <string name="settings_archive">Архів</string>
     <string name="settings_data_edit">Редагування даних</string>
     <string name="settings_complex_rules">Складні правила</string>
-    <string name="settings_activity_suggestions">Пропозиції щодо діяльності</string>
+    <string name="settings_activity_suggestions">Пропозиції щодо активності</string>
     <string name="settings_edit_categories">Редагувати категорії та теги</string>
     <string name="settings_edit_categories_hint">Призначайте категорії діям і теги записам.</string>
     <string name="settings_show_record_tag_selection">Показувати діалог вибору тега для запису</string>
     <string name="settings_show_record_tag_selection_hint">Під час запуску таймера, якщо у активності є якісь теги для записів, буде показане діалогове вікно вибору.</string>
     <string name="settings_show_record_tag_close_hint">Закрити після вибору одного тегу</string>
-    <string name="settings_show_comment_input">Показати введені коментарі</string>
-    <string name="settings_show_comment_input_hint">При запуску таймера - буде показано діалогове вікно введення коментаря.</string>
+    <string name="settings_show_comment_input">Показувати введення коментарів</string>
+    <string name="settings_show_comment_input_hint">При запуску таймера буде показано діалогове вікно введення коментарів.</string>
     <string name="settings_rate">Оцініть нас</string>
     <string name="settings_rate_description">Оцініть програму та залиште відгук.</string>
     <string name="settings_support_development">Підтримати розробку</string>
@@ -421,15 +421,15 @@
     <string name="message_import_complete">Імпорт завершено</string>
     <string name="message_import_complete_hint">Додано записів: %s</string>
     <string name="message_import_error">Помилка імпорту</string>
-    <string name="message_action_share">Поділіться</string>
+    <string name="message_action_share">Поділитися</string>
     <string name="message_automatic_backup_error">Під час автоматичного резервного копіювання сталася помилка.</string>
     <string name="message_automatic_export_error">Під час автоматичного експорту сталася помилка.</string>
     <string name="message_automatic_error_hint">Спробуйте вибрати інше місце</string>
 
     <!--  Backup options  -->
-    <string name="backup_options_import">Імпорт</string>
+    <string name="backup_options_import">Імпортувати</string>
     <string name="backup_options_save_without_records">Зберегти резервну копію без записів</string>
-    <string name="backup_options_save_without_records_hint">Можна використовувати для спільного використання налаштувань.</string>
+    <string name="backup_options_save_without_records_hint">Можна використовувати для обміну налаштуваннями.</string>
     <string name="backup_options_full_restore">Повне відновлення</string>
     <string name="backup_options_full_restore_hint">Відновлює дані та налаштування. Потрібен перезапуск програми.</string>
     <string name="backup_options_partial_restore">Імпорт даних із резервної копії</string>
@@ -449,7 +449,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">хв</string>
     <string name="statistics_detail_legend_hour_suffix">г</string>
-    <string name="statistics_detail_chart_split">Розділ за діяльністю</string>
+    <string name="statistics_detail_chart_split">Розділити за активністю</string>
 
     <string name="statistics_detail_range_averages_title">Середнє за період: %s</string>
     <string name="statistics_detail_range_averages">За весь діапазон</string>
@@ -469,7 +469,7 @@
     <string name="statistics_detail_streaks_completion">Статус виконання</string>
     <string name="statistics_detail_streaks_completion_percentage">Відсоток</string>
     <string name="statistics_detail_streaks_completion_count">Кількість</string>
-    <string name="statistics_detail_streaks_latest">Остання</string>
+    <string name="statistics_detail_streaks_latest">Останні</string>
     <string name="statistics_detail_streaks_any">Будь-яка тривалість</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
     <string name="statistics_detail_data_split_hint">Розподіл</string>
@@ -507,7 +507,7 @@
     <string name="notification_goal_time_description">ціль досягнута</string>
     <string name="notification_limit_time_description">обмеження досягнуто</string>
     <string name="notification_time_started">Почато в %s</string>
-    <string name="notification_time_ended">Завершено о %s</string>
+    <string name="notification_time_ended">Завершено в %s</string>
     <string name="notification_record_type_stop">Стоп</string>
     <string name="notification_pomodoro_subtitle">Починається: %s (%s)</string>
 
@@ -553,8 +553,8 @@
     <string name="records_filter_duration_min">Мінімум</string>
     <string name="records_filter_duration_max">Максимум</string>
     <string name="records_filter_duplications_same_activity">Така сама діяльність</string>
-    <string name="records_filter_duplications_same_times">Той самий час</string>
-    <string name="records_filter_duplications_manually_fitler">Фільтр дублікатів</string>
+    <string name="records_filter_duplications_same_times">Тим часом</string>
+    <string name="records_filter_duplications_manually_fitler">Фільтрувати дублікати</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Фокус</string>
@@ -563,7 +563,7 @@
     <string name="pomodoro_settings_periods_until_long_break">Циклів до тривалої перерви</string>
 
     <!--  Retroactive tracking mode  -->
-    <string name="retroactive_tracking_mode_hint">Виберіть те, що ви робили</string>
+    <string name="retroactive_tracking_mode_hint">Виберіть те, чим ви займались</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Смайли та емоції</string>
