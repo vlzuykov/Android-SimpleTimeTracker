@@ -7,11 +7,9 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.widget.ViewPager2
 import com.example.util.simpletimetracker.core.utils.getLifecycleObserverAdapter
-import com.example.util.simpletimetracker.domain.model.Coordinates
+import com.example.util.simpletimetracker.domain.base.Coordinates
 import java.util.Calendar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 inline fun <T, R> T.allowDiskWrite(block: T.() -> R): R {
@@ -29,6 +27,17 @@ inline fun <T, R> T.allowDiskRead(block: T.() -> R): R {
         return block()
     } finally {
         StrictMode.setThreadPolicy(oldPolicy)
+    }
+}
+
+// Used to block StrictMode assertConfigurationContext log error.
+inline fun <T, R> T.allowVmViolations(block: T.() -> R): R {
+    val oldPolicy = StrictMode.getVmPolicy()
+    try {
+        StrictMode.setVmPolicy(StrictMode.VmPolicy.LAX)
+        return block()
+    } finally {
+        StrictMode.setVmPolicy(oldPolicy)
     }
 }
 
@@ -74,14 +83,12 @@ fun Calendar.shiftTimeStamp(timestamp: Long, shift: Long): Long {
     return timeInMillis
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 fun BroadcastReceiver.goAsync(
-    coroutineScope: CoroutineScope = GlobalScope,
     finally: () -> Unit,
     block: suspend () -> Unit,
 ) {
     val result = goAsync()
-    coroutineScope.launch {
+    allowDiskRead { MainScope() }.launch {
         try {
             block()
         } finally {

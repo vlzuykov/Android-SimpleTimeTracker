@@ -177,7 +177,7 @@ class AddRecordTest : BaseUiTest() {
 
         // Set comment
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         closeSoftKeyboard()
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment))) }
         clickOnViewWithText(coreR.string.change_record_comment_field)
@@ -289,7 +289,7 @@ class AddRecordTest : BaseUiTest() {
         // Select last comment
         clickOnViewWithText(comment1)
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment1))) }
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, "")
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "")
         clickOnViewWithText(coreR.string.change_record_comment_field)
 
         // Select activity with many previous comments
@@ -331,10 +331,10 @@ class AddRecordTest : BaseUiTest() {
         closeSoftKeyboard()
         checkViewDoesNotExist(withText(coreR.string.change_record_last_comments_hint))
         checkViewDoesNotExist(withText(coreR.string.change_record_favourite_comments_hint))
-        checkViewIsNotDisplayed(withId(changeRecordR.id.btnChangeRecordFavouriteComment))
+        checkViewIsDisplayed(withId(changeRecordR.id.btnChangeRecordFavouriteComment))
 
         // Add favourite
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment1)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment1)
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment1))) }
         checkViewIsDisplayed(withId(changeRecordR.id.btnChangeRecordFavouriteComment))
         clickOnViewWithId(changeRecordR.id.btnChangeRecordFavouriteComment)
@@ -342,7 +342,7 @@ class AddRecordTest : BaseUiTest() {
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordItemComment), withText(comment1)))
 
         // Add another
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment2)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment2)
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment2))) }
         checkViewIsDisplayed(withId(changeRecordR.id.btnChangeRecordFavouriteComment))
         clickOnViewWithId(changeRecordR.id.btnChangeRecordFavouriteComment)
@@ -361,7 +361,7 @@ class AddRecordTest : BaseUiTest() {
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordItemComment), withText(comment2)))
 
         // Favourites and last
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, "")
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "")
         clickOnViewWithText(coreR.string.change_record_comment_field)
         clickOnViewWithText(coreR.string.change_record_type_field)
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name))
@@ -390,13 +390,9 @@ class AddRecordTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.change_record_comment_field)
         closeSoftKeyboard()
 
-        checkViewIsDisplayed(withId(changeRecordR.id.etChangeRecordComment))
-        checkViewDoesNotExist(withId(changeRecordR.id.etChangeRecordCommentField))
-        clickOnViewWithId(changeRecordR.id.btnChangeRecordSearchComment)
-        checkViewIsNotDisplayed(withId(changeRecordR.id.etChangeRecordComment))
         checkViewIsDisplayed(withId(changeRecordR.id.etChangeRecordCommentField))
 
-        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "comment")
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, "comm")
         tryAction {
             checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordItemComment), withText(comment1)))
         }
@@ -411,11 +407,6 @@ class AddRecordTest : BaseUiTest() {
         // Click on search result
         clickOnView(allOf(withId(changeRecordR.id.tvChangeRecordItemComment), withText(comment2)))
         tryAction { checkPreviewUpdated(hasDescendant(withText(comment2))) }
-
-        // Go back
-        clickOnViewWithId(changeRecordR.id.btnChangeRecordSearchCommentField)
-        checkViewIsDisplayed(withId(changeRecordR.id.etChangeRecordComment))
-        checkViewIsNotDisplayed(withId(changeRecordR.id.etChangeRecordCommentField))
     }
 
     @Test

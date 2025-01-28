@@ -9,23 +9,23 @@ import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSel
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToDefaultTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRecordTagMediator
-import com.example.util.simpletimetracker.domain.interactor.WearInteractor
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RecordTag
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToDefaultTagInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RemoveRecordTagMediator
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_change_record_tag.R
@@ -50,12 +50,11 @@ class ChangeRecordTagViewModel @Inject constructor(
     private val recordTypeToTagInteractor: RecordTypeToTagInteractor,
     private val recordTypeToDefaultTagInteractor: RecordTypeToDefaultTagInteractor,
     private val prefsInteractor: PrefsInteractor,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
-    private val wearInteractor: WearInteractor,
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val snackBarMessageNavigationInteractor: SnackBarMessageNavigationInteractor,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
     private val removeRecordTagMediator: RemoveRecordTagMediator,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val colorSelectionViewModelDelegateImpl: ColorSelectionViewModelDelegateImpl,
     private val iconSelectionViewModelDelegateImpl: IconSelectionViewModelDelegateImpl,
 ) : ViewModel(),
@@ -145,8 +144,8 @@ class ChangeRecordTagViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val type = recordTagInteractor.get(name)
-            val error = if (type != null && type.id != recordTagId) {
+            val items = recordTagInteractor.get(name).filter { it.id != recordTagId }
+            val error = if (items.isNotEmpty()) {
                 resourceRepo.getString(R.string.change_record_message_name_exist)
             } else {
                 ""
@@ -156,11 +155,9 @@ class ChangeRecordTagViewModel @Inject constructor(
     }
 
     fun onNoteChange(note: String) {
-        viewModelScope.launch {
-            if (note != newNote) {
-                newNote = note
-                updateNoteState()
-            }
+        if (note != newNote) {
+            newNote = note
+            updateNoteState()
         }
     }
 
@@ -207,6 +204,7 @@ class ChangeRecordTagViewModel @Inject constructor(
             selectedTypeIds = listOf(newIconColorSource),
             isMultiSelectAvailable = false,
             idsShouldBeVisible = listOf(newIconColorSource),
+            showHints = true,
         ).let(router::navigate)
     }
 
@@ -229,8 +227,7 @@ class ChangeRecordTagViewModel @Inject constructor(
         viewModelScope.launch {
             if (recordTagId != 0L) {
                 recordTagInteractor.archive(recordTagId)
-                notificationTypeInteractor.updateNotifications()
-                wearInteractor.update()
+                externalViewsInteractor.onTagArchive()
                 showArchivedMessage(R.string.change_record_tag_archived)
                 (keyboardVisibility as MutableLiveData).value = false
                 router.back()
@@ -276,7 +273,7 @@ class ChangeRecordTagViewModel @Inject constructor(
             // Zero id creates new record
             RecordTag(
                 id = recordTagId,
-                name = newName,
+                name = newName.trimIfNotBlank(),
                 icon = iconSelectionViewModelDelegateImpl.newIcon,
                 color = colorSelectionViewModelDelegateImpl.newColor,
                 iconColorSource = newIconColorSource,
@@ -285,8 +282,7 @@ class ChangeRecordTagViewModel @Inject constructor(
                 val addedId = recordTagInteractor.add(it)
                 saveTypes(addedId)
                 saveDefaultTypes(addedId)
-                notificationTypeInteractor.updateNotifications()
-                wearInteractor.update()
+                externalViewsInteractor.onTagAddOrChange()
                 (keyboardVisibility as MutableLiveData).value = false
                 router.back()
             }
@@ -312,8 +308,7 @@ class ChangeRecordTagViewModel @Inject constructor(
         deleteButtonEnabled.set(false)
         viewModelScope.launch {
             if (recordTagId != 0L) {
-                removeRecordTagMediator.remove(recordTagId)
-                notificationTypeInteractor.updateNotifications()
+                removeRecordTagMediator.remove(recordTagId, fromArchive = false)
                 showMessage(R.string.archive_tag_deleted)
                 keyboardVisibility.set(false)
                 router.back()

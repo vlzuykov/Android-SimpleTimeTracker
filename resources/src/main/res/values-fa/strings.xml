@@ -19,6 +19,7 @@
     <string name="select_nothing">چیزی را انتخاب نکنید</string>
     <string name="no_data">اطلاعاتی وجود ندارد</string>
     <string name="general_error">مشکلی پیش آمد. لطفاً دوباره امتحان کنید یا برنامه را دوباره راه اندازی کنید.</string>
+    <string name="copied_to_clipboard">در کلیپ بورد کپی شد</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">روز قبل</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">اندازه گیری نشده</string>
     <string name="uncategorized_time_name">دسته بندی نشده</string>
     <string name="multitask_time_name">چند وظیفه ای</string>
-    <string name="running_record_goal_time">هدف %s</string>
     <string name="record_types_empty">فعالیتی اضافه نشده</string>
     <string name="record_tag_selection_hint">انتخاب برچسب تاریخچه</string>
     <string name="time_now">اکنون</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">اقدامات</string>
     <string name="change_record_last_comments_hint">نظرهای قبلی</string>
     <string name="change_record_favourite_comments_hint">مورد علاقه</string>
+    <string name="change_record_favourite_comments_hint_long">نظرات مورد علاقه</string>
+    <string name="change_record_similar_comments_hint">نظرات مشابه</string>
     <string name="change_record_categories_empty">برچسب تاریخچه ای اضافه نشده</string>
     <string name="change_record_save">ذخیره</string>
     <string name="change_record_untagged">بدون برچسب</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">نام جدید را وارد کنید</string>
     <string name="change_record_type_new_icon_text_hint">متن جدید را وارد کنید</string>
     <string name="change_record_type_color_hint">رنگ</string>
+    <string name="change_record_favourite_colors_hint">رنگ های مورد علاقه</string>
     <string name="change_record_type_icon_image_hint">آیکون</string>
     <string name="change_record_type_icon_text_hint">متن</string>
     <string name="change_record_type_icon_emoji_hint">ایموجی</string>
     <string name="change_record_type_icon_search_hint">جستجو (به انگلیسی)</string>
     <string name="change_record_type_no_icon">بدون نماد</string>
+    <string name="change_record_favourite_icons_hint">نمادهای مورد علاقه</string>
     <string name="change_record_type_save">ذخیره</string>
     <string name="change_record_message_choose_name">نامی انتخاب کنید</string>
     <string name="change_record_message_name_exist">نام قبلاً استفاده شده است</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">دسته بندی ای اضافه نشد</string>
     <string name="change_record_type_goal_time_disabled">غیر فعال</string>
     <string name="change_record_type_goal_time_hint">هدف</string>
+    <string name="change_record_type_limit_time_hint">محدود کنید</string>
     <string name="change_record_type_additional_hint">اضافی</string>
     <string name="change_record_type_default_duration">مدت زمان پیش فرض</string>
     <string name="change_record_type_default_duration_hint">فعالیت‌های با مدت زمان پیش‌فرض بلافاصله با کلیک کردن ردیابی می‌شوند.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">اقدام را انتخاب کنید</string>
     <string name="change_complex_rule_choose_condition">شرایط را انتخاب کنید</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">پیشنهاداتی را برای فعالیت بعدی بر اساس فعالیت فعلی یا آخرین نشان می دهد</string>
+    <string name="activity_suggestions_calculate">از آمار محاسبه کنید</string>
+    <string name="activity_suggestions_select_activity_hint">پیشنهادات برای فعالیت های انتخاب شده نشان داده می شود</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">فیلترهای فعالیت</string>
     <string name="change_activity_filter_removed">فیلتر حذف شد</string>
     <string name="change_activity_filter_save">ذخیره</string>
     <string name="change_activity_filter_type">نوع فیلتر</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">تنظیم رنگ</string>
     <string name="color_selection_final_color_hint">رنگ نهایی</string>
 
-    <string name="csv_export_settings_range">محدوده</string>
-    <string name="csv_export_settings_all">همه</string>
+    <string name="csv_export_settings_filename_hint">نام فایل سفارشی</string>
+    <string name="csv_export_settings_filename_default">پیش فرض</string>
     <string name="csv_export_settings_hint">محدوده زمانی را انتخاب کنید یا از تمام تاریخچه ها خروجی بگیرید</string>
 
     <string name="schedule_exact_alarms">برای تنظیم دقیق آلارم تنظیمات سیستم باید برای این برنامه فعال شده باشند</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">دیگر نشان نده</string>
 
     <string name="record_tag_selection_exclude_activities_title">حذف فعالیت ها</string>
-    <string name="record_tag_selection_exclude_activities_hint">گفتگوی انتخاب برچسب برای فعالیت های انتخاب شده نشان داده نخواهد شد.</string>
+    <string name="record_tag_selection_exclude_activities_hint">گفتگو برای فعالیت های انتخابی نشان داده نمی شود.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">فعالیت ها را انتخاب کنید</string>
     <string name="select_activities_to_autostart_pomodoro_hint">با شروع فعالیت های انتخاب شده، پومودورو به طور خودکار شروع می شود.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">مرتب کردن تاریخچه ها</string>
     <string name="records_all_sort_time_started">زمان شروع</string>
     <string name="records_all_sort_duration">طول مدت</string>
-    <string name="records_all_search_comment">جستجوی نظر</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">برای شروع ردیابی، با کلیک بر روی دکمه %s فعالیت ها را اضافه کنید یا با کلیک بر روی دکمه %s از تنظیمات پیش فرض استفاده کنید</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">نام</string>
     <string name="settings_sort_by_color">رنگ</string>
     <string name="settings_sort_manually">دستی</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">دستور فعالیت</string>
     <string name="settings_first_day_of_week">اولین روز هفته</string>
     <string name="settings_show_repeat_button">نمایش دکمه تکرار در صفحه اصلی</string>
     <string name="settings_repeat_button_type">حالت</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">تایمر را در اعلان ها نمایش بده</string>
     <string name="settings_show_notifications_hint">هنگام در جریان بودن تایمر ها اعلان نشان بده</string>
     <string name="settings_show_notifications_controls">تغییر فعالیت از اعلان ها را فعال کن</string>
+    <string name="settings_show_notifications_controls_hint">همچنین می تواند برای تغییر فعالیت ها از صفحه قفل استفاده شود.</string>
+    <string name="settings_show_notification_even_with_no_timers">نمایش حتی زمانی که هیچ تایمر در حال اجرا نیست</string>
     <string name="settings_keep_statistics_range">محدوده آماری را حفظ شود</string>
     <string name="settings_keep_statistics_range_hint">اگر فعال باشد آمار جزئی با همان محدوده آماری در صفحه آمارها باز می شود</string>
+    <string name="settings_retroactive_tracking_mode">ردیابی زمان عطف به ماسبق را فعال کنید</string>
+    <string name="settings_retroactive_tracking_mode_hint">با انتخاب اینکه کدام فعالیت از آخرین بار انجام شده است، نه اینکه کدام فعالیت از هم اکنون انجام شود، زمان را پیگیری کنید.</string>
     <string name="settings_start_of_day">تغییر زمان شروع روز</string>
     <string name="settings_start_of_day_hint">بسته به علامت، شروع روز با مقدار زمان مشخص، به جلو یا عقب جابه‌جا می‌شود.</string>
     <string name="settings_start_of_day_hint_value">امروز در %s شروع می شود</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">بایگانی</string>
     <string name="settings_data_edit">ویرایش اطلاعات</string>
     <string name="settings_complex_rules">قوانین پیچیده</string>
+    <string name="settings_activity_suggestions">پیشنهادات فعالیت</string>
     <string name="settings_edit_categories">ویرایش دسته بندی ها و برچسب ها</string>
     <string name="settings_edit_categories_hint">اختصاص دسته بندی ها به فعالیت ها و برچسب ها به تاریخچه ها</string>
     <string name="settings_show_record_tag_selection">نمایش برچسب تاریخچه انتخابی</string>
     <string name="settings_show_record_tag_selection_hint">هنگام شروع یک تایمر ، اگر فعالیت برچسبی داشت- منوی انتخابی ای نمایش داده می شود</string>
     <string name="settings_show_record_tag_close_hint">بستن بعد از انتخاب یک برچسب</string>
+    <string name="settings_show_comment_input">نمایش ورودی نظر</string>
+    <string name="settings_show_comment_input_hint">هنگام شروع یک تایمر - یک گفتگوی ورودی نظر نشان داده می شود.</string>
     <string name="settings_rate">به ما امتیاز دهید</string>
     <string name="settings_rate_description">به ما امتیاز دهید و نظر خود را بگذارید</string>
     <string name="settings_support_development">پشتیبانی از توسعه</string>
@@ -348,29 +365,20 @@
 <b>عمل</b> - \"%s\" یا \"%s\".<br/>
 <b>اضافی</b> - \"%s\" با نام فعالیتی که باید شروع یا متوقف شود.<br/>
 <b>بسته</b> - \"%s\".<br/>
-<br/>
-پارامترهای اختیاری برای شروع فعالیت:<br/>
-<br/>
-<b>اضافی</b> - \"%s\" با نظر رکورد.<br/>
-<b>اضافی</b> - \"%s\" با نام یک برچسب رکورد.<br/>
-<br/>
-موارد اضافی:<br/>
-<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\".<br/>
-<b>عمل</b> - \"%s\" با موارد اضافی: \"%s\"، \"%s\"، \"%s\" و \"%s\"، \"%s\" در قالب \"yyyy-MM-dd HH:mm:ss\" یا مهر زمانی UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">ارسال اتفاقات</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-اگر تنظیم <b>\"%s\"</b> فعال باشد، برنامه رویدادهای مربوط به فعالیت شروع شده یا متوقف شده را برای ردیابی خودکار با این پارامترها به برنامه های شخص ثالث ارسال می کند:<br/>
-<br/>
-<b>عمل</b> - \"%s\" یا \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
-<b>اضافی</b> - \"%s\".<br/>
+اگر تنظیم <b>\"%s\"</b> فعال باشد، برنامه رویدادهای مربوط به فعالیت شروع شده یا متوقف شده را برای ردیابی خودکار به برنامه های شخص ثالث ارسال می کند.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">اقدامات موجود:</string>
+    <string name="settings_automated_tracking_available_events">رویدادهای موجود:</string>
+    <string name="settings_automated_tracking_extras_description">توضیحات:</string>
+    <string name="settings_automated_tracking_extra_name">با نام فعالیتی که باید شروع یا متوقف شود.</string>
+    <string name="settings_automated_tracking_extra_tag">با نام یک برچسب رکورد. یا لیستی از نام برچسب ها که با کاما از هم جدا شده اند.</string>
+    <string name="settings_automated_tracking_extra_time">در قالب \"yyyy-MM-dd HH:mm:ss\" یا مهر زمانی UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">انتخاب می کند که کدام رکورد را تغییر دهد.</string>
+    <string name="settings_automated_tracking_comment_mode">نحوه تغییر نظر رکورد انتخاب شده را انتخاب می کند.</string>
+    <string name="settings_automated_tracking_find_with_activity">علاوه بر این، رکورد را با نام فعالیت انتخاب می کند، اگر چندین رکورد فعلی یا آخرین وجود داشته باشد.</string>
 
     <string name="settings_save_backup">ذخیره نسخه پشتیبان</string>
     <string name="settings_save_description">قبل از ذخیره کردن، از اینکه آخرین نسخه برنامه را نصب کرده اید مطمئن شوید تا از ناسازگاری جلوگیری شود.</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">فایل ذخیره شده قبلی:</string>
     <string name="settings_restore_backup">بازگردانی نسخه پشتیبان</string>
     <string name="settings_restore_description">اطلاعات فعلی از دست خواهند رفت.</string>
+    <string name="settings_backup_options">گزینه های پیشرفته</string>
     <string name="settings_dialog_message">نسخه پشتیبان بازیابی شود؟</string>
     <string name="settings_export_csv">خروجی اکسل</string>
     <string name="settings_export_csv_description">گرفتن خروجی از تاریخچچه فعالیت ها با فرمت CSV تا بتوانید در برنامه دلخواه اطلاعات را مشاهده کنید.</string>
@@ -412,9 +421,22 @@
     <string name="message_import_complete">واردات انجام شد</string>
     <string name="message_import_complete_hint">سوابق اضافه شده: %s</string>
     <string name="message_import_error">خطای واردات</string>
+    <string name="message_action_share">به اشتراک بگذارید</string>
     <string name="message_automatic_backup_error">خطا در پشتیبانی خودکار.</string>
     <string name="message_automatic_export_error">خطا در خروجی خودکار.</string>
     <string name="message_automatic_error_hint">سعی کنید محل ذخیره دیگیری را انتخاب کنید.</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">واردات</string>
+    <string name="backup_options_save_without_records">ذخیره پشتیبان بدون سوابق</string>
+    <string name="backup_options_save_without_records_hint">می توان از آن برای اشتراک گذاری تنظیمات استفاده کرد.</string>
+    <string name="backup_options_full_restore">بازیابی کامل</string>
+    <string name="backup_options_full_restore_hint">داده ها و تنظیمات را بازیابی می کند. به راه اندازی مجدد برنامه نیاز دارد.</string>
+    <string name="backup_options_partial_restore">داده ها را از پشتیبان وارد کنید</string>
+    <string name="backup_options_partial_restore_hint">اجازه می دهد تا انتخاب کنید کدام داده را وارد کنید. داده های فعلی از بین نخواهند رفت.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">انتخاب کنید کدام داده از فایل وارد شود.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">هر ساعت</string>
@@ -427,6 +449,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">د</string>
     <string name="statistics_detail_legend_hour_suffix">س</string>
+    <string name="statistics_detail_chart_split">تقسیم بر اساس فعالیت</string>
 
     <string name="statistics_detail_range_averages_title">گردش متوسط: %s</string>
     <string name="statistics_detail_range_averages">برای کل محدوده</string>
@@ -449,12 +472,16 @@
     <string name="statistics_detail_streaks_latest">آخرین</string>
     <string name="statistics_detail_streaks_any">هر مدت</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">پراکندگی فعالیت</string>
-    <string name="statistics_detail_tag_split_hint">پراکندگی برچسب</string>
+    <string name="statistics_detail_data_split_hint">توزیع</string>
+    <string name="statistics_detail_data_split_pie_chart">دایره</string>
+    <string name="statistics_detail_data_split_bar_chart">ستون ها</string>
     <string name="statistics_detail_day_split_hint">پراکندگی روزانه</string>
     <string name="statistics_detail_duration_split_hint">پراکندگی طول تاریخچه</string>
     <string name="statistics_detail_next_activities_hint">برترین فعالیت های بعدی</string>
     <string name="statistics_detail_multitasking_activities_hint">چند کاره برتر</string>
+    <string name="statistics_detail_goals_hint">بیش از حد یا کسری هدف</string>
+    <string name="statistics_detail_goals_excess">مازاد</string>
+    <string name="statistics_detail_goals_deficit">کسری</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">بدون تاریخچه</item>-->
@@ -478,7 +505,9 @@
     <string name="notification_activity_title">یادآور فعالیت</string>
     <string name="notification_activity_text">آیا هنوز درحال انجام: %s ?</string>
     <string name="notification_goal_time_description">به هدف خود رسیدید</string>
+    <string name="notification_limit_time_description">حد رسیده است</string>
     <string name="notification_time_started">شروع شده در %s</string>
+    <string name="notification_time_ended">در %s به پایان رسید</string>
     <string name="notification_record_type_stop">توقف</string>
     <string name="notification_pomodoro_subtitle">شروع: %s (%s)</string>
 
@@ -502,14 +531,18 @@
     <string name="data_edit_hint">این تغییرات دائمی هستند. مطمئن شوید قبل از تغییر نسخه پشتیبان تهیه کرده اید</string>
     <string name="data_edit_select_records">انتخاب تاریخچه ها</string>
     <string name="data_edit_change_activity">تغییر فعالیت</string>
+    <string name="data_edit_change_tag">تگ ها را تغییر دهید</string>
     <string name="data_edit_change_activity_hint">برچسب های فعالیت فعلی حذف خواهند شد.</string>
     <string name="data_edit_change_comment">تغییر نظر</string>
     <string name="data_edit_change_add_tag">افزودن برچسب</string>
     <string name="data_edit_change_remove_tag">حذف برچسب</string>
     <string name="data_edit_button_change">تغییر</string>
+    <string name="data_edit_button_delete_records">حذف تمام رکوردها</string>
+    <string name="data_edit_button_delete_data">تمام داده ها را حذف کنید</string>
     <string name="data_edit_success_message">اطلاعات تغییر کردند</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">تکراری ها</string>
     <string name="records_filter_select_tags">انتخاب برچسب ها</string>
     <string name="records_filter_filter_tags">حذف برچسب ها</string>
     <string name="records_filter_manually_filtered">فیلتر شده</string>
@@ -517,12 +550,20 @@
     <string name="records_filter_any_comment">هر نظری</string>
     <string name="records_filter_select">انتخاب</string>
     <string name="records_filter_invert_selection">معکوس کردن موارد انتخابی</string>
+    <string name="records_filter_duration_min">حداقل</string>
+    <string name="records_filter_duration_max">حداکثر</string>
+    <string name="records_filter_duplications_same_activity">همان فعالیت</string>
+    <string name="records_filter_duplications_same_times">همان زمان</string>
+    <string name="records_filter_duplications_manually_fitler">فیلترهای تکراری</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">تمرکز</string>
     <string name="pomodoro_state_break">شکستن</string>
     <string name="pomodoro_state_long_break">وقفه طولانی</string>
     <string name="pomodoro_settings_periods_until_long_break">دوره های زمانی تا وقفه طولانی</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">کاری را که انجام می دادید انتخاب کنید</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">شکلک ها و احساسات</string>

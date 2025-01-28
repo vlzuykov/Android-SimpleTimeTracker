@@ -99,15 +99,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="33%" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
             android:id="@+id/ivStatisticsGoalItemCheck"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:src="@drawable/spinner_check_mark"
             app:layout_constraintBottom_toBottomOf="@id/tvStatisticsGoalItemPercent"
             app:layout_constraintEnd_toEndOf="@id/tvStatisticsGoalItemPercent"
             app:layout_constraintStart_toStartOf="@id/tvStatisticsGoalItemPercent"
-            app:layout_constraintTop_toTopOf="@id/tvStatisticsGoalItemPercent" />
+            app:layout_constraintTop_toTopOf="@id/tvStatisticsGoalItemPercent"
+            tools:itemCheckState="goalReached" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvStatisticsGoalItemPercentWidth"

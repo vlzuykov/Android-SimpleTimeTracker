@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.domain.extension
 
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordTag
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
 
 private const val MINUTE_IN_MILLIS = 60_000
 private const val SECOND_IN_MILLIS = 1_000
@@ -18,6 +18,8 @@ fun Long?.orZero(): Long = this ?: 0
 fun Int?.orZero(): Int = this ?: 0
 
 fun Float?.orZero(): Float = this ?: 0f
+
+fun Range?.orEmpty(): Range = this ?: Range(0, 0)
 
 fun <T> List<T>?.orEmpty(): List<T> = this ?: emptyList()
 

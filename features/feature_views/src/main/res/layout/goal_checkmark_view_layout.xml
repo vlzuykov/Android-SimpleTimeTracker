@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/black"
     tools:layout_height="20dp"
     tools:layout_width="20dp"
     tools:parentTag="android.widget.FrameLayout">
@@ -22,7 +23,7 @@
         android:layout_height="match_parent"
         android:tint="@color/colorPrimaryDark"
         android:visibility="gone"
-        app:srcCompat="@drawable/record_type_check_mark"
+        tools:srcCompat="@drawable/record_type_check_mark"
         tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -38,8 +39,8 @@
         android:id="@+id/ivGoalCheckmarkItemCheckFiltered"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:tint="?appBackgroundColor"
         android:alpha="0.5"
+        android:tint="?appBackgroundColor"
         android:visibility="gone"
         app:srcCompat="@drawable/record_type_check_unmarked"
         tools:visibility="visible" />

@@ -5,9 +5,11 @@ import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
+import com.example.util.simpletimetracker.domain.extension.flip
 import com.example.util.simpletimetracker.feature_statistics_detail.interactor.StatisticsDetailChartInteractor
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartLengthViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailGroupingViewData
@@ -25,6 +27,8 @@ class StatisticsDetailChartViewModelDelegate @Inject constructor(
     private var parent: StatisticsDetailViewModelDelegate.Parent? = null
     private var chartGrouping: ChartGrouping = ChartGrouping.DAILY
     private var chartLength: ChartLength = ChartLength.TEN
+    private var splitByActivity: Boolean = false
+    private var splitSortMode: ChartSplitSortMode = ChartSplitSortMode.ACTIVITY_ORDER
 
     override fun attach(parent: StatisticsDetailViewModelDelegate.Parent) {
         this.parent = parent
@@ -39,6 +43,19 @@ class StatisticsDetailChartViewModelDelegate @Inject constructor(
     fun onChartLengthClick(viewData: ButtonsRowViewData) {
         if (viewData !is StatisticsDetailChartLengthViewData) return
         this.chartLength = viewData.chartLength
+        updateViewData()
+    }
+
+    fun onSplitByActivityClick() {
+        splitByActivity = splitByActivity.flip()
+        updateViewData()
+    }
+
+    fun onSplitByActivitySortClick() {
+        splitSortMode = when (splitSortMode) {
+            ChartSplitSortMode.ACTIVITY_ORDER -> ChartSplitSortMode.DURATION
+            ChartSplitSortMode.DURATION -> ChartSplitSortMode.ACTIVITY_ORDER
+        }
         updateViewData()
     }
 
@@ -71,6 +88,8 @@ class StatisticsDetailChartViewModelDelegate @Inject constructor(
             currentChartLength = chartLength,
             rangeLength = parent.rangeLength,
             rangePosition = parent.rangePosition,
+            splitByActivity = splitByActivity,
+            splitSortMode = splitSortMode,
         )
     }
 }

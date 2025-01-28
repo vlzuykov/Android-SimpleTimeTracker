@@ -1,12 +1,12 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
-import com.example.util.simpletimetracker.domain.extension.getCategoryIds
-import com.example.util.simpletimetracker.domain.extension.getTypeIds
-import com.example.util.simpletimetracker.domain.extension.hasActivityFilter
-import com.example.util.simpletimetracker.domain.extension.hasCategoryFilter
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.record.extension.getCategoryIds
+import com.example.util.simpletimetracker.domain.record.extension.getTypeIds
+import com.example.util.simpletimetracker.domain.record.extension.hasActivityFilter
+import com.example.util.simpletimetracker.domain.record.extension.hasCategoryFilter
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import javax.inject.Inject
 
 class StatisticsDetailGetGoalFromFilterInteractor @Inject constructor(

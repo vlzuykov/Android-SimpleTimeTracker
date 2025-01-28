@@ -7,15 +7,15 @@ import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.GoalViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RangeViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_statistics.mapper.StatisticsViewDataMapper
@@ -25,6 +25,7 @@ import com.example.util.simpletimetracker.feature_views.pieChart.PiePortion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.example.util.simpletimetracker.core.mapper.StatisticsViewDataMapper as CoreStatisticsViewDataMapper
 
 class StatisticsViewDataInteractor @Inject constructor(
     private val recordTypeInteractor: RecordTypeInteractor,
@@ -33,6 +34,7 @@ class StatisticsViewDataInteractor @Inject constructor(
     private val statisticsChartViewDataInteractor: StatisticsChartViewDataInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val statisticsViewDataMapper: StatisticsViewDataMapper,
+    private val coreStatisticsViewDataMapper: CoreStatisticsViewDataMapper,
     private val rangeViewDataMapper: RangeViewDataMapper,
     private val colorMapper: ColorMapper,
     private val timeMapper: TimeMapper,
@@ -101,7 +103,7 @@ class StatisticsViewDataInteractor @Inject constructor(
                 buttonsVisible = !forSharing,
             )
         }
-        val list = statisticsViewDataMapper.mapItemsList(
+        val list = coreStatisticsViewDataMapper.mapItemsList(
             shift = shift,
             filterType = filterType,
             statistics = statistics,

@@ -1,7 +1,6 @@
 package com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.viewModel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.base.BaseViewModel
 import com.example.util.simpletimetracker.core.base.SingleLiveEvent
@@ -10,21 +9,26 @@ import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toViewData
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.interactor.RecordActionContinueMediator
-import com.example.util.simpletimetracker.domain.interactor.RecordActionDuplicateMediator
-import com.example.util.simpletimetracker.domain.interactor.RecordActionMergeMediator
-import com.example.util.simpletimetracker.domain.interactor.RecordActionRepeatMediator
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionContinueMediator
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionDuplicateMediator
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionMergeMediator
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionRepeatMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.feature_dialogs.R
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.interactor.RecordQuickActionsInteractor
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.interactor.RecordQuickActionsViewDataInteractor
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.model.RecordQuickActionsButton
 import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.model.RecordQuickActionsState
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.notification.SnackBarParams
 import com.example.util.simpletimetracker.navigation.params.screen.RecordQuickActionsParams
 import com.example.util.simpletimetracker.navigation.params.screen.RecordQuickActionsParams.Type
+import com.example.util.simpletimetracker.navigation.params.screen.TypesSelectionDialogParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,42 +38,45 @@ class RecordQuickActionsViewModel @Inject constructor(
     private val router: Router,
     private val resourceRepo: ResourceRepo,
     private val recordInteractor: RecordInteractor,
+    private val recordQuickActionsViewDataInteractor: RecordQuickActionsViewDataInteractor,
+    private val recordQuickActionsInteractor: RecordQuickActionsInteractor,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
     private val recordActionDuplicateMediator: RecordActionDuplicateMediator,
     private val recordActionRepeatMediator: RecordActionRepeatMediator,
     private val recordActionContinueMediator: RecordActionContinueMediator,
     private val recordActionMergeMediator: RecordActionMergeMediator,
     private val removeRunningRecordMediator: RemoveRunningRecordMediator,
+    private val runningRecordInteractor: RunningRecordInteractor,
 ) : BaseViewModel() {
 
     lateinit var extra: RecordQuickActionsParams
 
     val state: LiveData<RecordQuickActionsState> by lazySuspend { loadState() }
-    val buttonsEnabled: LiveData<Boolean> = MutableLiveData(true)
     val actionComplete: LiveData<Unit> = SingleLiveEvent<Unit>()
 
-    fun onStatisticsClicked() {
-        onButtonClick(onProceed = ::goToStatistics)
-    }
+    private var buttonsBlocked: Boolean = false
 
-    fun onDeleteClicked() {
-        onButtonClick(onProceed = ::onDelete)
-    }
-
-    fun onContinueClicked() {
-        onButtonClick(canProceed = ::canContinue, onProceed = ::onContinue)
-    }
-
-    fun onRepeatClicked() {
-        onButtonClick(onProceed = ::onRepeat)
-    }
-
-    fun onDuplicateClicked() {
-        onButtonClick(onProceed = ::onDuplicate)
-    }
-
-    fun onMergeClicked() {
-        onButtonClick(onProceed = ::onMerge)
+    fun onButtonClick(block: RecordQuickActionsButton) {
+        when (block) {
+            RecordQuickActionsButton.DELETE ->
+                onButtonClick(onProceed = ::onDelete)
+            RecordQuickActionsButton.STATISTICS ->
+                onButtonClick(onProceed = ::goToStatistics)
+            RecordQuickActionsButton.CONTINUE ->
+                onButtonClick(canProceed = ::canContinue, onProceed = ::onContinue)
+            RecordQuickActionsButton.REPEAT ->
+                onButtonClick(onProceed = ::onRepeat)
+            RecordQuickActionsButton.DUPLICATE ->
+                onButtonClick(onProceed = ::onDuplicate)
+            RecordQuickActionsButton.MERGE ->
+                onButtonClick(onProceed = ::onMerge)
+            RecordQuickActionsButton.STOP ->
+                onButtonClick(onProceed = ::onStop)
+            RecordQuickActionsButton.CHANGE_ACTIVITY ->
+                onButtonClick(delayBlock = true, onProceed = ::onChangeActivity)
+            RecordQuickActionsButton.CHANGE_TAG ->
+                onButtonClick(delayBlock = true, onProceed = ::onChangeTag)
+        }
     }
 
     private suspend fun goToStatistics() {
@@ -94,7 +101,8 @@ class RecordQuickActionsViewModel @Inject constructor(
     }
 
     private suspend fun onDelete() {
-        when (val params = extra.type) {
+        val params = extra.type ?: return
+        when (params) {
             is Type.RecordTracked -> {
                 // Removal handled in separate viewModel.
                 router.back()
@@ -103,12 +111,9 @@ class RecordQuickActionsViewModel @Inject constructor(
                 // Do nothing, shouldn't be possible.
             }
             is Type.RecordRunning -> {
-                removeRunningRecordMediator.remove(params.id, updateWidgets = true)
+                removeRunningRecordMediator.remove(params.id)
                 showMessage(R.string.change_running_record_removed)
-                router.back()
-            }
-            null -> {
-                // Do nothing, something went wrong.
+                exit()
             }
         }
     }
@@ -159,14 +164,67 @@ class RecordQuickActionsViewModel @Inject constructor(
     }
 
     private suspend fun onMerge() {
-        val record = extra.type as? Type.RecordUntracked
-            ?: return
-        val prevRecord = recordInteractor.getPrev(timeStarted = record.timeStarted).firstOrNull()
+        val record = extra.type as? Type.RecordUntracked ?: return
+        val prevRecord = recordInteractor.getPrev(timeStarted = record.timeStarted)
         recordActionMergeMediator.execute(
             prevRecord = prevRecord,
             newTimeEnded = record.timeEnded,
             onMergeComplete = ::exit,
         )
+    }
+
+    private suspend fun onStop() {
+        val record = extra.type as? Type.RecordRunning ?: return
+        runningRecordInteractor.get(record.id)
+            ?.let { removeRunningRecordMediator.removeWithRecordAdd(it) }
+        exit()
+    }
+
+    private fun onChangeActivity() {
+        TypesSelectionDialogParams(
+            tag = RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG,
+            title = resourceRepo.getString(R.string.change_record_message_choose_type),
+            subtitle = "",
+            type = TypesSelectionDialogParams.Type.Activity,
+            selectedTypeIds = emptyList(),
+            isMultiSelectAvailable = false,
+            idsShouldBeVisible = emptyList(),
+            showHints = false,
+        ).let(router::navigate)
+    }
+
+    private fun onChangeTag() = viewModelScope.launch {
+        val record = recordQuickActionsViewDataInteractor.getRecord(extra)
+        val typeId = record?.typeIds?.firstOrNull() ?: return@launch
+        val selectedTypeIds = record.tagIds
+
+        TypesSelectionDialogParams(
+            tag = RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG,
+            title = resourceRepo.getString(R.string.records_filter_select_tags),
+            subtitle = "",
+            type = TypesSelectionDialogParams.Type.Tag.ByType(typeId),
+            selectedTypeIds = selectedTypeIds,
+            isMultiSelectAvailable = true,
+            idsShouldBeVisible = selectedTypeIds,
+            showHints = true,
+        ).let(router::navigate)
+    }
+
+    fun onTypesSelected(typeIds: List<Long>, tag: String?) = viewModelScope.launch {
+        val params = extra.type ?: return@launch
+        when (tag) {
+            RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG -> {
+                buttonsBlocked = true
+                val typeId = typeIds.firstOrNull() ?: return@launch
+                recordQuickActionsInteractor.changeType(params, typeId)
+                exit()
+            }
+            RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG -> {
+                buttonsBlocked = true
+                recordQuickActionsInteractor.changeTags(params, typeIds)
+                exit()
+            }
+        }
     }
 
     private suspend fun getTrackedRecord(): Record? {
@@ -176,12 +234,14 @@ class RecordQuickActionsViewModel @Inject constructor(
     }
 
     private fun onButtonClick(
+        delayBlock: Boolean = false,
         canProceed: suspend () -> Boolean = { true },
         onProceed: suspend () -> Unit,
     ) {
         viewModelScope.launch {
             if (!canProceed()) return@launch
-            buttonsEnabled.set(false)
+            if (buttonsBlocked) return@launch
+            if (!delayBlock) buttonsBlocked = true
             onProceed()
         }
     }
@@ -200,28 +260,12 @@ class RecordQuickActionsViewModel @Inject constructor(
         router.back()
     }
 
-    private fun loadState(): RecordQuickActionsState {
-        val buttons = when (extra.type) {
-            is Type.RecordTracked -> listOf(
-                RecordQuickActionsState.Button.Statistics(false),
-                RecordQuickActionsState.Button.Delete(false),
-                RecordQuickActionsState.Button.Continue(false),
-                RecordQuickActionsState.Button.Repeat(false),
-                RecordQuickActionsState.Button.Duplicate(true),
-            )
-            is Type.RecordUntracked -> listOf(
-                RecordQuickActionsState.Button.Statistics(false),
-                RecordQuickActionsState.Button.Merge(true),
-            )
-            is Type.RecordRunning -> listOf(
-                RecordQuickActionsState.Button.Statistics(false),
-                RecordQuickActionsState.Button.Delete(false),
-            )
-            null -> emptyList()
-        }
+    private suspend fun loadState(): RecordQuickActionsState {
+        return recordQuickActionsViewDataInteractor.getViewData(extra)
+    }
 
-        return RecordQuickActionsState(
-            buttons = buttons,
-        )
+    companion object {
+        private const val RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG = "RECORD_QUICK_ACTIONS_TYPE_SELECTION_TAG"
+        private const val RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG = "RECORD_QUICK_ACTIONS_TAG_SELECTION_TAG"
     }
 }

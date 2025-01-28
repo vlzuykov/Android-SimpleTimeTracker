@@ -1,14 +1,16 @@
 package com.example.util.simpletimetracker.feature_data_edit.interactor
 
 import com.example.util.simpletimetracker.core.interactor.RecordFilterInteractor
-import com.example.util.simpletimetracker.domain.interactor.AddRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.FilterSelectableTagsInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalTimeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRecordMediator
-import com.example.util.simpletimetracker.domain.model.Record
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.record.interactor.AddRecordMediator
+import com.example.util.simpletimetracker.domain.backup.interactor.BackupInteractor
+import com.example.util.simpletimetracker.domain.backup.interactor.ClearDataInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.FilterSelectableTagsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRecordMediator
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_data_edit.model.DataEditAddTagsState
 import com.example.util.simpletimetracker.feature_data_edit.model.DataEditChangeActivityState
@@ -23,8 +25,10 @@ class DateEditChangeInteractor @Inject constructor(
     private val removeRecordMediator: RemoveRecordMediator,
     private val recordFilterInteractor: RecordFilterInteractor,
     private val recordTypeToTagInteractor: RecordTypeToTagInteractor,
-    private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
     private val filterSelectableTagsInteractor: FilterSelectableTagsInteractor,
+    private val clearDataInteractor: ClearDataInteractor,
+    private val backupInteractor: BackupInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
 ) {
 
     suspend fun changeData(
@@ -108,10 +112,18 @@ class DateEditChangeInteractor @Inject constructor(
         }
         // Check goal time and statistics widget consistency.
         if (newTypeId != null) {
-            oldTypeIds.forEach { typeId ->
-                notificationGoalTimeInteractor.checkAndReschedule(listOf(typeId))
-            }
+            externalViewsInteractor.onRecordsChangeType(oldTypeIds)
             addRecordMediator.doAfterAdd(newTypeId)
         }
+    }
+
+    suspend fun deleteAllRecords() {
+        recordInteractor.removeAll()
+        backupInteractor.doAfterRestore()
+    }
+
+    suspend fun deleteAllData() {
+        clearDataInteractor.execute()
+        backupInteractor.doAfterRestore()
     }
 }

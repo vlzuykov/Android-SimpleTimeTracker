@@ -1,19 +1,23 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.RecordActionContinueMediator
+import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionContinueMediator
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
-import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
+import com.example.util.simpletimetracker.feature_change_record.mapper.ChangeRecordViewDataMapper
 import com.example.util.simpletimetracker.navigation.Router
 import javax.inject.Inject
 
 class ChangeRecordActionsContinueDelegate @Inject constructor(
     private val router: Router,
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val recordActionContinueMediator: RecordActionContinueMediator,
+    private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
 ) : ChangeRecordActionsSubDelegate<ChangeRecordActionsContinueDelegate.Parent> {
 
     private var parent: Parent? = null
@@ -57,21 +61,21 @@ class ChangeRecordActionsContinueDelegate @Inject constructor(
         }
     }
 
-    private fun loadContinueViewData(): List<ViewHolderType> {
+    private suspend fun loadContinueViewData(): List<ViewHolderType> {
         val params = parent?.getViewDataParams()
             ?: return emptyList()
-        if (!params.isAdditionalActionsAvailable) return emptyList()
+        if (!params.isAvailable) return emptyList()
+        if (prefsInteractor.getRetroactiveTrackingMode()) return emptyList()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
             text = resourceRepo.getString(R.string.change_record_continue_hint),
         )
-        result += ChangeRecordButtonViewData(
-            block = ChangeRecordActionsBlock.ContinueButton,
-            text = resourceRepo.getString(R.string.change_record_continue),
-            icon = R.drawable.action_continue,
-            iconSizeDp = 24,
+        result += changeRecordViewDataMapper.mapRecordActionButton(
+            action = RecordQuickAction.CONTINUE,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }
@@ -89,7 +93,7 @@ class ChangeRecordActionsContinueDelegate @Inject constructor(
             val newTimeStarted: Long,
             val newComment: String,
             val newCategoryIds: List<Long>,
-            val isAdditionalActionsAvailable: Boolean,
+            val isAvailable: Boolean,
             val isButtonEnabled: Boolean,
         )
     }

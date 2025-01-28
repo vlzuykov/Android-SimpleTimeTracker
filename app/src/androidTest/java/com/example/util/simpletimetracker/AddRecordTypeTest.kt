@@ -145,7 +145,7 @@ class AddRecordTypeTest : BaseUiTest() {
         clickOnViewWithText(coreR.string.category_hint)
 
         // Selecting goal time
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
         clickOnView(
             allOf(
                 isDescendantOfA(withId(changeRecordTypeR.id.layoutChangeRecordTypeGoalSession)),
@@ -158,7 +158,7 @@ class AddRecordTypeTest : BaseUiTest() {
         clickOnViewWithId(dialogsR.id.tvNumberKeyboard0)
         clickOnViewWithText(coreR.string.duration_dialog_save)
         checkViewIsDisplayed(withText("10$minuteString"))
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
 
         // Adding note
         onView(withId(changeRecordTypeR.id.etChangeRecordTypeNote)).perform(nestedScrollTo())
@@ -189,7 +189,7 @@ class AddRecordTypeTest : BaseUiTest() {
         closeSoftKeyboard()
 
         // Goal time is disabled
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
         checkViewIsDisplayed(
             allOf(
                 isDescendantOfA(withId(changeRecordTypeR.id.layoutChangeRecordTypeGoalSession)),
@@ -197,7 +197,7 @@ class AddRecordTypeTest : BaseUiTest() {
                 withText(coreR.string.change_record_type_goal_time_disabled),
             ),
         )
-        clickOnViewWithText(coreR.string.change_record_type_goal_time_hint)
+        openGoals()
 
         // Open category chooser
         clickOnViewWithText(coreR.string.category_hint)
@@ -229,4 +229,13 @@ class AddRecordTypeTest : BaseUiTest() {
 
     private fun checkPreviewUpdated(matcher: Matcher<View>) =
         checkViewIsDisplayed(allOf(withId(changeRecordTypeR.id.previewChangeRecordType), matcher))
+
+    private fun openGoals() {
+        clickOnView(
+            allOf(
+                withId(changeRecordTypeR.id.tvChangeRecordTypeGoalHint),
+                withText(coreR.string.change_record_type_goal_time_hint),
+            ),
+        )
+    }
 }

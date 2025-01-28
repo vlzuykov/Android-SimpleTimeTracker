@@ -19,6 +19,7 @@
     <string name="select_nothing">لا تختار شيئا</string>
     <string name="no_data">لايوجد بيانات</string>
     <string name="general_error">حدث خطأ ما. يرجى المحاولة مرة أخرى أو إعادة تشغيل التطبيق.</string>
+    <string name="copied_to_clipboard">تم نسخها إلى الحافظة</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">اﻷمس</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">غير متتبع</string>
     <string name="uncategorized_time_name">غير مصنف</string>
     <string name="multitask_time_name">تعدد المهام</string>
-    <string name="running_record_goal_time">الهدف %s</string>
     <string name="record_types_empty">لم تضاف أنشطة</string>
     <string name="record_tag_selection_hint">اختر وسوم متتبعة</string>
     <string name="time_now">الآن</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">إجراءات</string>
     <string name="change_record_last_comments_hint">آخر التعليقات</string>
     <string name="change_record_favourite_comments_hint">المفضلة</string>
+    <string name="change_record_favourite_comments_hint_long">التعليقات المفضلة</string>
+    <string name="change_record_similar_comments_hint">تعليقات مماثلة</string>
     <string name="change_record_categories_empty">لم تضاف وسوم متتبعة</string>
     <string name="change_record_save">حفظ</string>
     <string name="change_record_untagged">بدون وسم</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">إدخال اسم جديد</string>
     <string name="change_record_type_new_icon_text_hint">إدخال نص جديد</string>
     <string name="change_record_type_color_hint">اللون</string>
+    <string name="change_record_favourite_colors_hint">الألوان المفضلة</string>
     <string name="change_record_type_icon_image_hint">اﻷيقونة</string>
     <string name="change_record_type_icon_text_hint">نص</string>
     <string name="change_record_type_icon_emoji_hint">إيموجي</string>
     <string name="change_record_type_icon_search_hint">بحث (باللغة الإنجليزية)</string>
     <string name="change_record_type_no_icon">لا يوجد رمز</string>
+    <string name="change_record_favourite_icons_hint">الرموز المفضلة</string>
     <string name="change_record_type_save">حفظ</string>
     <string name="change_record_message_choose_name">اختيار اسم</string>
     <string name="change_record_message_name_exist">الاسم مستخدم بالفعل</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">لا توجد تصنيفات مضافة</string>
     <string name="change_record_type_goal_time_disabled">غير مفعل</string>
     <string name="change_record_type_goal_time_hint">الهدف</string>
+    <string name="change_record_type_limit_time_hint">حد</string>
     <string name="change_record_type_additional_hint">إضافي</string>
     <string name="change_record_type_default_duration">المدة الافتراضية</string>
     <string name="change_record_type_default_duration_hint">يتم تعقب الأنشطة ذات المدة الافتراضية فور النقر عليها.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">اختر الإجراء</string>
     <string name="change_complex_rule_choose_condition">اختر الشروط</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">يعرض اقتراحات للنشاط التالي استنادًا إلى النشاط الحالي أو الأخير</string>
+    <string name="activity_suggestions_calculate">احسب من الإحصائيات</string>
+    <string name="activity_suggestions_select_activity_hint">سيتم عرض الاقتراحات للأنشطة المحددة</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">مرشحات النشاط</string>
     <string name="change_activity_filter_removed">تم إزالة المرشِّح</string>
     <string name="change_activity_filter_save">حفظ</string>
     <string name="change_activity_filter_type">نوع المرشِّح</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">ضبط اللون</string>
     <string name="color_selection_final_color_hint">اللون النهائي</string>
 
-    <string name="csv_export_settings_range">النطاق الزمني</string>
-    <string name="csv_export_settings_all">الكل</string>
+    <string name="csv_export_settings_filename_hint">اسم الملف المخصص</string>
+    <string name="csv_export_settings_filename_default">تقصير</string>
     <string name="csv_export_settings_hint">حدد النطاق الزمني أو قم بتصدير كافة التتبعات</string>
 
     <string name="schedule_exact_alarms">يجب تمكين إعداد النظام لهذا التطبيق لجدولة الإنذارات الدقيقة</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">لا تظهر مرة أخرى</string>
 
     <string name="record_tag_selection_exclude_activities_title">استبعاد الأنشطة</string>
-    <string name="record_tag_selection_exclude_activities_hint">لن يتم عرض مربع حوار تحديد العلامة للأنشطة المحددة.</string>
+    <string name="record_tag_selection_exclude_activities_hint">لن يتم عرض مربع الحوار للأنشطة المحددة.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">حدد الأنشطة</string>
     <string name="select_activities_to_autostart_pomodoro_hint">سيتم بدء تشغيل بومودورو تلقائيًا عند بدء الأنشطة المحددة.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">فرز التتبعات</string>
     <string name="records_all_sort_time_started">بدأ الوقت</string>
     <string name="records_all_sort_duration">مدة</string>
-    <string name="records_all_search_comment">تعليق البحث</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">لبدء التتبع ، أضف الأنشطة بالنقر فوق الزر %s أو استخدم الإعدادات المسبقة الافتراضية بالنقر فوق الزر %s</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">الاسم</string>
     <string name="settings_sort_by_color">اللون</string>
     <string name="settings_sort_manually">يدويا</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">ترتيب النشاط</string>
     <string name="settings_first_day_of_week">اليوم الأول من الأسبوع</string>
     <string name="settings_show_repeat_button">إظهار زر التكرار على الشاشة الرئيسية</string>
     <string name="settings_repeat_button_type">وضع</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">إظهار إشعارات المؤقت</string>
     <string name="settings_show_notifications_hint">إظهار اﻹشعارات عند تشغيل المؤقت.</string>
     <string name="settings_show_notifications_controls">تفعيل إمكانية تبديل النشاط من اﻹشعار</string>
+    <string name="settings_show_notifications_controls_hint">يمكن استخدامه أيضًا لتبديل الأنشطة من شاشة القفل.</string>
+    <string name="settings_show_notification_even_with_no_timers">تظهر حتى في حالة عدم تشغيل أي مؤقتات</string>
     <string name="settings_keep_statistics_range">حافظ على نطاق الإحصائيات</string>
     <string name="settings_keep_statistics_range_hint">في حال التفعيل، ستفتح الإحصائيات التفصيلية بنفس النطاق الزمني المحدد في الإحصائيات.</string>
+    <string name="settings_retroactive_tracking_mode">تمكين تتبع الوقت بأثر رجعي</string>
+    <string name="settings_retroactive_tracking_mode_hint">تتبع الوقت عن طريق تحديد النشاط الذي تم القيام به منذ المرة الأخيرة بدلاً من تحديد النشاط الذي سيتم القيام به من الآن.</string>
     <string name="settings_start_of_day">توقيت بداية اليوم</string>
     <string name="settings_start_of_day_hint">سيتم تحويل بداية اليوم بمقدار الوقت المحدد ، للأمام أو للخلف حسب العلامة.</string>
     <string name="settings_start_of_day_hint_value">يبدأ اليوم في %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">اﻷرشيف</string>
     <string name="settings_data_edit">تعديل البيانات</string>
     <string name="settings_complex_rules">قواعد معقدة</string>
+    <string name="settings_activity_suggestions">اقتراحات النشاط</string>
     <string name="settings_edit_categories">تعديل التصنيفات والوسوم</string>
     <string name="settings_edit_categories_hint">عين تصنيفات للأنشطة ووسوم إلى التتبعات.</string>
     <string name="settings_show_record_tag_selection">إظهار اختيار وسم التتبع</string>
     <string name="settings_show_record_tag_selection_hint">عند بدء تشغيل مؤقت نشاط. إذا كان للنشاط أي وسوم تتبع فسيتم عرض مربع حوار الاختيار.</string>
     <string name="settings_show_record_tag_close_hint">أغلق بعد اختيار وسم واحد.</string>
+    <string name="settings_show_comment_input">إظهار إدخال التعليق</string>
+    <string name="settings_show_comment_input_hint">عند بدء تشغيل مؤقت - سيتم عرض مربع حوار إدخال التعليق.</string>
     <string name="settings_rate">قيمنا</string>
     <string name="settings_rate_description">قيم التطبيق واترك مراجعة.</string>
     <string name="settings_support_development">دعم التنمية</string>
@@ -348,29 +365,20 @@
 <b>Action</b> - \"%s\" أو \"%s\".<br/>
 <b>Extra</b> - \"%s\" مع اسم النشاط الذي ينبغي أن يبدأ أو يتوقف.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-معلمات اختيارية لبدء النشاط:<br/>
-<br/>
-<b>Extra</b> - \"%s\" مع تعليقات التتبع.<br/>
-<b>Extra</b> - \"%s\" مع اسم تصنيف التتبع<br/>
-<br/>
-إضافات<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" مع الإضافات: \"%s\"، \"%s\"، \"%s\" و \"%s\"، \"%s\" بالتنسيق \"yyyy-MM-dd HH:mm:ss\" أو الطابع الزمني UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">إرسال اﻷحداث</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-إذا إعداد <b>\"%s\"</b> مفعل، فسيرسل التطبيق اﻷحداث المتعلقة بالنشاط الذي بدأ أو توقف إلى تطبيقات الطرف الثالث للتتبع التلقائي باستخدام هذه المعلمات:<br/>
-<br/>
-<b>Action</b> - \"%s\" أو \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+إذا تم تمكين الإعداد <b>\"%s\"</b>، فسيقوم التطبيق بإرسال الأحداث المتعلقة بالنشاط الذي بدأ أو توقف إلى تطبيقات الطرف الثالث للتتبع التلقائي.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">الإجراءات المتاحة:</string>
+    <string name="settings_automated_tracking_available_events">الأحداث المتاحة:</string>
+    <string name="settings_automated_tracking_extras_description">وصف:</string>
+    <string name="settings_automated_tracking_extra_name">مع اسم النشاط الذي ينبغي أن يبدأ أو يتوقف.</string>
+    <string name="settings_automated_tracking_extra_tag">باسم علامة السجل. أو قائمة بأسماء العلامات مفصولة بفاصلة.</string>
+    <string name="settings_automated_tracking_extra_time">بالتنسيق \"yyyy-MM-dd HH:mm:ss\" أو الطابع الزمني UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">يختار السجل الذي تريد تغييره.</string>
+    <string name="settings_automated_tracking_comment_mode">يختار كيفية تغيير تعليق السجل المحدد.</string>
+    <string name="settings_automated_tracking_find_with_activity">بالإضافة إلى ذلك، يقوم بتحديد السجل حسب اسم النشاط، إذا كان هناك العديد من السجلات الحالية أو الأخيرة.</string>
 
     <string name="settings_save_backup">حفظ نسخة احتياطية</string>
     <string name="settings_save_description">قبل الحفظ، تأكد من تثبيت أحدث إصدار من التطبيق لتجنب التعارضات.</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">آخر المحفوظات:</string>
     <string name="settings_restore_backup">استيراد نسخة الاحتياطية</string>
     <string name="settings_restore_description">ستفقد البيانات الحالية.</string>
+    <string name="settings_backup_options">خيارات متقدمة</string>
     <string name="settings_dialog_message">استرداد النسخة الاحتياطية؟</string>
     <string name="settings_export_csv">تصدير جدول البيانات</string>
     <string name="settings_export_csv_description">تصدير تتبعات النشاط كملف csv لعرضها في تطبيقات جداول البيانات المفضل.</string>
@@ -412,9 +421,22 @@
     <string name="message_import_complete">اكتمل الاستيراد</string>
     <string name="message_import_complete_hint">التتبعات المضافة: %s</string>
     <string name="message_import_error">خطأ في الاستيراد</string>
+    <string name="message_action_share">يشارك</string>
     <string name="message_automatic_backup_error">حدث خطأ في النسخ الاحتياطي التلقائي.</string>
     <string name="message_automatic_export_error">حدث خطأ في التصدير التلقائي.</string>
     <string name="message_automatic_error_hint">حاول تحديد مكان مختلف</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">يستورد</string>
+    <string name="backup_options_save_without_records">حفظ النسخة الاحتياطية بدون سجلات</string>
+    <string name="backup_options_save_without_records_hint">يمكن استخدامها لمشاركة الإعداد.</string>
+    <string name="backup_options_full_restore">استعادة كاملة</string>
+    <string name="backup_options_full_restore_hint">يستعيد البيانات والإعدادات. يتطلب إعادة تشغيل التطبيق.</string>
+    <string name="backup_options_partial_restore">استيراد البيانات من النسخة الاحتياطية</string>
+    <string name="backup_options_partial_restore_hint">يسمح باختيار البيانات التي سيتم استيرادها. لن يتم فقدان البيانات الحالية.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">حدد البيانات التي سيتم استيرادها من الملف.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">ساعيّ</string>
@@ -427,6 +449,7 @@
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">د</string>
     <string name="statistics_detail_legend_hour_suffix">س</string>
+    <string name="statistics_detail_chart_split">مقسمة حسب النشاط</string>
 
     <string name="statistics_detail_range_averages_title">متوسط الفترة الزمنية: %s</string>
     <string name="statistics_detail_range_averages">كامل النطاق</string>
@@ -449,12 +472,16 @@
     <string name="statistics_detail_streaks_latest">آخر</string>
     <string name="statistics_detail_streaks_any">أي مدة</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">تحصيص النشاط</string>
-    <string name="statistics_detail_tag_split_hint">تحصيص الوسوم</string>
+    <string name="statistics_detail_data_split_hint">توزيع</string>
+    <string name="statistics_detail_data_split_pie_chart">دائرة</string>
+    <string name="statistics_detail_data_split_bar_chart">أعمدة</string>
     <string name="statistics_detail_day_split_hint">تحصيص يومي</string>
     <string name="statistics_detail_duration_split_hint">تحصيص مدة التتبع</string>
     <string name="statistics_detail_next_activities_hint">أهم الأنشطة القادمة</string>
     <string name="statistics_detail_multitasking_activities_hint">أعلى المهام المتعددة</string>
+    <string name="statistics_detail_goals_hint">هدف فائض أو عجز</string>
+    <string name="statistics_detail_goals_excess">إفراط</string>
+    <string name="statistics_detail_goals_deficit">العجز</string>
 
     <plurals name="statistics_detail_times_tracked">
         <item quantity="zero">تتبع</item>
@@ -478,7 +505,9 @@
     <string name="notification_activity_title">مذكر النشاط</string>
     <string name="notification_activity_text">هل مازلت تنشط: %s?</string>
     <string name="notification_goal_time_description">تم الوصول للهدف</string>
+    <string name="notification_limit_time_description">تم الوصول إلى الحد</string>
     <string name="notification_time_started">بُدء في %s</string>
+    <string name="notification_time_ended">انتهى عند %s</string>
     <string name="notification_record_type_stop">أوقف</string>
     <string name="notification_pomodoro_subtitle">البدء: %s (%s)</string>
 
@@ -502,14 +531,18 @@
     <string name="data_edit_hint">لا يمكن التراجع عن هذه التغييرات. تأكد من إنشاء ملف نسخ احتياطي قبل القيام بأي شيء.</string>
     <string name="data_edit_select_records">اختيار التتبعات</string>
     <string name="data_edit_change_activity">تغيير النشاط</string>
+    <string name="data_edit_change_tag">تغيير العلامات</string>
     <string name="data_edit_change_activity_hint">ستزال وسوم النشاط الحالي.</string>
     <string name="data_edit_change_comment">تغيير التعليق</string>
     <string name="data_edit_change_add_tag">إضافة وسوم</string>
     <string name="data_edit_change_remove_tag">حذف الوسوم</string>
     <string name="data_edit_button_change">تغيير</string>
+    <string name="data_edit_button_delete_records">حذف كافة السجلات</string>
+    <string name="data_edit_button_delete_data">احذف كافة البيانات</string>
     <string name="data_edit_success_message">تم تغيير البيانات</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">الازدواجية</string>
     <string name="records_filter_select_tags">اختيار الوسوم</string>
     <string name="records_filter_filter_tags">استبعاد العلامات</string>
     <string name="records_filter_manually_filtered">تمت التصفية</string>
@@ -517,12 +550,20 @@
     <string name="records_filter_any_comment">أي تعليق</string>
     <string name="records_filter_select">اختيار</string>
     <string name="records_filter_invert_selection">عكس الاختيار</string>
+    <string name="records_filter_duration_min">الحد الأدنى</string>
+    <string name="records_filter_duration_max">الحد الأقصى</string>
+    <string name="records_filter_duplications_same_activity">نفس النشاط</string>
+    <string name="records_filter_duplications_same_times">نفس الوقت</string>
+    <string name="records_filter_duplications_manually_fitler">تصفية التكرارات</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">التركيز</string>
     <string name="pomodoro_state_break">فاصل</string>
     <string name="pomodoro_state_long_break">استراحة طويلة</string>
     <string name="pomodoro_settings_periods_until_long_break">الفترات حتى الفاصل الطويل</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">حدد ما كنت تفعله</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">ابتسامات &amp; مشاعر</string>

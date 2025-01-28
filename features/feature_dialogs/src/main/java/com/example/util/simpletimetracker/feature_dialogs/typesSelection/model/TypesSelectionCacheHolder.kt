@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_dialogs.typesSelection.model
 
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 
 sealed interface TypesSelectionCacheHolder {
     val id: Long

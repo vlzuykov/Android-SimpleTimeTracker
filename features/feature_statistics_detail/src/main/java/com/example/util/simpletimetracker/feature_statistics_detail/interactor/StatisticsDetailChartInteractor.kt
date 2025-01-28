@@ -2,23 +2,31 @@ package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
 import com.example.util.simpletimetracker.core.extension.setToStartOfDay
 import com.example.util.simpletimetracker.core.extension.setWeekToFirstDay
+import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
-import com.example.util.simpletimetracker.domain.extension.getDailyDuration
-import com.example.util.simpletimetracker.domain.extension.getMonthlyDuration
-import com.example.util.simpletimetracker.domain.extension.getWeeklyDuration
-import com.example.util.simpletimetracker.domain.extension.value
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.mapper.RangeMapper
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.recordType.extension.getDailyDuration
+import com.example.util.simpletimetracker.domain.recordType.extension.getMonthlyDuration
+import com.example.util.simpletimetracker.domain.record.extension.getTypeIds
+import com.example.util.simpletimetracker.domain.recordType.extension.getWeeklyDuration
+import com.example.util.simpletimetracker.domain.extension.orZero
+import com.example.util.simpletimetracker.domain.recordType.extension.value
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.record.mapper.RangeMapper
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_statistics_detail.mapper.StatisticsDetailViewDataMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataDuration
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartBarDataRange
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartGrouping
 import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartLength
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartMode
+import com.example.util.simpletimetracker.feature_statistics_detail.model.ChartSplitSortMode
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,9 +37,12 @@ import kotlin.math.abs
 class StatisticsDetailChartInteractor @Inject constructor(
     private val timeMapper: TimeMapper,
     private val rangeMapper: RangeMapper,
+    private val colorMapper: ColorMapper,
     private val statisticsDetailViewDataMapper: StatisticsDetailViewDataMapper,
     private val prefsInteractor: PrefsInteractor,
     private val statisticsDetailGetGoalFromFilterInteractor: StatisticsDetailGetGoalFromFilterInteractor,
+    private val statisticsDetailPreviewInteractor: StatisticsDetailPreviewInteractor,
+    private val recordTypeInteractor: RecordTypeInteractor,
 ) {
 
     // Shouldn't be suspend to avoid blocks jumping on screen open.
@@ -41,9 +52,14 @@ class StatisticsDetailChartInteractor @Inject constructor(
         rangeLength: RangeLength,
         rangePosition: Int,
     ): StatisticsDetailChartCompositeViewData {
-        val (ranges, compositeData) = getRanges(
+        val compositeData = getChartRangeSelectionData(
             currentChartGrouping = currentChartGrouping,
             currentChartLength = currentChartLength,
+            rangeLength = rangeLength,
+            firstDayOfWeek = DayOfWeek.MONDAY,
+        )
+        val ranges = getRanges(
+            compositeData = compositeData,
             rangeLength = rangeLength,
             rangePosition = rangePosition,
             firstDayOfWeek = DayOfWeek.MONDAY,
@@ -66,6 +82,8 @@ class StatisticsDetailChartInteractor @Inject constructor(
         currentChartLength: ChartLength,
         rangeLength: RangeLength,
         rangePosition: Int,
+        splitByActivity: Boolean,
+        splitSortMode: ChartSplitSortMode,
     ): StatisticsDetailChartCompositeViewData = withContext(Dispatchers.Default) {
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
@@ -73,10 +91,21 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val useMonthDayTimeFormat = prefsInteractor.getUseMonthDayTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
         val isDarkTheme = prefsInteractor.getDarkMode()
+        val types = recordTypeInteractor.getAll()
+        val typesMap = types.associateBy(RecordType::id)
+        val typesOrder = types.map(RecordType::id)
+        val canSplitByActivity = canSplitByActivity(filter)
+        val canComparisonSplitByActivity = canSplitByActivity(compare)
+        val chartMode = ChartMode.DURATIONS
 
-        val (ranges, compositeData) = getRanges(
+        val compositeData = getChartRangeSelectionData(
             currentChartGrouping = currentChartGrouping,
             currentChartLength = currentChartLength,
+            rangeLength = rangeLength,
+            firstDayOfWeek = firstDayOfWeek,
+        )
+        val ranges = getRanges(
+            compositeData = compositeData,
             rangeLength = rangeLength,
             rangePosition = rangePosition,
             firstDayOfWeek = firstDayOfWeek,
@@ -86,68 +115,95 @@ class StatisticsDetailChartInteractor @Inject constructor(
         val data = getChartData(
             allRecords = records,
             ranges = ranges,
+            typesOrder = typesOrder,
+            typesMap = typesMap,
+            isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
+            splitByActivity = splitByActivity && canSplitByActivity,
+            splitSortMode = splitSortMode,
         )
-        val prevData = if (rangeLength != RangeLength.All) {
-            val (prevRanges, _) = getRanges(
-                currentChartGrouping = currentChartGrouping,
-                currentChartLength = currentChartLength,
-                rangeLength = rangeLength,
-                rangePosition = rangePosition - 1,
-                firstDayOfWeek = firstDayOfWeek,
-                startOfDayShift = startOfDayShift,
-                useMonthDayTimeFormat = useMonthDayTimeFormat,
-            )
-            getChartData(
-                allRecords = records,
-                ranges = prevRanges,
-            )
-        } else {
-            emptyList()
-        }
+        val prevData = getPrevData(
+            rangeLength = rangeLength,
+            compositeData = compositeData,
+            rangePosition = rangePosition,
+            firstDayOfWeek = firstDayOfWeek,
+            startOfDayShift = startOfDayShift,
+            useMonthDayTimeFormat = useMonthDayTimeFormat,
+            records = records,
+            typesOrder = typesOrder,
+            typesMap = typesMap,
+            isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
+            splitSortMode = splitSortMode,
+        )
         val compareData = getChartData(
             allRecords = compareRecords,
             ranges = ranges,
+            typesOrder = typesOrder,
+            typesMap = typesMap,
+            isDarkTheme = isDarkTheme,
+            chartMode = chartMode,
+            splitByActivity = splitByActivity && canComparisonSplitByActivity,
+            splitSortMode = splitSortMode,
         )
 
         return@withContext statisticsDetailViewDataMapper.mapToChartViewData(
             data = data,
             prevData = prevData,
-            goalValue = getGoalValue(filter, compositeData.appliedChartGrouping),
+            splitByActivity = splitByActivity,
+            canSplitByActivity = canSplitByActivity,
+            canComparisonSplitByActivity = canComparisonSplitByActivity,
+            splitSortMode = splitSortMode,
+            goalValue = getGoalValue(
+                goals = statisticsDetailGetGoalFromFilterInteractor.execute(filter),
+                appliedChartGrouping = compositeData.appliedChartGrouping,
+            ),
             compareData = compareData,
-            compareGoalValue = getGoalValue(compare, compositeData.appliedChartGrouping),
+            compareGoalValue = getGoalValue(
+                goals = statisticsDetailGetGoalFromFilterInteractor.execute(compare),
+                appliedChartGrouping = compositeData.appliedChartGrouping,
+            ),
             showComparison = compare.isNotEmpty(),
             rangeLength = rangeLength,
             availableChartGroupings = compositeData.availableChartGroupings,
             appliedChartGrouping = compositeData.appliedChartGrouping,
             availableChartLengths = compositeData.availableChartLengths,
             appliedChartLength = compositeData.appliedChartLength,
+            chartMode = chartMode,
             useProportionalMinutes = useProportionalMinutes,
             showSeconds = showSeconds,
             isDarkTheme = isDarkTheme,
         )
     }
 
-    private suspend fun getGoalValue(
-        filter: List<RecordsFilter>,
-        appliedChartGrouping: ChartGrouping,
-    ): Long {
-        val goals = statisticsDetailGetGoalFromFilterInteractor.execute(filter)
-
-        return when (appliedChartGrouping) {
-            ChartGrouping.DAILY -> goals.getDailyDuration().value
-            ChartGrouping.WEEKLY -> goals.getWeeklyDuration().value
-            ChartGrouping.MONTHLY -> goals.getMonthlyDuration().value
-            ChartGrouping.YEARLY -> 0
-        } * 1000
-    }
-
-    private fun getChartData(
+    fun getChartData(
         allRecords: List<RecordBase>,
         ranges: List<ChartBarDataRange>,
+        typesOrder: List<Long>,
+        typesMap: Map<Long, RecordType>,
+        isDarkTheme: Boolean,
+        chartMode: ChartMode,
+        splitByActivity: Boolean,
+        splitSortMode: ChartSplitSortMode,
     ): List<ChartBarDataDuration> {
         fun mapEmpty(): List<ChartBarDataDuration> {
-            return ranges.map { ChartBarDataDuration(legend = it.legend, duration = 0L) }
+            return ranges.map {
+                ChartBarDataDuration(
+                    rangeStart = it.rangeStart,
+                    legend = it.legend,
+                    durations = listOf(0L to 0),
+                )
+            }
         }
+
+        fun mapRangesToValue(list: List<Range>): Long {
+            return when (chartMode) {
+                ChartMode.DURATIONS -> rangeMapper.mapToDuration(list)
+                ChartMode.COUNTS -> list.size.toLong()
+            }
+        }
+
+        val unknownColor = colorMapper.toUntrackedColor(isDarkTheme)
 
         val records = rangeMapper.getRecordsFromRange(
             records = allRecords,
@@ -162,26 +218,51 @@ class StatisticsDetailChartInteractor @Inject constructor(
         return ranges
             .map { data ->
                 val range = Range(data.rangeStart, data.rangeEnd)
-                val duration = rangeMapper.getRecordsFromRange(records, range)
-                    .map { record -> rangeMapper.clampToRange(record, range) }
-                    .let(rangeMapper::mapToDuration)
+                val durations = if (!splitByActivity) {
+                    rangeMapper.getRecordsFromRange(records, range)
+                        .map { record -> rangeMapper.clampToRange(record, range) }
+                        .let(::mapRangesToValue)
+                        .let { listOf(it to 0) }
+                } else {
+                    rangeMapper.getRecordsFromRange(records, range)
+                        .groupBy { it.typeIds.firstOrNull().orZero() }
+                        .toList()
+                        .map { (id, records) ->
+                            val value = records.map { record -> rangeMapper.clampToRange(record, range) }
+                                .let(::mapRangesToValue)
+                            value to id
+                        }
+                        .run {
+                            when (splitSortMode) {
+                                ChartSplitSortMode.DURATION -> sortedByDescending { (duration, _) ->
+                                    duration
+                                }
+                                ChartSplitSortMode.ACTIVITY_ORDER -> sortedBy { (_, typeId) ->
+                                    typesOrder.indexOf(typeId).toLong()
+                                }
+                            }
+                        }.map { (duration, typeId) ->
+                            val color = typesMap[typeId]?.color
+                                ?.let { colorMapper.mapToColorInt(it, isDarkTheme) }
+                                ?: unknownColor
+                            duration to color
+                        }
+                }
 
                 ChartBarDataDuration(
+                    rangeStart = data.rangeStart,
                     legend = data.legend,
-                    duration = duration,
+                    durations = durations,
                 )
             }
     }
 
-    private fun getRanges(
+    fun getChartRangeSelectionData(
         currentChartGrouping: ChartGrouping,
         currentChartLength: ChartLength,
         rangeLength: RangeLength,
-        rangePosition: Int,
         firstDayOfWeek: DayOfWeek,
-        startOfDayShift: Long,
-        useMonthDayTimeFormat: Boolean,
-    ): Pair<List<ChartBarDataRange>, CompositeChartData> {
+    ): CompositeChartData {
         var customRangeGroupings: List<Pair<ChartGrouping, Int>> = emptyList()
 
         val availableChartGroupings: List<ChartGrouping> = when (rangeLength) {
@@ -214,11 +295,33 @@ class StatisticsDetailChartInteractor @Inject constructor(
         }
         val appliedChartGrouping: ChartGrouping = currentChartGrouping
             .takeIf { it in availableChartGroupings }
-            ?: availableChartGroupings.first()
+            ?: availableChartGroupings.firstOrNull()
+            ?: currentChartGrouping // Just in case.
         val availableChartLengths = when (rangeLength) {
             is RangeLength.All -> listOf(ChartLength.TEN, ChartLength.FIFTY, ChartLength.HUNDRED)
             else -> emptyList()
         }
+
+        return CompositeChartData(
+            availableChartGroupings = availableChartGroupings,
+            appliedChartGrouping = appliedChartGrouping,
+            availableChartLengths = availableChartLengths,
+            appliedChartLength = currentChartLength,
+            customRangeGroupings = customRangeGroupings,
+        )
+    }
+
+    fun getRanges(
+        compositeData: CompositeChartData,
+        rangeLength: RangeLength,
+        rangePosition: Int,
+        firstDayOfWeek: DayOfWeek,
+        startOfDayShift: Long,
+        useMonthDayTimeFormat: Boolean,
+    ): List<ChartBarDataRange> {
+        val customRangeGroupings = compositeData.customRangeGroupings
+        val appliedChartGrouping = compositeData.appliedChartGrouping
+        val currentChartLength = compositeData.appliedChartLength
 
         val startDate = when (rangeLength) {
             is RangeLength.Day,
@@ -265,12 +368,45 @@ class StatisticsDetailChartInteractor @Inject constructor(
             ChartGrouping.WEEKLY -> getWeeklyGrouping(startDate, numberOfGroups, firstDayOfWeek, startOfDayShift)
             ChartGrouping.MONTHLY -> getMonthlyGrouping(startDate, numberOfGroups, startOfDayShift)
             ChartGrouping.YEARLY -> getYearlyGrouping(startDate, numberOfGroups, startOfDayShift)
-        } to CompositeChartData(
-            availableChartGroupings = availableChartGroupings,
-            appliedChartGrouping = appliedChartGrouping,
-            availableChartLengths = availableChartLengths,
-            appliedChartLength = currentChartLength,
-        )
+        }
+    }
+
+    fun getPrevData(
+        rangeLength: RangeLength,
+        compositeData: CompositeChartData,
+        rangePosition: Int,
+        firstDayOfWeek: DayOfWeek,
+        startOfDayShift: Long,
+        useMonthDayTimeFormat: Boolean,
+        records: List<RecordBase>,
+        typesOrder: List<Long>,
+        typesMap: Map<Long, RecordType>,
+        isDarkTheme: Boolean,
+        chartMode: ChartMode,
+        splitSortMode: ChartSplitSortMode,
+    ): List<ChartBarDataDuration> {
+        return if (rangeLength != RangeLength.All) {
+            val prevRanges = getRanges(
+                compositeData = compositeData,
+                rangeLength = rangeLength,
+                rangePosition = rangePosition - 1,
+                firstDayOfWeek = firstDayOfWeek,
+                startOfDayShift = startOfDayShift,
+                useMonthDayTimeFormat = useMonthDayTimeFormat,
+            )
+            getChartData(
+                allRecords = records,
+                ranges = prevRanges,
+                typesOrder = typesOrder,
+                typesMap = typesMap,
+                isDarkTheme = isDarkTheme,
+                splitByActivity = false,
+                chartMode = chartMode,
+                splitSortMode = splitSortMode,
+            )
+        } else {
+            emptyList()
+        }
     }
 
     private fun getDailyGrouping(
@@ -384,6 +520,7 @@ class StatisticsDetailChartInteractor @Inject constructor(
         }
     }
 
+    // Should return at least one.
     private fun calculateCustomRangeGropings(
         rangeLength: RangeLength.Custom,
         firstDayOfWeek: DayOfWeek,
@@ -421,10 +558,42 @@ class StatisticsDetailChartInteractor @Inject constructor(
         return result
     }
 
-    private data class CompositeChartData(
+    private fun canSplitByActivity(
+        filter: List<RecordsFilter>,
+    ): Boolean {
+        val previewType = statisticsDetailPreviewInteractor.getPreviewType(filter)
+        return previewType is StatisticsDetailPreviewInteractor.PreviewType.Activities &&
+            filter.getTypeIds().size > 1
+    }
+
+    private fun getGoalValue(
+        goals: List<RecordTypeGoal>,
+        appliedChartGrouping: ChartGrouping,
+    ): Long {
+        // Currently only duration goals are on chart.
+        return getGoal(
+            goals = goals,
+            appliedChartGrouping = appliedChartGrouping,
+        ).value * 1000
+    }
+
+    private fun getGoal(
+        goals: List<RecordTypeGoal>,
+        appliedChartGrouping: ChartGrouping,
+    ): RecordTypeGoal? {
+        return when (appliedChartGrouping) {
+            ChartGrouping.DAILY -> goals.getDailyDuration()
+            ChartGrouping.WEEKLY -> goals.getWeeklyDuration()
+            ChartGrouping.MONTHLY -> goals.getMonthlyDuration()
+            ChartGrouping.YEARLY -> null
+        }
+    }
+
+    data class CompositeChartData(
         val availableChartGroupings: List<ChartGrouping>,
         val appliedChartGrouping: ChartGrouping,
         val availableChartLengths: List<ChartLength>,
         val appliedChartLength: ChartLength,
+        val customRangeGroupings: List<Pair<ChartGrouping, Int>>,
     )
 }

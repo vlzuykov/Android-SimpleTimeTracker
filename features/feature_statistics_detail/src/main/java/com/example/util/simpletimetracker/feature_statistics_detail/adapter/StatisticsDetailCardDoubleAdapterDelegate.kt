@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.adapter
 
-import com.example.util.simpletimetracker.domain.model.Coordinates
+import com.example.util.simpletimetracker.domain.base.Coordinates
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData

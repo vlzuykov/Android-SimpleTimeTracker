@@ -1,18 +1,29 @@
 package com.example.util.simpletimetracker.feature_records_filter.mapper
 
+import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
+import com.example.util.simpletimetracker.core.mapper.RangeViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.extension.getCommentItems
-import com.example.util.simpletimetracker.domain.extension.getComments
-import com.example.util.simpletimetracker.domain.extension.hasAnyComment
-import com.example.util.simpletimetracker.domain.extension.hasNoComment
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.record.extension.getCommentItems
+import com.example.util.simpletimetracker.domain.record.extension.getComments
+import com.example.util.simpletimetracker.domain.record.extension.hasAnyComment
+import com.example.util.simpletimetracker.domain.record.extension.hasNoComment
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.extension.getDuplicationItems
+import com.example.util.simpletimetracker.domain.record.extension.hasSameActivity
+import com.example.util.simpletimetracker.domain.record.extension.hasSameTimes
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.emptySpace.EmptySpaceViewData
-import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.RecordFilterViewData
+import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.FilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.selectionButton.SelectionButtonViewData
 import com.example.util.simpletimetracker.feature_records_filter.R
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterCommentType
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDateType
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterDuplicationsType
+import com.example.util.simpletimetracker.feature_records_filter.model.RecordFilterType
 import com.example.util.simpletimetracker.feature_records_filter.viewData.RecordsFilterSelectionButtonType
 import com.example.util.simpletimetracker.navigation.params.screen.RecordsFilterParams
 import javax.inject.Inject
@@ -21,22 +32,23 @@ class RecordsFilterViewDataMapper @Inject constructor(
     private val resourceRepo: ResourceRepo,
     private val timeMapper: TimeMapper,
     private val colorMapper: ColorMapper,
+    private val rangeViewDataMapper: RangeViewDataMapper,
 ) {
 
     fun mapInitialFilter(
         extra: RecordsFilterParams,
         filters: List<RecordsFilter>,
-    ): RecordFilterViewData.Type? {
+    ): RecordFilterType? {
         return filters
             .firstOrNull {
                 when (it) {
-                    is RecordsFilter.Date -> extra.dateSelectionAvailable
-                    is RecordsFilter.Untracked -> extra.untrackedSelectionAvailable
-                    is RecordsFilter.Multitask -> extra.multitaskSelectionAvailable
+                    is RecordsFilter.Date -> extra.flags.dateSelectionAvailable
+                    is RecordsFilter.Untracked -> extra.flags.untrackedSelectionAvailable
+                    is RecordsFilter.Multitask -> extra.flags.multitaskSelectionAvailable
                     else -> true
                 }
             }
-            ?.let { mapToViewData(it::class.java) }
+            ?.let(::mapToViewData)
     }
 
     fun mapRecordsCount(
@@ -56,38 +68,40 @@ class RecordsFilterViewDataMapper @Inject constructor(
     }
 
     fun mapInactiveFilterName(
-        filter: RecordFilterViewData.Type,
+        filter: RecordFilterType,
     ): String {
         return when (filter) {
-            RecordFilterViewData.Type.UNTRACKED -> R.string.untracked_time_name
-            RecordFilterViewData.Type.MULTITASK -> R.string.multitask_time_name
-            RecordFilterViewData.Type.ACTIVITY -> R.string.activity_hint
-            RecordFilterViewData.Type.CATEGORY -> R.string.category_hint
-            RecordFilterViewData.Type.COMMENT -> R.string.change_record_comment_field
-            RecordFilterViewData.Type.DATE -> R.string.date_time_dialog_date
-            RecordFilterViewData.Type.SELECTED_TAGS -> R.string.records_filter_select_tags
-            RecordFilterViewData.Type.FILTERED_TAGS -> R.string.records_filter_filter_tags
-            RecordFilterViewData.Type.MANUALLY_FILTERED -> R.string.records_filter_manually_filtered
-            RecordFilterViewData.Type.DAYS_OF_WEEK -> R.string.range_day
-            RecordFilterViewData.Type.TIME_OF_DAY -> R.string.date_time_dialog_time
-            RecordFilterViewData.Type.DURATION -> R.string.records_all_sort_duration
+            RecordFilterType.Untracked -> R.string.untracked_time_name
+            RecordFilterType.Multitask -> R.string.multitask_time_name
+            RecordFilterType.Activity -> R.string.activity_hint
+            RecordFilterType.Category -> R.string.category_hint
+            RecordFilterType.Comment -> R.string.change_record_comment_field
+            RecordFilterType.Date -> R.string.date_time_dialog_date
+            RecordFilterType.SelectedTags -> R.string.records_filter_select_tags
+            RecordFilterType.FilteredTags -> R.string.records_filter_filter_tags
+            RecordFilterType.ManuallyFiltered -> R.string.records_filter_manually_filtered
+            RecordFilterType.DaysOfWeek -> R.string.range_day
+            RecordFilterType.TimeOfDay -> R.string.date_time_dialog_time
+            RecordFilterType.Duration -> R.string.records_all_sort_duration
+            RecordFilterType.Duplications -> R.string.records_filter_duplications
         }.let(resourceRepo::getString)
     }
 
     fun mapActiveFilterName(
         filter: RecordsFilter,
         useMilitaryTime: Boolean,
+        startOfDayShift: Long,
+        firstDayOfWeek: DayOfWeek,
     ): String {
-        val filterName = filter::class.java
+        val filterName = filter
             .let(::mapToViewData)
-            ?.let(::mapInactiveFilterName)
-            .orEmpty()
+            .let(::mapInactiveFilterName)
 
         val filterValue = when (filter) {
-            is RecordsFilter.Untracked -> {
-                ""
-            }
-            is RecordsFilter.Multitask -> {
+            is RecordsFilter.Untracked,
+            is RecordsFilter.Multitask,
+            is RecordsFilter.Duplications,
+            -> {
                 ""
             }
             is RecordsFilter.Activity -> {
@@ -117,17 +131,12 @@ class RecordsFilterViewDataMapper @Inject constructor(
                 }
             }
             is RecordsFilter.Date -> {
-                val startedDate = timeMapper.formatDateTime(
-                    time = filter.range.timeStarted,
-                    useMilitaryTime = useMilitaryTime,
-                    showSeconds = false,
+                rangeViewDataMapper.mapToTitle(
+                    rangeLength = filter.range,
+                    position = filter.position,
+                    startOfDayShift = startOfDayShift,
+                    firstDayOfWeek = firstDayOfWeek,
                 )
-                val endedDate = timeMapper.formatDateTime(
-                    time = filter.range.timeEnded,
-                    useMilitaryTime = useMilitaryTime,
-                    showSeconds = false,
-                )
-                "$startedDate - $endedDate"
             }
             is RecordsFilter.SelectedTags -> {
                 "${filter.items.size}"
@@ -167,7 +176,7 @@ class RecordsFilterViewDataMapper @Inject constructor(
     }
 
     fun mapCommentFilter(
-        type: RecordFilterViewData.CommentType,
+        type: RecordFilterCommentType,
         filters: List<RecordsFilter>,
         isDarkTheme: Boolean,
     ): ViewHolderType {
@@ -175,19 +184,19 @@ class RecordsFilterViewDataMapper @Inject constructor(
         val enabled: Boolean
 
         when (type) {
-            RecordFilterViewData.CommentType.NO_COMMENT -> {
+            RecordFilterCommentType.NoComment -> {
                 enabled = filters.getCommentItems().hasNoComment()
                 name = resourceRepo.getString(R.string.records_filter_no_comment)
             }
-            RecordFilterViewData.CommentType.ANY_COMMENT -> {
+            RecordFilterCommentType.AnyComment -> {
                 enabled = filters.getCommentItems().hasAnyComment()
                 name = resourceRepo.getString(R.string.records_filter_any_comment)
             }
         }
 
-        return RecordFilterViewData(
-            id = type.ordinal.toLong(),
-            type = RecordFilterViewData.Type.COMMENT,
+        return FilterViewData(
+            id = type.hashCode().toLong(),
+            type = type,
             name = name,
             color = if (enabled) {
                 colorMapper.toActiveColor(isDarkTheme)
@@ -199,20 +208,85 @@ class RecordsFilterViewDataMapper @Inject constructor(
         )
     }
 
-    fun mapToClass(type: RecordFilterViewData.Type): Class<out RecordsFilter> {
+    fun mapDuplicationsFilter(
+        type: RecordFilterDuplicationsType,
+        filters: List<RecordsFilter>,
+        isDarkTheme: Boolean,
+    ): ViewHolderType {
+        val name: String
+        val enabled: Boolean
+
+        when (type) {
+            RecordFilterDuplicationsType.SameActivity -> {
+                enabled = filters.getDuplicationItems().hasSameActivity()
+                name = resourceRepo.getString(R.string.records_filter_duplications_same_activity)
+            }
+            RecordFilterDuplicationsType.SameTimes -> {
+                enabled = filters.getDuplicationItems().hasSameTimes()
+                name = resourceRepo.getString(R.string.records_filter_duplications_same_times)
+            }
+        }
+
+        return FilterViewData(
+            id = type.hashCode().toLong(),
+            type = type,
+            name = name,
+            color = if (enabled) {
+                colorMapper.toActiveColor(isDarkTheme)
+            } else {
+                colorMapper.toInactiveColor(isDarkTheme)
+            },
+            selected = enabled,
+            removeBtnVisible = false,
+        )
+    }
+
+    fun mapDateRangeFilter(
+        rangeLength: RangeLength,
+        filter: RecordsFilter.Date?,
+        isDarkTheme: Boolean,
+        startOfDayShift: Long,
+        firstDayOfWeek: DayOfWeek,
+        index: Int,
+    ): ViewHolderType {
+        val selected = filter?.range == rangeLength &&
+            filter.position == 0
+
+        return FilterViewData(
+            id = index.toLong(),
+            type = RecordFilterDateType(rangeLength),
+            name = rangeViewDataMapper.mapToTitle(
+                rangeLength = rangeLength,
+                position = 0,
+                startOfDayShift = startOfDayShift,
+                firstDayOfWeek = firstDayOfWeek,
+                useShortCustomRange = true,
+            ),
+            color = if (selected) {
+                colorMapper.toActiveColor(isDarkTheme)
+            } else {
+                colorMapper.toInactiveColor(isDarkTheme)
+            },
+            selected = selected,
+            removeBtnVisible = false,
+        )
+    }
+
+    fun mapToClass(type: RecordFilterType): Class<out RecordsFilter> {
         return when (type) {
-            RecordFilterViewData.Type.UNTRACKED -> RecordsFilter.Untracked::class.java
-            RecordFilterViewData.Type.MULTITASK -> RecordsFilter.Multitask::class.java
-            RecordFilterViewData.Type.ACTIVITY -> RecordsFilter.Activity::class.java
-            RecordFilterViewData.Type.CATEGORY -> RecordsFilter.Category::class.java
-            RecordFilterViewData.Type.COMMENT -> RecordsFilter.Comment::class.java
-            RecordFilterViewData.Type.DATE -> RecordsFilter.Date::class.java
-            RecordFilterViewData.Type.SELECTED_TAGS -> RecordsFilter.SelectedTags::class.java
-            RecordFilterViewData.Type.FILTERED_TAGS -> RecordsFilter.FilteredTags::class.java
-            RecordFilterViewData.Type.MANUALLY_FILTERED -> RecordsFilter.ManuallyFiltered::class.java
-            RecordFilterViewData.Type.DAYS_OF_WEEK -> RecordsFilter.DaysOfWeek::class.java
-            RecordFilterViewData.Type.TIME_OF_DAY -> RecordsFilter.TimeOfDay::class.java
-            RecordFilterViewData.Type.DURATION -> RecordsFilter.Duration::class.java
+            RecordFilterType.Untracked -> RecordsFilter.Untracked::class.java
+            RecordFilterType.Multitask -> RecordsFilter.Multitask::class.java
+            RecordFilterType.Activity -> RecordsFilter.Activity::class.java
+            RecordFilterType.Category -> RecordsFilter.Category::class.java
+            RecordFilterType.Comment -> RecordsFilter.Comment::class.java
+            RecordFilterType.Date -> RecordsFilter.Date::class.java
+            RecordFilterType.SelectedTags -> RecordsFilter.SelectedTags::class.java
+            RecordFilterType.FilteredTags -> RecordsFilter.FilteredTags::class.java
+            RecordFilterType.ManuallyFiltered -> RecordsFilter.ManuallyFiltered::class.java
+            RecordFilterType.DaysOfWeek -> RecordsFilter.DaysOfWeek::class.java
+            RecordFilterType.TimeOfDay -> RecordsFilter.TimeOfDay::class.java
+            RecordFilterType.Duration -> RecordsFilter.Duration::class.java
+            RecordFilterType.Duplications -> RecordsFilter.Duplications::class.java
         }
     }
 
@@ -246,21 +320,35 @@ class RecordsFilterViewDataMapper @Inject constructor(
         return result
     }
 
-    private fun mapToViewData(clazz: Class<out RecordsFilter>): RecordFilterViewData.Type? {
-        return when (clazz) {
-            RecordsFilter.Untracked::class.java -> RecordFilterViewData.Type.UNTRACKED
-            RecordsFilter.Multitask::class.java -> RecordFilterViewData.Type.MULTITASK
-            RecordsFilter.Activity::class.java -> RecordFilterViewData.Type.ACTIVITY
-            RecordsFilter.Category::class.java -> RecordFilterViewData.Type.CATEGORY
-            RecordsFilter.Comment::class.java -> RecordFilterViewData.Type.COMMENT
-            RecordsFilter.Date::class.java -> RecordFilterViewData.Type.DATE
-            RecordsFilter.SelectedTags::class.java -> RecordFilterViewData.Type.SELECTED_TAGS
-            RecordsFilter.FilteredTags::class.java -> RecordFilterViewData.Type.FILTERED_TAGS
-            RecordsFilter.ManuallyFiltered::class.java -> RecordFilterViewData.Type.MANUALLY_FILTERED
-            RecordsFilter.DaysOfWeek::class.java -> RecordFilterViewData.Type.DAYS_OF_WEEK
-            RecordsFilter.TimeOfDay::class.java -> RecordFilterViewData.Type.TIME_OF_DAY
-            RecordsFilter.Duration::class.java -> RecordFilterViewData.Type.DURATION
-            else -> null
+    @ColorInt
+    fun mapTextFieldColor(
+        isSelected: Boolean,
+        isDarkTheme: Boolean,
+    ): Int {
+        return if (isSelected) {
+            R.attr.appTextPrimaryColor
+        } else {
+            R.attr.appTextHintColor
+        }.let {
+            resourceRepo.getThemedAttr(it, isDarkTheme)
+        }
+    }
+
+    private fun mapToViewData(filter: RecordsFilter): RecordFilterType {
+        return when (filter) {
+            is RecordsFilter.Untracked -> RecordFilterType.Untracked
+            is RecordsFilter.Multitask -> RecordFilterType.Multitask
+            is RecordsFilter.Activity -> RecordFilterType.Activity
+            is RecordsFilter.Category -> RecordFilterType.Category
+            is RecordsFilter.Comment -> RecordFilterType.Comment
+            is RecordsFilter.Date -> RecordFilterType.Date
+            is RecordsFilter.SelectedTags -> RecordFilterType.SelectedTags
+            is RecordsFilter.FilteredTags -> RecordFilterType.FilteredTags
+            is RecordsFilter.ManuallyFiltered -> RecordFilterType.ManuallyFiltered
+            is RecordsFilter.DaysOfWeek -> RecordFilterType.DaysOfWeek
+            is RecordsFilter.TimeOfDay -> RecordFilterType.TimeOfDay
+            is RecordsFilter.Duration -> RecordFilterType.Duration
+            is RecordsFilter.Duplications -> RecordFilterType.Duplications
         }
     }
 }

@@ -15,7 +15,7 @@ import com.example.util.simpletimetracker.core.utils.SingleTapDetector
 import com.example.util.simpletimetracker.core.utils.SwipeDetector
 import com.example.util.simpletimetracker.core.utils.isHorizontal
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.model.Coordinates
+import com.example.util.simpletimetracker.domain.base.Coordinates
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
 import kotlin.math.ceil

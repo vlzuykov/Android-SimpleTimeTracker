@@ -19,6 +19,7 @@
     <string name="select_nothing">कुछ भी नहीं चुनें</string>
     <string name="no_data">कोई डेटा नहीं</string>
     <string name="general_error">कुछ गलत हो गया। कृपया पुनः प्रयास करें या ऐप को पुनरारंभ करें।</string>
+    <string name="copied_to_clipboard">क्लिपबोर्ड पर कॉपी किया गया</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">कल</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">ट्रैक न किए गए</string>
     <string name="uncategorized_time_name">अवर्गीकृत</string>
     <string name="multitask_time_name">बहु-कार्य</string>
-    <string name="running_record_goal_time">लक्ष्य %s</string>
     <string name="record_types_empty">कोई गतिविधियाँ जोड़ी गईं</string>
     <string name="record_tag_selection_hint">रिकॉर्ड टैग का चयन करें</string>
     <string name="time_now">अब</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">कार्रवाई</string>
     <string name="change_record_last_comments_hint">अंतिम टिप्पणियाँ</string>
     <string name="change_record_favourite_comments_hint">पसंदीदा</string>
+    <string name="change_record_favourite_comments_hint_long">पसंदीदा टिप्पणियाँ</string>
+    <string name="change_record_similar_comments_hint">समान टिप्पणियाँ</string>
     <string name="change_record_categories_empty">कोई रिकॉर्ड टैग नहीं जोड़ा गया</string>
     <string name="change_record_save">बचाना</string>
     <string name="change_record_untagged">टैग नहीं किए गए</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">नया नाम दर्ज करें</string>
     <string name="change_record_type_new_icon_text_hint">नया पाठ दर्ज करें</string>
     <string name="change_record_type_color_hint">रंग</string>
+    <string name="change_record_favourite_colors_hint">पसंदीदा रंग</string>
     <string name="change_record_type_icon_image_hint">चित्र</string>
     <string name="change_record_type_icon_text_hint">मूलपाठ</string>
     <string name="change_record_type_icon_emoji_hint">इमोजी</string>
     <string name="change_record_type_icon_search_hint">खोजें (अंग्रेजी में)</string>
     <string name="change_record_type_no_icon">कोई आइकन नहीं</string>
+    <string name="change_record_favourite_icons_hint">पसंदीदा प्रतीक</string>
     <string name="change_record_type_save">बचाना</string>
     <string name="change_record_message_choose_name">एक नाम चुनो</string>
     <string name="change_record_message_name_exist">नाम पहले ही उपयोग किया जा चुका है</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">कोई श्रेणियां नहीं जोड़ी</string>
     <string name="change_record_type_goal_time_disabled">अक्षम</string>
     <string name="change_record_type_goal_time_hint">लक्ष्य</string>
+    <string name="change_record_type_limit_time_hint">सीमा</string>
     <string name="change_record_type_additional_hint">अतिरिक्त</string>
     <string name="change_record_type_default_duration">डिफ़ॉल्ट अवधि</string>
     <string name="change_record_type_default_duration_hint">डिफ़ॉल्ट अवधि वाली गतिविधियों को क्लिक पर तुरंत ट्रैक किया जाता है।</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">कार्रवाई का चयन</string>
     <string name="change_complex_rule_choose_condition">शर्तें चुनें</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">वर्तमान या पिछली गतिविधि के आधार पर अगली गतिविधि के लिए सुझाव दिखाता है</string>
+    <string name="activity_suggestions_calculate">आंकड़ों से गणना करें</string>
+    <string name="activity_suggestions_select_activity_hint">चयनित गतिविधियों के लिए सुझाव दिखाए जाएंगे</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">गतिविधि फ़िल्टर</string>
     <string name="change_activity_filter_removed">फ़िल्टर हटा दिया गया</string>
     <string name="change_activity_filter_save">सुरक्षित रखना</string>
     <string name="change_activity_filter_type">फ़िल्टर प्रकार</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">रंग समायोजित करें</string>
     <string name="color_selection_final_color_hint">अंतिम रंग</string>
 
-    <string name="csv_export_settings_range">सीमा</string>
-    <string name="csv_export_settings_all">सभी</string>
+    <string name="csv_export_settings_filename_hint">कस्टम फ़ाइल नाम</string>
+    <string name="csv_export_settings_filename_default">गलती करना</string>
     <string name="csv_export_settings_hint">समय सीमा का चयन करें या सभी रिकॉर्ड निर्यात करें</string>
 
     <string name="schedule_exact_alarms">सटीक अलार्म शेड्यूल करने के लिए इस ऐप के लिए सिस्टम सेटिंग सक्षम होनी चाहिए</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">दोबारा मत दिखाना</string>
 
     <string name="record_tag_selection_exclude_activities_title">गतिविधियाँ बहिष्कृत करें</string>
-    <string name="record_tag_selection_exclude_activities_hint">चयनित गतिविधियों के लिए टैग चयन संवाद नहीं दिखाया जाएगा।</string>
+    <string name="record_tag_selection_exclude_activities_hint">चयनित गतिविधियों के लिए संवाद नहीं दिखाया जाएगा.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">गतिविधियाँ चुनें</string>
     <string name="select_activities_to_autostart_pomodoro_hint">चयनित गतिविधियाँ शुरू होने पर पोमोडोरो स्वचालित रूप से शुरू हो जाएगा।</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">क्रमबद्ध अभिलेख</string>
     <string name="records_all_sort_time_started">समय शुरू हुआ</string>
     <string name="records_all_sort_duration">अवधि</string>
-    <string name="records_all_search_comment">खोज टिप्पणी</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">ट्रैकिंग शुरू करने के लिए, %s बटन पर क्लिक करके गतिविधियाँ जोड़ें या %s बटन पर क्लिक करके डिफ़ॉल्ट प्रीसेट का उपयोग करें</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">नाम</string>
     <string name="settings_sort_by_color">रंग</string>
     <string name="settings_sort_manually">हस्तचालन से</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">गतिविधि क्रम</string>
     <string name="settings_first_day_of_week">सप्ताह का पहला दिन</string>
     <string name="settings_show_repeat_button">मुख्य स्क्रीन पर रिपीट बटन दिखाएँ</string>
     <string name="settings_repeat_button_type">तरीका</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">टाइमर नोटिफिकेशन दिखाएं</string>
     <string name="settings_show_notifications_hint">जब टाइमर चल रहे हों तो सूचनाएं दिखाएं।</string>
     <string name="settings_show_notifications_controls">अधिसूचना से गतिविधि स्विचिंग सक्षम करें</string>
+    <string name="settings_show_notifications_controls_hint">लॉक स्क्रीन से गतिविधियों को स्विच करने के लिए भी इसका उपयोग किया जा सकता है।</string>
+    <string name="settings_show_notification_even_with_no_timers">तब भी दिखाएं जब कोई टाइमर नहीं चल रहा हो</string>
     <string name="settings_keep_statistics_range">सांख्यिकी सीमा रखें</string>
     <string name="settings_keep_statistics_range_hint">यदि चालू किए गए विस्तृत आँकड़े सांख्यिकी में चयनित एक ही समय सीमा के साथ खोले जाएंगे।</string>
+    <string name="settings_retroactive_tracking_mode">पूर्वव्यापी समय ट्रैकिंग सक्षम करें</string>
+    <string name="settings_retroactive_tracking_mode_hint">पिछली बार से कौन सी गतिविधि की गई है, इसका चयन करके समय ट्रैक करें न कि कौन सी गतिविधि अब से की जाएगी।</string>
     <string name="settings_start_of_day">दिन की शिफ्ट शुरुआत</string>
     <string name="settings_start_of_day_hint">दिन की शुरुआत संकेत के आधार पर निर्दिष्ट समय, आगे या पीछे की ओर स्थानांतरित की जाएगी।</string>
     <string name="settings_start_of_day_hint_value">आज %s से प्रारंभ हो रहा है</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">संग्रहालय</string>
     <string name="settings_data_edit">डेटा संपादित करें</string>
     <string name="settings_complex_rules">जटिल नियम</string>
+    <string name="settings_activity_suggestions">गतिविधि सुझाव</string>
     <string name="settings_edit_categories">श्रेणियां और टैग संपादित करें</string>
     <string name="settings_edit_categories_hint">गतिविधियों और टैग को दर्कज करने के लिए श्रेणियां नियुक्त करें।</string>
     <string name="settings_show_record_tag_selection">चयन रिकॉर्ड टैग दिखाएं</string>
     <string name="settings_show_record_tag_selection_hint">टाइमर शुरू करते समय, यदि गतिविधि में कोई रिकॉर्ड टैग होता है - एक चयन संवाद दिखाया जाएगा।</string>
     <string name="settings_show_record_tag_close_hint">एक टैग का चयन करने के बाद बंद करें।</string>
+    <string name="settings_show_comment_input">टिप्पणी इनपुट दिखाएँ</string>
+    <string name="settings_show_comment_input_hint">टाइमर प्रारंभ करते समय - एक टिप्पणी इनपुट संवाद दिखाया जाएगा।</string>
     <string name="settings_rate">हमें रेटिंग दें</string>
     <string name="settings_rate_description">ऐप को रेट करें और एक समीक्षा छोड़ दें।</string>
     <string name="settings_support_development">विकास का समर्थन करें</string>
@@ -348,29 +365,20 @@
 <b> एक्शन </b> - \"%s\" या \"%s\"। <br/>
 <b> अतिरिक्त </b> - \"%s\" गतिविधि के नाम के साथ जिसे शुरू या बंद किया जाना चाहिए। <br/>
 <b> पैकेज </b> - \"%s\"। <br/>
-<br/>
-गतिविधि शुरू करने के लिए वैकल्पिक पैरामीटर: <br/>
-<br/>
-रिकॉर्ड टिप्पणी के साथ <b> अतिरिक्त </b> - \"%s\"। <br/>
-<b> अतिरिक्त </b> - \"%s\" एक रिकॉर्ड टैग के नाम के साथ। <br/>"
-<br/>
-अतिरिक्त:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" अतिरिक्त के साथ: \"%s\", \"%s\", \"%s\" और \"%s\", \"%s\" प्रारूप में \"yyyy-MM-dd HH:mm:ss\" या UTC टाइमस्टैम्प।<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">घटनाएँ भेजें</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-यदि <b>\"%s\"</b> सेटिंग सक्षम है, तो ऐप इन पैरामीटर के साथ स्वचालित ट्रैकिंग के लिए तृतीय-पक्ष एप्लिकेशन को प्रारंभ या बंद की गई गतिविधि पर ईवेंट भेजेगा:<br/>
-<br/>
-<b> एक्शन </b> - \"%s\" या \"%s\"। <br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
-<b> अतिरिक्त </b> - \"%s\".<br/>
+यदि <b>\"%s\"</b> सेटिंग सक्षम है, तो ऐप स्वचालित ट्रैकिंग के लिए तृतीय-पक्ष एप्लिकेशन को शुरू या बंद की गई गतिविधि पर ईवेंट भेजेगा।<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">उपलब्ध क्रियाएं:</string>
+    <string name="settings_automated_tracking_available_events">उपलब्ध घटनाएँ:</string>
+    <string name="settings_automated_tracking_extras_description">विवरण:</string>
+    <string name="settings_automated_tracking_extra_name">गतिविधि के नाम के साथ जिसे शुरू या बंद किया जाना चाहिए। </string>
+    <string name="settings_automated_tracking_extra_tag">एक रिकॉर्ड टैग के नाम के साथ। या अल्पविराम से अलग किए गए टैग नामों की सूची।</string>
+    <string name="settings_automated_tracking_extra_time">प्रारूप में \"yyyy-MM-dd HH:mm:ss\" या UTC टाइमस्टैम्प।</string>
+    <string name="settings_automated_tracking_find_record_mode">चयन करता है कि कौन सा रिकॉर्ड बदलना है.</string>
+    <string name="settings_automated_tracking_comment_mode">चयनित रिकॉर्ड की टिप्पणी को बदलने का तरीका चुनता है.</string>
+    <string name="settings_automated_tracking_find_with_activity">इसके अतिरिक्त, यदि कई वर्तमान या अंतिम रिकॉर्ड हैं, तो गतिविधि नाम से रिकॉर्ड का चयन करता है।</string>
 
     <string name="settings_save_backup">बैकअप सहेजें</string>
     <string name="settings_save_description">सहेजने से पहले, सुनिश्चित करें कि आपके पास संघर्षों से बचने के लिए इंस्टॉल किए गए ऐप का नवीनतम संस्करण है।</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">अंतिम बचत:</string>
     <string name="settings_restore_backup">बैकअप  पुनः स्थापित करे।</string>
     <string name="settings_restore_description">वर्तमान डेटा खो जाएगा।</string>
+    <string name="settings_backup_options">उन्नत विकल्प</string>
     <string name="settings_dialog_message">पुनर्स्थापित करे?</string>
     <string name="settings_export_csv">स्प्रेडशीट निर्यात</string>
     <string name="settings_export_csv_description">एक पसंदीदा स्प्रेडशीट एप्लिकेशन में देखने के लिए CSV फ़ाइल के रूप में निर्यात गतिविधि रिकॉर्ड।</string>
@@ -412,9 +421,22 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="message_import_complete">आयात पूरा हुआ</string>
     <string name="message_import_complete_hint">रिकॉर्ड जोड़े गए: %s</string>
     <string name="message_import_error">आयात त्रुटि</string>
+    <string name="message_action_share">शेयर करना</string>
     <string name="message_automatic_backup_error">स्वचालित बैकअप के साथ एक त्रुटि हुई थी।</string>
     <string name="message_automatic_export_error">स्वचालित निर्यात में त्रुटि हुई थी।</string>
     <string name="message_automatic_error_hint">अलग स्थान का चयन करने का प्रयास करें</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">आयात</string>
+    <string name="backup_options_save_without_records">बिना रिकॉर्ड के बैकअप सहेजें</string>
+    <string name="backup_options_save_without_records_hint">सेटअप साझा करने के लिए उपयोग किया जा सकता है.</string>
+    <string name="backup_options_full_restore">पूर्ण पुनर्स्थापना</string>
+    <string name="backup_options_full_restore_hint">डेटा और सेटिंग्स पुनर्स्थापित करता है। ऐप पुनः आरंभ करने की आवश्यकता है.</string>
+    <string name="backup_options_partial_restore">बैकअप से डेटा आयात करें</string>
+    <string name="backup_options_partial_restore_hint">यह चुनने की अनुमति देता है कि कौन सा डेटा आयात करना है। वर्तमान डेटा नष्ट नहीं होगा.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">चुनें कि फ़ाइल से कौन सा डेटा आयात किया जाएगा।</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">प्रति घंटा</string>
@@ -427,6 +449,7 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">गतिविधि द्वारा विभाजित</string>
 
     <string name="statistics_detail_range_averages_title">अवधि के लिए औसत: %s</string>
     <string name="statistics_detail_range_averages">पूरी सीमा के लिए</string>
@@ -449,12 +472,16 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="statistics_detail_streaks_latest">नवीनतम</string>
     <string name="statistics_detail_streaks_any">कोई भी अवधि</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">गतिविधि वितरण</string>
-    <string name="statistics_detail_tag_split_hint">टैग वितरण</string>
+    <string name="statistics_detail_data_split_hint">वितरण</string>
+    <string name="statistics_detail_data_split_pie_chart">घेरा</string>
+    <string name="statistics_detail_data_split_bar_chart">कॉलम</string>
     <string name="statistics_detail_day_split_hint">दैनिक वितरण</string>
     <string name="statistics_detail_duration_split_hint">अभिलेख अवधि वितरण</string>
     <string name="statistics_detail_next_activities_hint">शीर्ष अगली गतिविधियाँ</string>
     <string name="statistics_detail_multitasking_activities_hint">शीर्ष मल्टीटास्कड</string>
+    <string name="statistics_detail_goals_hint">लक्ष्य की अधिकता या कमी</string>
+    <string name="statistics_detail_goals_excess">अधिकता</string>
+    <string name="statistics_detail_goals_deficit">घाटा</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">अभिलेख</item>-->
@@ -478,7 +505,9 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="notification_activity_title">गतिविधि अनुस्मारक</string>
     <string name="notification_activity_text">क्या आप अब भी कर रहे हैं: %s?</string>
     <string name="notification_goal_time_description">लक्ष्य तक पहुंच गया</string>
+    <string name="notification_limit_time_description">हद हो गई</string>
     <string name="notification_time_started">%s पर शुरू किया</string>
+    <string name="notification_time_ended">%s पर समाप्त हुआ</string>
     <string name="notification_record_type_stop">रुकना</string>
     <string name="notification_pomodoro_subtitle">आरंभ: %s (%s)</string>
 
@@ -502,14 +531,18 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="data_edit_hint">इन परिवर्तनों को पूर्ववत नहीं किया जा सकता है। कुछ भी करने से पहले बैकअप फ़ाइल बनाना सुनिश्चित करें।</string>
     <string name="data_edit_select_records">अभिलेखों का चयन करें</string>
     <string name="data_edit_change_activity">गतिविधि बदलें</string>
+    <string name="data_edit_change_tag">टैग बदलें</string>
     <string name="data_edit_change_activity_hint">वर्तमान गतिविधि के टैग हटा दिए जाएंगे।</string>
     <string name="data_edit_change_comment">टिप्पणी बदलें</string>
     <string name="data_edit_change_add_tag">टैगों को जोड़ें</string>
     <string name="data_edit_change_remove_tag">टैग हटाएं</string>
     <string name="data_edit_button_change">परिवर्तन</string>
+    <string name="data_edit_button_delete_records">सभी रिकॉर्ड हटाएँ</string>
+    <string name="data_edit_button_delete_data">सारा डेटा हटा दें</string>
     <string name="data_edit_success_message">डेटा बदल गया</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">दोहराव</string>
     <string name="records_filter_select_tags">टैग चुनें</string>
     <string name="records_filter_filter_tags">टैग हटाएं</string>
     <string name="records_filter_manually_filtered">छाना हुआ</string>
@@ -517,12 +550,20 @@ csv फ़ाइल में कॉमा से अलग किए गए य
     <string name="records_filter_any_comment">कोई टिप्पणी</string>
     <string name="records_filter_select">चुनना</string>
     <string name="records_filter_invert_selection">उलट चयन</string>
+    <string name="records_filter_duration_min">न्यूनतम</string>
+    <string name="records_filter_duration_max">अधिकतम</string>
+    <string name="records_filter_duplications_same_activity">वही गतिविधि</string>
+    <string name="records_filter_duplications_same_times">उसी समय</string>
+    <string name="records_filter_duplications_manually_fitler">डुप्लिकेट फ़िल्टर करें</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">फोकस</string>
     <string name="pomodoro_state_break">ब्रेक</string>
     <string name="pomodoro_state_long_break">लंबा ब्रेक</string>
     <string name="pomodoro_settings_periods_until_long_break">लंबे ब्रेक तक की अवधि</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">चुनें कि आप क्या कर रहे हैं</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">स्माइली और इमोशन</string>

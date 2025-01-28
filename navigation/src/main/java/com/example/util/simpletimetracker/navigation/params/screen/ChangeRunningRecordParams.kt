@@ -6,10 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ChangeRunningRecordParams(
-    val transitionName: String = "",
-    val id: Long = 0,
-    val from: From = From.RunningRecords,
-    val preview: Preview? = null,
+    val transitionName: String,
+    val id: Long,
+    val from: From,
+    val preview: Preview?,
 ) : Parcelable, ScreenParams {
 
     @Parcelize
@@ -29,15 +29,35 @@ data class ChangeRunningRecordParams(
         @Parcelize
         data class GoalTimeParams(
             val text: String,
-            val complete: Boolean,
+            val state: GoalSubtypeParams,
         ) : Parcelable
+
+        sealed interface GoalSubtypeParams : Parcelable {
+            @Parcelize
+            data object Hidden : GoalSubtypeParams
+
+            @Parcelize
+            data object Goal : GoalSubtypeParams
+
+            @Parcelize
+            data object Limit : GoalSubtypeParams
+        }
     }
 
     sealed class From : Parcelable {
         @Parcelize
-        object Records : From()
+        data object Records : From()
 
         @Parcelize
-        object RunningRecords : From()
+        data object RunningRecords : From()
+    }
+
+    companion object {
+        val Empty = ChangeRunningRecordParams(
+            transitionName = "",
+            id = 0,
+            from = From.RunningRecords,
+            preview = null,
+        )
     }
 }

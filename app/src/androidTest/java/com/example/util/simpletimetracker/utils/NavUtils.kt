@@ -14,7 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.example.util.simpletimetracker.R
 import com.example.util.simpletimetracker.clickOnSettingsRecyclerText
 import com.example.util.simpletimetracker.domain.extension.padDuration
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_dialogs.dateTime.CustomDatePicker
 import com.example.util.simpletimetracker.feature_dialogs.dateTime.CustomTimePicker
 import com.example.util.simpletimetracker.scrollSettingsRecyclerToText
@@ -101,6 +101,11 @@ object NavUtils {
     fun openComplexRules() {
         scrollSettingsRecyclerToText(coreR.string.settings_complex_rules)
         clickOnSettingsRecyclerText(coreR.string.settings_complex_rules)
+    }
+
+    fun openSuggestions() {
+        scrollSettingsRecyclerToText(coreR.string.settings_activity_suggestions)
+        clickOnSettingsRecyclerText(coreR.string.settings_activity_suggestions)
     }
 
     fun openCardSizeScreen() {
@@ -221,7 +226,7 @@ object NavUtils {
         goal: RecordTypeGoal,
     ) {
         val newGoal = goal.copy(
-            type = when (val type = goal.type) {
+            type = when (goal.type) {
                 is RecordTypeGoal.Type.Duration -> RecordTypeGoal.Type.Duration(0)
                 is RecordTypeGoal.Type.Count -> RecordTypeGoal.Type.Count(0)
             },
@@ -324,7 +329,7 @@ object NavUtils {
         // Comment
         if (!comment.isNullOrEmpty()) {
             clickOnViewWithText(coreR.string.change_record_comment_field)
-            typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+            typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
             clickOnViewWithText(coreR.string.change_record_comment_field)
         }
 

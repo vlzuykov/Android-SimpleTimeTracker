@@ -6,7 +6,7 @@ import com.example.util.simpletimetracker.core.base.BaseViewModel
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.model.NavigationTab
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import javax.inject.Inject
 
 class MainTabsViewModel @Inject constructor(

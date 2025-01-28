@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import com.example.util.simpletimetracker.core.R
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 

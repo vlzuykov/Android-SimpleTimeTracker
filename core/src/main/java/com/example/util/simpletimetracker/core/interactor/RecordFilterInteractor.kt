@@ -1,41 +1,44 @@
 package com.example.util.simpletimetracker.core.interactor
 
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
-import com.example.util.simpletimetracker.domain.extension.getAllTypeIds
-import com.example.util.simpletimetracker.domain.extension.getCommentItems
-import com.example.util.simpletimetracker.domain.extension.getComments
-import com.example.util.simpletimetracker.domain.extension.getDate
-import com.example.util.simpletimetracker.domain.extension.getDaysOfWeek
-import com.example.util.simpletimetracker.domain.extension.getDuration
-import com.example.util.simpletimetracker.domain.extension.getFilteredTags
-import com.example.util.simpletimetracker.domain.extension.getManuallyFilteredRecordIds
-import com.example.util.simpletimetracker.domain.extension.getSelectedTags
-import com.example.util.simpletimetracker.domain.extension.getTaggedIds
-import com.example.util.simpletimetracker.domain.extension.getTimeOfDay
-import com.example.util.simpletimetracker.domain.extension.getTypeIds
-import com.example.util.simpletimetracker.domain.extension.hasAnyComment
-import com.example.util.simpletimetracker.domain.extension.hasCategoryFilter
-import com.example.util.simpletimetracker.domain.extension.hasMultitaskFilter
-import com.example.util.simpletimetracker.domain.extension.hasNoComment
-import com.example.util.simpletimetracker.domain.extension.hasUntaggedItem
-import com.example.util.simpletimetracker.domain.extension.hasUntrackedFilter
+import com.example.util.simpletimetracker.domain.record.extension.getAllTypeIds
+import com.example.util.simpletimetracker.domain.record.extension.getCommentItems
+import com.example.util.simpletimetracker.domain.record.extension.getComments
+import com.example.util.simpletimetracker.domain.record.extension.getDate
+import com.example.util.simpletimetracker.domain.record.extension.getDaysOfWeek
+import com.example.util.simpletimetracker.domain.record.extension.getDuration
+import com.example.util.simpletimetracker.domain.record.extension.getFilteredTags
+import com.example.util.simpletimetracker.domain.record.extension.getManuallyFilteredRecordIds
+import com.example.util.simpletimetracker.domain.record.extension.getSelectedTags
+import com.example.util.simpletimetracker.domain.record.extension.getTaggedIds
+import com.example.util.simpletimetracker.domain.record.extension.getTimeOfDay
+import com.example.util.simpletimetracker.domain.record.extension.getTypeIds
+import com.example.util.simpletimetracker.domain.record.extension.hasAnyComment
+import com.example.util.simpletimetracker.domain.record.extension.hasCategoryFilter
+import com.example.util.simpletimetracker.domain.record.extension.hasMultitaskFilter
+import com.example.util.simpletimetracker.domain.record.extension.hasNoComment
+import com.example.util.simpletimetracker.domain.record.extension.hasUntaggedItem
+import com.example.util.simpletimetracker.domain.record.extension.hasUntrackedFilter
 import com.example.util.simpletimetracker.domain.extension.orZero
 import com.example.util.simpletimetracker.domain.extension.toRange
-import com.example.util.simpletimetracker.domain.interactor.GetMultitaskRecordsInteractor
-import com.example.util.simpletimetracker.domain.interactor.GetUntrackedRecordsInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.mapper.RangeMapper
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.Record
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.record.interactor.GetMultitaskRecordsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.category.interactor.RecordTypeCategoryInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.mapper.RangeMapper
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.extension.getDuplicationItems
+import com.example.util.simpletimetracker.domain.record.extension.hasDuplicationsFilter
+import com.example.util.simpletimetracker.domain.record.interactor.GetDuplicatedRecordsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.GetUntrackedRecordsInteractor
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -49,30 +52,32 @@ class RecordFilterInteractor @Inject constructor(
     private val runningRecordInteractor: RunningRecordInteractor,
     private val getUntrackedRecordsInteractor: GetUntrackedRecordsInteractor,
     private val getMultitaskRecordsInteractor: GetMultitaskRecordsInteractor,
+    private val getDuplicatedRecordsInteractor: GetDuplicatedRecordsInteractor,
     private val timeMapper: TimeMapper,
     private val rangeMapper: RangeMapper,
     private val prefsInteractor: PrefsInteractor,
 ) {
 
-    suspend fun mapDateFilter(
+    fun mapDateFilter(
         rangeLength: RangeLength,
         rangePosition: Int,
-    ): RecordsFilter? = withContext(Dispatchers.Default) {
+    ): RecordsFilter {
+        return RecordsFilter.Date(rangeLength, rangePosition)
+    }
+
+    // RangeLength.All return empty range, need to check separately.
+    suspend fun getRange(
+        filter: RecordsFilter.Date,
+    ): Range {
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
 
-        val range = timeMapper.getRangeStartAndEnd(
-            rangeLength = rangeLength,
-            shift = rangePosition,
+        return timeMapper.getRangeStartAndEnd(
+            rangeLength = filter.range,
+            shift = filter.position,
             firstDayOfWeek = firstDayOfWeek,
             startOfDayShift = startOfDayShift,
         )
-
-        return@withContext if (range.timeStarted == 0L && range.timeEnded == 0L) {
-            null
-        } else {
-            RecordsFilter.Date(range)
-        }
     }
 
     suspend fun getByFilter(
@@ -95,35 +100,37 @@ class RecordFilterInteractor @Inject constructor(
         val comments: List<String> = selectedCommentItems.getComments().map(String::lowercase)
         val selectedNoComment: Boolean = selectedCommentItems.hasNoComment()
         val selectedAnyComment: Boolean = selectedCommentItems.hasAnyComment()
-        val ranges: List<Range> = filters.getDate()?.let(::listOf).orEmpty()
+        val ranges: List<Range> = filters.getDate()?.let { getRange(it) }?.let(::listOf).orEmpty()
+        val definedRanges = ranges.filter { it.timeStarted != 0L && it.timeEnded != 0L }
         val selectedTagItems: List<RecordsFilter.TagItem> = filters.getSelectedTags()
         val selectedTaggedIds: List<Long> = selectedTagItems.getTaggedIds()
         val selectedUntagged: Boolean = selectedTagItems.hasUntaggedItem()
         val filteredTagItems: List<RecordsFilter.TagItem> = filters.getFilteredTags()
         val filteredTaggedIds: List<Long> = filteredTagItems.getTaggedIds()
         val filteredUntagged: Boolean = filteredTagItems.hasUntaggedItem()
-        val manuallyFilteredIds: List<Long> = filters.getManuallyFilteredRecordIds()
-        val daysOfWeek: List<DayOfWeek> = filters.getDaysOfWeek()
+        val manuallyFilteredIds: Map<Long, Boolean> = filters.getManuallyFilteredRecordIds()
+        val daysOfWeek: Set<DayOfWeek> = filters.getDaysOfWeek()
         val timeOfDay: Range? = filters.getTimeOfDay()
         val durations: List<Range> = filters.getDuration()?.let(::listOf).orEmpty()
+        val duplicationItems: List<RecordsFilter.DuplicationsItem> = filters.getDuplicationItems()
 
         // TODO Use different queries for optimization.
         // TODO by tag (tagged, untagged).
         val records: List<RecordBase> = when {
             filters.hasUntrackedFilter() -> {
-                val range = ranges.firstOrNull() ?: Range(0, 0)
+                val range = definedRanges.firstOrNull() ?: Range(0, 0)
                 val records = getAllRecords(range, runningRecords)
                     .map(RecordBase::toRange)
                 getUntrackedRecordsInteractor.get(range, records)
             }
             filters.hasMultitaskFilter() -> {
-                val range = ranges.firstOrNull() ?: Range(0, 0)
+                val range = definedRanges.firstOrNull() ?: Range(0, 0)
                 val records = getAllRecords(range, runningRecords)
                 getMultitaskRecordsInteractor.get(records)
             }
-            typeIds.isNotEmpty() && ranges.isNotEmpty() -> {
+            typeIds.isNotEmpty() && definedRanges.isNotEmpty() -> {
                 val result = mutableMapOf<Long, Record>()
-                ranges
+                definedRanges
                     .map { interactor.getFromRangeByType(typeIds, it) }
                     .flatten()
                     .forEach { result[it.id] = it }
@@ -140,9 +147,9 @@ class RecordFilterInteractor @Inject constructor(
             typeIds.isNotEmpty() -> {
                 interactor.getByType(typeIds)
             }
-            ranges.isNotEmpty() -> {
+            definedRanges.isNotEmpty() -> {
                 val result = mutableMapOf<Long, Record>()
-                ranges
+                definedRanges
                     .map { interactor.getFromRange(it) }
                     .flatten()
                     .forEach { result[it.id] = it }
@@ -156,11 +163,23 @@ class RecordFilterInteractor @Inject constructor(
             }
             else -> interactor.getAll()
         }.let {
+            // For these filter running records are added separately.
             if (filters.hasUntrackedFilter() || filters.hasMultitaskFilter()) {
                 it
             } else {
                 it + runningRecords
             }
+        }
+
+        val duplicationIds: Map<Long, Boolean> = if (filters.hasDuplicationsFilter()) {
+            getDuplicatedRecordsInteractor.execute(
+                filters = duplicationItems,
+                records = records,
+            ).let {
+                it.original + it.duplications
+            }.associateWith { true }
+        } else {
+            emptyMap()
         }
 
         // TODO multitask filters.
@@ -179,6 +198,8 @@ class RecordFilterInteractor @Inject constructor(
 
         fun RecordBase.selectedByDate(): Boolean {
             if (ranges.isEmpty()) return true
+            // Overall range.
+            if (ranges.any { it.timeStarted == 0L && it.timeEnded == 0L }) return true
             return ranges.any { range -> timeStarted < range.timeEnded && timeEnded > range.timeStarted }
         }
 
@@ -204,6 +225,12 @@ class RecordFilterInteractor @Inject constructor(
             if (manuallyFilteredIds.isEmpty()) return false
             if (this !is Record) return false
             return id in manuallyFilteredIds
+        }
+
+        fun RecordBase.selectedByDuplications(): Boolean {
+            if (duplicationItems.isEmpty()) return true
+            if (this !is Record) return true
+            return id in duplicationIds
         }
 
         fun RecordBase.selectedByDayOfWeek(): Boolean {
@@ -287,7 +314,8 @@ class RecordFilterInteractor @Inject constructor(
                 !record.isManuallyFiltered() &&
                 record.selectedByDayOfWeek() &&
                 record.selectedByTimeOfDay() &&
-                record.selectedByDuration()
+                record.selectedByDuration() &&
+                record.selectedByDuplications()
         }
     }
 

@@ -26,8 +26,7 @@
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_alignParentEnd="true"
-        tools:itemIsChecked="true"
-        tools:itemWithCheck="true" />
+        tools:itemCheckState="goalReached" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/viewNotificationIconComplete"

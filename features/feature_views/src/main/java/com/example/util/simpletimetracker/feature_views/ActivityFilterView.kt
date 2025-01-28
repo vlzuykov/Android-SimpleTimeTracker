@@ -3,11 +3,11 @@ package com.example.util.simpletimetracker.feature_views
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.feature_views.databinding.ActivityFilterViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 
 class ActivityFilterView @JvmOverloads constructor(
     context: Context,
@@ -19,8 +19,7 @@ class ActivityFilterView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: ActivityFilterViewLayoutBinding = ActivityFilterViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = ActivityFilterViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         ContextCompat.getColor(context, R.color.black).let(::setCardBackgroundColor)

@@ -3,13 +3,13 @@ package com.example.util.simpletimetracker.feature_settings.viewModel.delegate
 import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.interactor.CheckExactAlarmPermissionInteractor
 import com.example.util.simpletimetracker.core.interactor.CheckNotificationsPermissionInteractor
-import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.domain.extension.flip
-import com.example.util.simpletimetracker.domain.interactor.NotificationActivityInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationInactivityInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationActivityInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationInactivityInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.feature_settings.interactor.SettingsNotificationsViewDataInteractor
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.feature_settings.viewModel.SettingsViewModel
@@ -23,12 +23,12 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
     private val router: Router,
     private val prefsInteractor: PrefsInteractor,
     private val settingsMapper: SettingsMapper,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
     private val notificationInactivityInteractor: NotificationInactivityInteractor,
     private val notificationActivityInteractor: NotificationActivityInteractor,
     private val checkExactAlarmPermissionInteractor: CheckExactAlarmPermissionInteractor,
     private val checkNotificationsPermissionInteractor: CheckNotificationsPermissionInteractor,
     private val settingsNotificationsViewDataInteractor: SettingsNotificationsViewDataInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
 ) : ViewModelDelegate() {
 
     private var parent: SettingsParent? = null
@@ -56,6 +56,7 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
             SettingsBlock.NotificationsSystemSettings -> onSystemSettingsClicked()
             SettingsBlock.NotificationsShow -> onShowNotificationsClicked()
             SettingsBlock.NotificationsShowControls -> onShowNotificationsControlsClicked()
+            SettingsBlock.NotificationsShowEvenWithNoTimers -> onShowNotificationsEvenWithNoTimersClicked()
             SettingsBlock.NotificationsInactivityRecurrent -> onInactivityReminderRecurrentClicked()
             SettingsBlock.NotificationsActivityRecurrent -> onActivityReminderRecurrentClicked()
             else -> {
@@ -85,7 +86,7 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
         fun updateValue(newValue: Boolean) = delegateScope.launch {
             prefsInteractor.setShowNotifications(newValue)
             parent?.updateContent()
-            notificationTypeInteractor.updateNotifications()
+            externalViewsInteractor.onShowTimerNotificationsChange()
         }
 
         delegateScope.launch {
@@ -105,7 +106,16 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
             val newValue = !prefsInteractor.getShowNotificationsControls()
             prefsInteractor.setShowNotificationsControls(newValue)
             parent?.updateContent()
-            notificationTypeInteractor.updateNotifications()
+            externalViewsInteractor.onShowTimerNotificationsControlsChange()
+        }
+    }
+
+    private fun onShowNotificationsEvenWithNoTimersClicked() {
+        delegateScope.launch {
+            val newValue = !prefsInteractor.getShowNotificationEvenWithNoTimers()
+            prefsInteractor.setShowNotificationEvenWithNoTimers(newValue)
+            parent?.updateContent()
+            externalViewsInteractor.onShowNotificationsEvenWithNoTimersChange()
         }
     }
 
@@ -133,8 +143,7 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
             val newValue = !prefsInteractor.getInactivityReminderRecurrent()
             prefsInteractor.setInactivityReminderRecurrent(newValue)
             parent?.updateContent()
-            notificationInactivityInteractor.cancel()
-            notificationInactivityInteractor.checkAndSchedule()
+            externalViewsInteractor.onInactivityReminderChange()
         }
     }
 
@@ -180,8 +189,7 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
             val newValue = !prefsInteractor.getActivityReminderRecurrent()
             prefsInteractor.setActivityReminderRecurrent(newValue)
             parent?.updateContent()
-            notificationActivityInteractor.cancel()
-            notificationActivityInteractor.checkAndSchedule()
+            externalViewsInteractor.onActivityReminderChange()
         }
     }
 
@@ -210,15 +218,13 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
             SettingsViewModel.INACTIVITY_DURATION_DIALOG_TAG -> delegateScope.launch {
                 prefsInteractor.setInactivityReminderDuration(duration)
                 parent?.updateContent()
-                notificationInactivityInteractor.cancel()
-                notificationInactivityInteractor.checkAndSchedule()
+                externalViewsInteractor.onInactivityReminderChange()
                 checkExactAlarmPermissionInteractor.execute()
             }
             SettingsViewModel.ACTIVITY_DURATION_DIALOG_TAG -> delegateScope.launch {
                 prefsInteractor.setActivityReminderDuration(duration)
                 parent?.updateContent()
-                notificationActivityInteractor.cancel()
-                notificationActivityInteractor.checkAndSchedule()
+                externalViewsInteractor.onActivityReminderChange()
                 checkExactAlarmPermissionInteractor.execute()
             }
         }
@@ -246,32 +252,28 @@ class SettingsNotificationsViewModelDelegate @Inject constructor(
                 val newValue = settingsMapper.toStartOfDayShift(timestamp, wasPositive = true)
                 prefsInteractor.setInactivityReminderDoNotDisturbStart(newValue)
                 parent?.updateContent()
-                notificationInactivityInteractor.cancel()
-                notificationInactivityInteractor.checkAndSchedule()
+                externalViewsInteractor.onInactivityReminderChange()
             }
 
             SettingsViewModel.INACTIVITY_REMINDER_DND_END_DIALOG_TAG -> {
                 val newValue = settingsMapper.toStartOfDayShift(timestamp, wasPositive = true)
                 prefsInteractor.setInactivityReminderDoNotDisturbEnd(newValue)
                 parent?.updateContent()
-                notificationInactivityInteractor.cancel()
-                notificationInactivityInteractor.checkAndSchedule()
+                externalViewsInteractor.onInactivityReminderChange()
             }
 
             SettingsViewModel.ACTIVITY_REMINDER_DND_START_DIALOG_TAG -> {
                 val newValue = settingsMapper.toStartOfDayShift(timestamp, wasPositive = true)
                 prefsInteractor.setActivityReminderDoNotDisturbStart(newValue)
                 parent?.updateContent()
-                notificationActivityInteractor.cancel()
-                notificationActivityInteractor.checkAndSchedule()
+                externalViewsInteractor.onActivityReminderChange()
             }
 
             SettingsViewModel.ACTIVITY_REMINDER_DND_END_DIALOG_TAG -> {
                 val newValue = settingsMapper.toStartOfDayShift(timestamp, wasPositive = true)
                 prefsInteractor.setActivityReminderDoNotDisturbEnd(newValue)
                 parent?.updateContent()
-                notificationActivityInteractor.cancel()
-                notificationActivityInteractor.checkAndSchedule()
+                externalViewsInteractor.onActivityReminderChange()
             }
         }
     }

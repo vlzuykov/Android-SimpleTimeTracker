@@ -1,8 +1,9 @@
 package com.example.util.simpletimetracker.feature_notification.pomodoro.controller
 
-import com.example.util.simpletimetracker.domain.interactor.PomodoroCycleNotificationInteractor
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
+import com.example.util.simpletimetracker.domain.pomodoro.interactor.PomodoroCycleNotificationInteractor
 import com.example.util.simpletimetracker.feature_notification.pomodoro.interactor.ShowPomodoroNotificationInteractor
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,16 +14,16 @@ class NotificationPomodoroBroadcastController @Inject constructor(
 
     fun onReminder(
         cycleType: Long,
-    ) = GlobalScope.launch {
+    ) = allowDiskRead { MainScope() }.launch {
         showPomodoroNotificationInteractor.show(cycleType)
         checkAndSchedule()
     }
 
-    fun onBootCompleted() = GlobalScope.launch {
+    fun onBootCompleted() = allowDiskRead { MainScope() }.launch {
         checkAndSchedule()
     }
 
-    fun onExactAlarmPermissionStateChanged() = GlobalScope.launch {
+    fun onExactAlarmPermissionStateChanged() = allowDiskRead { MainScope() }.launch {
         checkAndSchedule()
     }
 

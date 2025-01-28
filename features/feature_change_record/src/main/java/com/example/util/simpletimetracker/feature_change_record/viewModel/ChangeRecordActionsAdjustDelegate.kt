@@ -4,17 +4,18 @@ import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.AddRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRecordMediator
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.record.interactor.AddRecordMediator
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRecordMediator
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintAccentViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeAdjustmentViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeDoublePreviewViewData
@@ -84,10 +85,11 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
     }
 
     private suspend fun loadViewData(): List<ViewHolderType> {
-        val useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat()
-        val showSeconds = prefsInteractor.getShowSeconds()
         val params = parent?.getViewDataParams()
             ?: return emptyList()
+        val useMilitaryTime = prefsInteractor.getUseMilitaryTimeFormat()
+        val showSeconds = prefsInteractor.getShowSeconds()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         val hintText = if (params.isTimeEndedAvailable) {
@@ -140,12 +142,10 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
             )
         }
         result += state.changesPreview
-        result += ChangeRecordButtonViewData(
-            block = ChangeRecordActionsBlock.AdjustButton,
-            text = resourceRepo.getString(R.string.change_record_adjust),
-            icon = R.drawable.action_change,
-            iconSizeDp = 28,
+        result += changeRecordViewDataMapper.mapRecordActionButton(
+            action = RecordQuickAction.ADJUST,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }
@@ -318,8 +318,8 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
         newTimeEnded: Long,
         adjustNextRecordAvailable: Boolean,
     ): AdjacentRecords {
-        suspend fun getNext(): Record? {
-            return recordInteractor.getNext(newTimeEnded)
+        suspend fun getNext(): List<Record> {
+            return recordInteractor.getAllNext(newTimeEnded)
         }
 
         val recordRange = Range(timeStarted = newTimeStarted, timeEnded = newTimeEnded)
@@ -328,14 +328,14 @@ class ChangeRecordActionsAdjustDelegate @Inject constructor(
 
         val previousRecords = adjacentRecords
             .filter { it.timeStarted < newTimeStarted && it.timeEnded <= newTimeEnded }
-            .ifEmpty { recordInteractor.getPrev(newTimeStarted) }
+            .ifEmpty { recordInteractor.getAllPrev(newTimeStarted) }
             .filter { it.id != recordId }
         val overlappedRecords = adjacentRecords
             .filter { it.timeStarted >= newTimeStarted && it.timeEnded <= newTimeEnded }
             .filter { it.id != recordId }
         val nextRecords = adjacentRecords
             .filter { it.timeStarted >= newTimeStarted && it.timeEnded > newTimeEnded }
-            .ifEmpty { listOfNotNull(if (adjustNextRecordAvailable) getNext() else null) }
+            .ifEmpty { if (adjustNextRecordAvailable) getNext() else emptyList() }
             .takeIf { adjustNextRecordAvailable }
             .orEmpty()
             .filter { it.id != recordId }

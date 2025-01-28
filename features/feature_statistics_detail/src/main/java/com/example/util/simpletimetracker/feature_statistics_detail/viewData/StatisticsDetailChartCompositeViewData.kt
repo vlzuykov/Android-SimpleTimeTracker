@@ -16,4 +16,5 @@ data class StatisticsDetailChartCompositeViewData(
     val appliedChartLength: ChartLength,
     val chartLengthViewData: List<ViewHolderType>,
     val chartLengthVisible: Boolean,
+    val additionalChartButtonItems: List<ViewHolderType>,
 )

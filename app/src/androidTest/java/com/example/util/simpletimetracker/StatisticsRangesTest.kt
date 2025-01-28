@@ -11,7 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.util.simpletimetracker.core.extension.setWeekToFirstDay
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import com.example.util.simpletimetracker.feature_dialogs.dateTime.CustomDatePicker
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
@@ -661,8 +661,13 @@ class StatisticsRangesTest : BaseUiTest() {
         clickOnViewWithId(statisticsR.id.btnStatisticsContainerToday)
         clickOnViewWithText(coreR.string.range_custom)
         clickOnViewWithId(dialogsR.id.btnCustomRangeSelection)
+        val rangeTitle = calendar.apply {
+            timeInMillis = System.currentTimeMillis()
+        }.timeInMillis.formatDate().let {
+            "$it - $it"
+        }
         checkViewIsDisplayed(
-            allOf(withId(statisticsR.id.btnStatisticsContainerToday), withText(coreR.string.range_custom)),
+            allOf(withId(statisticsR.id.btnStatisticsContainerToday), withText(rangeTitle)),
         )
         checkViewDoesNotExist(allOf(withText(name1), isCompletelyDisplayed()))
         checkViewDoesNotExist(allOf(withText(name2), isCompletelyDisplayed()))

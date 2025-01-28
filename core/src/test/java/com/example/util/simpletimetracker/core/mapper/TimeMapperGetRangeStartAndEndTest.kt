@@ -4,12 +4,12 @@ import com.example.util.simpletimetracker.core.mapper.TimeMapperGetRangeStartAnd
 import com.example.util.simpletimetracker.core.mapper.TimeMapperGetRangeStartAndEndTest.Subject.hourInMs
 import com.example.util.simpletimetracker.core.mapper.TimeMapperGetRangeStartAndEndTest.Subject.localeProvider
 import com.example.util.simpletimetracker.core.mapper.TimeMapperGetRangeStartAndEndTest.Subject.resourceRepo
-import com.example.util.simpletimetracker.domain.provider.CurrentTimestampProvider
+import com.example.util.simpletimetracker.domain.base.CurrentTimestampProvider
 import com.example.util.simpletimetracker.core.provider.LocaleProvider
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RangeLength
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import java.util.Locale
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals

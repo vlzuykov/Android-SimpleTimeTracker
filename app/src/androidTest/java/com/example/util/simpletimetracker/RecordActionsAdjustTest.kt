@@ -94,7 +94,10 @@ class RecordActionsAdjustTest : BaseUiTest() {
         adjust(isStart = false, buttonText = "+30")
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_adjust))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_adjust)),
+        )
         clickOnViewWithText(coreR.string.change_record_adjust)
 
         // Check records
@@ -180,7 +183,10 @@ class RecordActionsAdjustTest : BaseUiTest() {
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name2))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_adjust))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_adjust)),
+        )
         clickOnViewWithText(coreR.string.change_record_adjust)
 
         // Check records
@@ -245,7 +251,10 @@ class RecordActionsAdjustTest : BaseUiTest() {
         clickOnViewWithText("-5")
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_adjust))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_adjust)),
+        )
         clickOnViewWithText(coreR.string.change_record_adjust)
 
         // Check records
@@ -298,7 +307,10 @@ class RecordActionsAdjustTest : BaseUiTest() {
         adjust(isStart = false, buttonText = "+30")
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_adjust))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_adjust)),
+        )
         clickOnViewWithText(coreR.string.change_record_adjust)
 
         // Check records
@@ -415,7 +427,10 @@ class RecordActionsAdjustTest : BaseUiTest() {
         onPreviewCheck(name1).perform(click())
         onPreviewCheck(name1).check(matches(isNotChecked()))
 
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_adjust))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_adjust)),
+        )
         clickOnViewWithText(coreR.string.change_record_adjust)
 
         // Check records

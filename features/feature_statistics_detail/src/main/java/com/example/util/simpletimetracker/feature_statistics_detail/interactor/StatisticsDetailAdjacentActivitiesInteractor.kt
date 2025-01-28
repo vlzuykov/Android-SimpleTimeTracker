@@ -2,15 +2,16 @@ package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.extension.getTypeIds
-import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.record.extension.getTypeIds
+import com.example.util.simpletimetracker.domain.record.interactor.CalculateAdjacentActivitiesInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.CalculateAdjacentActivitiesInteractor.CalculationResult
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.R
@@ -26,6 +27,7 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
     private val recordInteractor: RecordInteractor,
     private val timeMapper: TimeMapper,
     private val statisticsDetailViewDataMapper: StatisticsDetailViewDataMapper,
+    private val calculateAdjacentActivitiesInteractor: CalculateAdjacentActivitiesInteractor,
 ) {
 
     suspend fun getNextActivitiesViewData(
@@ -38,8 +40,11 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
         val isDarkTheme = prefsInteractor.getDarkMode()
         val recordTypes = recordTypeInteractor.getAll().associateBy(RecordType::id)
         val actualRecords = getRecords(rangeLength, rangePosition)
-        val nextActivitiesIds = calculateNextActivities(typeId, actualRecords)
-        val multitaskingActivitiesIds = calculateMultitasking(typeId, actualRecords)
+        val nextActivitiesIds = calculateAdjacentActivitiesInteractor
+            .calculateNextActivities(listOf(typeId), actualRecords, MAX_COUNT)
+            .getOrElse(typeId) { emptyList() }
+        val multitaskingActivitiesIds = calculateAdjacentActivitiesInteractor
+            .calculateMultitasking(typeId, actualRecords, MAX_COUNT)
 
         fun mapPreviews(typeToCounts: List<CalculationResult>): List<ViewHolderType> {
             val total = typeToCounts.sumOf(CalculationResult::count)
@@ -96,7 +101,7 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
     private suspend fun getRecords(
         rangeLength: RangeLength,
         rangePosition: Int,
-    ): List<RecordBase> {
+    ): List<Record> {
         val firstDayOfWeek = prefsInteractor.getFirstDayOfWeek()
         val startOfDayShift = prefsInteractor.getStartOfDayShift()
 
@@ -121,79 +126,9 @@ class StatisticsDetailAdjacentActivitiesInteractor @Inject constructor(
             ?.firstOrNull()
     }
 
-    // TODO make more precise calculations?
-    private fun calculateNextActivities(
-        typeId: Long,
-        records: List<RecordBase>,
-    ): List<CalculationResult> {
-        val counts = mutableMapOf<Long, Long>()
-
-        val recordsSorted = records.sortedBy { it.timeStarted }
-        var currentRecord: RecordBase? = null
-        recordsSorted.forEach { record ->
-            val currentTimeEnded = currentRecord?.timeEnded
-            if (currentTimeEnded != null &&
-                currentTimeEnded <= record.timeStarted
-            ) {
-                record.typeIds.firstOrNull()?.let { id ->
-                    counts[id] = counts[id].orZero() + 1
-                }
-                currentRecord = null
-            }
-            if (currentRecord == null && typeId in record.typeIds) {
-                currentRecord = record
-            }
-        }
-
-        return counts.keys
-            .sortedByDescending { counts[it].orZero() }
-            .take(MAX_COUNT)
-            .map { CalculationResult(it, counts[it].orZero()) }
-    }
-
-    // TODO make more precise calculations?
-    private fun calculateMultitasking(
-        typeId: Long,
-        records: List<RecordBase>,
-    ): List<CalculationResult> {
-        val counts = mutableMapOf<Long, Long>()
-
-        val recordsSorted = records.sortedBy { it.timeStarted }
-        var currentRecord: RecordBase? = null
-        recordsSorted.forEach { record ->
-            val currentTimeStarted = currentRecord?.timeStarted
-            val currentTimeEnded = currentRecord?.timeEnded
-            if (currentTimeStarted != null &&
-                currentTimeEnded != null &&
-                // Find next records that was started after this one but before this one ends.
-                currentTimeStarted <= record.timeStarted &&
-                currentTimeEnded > record.timeStarted &&
-                // Cutoff short intersections.
-                currentTimeEnded - record.timeStarted > 1_000L
-            ) {
-                record.typeIds.firstOrNull()?.let { id ->
-                    counts[id] = counts[id].orZero() + 1
-                }
-            }
-            if (typeId in record.typeIds) {
-                currentRecord = record
-            }
-        }
-
-        return counts.keys
-            .sortedByDescending { counts[it].orZero() }
-            .take(MAX_COUNT)
-            .map { CalculationResult(it, counts[it].orZero()) }
-    }
-
     private fun getEmptyViewData(): List<ViewHolderType> {
         return emptyList()
     }
-
-    private data class CalculationResult(
-        val typeId: Long,
-        val count: Long,
-    )
 
     companion object {
         private const val MAX_COUNT = 5

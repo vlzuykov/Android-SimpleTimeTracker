@@ -5,19 +5,20 @@ import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.domain.extension.flip
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalTimeInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
-import com.example.util.simpletimetracker.domain.model.WidgetType
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.R
+import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.feature_settings.interactor.SettingsAdditionalViewDataInteractor
+import com.example.util.simpletimetracker.feature_settings.mapper.SettingsAutomatedTrackingMapper
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.feature_settings.viewModel.SettingsViewModel
 import com.example.util.simpletimetracker.navigation.Router
+import com.example.util.simpletimetracker.navigation.params.screen.ActivitySuggestionsParams
 import com.example.util.simpletimetracker.navigation.params.screen.ComplexRulesParams
 import com.example.util.simpletimetracker.navigation.params.screen.DataEditParams
 import com.example.util.simpletimetracker.navigation.params.screen.DurationDialogParams
@@ -30,10 +31,11 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val resourceRepo: ResourceRepo,
     private val settingsMapper: SettingsMapper,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
-    private val widgetInteractor: WidgetInteractor,
-    private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
+    private val settingsAutomatedTrackingMapper: SettingsAutomatedTrackingMapper,
     private val settingsAdditionalViewDataInteractor: SettingsAdditionalViewDataInteractor,
+    private val runningRecordInteractor: RunningRecordInteractor,
+    private val removeRunningRecordMediator: RemoveRunningRecordMediator,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
 ) : ViewModelDelegate() {
 
     val keepScreenOnCheckbox: LiveData<Boolean>
@@ -62,11 +64,15 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             SettingsBlock.AdditionalShowTagSelection -> onShowRecordTagSelectionClicked()
             SettingsBlock.AdditionalCloseAfterOneTag -> onRecordTagSelectionCloseClicked()
             SettingsBlock.AdditionalTagSelectionExcludeActivities -> onRecordTagSelectionExcludeActivitiesClicked()
+            SettingsBlock.AdditionalShowCommentInput -> onShowCommentInputClicked()
+            SettingsBlock.AdditionalCommentInputExcludeActivities -> onCommentInputExcludeActivitiesClicked()
             SettingsBlock.AdditionalKeepStatisticsRange -> onKeepStatisticsRangeClicked()
+            SettingsBlock.AdditionalRetroactiveTrackingMode -> onRetroactiveTrackingModeClicked()
             SettingsBlock.AdditionalSendEvents -> onAutomatedTrackingSendEventsClicked()
             SettingsBlock.AdditionalKeepScreenOn -> onKeepScreenOnClicked()
             SettingsBlock.AdditionalDataEdit -> onDataEditClick()
             SettingsBlock.AdditionalComplexRules -> onComplexRulesClick()
+            SettingsBlock.AdditionalActivitySuggestions -> onActivitySuggestionsClick()
             else -> {
                 // Do nothing
             }
@@ -109,8 +115,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
 
         delegateScope.launch {
             prefsInteractor.setFirstDayOfWeek(newDayOfWeek)
-            widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
-            notificationGoalTimeInteractor.checkAndReschedule()
+            externalViewsInteractor.onFirstDayOfWeekChange()
             parent?.updateContent()
         }
     }
@@ -138,10 +143,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = prefsInteractor.getStartOfDayShift() * -1
             prefsInteractor.setStartOfDayShift(newValue)
-            widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
-            widgetInteractor.updateWidgets(listOf(WidgetType.RECORD_TYPE))
-            notificationTypeInteractor.updateNotifications()
-            notificationGoalTimeInteractor.checkAndReschedule()
+            externalViewsInteractor.onStartOfDaySignChange()
             parent?.updateContent()
         }
     }
@@ -151,6 +153,19 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             val newValue = !prefsInteractor.getKeepStatisticsRange()
             prefsInteractor.setKeepStatisticsRange(newValue)
             parent?.updateContent()
+        }
+    }
+
+    private fun onRetroactiveTrackingModeClicked() {
+        delegateScope.launch {
+            val newValue = !prefsInteractor.getRetroactiveTrackingMode()
+            prefsInteractor.setRetroactiveTrackingMode(newValue)
+            parent?.updateContent()
+            runningRecordInteractor.getAll().forEach {
+                removeRunningRecordMediator.removeWithRecordAdd(it)
+            }
+            // TODO do not update widgets if there was running records?
+            externalViewsInteractor.onRetroactiveTrackingModeChange()
         }
     }
 
@@ -169,7 +184,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = !prefsInteractor.getShowRecordTagSelection()
             prefsInteractor.setShowRecordTagSelection(newValue)
-            widgetInteractor.updateWidgets(listOf(WidgetType.QUICK_SETTINGS))
+            externalViewsInteractor.onShowRecordTagSelectionChange()
             parent?.updateContent()
         }
     }
@@ -184,7 +199,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
 
     private fun onRecordTagSelectionExcludeActivitiesClicked() = delegateScope.launch {
         TypesSelectionDialogParams(
-            tag = SettingsViewModel.EXCLUDE_ACTIVITIES_TYPES_SELECTION,
+            tag = SettingsViewModel.TAG_EXCLUDE_ACTIVITIES_TYPES_SELECTION,
             title = resourceRepo.getString(
                 R.string.record_tag_selection_exclude_activities_title,
             ),
@@ -195,6 +210,32 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
             selectedTypeIds = prefsInteractor.getRecordTagSelectionExcludeActivities(),
             isMultiSelectAvailable = true,
             idsShouldBeVisible = emptyList(),
+            showHints = true,
+        ).let(router::navigate)
+    }
+
+    private fun onShowCommentInputClicked() = delegateScope.launch {
+        delegateScope.launch {
+            val newValue = !prefsInteractor.getShowCommentInput()
+            prefsInteractor.setShowCommentInput(newValue)
+            parent?.updateContent()
+        }
+    }
+
+    private fun onCommentInputExcludeActivitiesClicked() = delegateScope.launch {
+        TypesSelectionDialogParams(
+            tag = SettingsViewModel.COMMENT_EXCLUDE_ACTIVITIES_TYPES_SELECTION,
+            title = resourceRepo.getString(
+                R.string.record_tag_selection_exclude_activities_title,
+            ),
+            subtitle = resourceRepo.getString(
+                R.string.record_tag_selection_exclude_activities_hint,
+            ),
+            type = TypesSelectionDialogParams.Type.Activity,
+            selectedTypeIds = prefsInteractor.getCommentInputExcludeActivities(),
+            isMultiSelectAvailable = true,
+            idsShouldBeVisible = emptyList(),
+            showHints = true,
         ).let(router::navigate)
     }
 
@@ -223,12 +264,15 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
         router.navigate(ComplexRulesParams)
     }
 
+    private fun onActivitySuggestionsClick() {
+        router.navigate(ActivitySuggestionsParams)
+    }
+
     private fun onAutomatedTrackingHelpClick() {
         delegateScope.launch {
             val isDarkTheme = prefsInteractor.getDarkMode()
-            router.navigate(
-                settingsMapper.toAutomatedTrackingHelpDialog(isDarkTheme),
-            )
+            settingsAutomatedTrackingMapper.toAutomatedTrackingHelpDialog(isDarkTheme)
+                .let(router::navigate)
         }
     }
 
@@ -256,10 +300,7 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
                 val wasPositive = prefsInteractor.getStartOfDayShift() >= 0
                 val newValue = settingsMapper.toStartOfDayShift(timestamp, wasPositive)
                 prefsInteractor.setStartOfDayShift(newValue)
-                widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
-                widgetInteractor.updateWidgets(listOf(WidgetType.RECORD_TYPE))
-                notificationTypeInteractor.updateNotifications()
-                notificationGoalTimeInteractor.checkAndReschedule()
+                externalViewsInteractor.onStartOfDayChange()
                 parent?.updateContent()
             }
         }
@@ -267,8 +308,11 @@ class SettingsAdditionalViewModelDelegate @Inject constructor(
 
     private fun onTypesSelectedDelegate(typeIds: List<Long>, tag: String?) = delegateScope.launch {
         when (tag) {
-            SettingsViewModel.EXCLUDE_ACTIVITIES_TYPES_SELECTION -> {
+            SettingsViewModel.TAG_EXCLUDE_ACTIVITIES_TYPES_SELECTION -> {
                 prefsInteractor.setRecordTagSelectionExcludeActivities(typeIds)
+            }
+            SettingsViewModel.COMMENT_EXCLUDE_ACTIVITIES_TYPES_SELECTION -> {
+                prefsInteractor.setCommentInputExcludeActivities(typeIds)
             }
         }
     }

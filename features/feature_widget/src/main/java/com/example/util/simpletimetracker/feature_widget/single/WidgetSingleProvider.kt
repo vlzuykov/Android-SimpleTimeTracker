@@ -6,41 +6,45 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RemoteViews
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
+import com.example.util.simpletimetracker.core.extension.allowVmViolations
+import com.example.util.simpletimetracker.core.extension.toParams
+import com.example.util.simpletimetracker.core.interactor.CompleteTypesStateInteractor
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
-import com.example.util.simpletimetracker.core.interactor.CompleteTypesStateInteractor
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.utils.PendingIntents
-import com.example.util.simpletimetracker.domain.REPEAT_BUTTON_ITEM_ID
-import com.example.util.simpletimetracker.domain.extension.getDaily
-import com.example.util.simpletimetracker.domain.extension.orFalse
-import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
+import com.example.util.simpletimetracker.domain.base.REPEAT_BUTTON_ITEM_ID
+import com.example.util.simpletimetracker.domain.recordType.extension.getDaily
+import com.example.util.simpletimetracker.domain.record.interactor.AddRunningRecordMediator
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.widget.interactor.WidgetInteractor
+import com.example.util.simpletimetracker.domain.record.model.RecordDataSelectionDialogResult
 import com.example.util.simpletimetracker.feature_views.ColorUtils
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.RecordTypeView
 import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
 import com.example.util.simpletimetracker.feature_views.extension.measureExactly
 import com.example.util.simpletimetracker.feature_views.extension.setAllMargins
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.feature_widget.R
+import com.example.util.simpletimetracker.feature_widget.common.WidgetViewsHolder
 import com.example.util.simpletimetracker.navigation.params.screen.RecordTagSelectionParams
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,6 +60,9 @@ class WidgetSingleProvider : AppWidgetProvider() {
 
     @Inject
     lateinit var runningRecordInteractor: RunningRecordInteractor
+
+    @Inject
+    lateinit var recordInteractor: RecordInteractor
 
     @Inject
     lateinit var recordTypeInteractor: RecordTypeInteractor
@@ -93,6 +100,9 @@ class WidgetSingleProvider : AppWidgetProvider() {
     @Inject
     lateinit var completeTypesStateInteractor: CompleteTypesStateInteractor
 
+    @Inject
+    lateinit var widgetViewsHolder: WidgetViewsHolder
+
     private var typeIdsToUpdate: List<Long> = emptyList()
     private var preparedView: RecordTypeView? = null
     private var entireView: View? = null
@@ -116,7 +126,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        GlobalScope.launch(Dispatchers.Main) {
+        allowDiskRead { MainScope() }.launch {
             appWidgetIds?.forEach { prefsInteractor.removeWidget(it) }
         }
     }
@@ -128,13 +138,24 @@ class WidgetSingleProvider : AppWidgetProvider() {
     ) {
         if (context == null || appWidgetManager == null) return
 
-        GlobalScope.launch(Dispatchers.Main) {
+        allowDiskRead { MainScope() }.launch {
             val view: View
             val recordTypeId = prefsInteractor.getWidget(appWidgetId)
             val backgroundTransparency = prefsInteractor.getWidgetBackgroundTransparencyPercent()
+            val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
             val typeIds = typeIdsToUpdate
             if (typeIds.isNotEmpty() && recordTypeId !in typeIds) return@launch
-            val runningRecord = runningRecordInteractor.get(recordTypeId)
+            val runningRecord = if (runningRecordInteractor.has(recordTypeId)) {
+                runningRecordInteractor.get(recordTypeId)
+            } else {
+                null
+            }
+            val prevRecord = if (retroactiveTrackingModeEnabled) {
+                recordInteractor.getAllPrev(timeStarted = System.currentTimeMillis())
+                    .firstOrNull { it.typeId == recordTypeId }
+            } else {
+                null
+            }
             val isDarkTheme: Boolean = prefsInteractor.getDarkMode()
 
             if (recordTypeId == REPEAT_BUTTON_ITEM_ID) {
@@ -147,14 +168,13 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     recordTypeIcon = viewData.iconId,
                     recordTypeName = viewData.name,
                     recordTypeColor = viewData.color,
-                    isRunning = false,
-                    isChecked = null,
+                    isColored = false,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                     backgroundTransparency = backgroundTransparency,
                 )
             } else {
                 val recordType = recordTypeInteractor.get(recordTypeId)
-                    ?.takeUnless { it.hidden }
                 val goal = filterGoalsByDayOfWeekInteractor
                     .execute(recordTypeGoalInteractor.getByType(recordTypeId))
                     .getDaily()
@@ -166,13 +186,18 @@ class WidgetSingleProvider : AppWidgetProvider() {
                 } else {
                     null
                 }
-                val isChecked = if (recordType != null) {
+                val checkState = if (recordType != null) {
                     recordTypeViewDataMapper.mapGoalCheckmark(
                         goal = goal,
                         dailyCurrent = dailyCurrent,
                     )
                 } else {
-                    null
+                    GoalCheckmarkView.CheckState.HIDDEN
+                }
+                val isColored = when {
+                    runningRecord != null -> recordType != null
+                    prevRecord != null -> true
+                    else -> false
                 }
                 view = prepareView(
                     context = context,
@@ -181,8 +206,8 @@ class WidgetSingleProvider : AppWidgetProvider() {
                     recordTypeName = recordType?.name,
                     recordTypeColor = recordType?.color
                         ?.let { colorMapper.mapToColorInt(it, isDarkTheme) },
-                    isRunning = runningRecord != null && recordType != null,
-                    isChecked = isChecked,
+                    isColored = isColored,
+                    checkState = checkState,
                     isComplete = recordTypeId in completeTypesStateInteractor.widgetTypeIds,
                     backgroundTransparency = backgroundTransparency,
                 )
@@ -192,13 +217,23 @@ class WidgetSingleProvider : AppWidgetProvider() {
             val bitmap = view.getBitmapFromView()
 
             val views = RemoteViews(context.packageName, R.layout.widget_layout)
-            if (runningRecord != null) {
-                val timeStarted = runningRecord.timeStarted
-                val base = SystemClock.elapsedRealtime() - (System.currentTimeMillis() - timeStarted)
-                views.setChronometer(R.id.timerWidget, base, null, true)
-                views.setViewVisibility(R.id.timerWidget, View.VISIBLE)
-            } else {
-                views.setViewVisibility(R.id.timerWidget, View.GONE)
+            when {
+                runningRecord != null -> {
+                    val timeStarted = runningRecord.timeStarted
+                    val base = System.currentTimeMillis() - timeStarted
+                    setChronometer(base, R.id.timerWidget, views, true)
+                    views.setViewVisibility(R.id.timerWidget2, View.GONE)
+                }
+                prevRecord != null -> {
+                    val base1 = System.currentTimeMillis() - prevRecord.timeEnded
+                    val base2 = prevRecord.timeEnded - prevRecord.timeStarted
+                    setChronometer(base1, R.id.timerWidget, views, true)
+                    setChronometer(base2, R.id.timerWidget2, views, false)
+                }
+                else -> {
+                    views.setViewVisibility(R.id.timerWidget, View.GONE)
+                    views.setViewVisibility(R.id.timerWidget2, View.GONE)
+                }
             }
             views.setImageViewBitmap(R.id.ivWidgetBackground, bitmap)
             views.setOnClickPendingIntent(R.id.btnWidget, getPendingSelfIntent(context, appWidgetId))
@@ -214,8 +249,8 @@ class WidgetSingleProvider : AppWidgetProvider() {
         recordTypeIcon: RecordTypeIcon?,
         recordTypeName: String?,
         recordTypeColor: Int?,
-        isRunning: Boolean,
-        isChecked: Boolean?,
+        isColored: Boolean,
+        checkState: GoalCheckmarkView.CheckState,
         isComplete: Boolean,
         backgroundTransparency: Long,
     ): View {
@@ -225,13 +260,13 @@ class WidgetSingleProvider : AppWidgetProvider() {
         val name = recordTypeName
             ?: R.string.widget_load_error.let(resourceRepo::getString)
 
-        val textColor = if (isRunning) {
+        val textColor = if (isColored) {
             resourceRepo.getColor(R.color.colorIcon)
         } else {
             resourceRepo.getColor(R.color.widget_universal_empty_color)
         }
 
-        val color = if (isRunning && recordTypeColor != null) {
+        val color = if (isColored && recordTypeColor != null) {
             recordTypeColor
         } else {
             ColorUtils.changeAlpha(
@@ -246,8 +281,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
             itemName = name
             itemIconColor = textColor
             itemColor = color
-            itemWithCheck = isChecked != null
-            itemIsChecked = isChecked.orFalse()
+            itemCheckState = checkState
             itemCompleteIsAnimated = false
             itemIsComplete = isComplete
         }
@@ -258,9 +292,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
     private fun getView(context: Context): RecordTypeView {
         preparedView?.let { return it }
 
-        val view = RecordTypeView(
-            ContextThemeWrapper(context, R.style.AppTheme),
-        ).apply {
+        val view = widgetViewsHolder.getRecordTypeView(context).apply {
             getContainer().radius =
                 resources.getDimensionPixelOffset(R.dimen.widget_universal_corner_radius).toFloat()
             getContainer().cardElevation = 0f
@@ -272,13 +304,24 @@ class WidgetSingleProvider : AppWidgetProvider() {
         return view
     }
 
+    private fun setChronometer(
+        timestamp: Long,
+        chronometerId: Int,
+        views: RemoteViews,
+        started: Boolean,
+    ) {
+        val base = SystemClock.elapsedRealtime() - timestamp
+        views.setChronometer(chronometerId, base, null, started)
+        views.setViewVisibility(chronometerId, View.VISIBLE)
+    }
+
     private fun measureView(context: Context, view: View) {
         var width = context.resources.getDimensionPixelSize(R.dimen.record_type_card_width)
         var height = context.resources.getDimensionPixelSize(R.dimen.record_type_card_height)
 
         fun inflate(): View {
-            return LayoutInflater.from(context)
-                .inflate(R.layout.widget_layout, null)
+            val inflater = LayoutInflater.from(context)
+            return allowVmViolations { inflater.inflate(R.layout.widget_layout, null) }
                 .also { entireView = it }
         }
 
@@ -295,7 +338,7 @@ class WidgetSingleProvider : AppWidgetProvider() {
         context: Context?,
         widgetId: Int,
     ) {
-        GlobalScope.launch(Dispatchers.Main) {
+        allowDiskRead { MainScope() }.launch {
             val recordTypeId = prefsInteractor.getWidget(widgetId)
 
             if (recordTypeId == REPEAT_BUTTON_ITEM_ID) {
@@ -327,18 +370,24 @@ class WidgetSingleProvider : AppWidgetProvider() {
                 // Start running record
                 addRunningRecordMediator.tryStartTimer(
                     typeId = recordTypeId,
-                    onNeedToShowTagSelection = { showTagSelection(context, recordTypeId) },
+                    onNeedToShowTagSelection = {
+                        showTagSelection(context, recordTypeId, it)
+                    },
                 )
             }
         }
     }
 
-    private fun showTagSelection(context: Context?, typeId: Long) {
+    private fun showTagSelection(
+        context: Context?,
+        typeId: Long,
+        result: RecordDataSelectionDialogResult,
+    ) {
         context ?: return
 
         WidgetSingleTagSelectionActivity.getStartIntent(
             context = context,
-            data = RecordTagSelectionParams(typeId),
+            data = RecordTagSelectionParams(typeId, result.toParams()),
         ).let(context::startActivity)
     }
 

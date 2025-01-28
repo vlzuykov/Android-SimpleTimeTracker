@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
 import timber.log.Timber
-import java.util.Collections
 
 class BaseRecyclerAdapter(
     vararg delegatesList: RecyclerAdapterDelegate,
@@ -36,22 +35,6 @@ class BaseRecyclerAdapter(
 
     fun getItemByPosition(position: Int): ViewHolderType? =
         currentList.getOrNull(position)
-
-    fun onMove(fromPosition: Int, toPosition: Int) {
-        val newList = currentList.toList()
-
-        if (fromPosition < toPosition) {
-            for (i in fromPosition until toPosition) {
-                Collections.swap(newList, i, i + 1)
-            }
-        } else {
-            for (i in fromPosition downTo toPosition + 1) {
-                Collections.swap(newList, i, i - 1)
-            }
-        }
-
-        submitList(newList)
-    }
 
     fun replace(newItems: List<ViewHolderType>) {
         submitList(newItems)

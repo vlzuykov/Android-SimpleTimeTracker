@@ -2,9 +2,9 @@ import com.example.util.simpletimetracker.Base
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    alias(libs.plugins.gradleLibrary)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
 }
 
 applyAndroidLibrary()

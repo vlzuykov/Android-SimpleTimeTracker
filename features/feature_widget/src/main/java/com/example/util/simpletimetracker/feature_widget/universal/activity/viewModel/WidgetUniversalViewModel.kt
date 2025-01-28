@@ -4,22 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.util.simpletimetracker.core.extension.allowDiskRead
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.toParams
 import com.example.util.simpletimetracker.core.interactor.ActivityFilterViewDataInteractor
+import com.example.util.simpletimetracker.core.interactor.ActivitySuggestionViewDataInteractor
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.ChangeSelectedActivityFilterMediator
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.record.interactor.AddRunningRecordMediator
+import com.example.util.simpletimetracker.domain.activityFilter.interactor.ChangeSelectedActivityFilterMediator
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.model.RecordDataSelectionDialogResult
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
@@ -51,11 +55,12 @@ class WidgetUniversalViewModel @Inject constructor(
     private val recordTypeGoalInteractor: RecordTypeGoalInteractor,
     private val getCurrentRecordsDurationInteractor: GetCurrentRecordsDurationInteractor,
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
+    private val activitySuggestionViewDataInteractor: ActivitySuggestionViewDataInteractor,
 ) : ViewModel() {
 
     val recordTypes: LiveData<List<ViewHolderType>> by lazy {
         return@lazy MutableLiveData<List<ViewHolderType>>().let { initial ->
-            viewModelScope.launch {
+            allowDiskRead { viewModelScope }.launch {
                 initial.value = listOf(LoaderViewData())
                 initial.value = loadRecordTypesViewData()
             }
@@ -80,7 +85,7 @@ class WidgetUniversalViewModel @Inject constructor(
                 // Start running record
                 wasStarted = addRunningRecordMediator.tryStartTimer(
                     typeId = item.id,
-                    onNeedToShowTagSelection = { showTagSelection(item.id) },
+                    onNeedToShowTagSelection = { showTagSelection(item.id, it) },
                 )
                 if (wasStarted) {
                     onRecordTypeWithDefaultDurationClick(item.id)
@@ -98,7 +103,8 @@ class WidgetUniversalViewModel @Inject constructor(
 
             when (item.type) {
                 is RunningRecordTypeSpecialViewData.Type.Repeat -> {
-                    started = recordRepeatInteractor.repeat()
+                    val result = recordRepeatInteractor.repeat()
+                    started = result is RecordRepeatInteractor.ActionResult.Started
                 }
                 else -> return@launch
             }
@@ -133,8 +139,11 @@ class WidgetUniversalViewModel @Inject constructor(
         }
     }
 
-    private fun showTagSelection(typeId: Long) {
-        router.navigate(RecordTagSelectionParams(typeId))
+    private fun showTagSelection(
+        typeId: Long,
+        result: RecordDataSelectionDialogResult,
+    ) {
+        router.navigate(RecordTagSelectionParams(typeId, result.toParams()))
     }
 
     private fun updateRecordTypesViewData() = viewModelScope.launch {
@@ -145,9 +154,11 @@ class WidgetUniversalViewModel @Inject constructor(
     private suspend fun loadRecordTypesViewData(): List<ViewHolderType> {
         val runningRecords = runningRecordInteractor.getAll()
         val recordTypes = recordTypeInteractor.getAll()
+        val recordTypesMap = recordTypes.associateBy(RecordType::id)
         val recordTypesRunning = runningRecords.map(RunningRecord::id)
         val numberOfCards = prefsInteractor.getNumberOfCards()
         val isDarkTheme = prefsInteractor.getDarkMode()
+        val retroactiveTrackingMode = prefsInteractor.getRetroactiveTrackingMode()
         val goals = filterGoalsByDayOfWeekInteractor
             .execute(recordTypeGoalInteractor.getAllTypeGoals())
             .groupBy { it.idData.value }
@@ -166,7 +177,21 @@ class WidgetUniversalViewModel @Inject constructor(
             filter = filter,
             isDarkTheme = isDarkTheme,
             appendAddButton = false,
-        )
+        ).let {
+            if (it.isNotEmpty()) it + DividerViewData(1) else it
+        }
+
+        val suggestionsViewData = activitySuggestionViewDataInteractor.getSuggestionsViewData(
+            recordTypesMap = recordTypesMap,
+            goals = goals,
+            runningRecords = runningRecords,
+            allDailyCurrents = allDailyCurrents,
+            completeTypeIds = completeTypeIds,
+            numberOfCards = numberOfCards,
+            isDarkTheme = isDarkTheme,
+        ).let {
+            if (it.isNotEmpty()) it + DividerViewData(2) else it
+        }
 
         val recordTypesViewData = recordTypes
             .filterNot { it.hidden }
@@ -179,7 +204,7 @@ class WidgetUniversalViewModel @Inject constructor(
                     isFiltered = it.id in recordTypesRunning,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = recordTypeViewDataMapper.mapGoalCheckmark(
+                    checkState = recordTypeViewDataMapper.mapGoalCheckmark(
                         type = it,
                         goals = goals,
                         allDailyCurrents = allDailyCurrents,
@@ -193,17 +218,14 @@ class WidgetUniversalViewModel @Inject constructor(
         )
 
         return mutableListOf<ViewHolderType>().apply {
-            if (filtersViewData.isNotEmpty()) {
-                filtersViewData.let(::addAll)
-                DividerViewData(1).let(::add)
-            }
-
+            filtersViewData.let(::addAll)
+            suggestionsViewData.let(::addAll)
             if (recordTypesViewData.isEmpty()) {
                 recordTypeViewDataMapper.mapToEmpty().let(::addAll)
             } else {
                 recordTypesViewData.let(::addAll)
                 repeatViewData.let(::add)
-                widgetUniversalViewDataMapper.mapToHint().let(::add)
+                widgetUniversalViewDataMapper.mapToHint(retroactiveTrackingMode).let(::add)
             }
         }
     }

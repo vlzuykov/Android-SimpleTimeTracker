@@ -19,6 +19,7 @@
     <string name="select_nothing">不选择任何内容</string>
     <string name="no_data">没有数据</string>
     <string name="general_error">出了点问题。请重试或重新启动应用程序。</string>
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">昨天</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">未追踪</string>
     <string name="uncategorized_time_name">未分类</string>
     <string name="multitask_time_name">多任务</string>
-    <string name="running_record_goal_time">目标 %s</string>
     <string name="record_types_empty">未添加任何活动</string>
     <string name="record_tag_selection_hint">选择记录标签</string>
     <string name="time_now">现在</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">动作</string>
     <string name="change_record_last_comments_hint">最后评论</string>
     <string name="change_record_favourite_comments_hint">最喜欢的</string>
+    <string name="change_record_favourite_comments_hint_long">收藏评论</string>
+    <string name="change_record_similar_comments_hint">类似评论</string>
     <string name="change_record_categories_empty">未添加记录标签</string>
     <string name="change_record_save">保存</string>
     <string name="change_record_untagged">无标签</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">输入新名称</string>
     <string name="change_record_type_new_icon_text_hint">输入新文本</string>
     <string name="change_record_type_color_hint">颜色</string>
+    <string name="change_record_favourite_colors_hint">最喜欢的颜色</string>
     <string name="change_record_type_icon_image_hint">图标</string>
     <string name="change_record_type_icon_text_hint">文本</string>
     <string name="change_record_type_icon_emoji_hint">表情符号</string>
     <string name="change_record_type_icon_search_hint">搜索（英文）</string>
     <string name="change_record_type_no_icon">无图标</string>
+    <string name="change_record_favourite_icons_hint">最喜欢的图标</string>
     <string name="change_record_type_save">保存</string>
     <string name="change_record_message_choose_name">请填写名称</string>
     <string name="change_record_message_name_exist">名称已被使用</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">未添加任何类别</string>
     <string name="change_record_type_goal_time_disabled">不启用</string>
     <string name="change_record_type_goal_time_hint">目标</string>
+    <string name="change_record_type_limit_time_hint">限制</string>
     <string name="change_record_type_additional_hint">额外的</string>
     <string name="change_record_type_default_duration">默认持续时间</string>
     <string name="change_record_type_default_duration_hint">单击后会立即跟踪具有默认持续时间的活动。</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">选择行动</string>
     <string name="change_complex_rule_choose_condition">选择条件</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">根据当前或上一个活动显示下一个活动的建议</string>
+    <string name="activity_suggestions_calculate">根据统计数据计算</string>
+    <string name="activity_suggestions_select_activity_hint">将显示针对所选活动的建议</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">活动过滤器</string>
     <string name="change_activity_filter_removed">过滤器已移除</string>
     <string name="change_activity_filter_save">保存</string>
     <string name="change_activity_filter_type">过滤器类型</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">调整颜色</string>
     <string name="color_selection_final_color_hint">最终颜色</string>
 
-    <string name="csv_export_settings_range">跨度</string>
-    <string name="csv_export_settings_all">全部</string>
+    <string name="csv_export_settings_filename_hint">自定义文件名</string>
+    <string name="csv_export_settings_filename_default">默认</string>
     <string name="csv_export_settings_hint">選擇時間範圍或導出所有記錄</string>
 
     <string name="schedule_exact_alarms">应为此应用启用系统设置，以便安排准确的警报</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">不再显示</string>
 
     <string name="record_tag_selection_exclude_activities_title">排除活动</string>
-    <string name="record_tag_selection_exclude_activities_hint">对于选定的活动，不会显示标签选择对话框。</string>
+    <string name="record_tag_selection_exclude_activities_hint">对于选定的活动将不会显示对话框。</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">选择活动</string>
     <string name="select_activities_to_autostart_pomodoro_hint">当选定的活动开始时，番茄工作法将自动启动。</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">对记录排序</string>
     <string name="records_all_sort_time_started">开始时间</string>
     <string name="records_all_sort_duration">持续时间</string>
-    <string name="records_all_search_comment">搜索评论</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">要开始跟踪，请单击 %s 按钮添加活动，或单击 %s 按钮使用默认预设</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">名称</string>
     <string name="settings_sort_by_color">颜色</string>
     <string name="settings_sort_manually">手动</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">活动顺序</string>
     <string name="settings_first_day_of_week">一周的第一天</string>
     <string name="settings_show_repeat_button">在主屏幕上显示重复按钮</string>
     <string name="settings_repeat_button_type">模式</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">显示计时通知</string>
     <string name="settings_show_notifications_hint">追踪活动多长时间后显示通知。</string>
     <string name="settings_show_notifications_controls">启用从通知切换活动</string>
+    <string name="settings_show_notifications_controls_hint">也可用于从锁定屏幕切换活动。</string>
+    <string name="settings_show_notification_even_with_no_timers">即使没有计时器运行也显示</string>
     <string name="settings_keep_statistics_range">保持统计范围</string>
     <string name="settings_keep_statistics_range_hint">如果启用，详细统计信息将在统计信息中选择的相同时间范围内打开。</string>
+    <string name="settings_retroactive_tracking_mode">启用追溯时间跟踪</string>
+    <string name="settings_retroactive_tracking_mode_hint">通过选择自上次以来已完成的活动而不是从现在起将完成的活动来跟踪时间。</string>
     <string name="settings_start_of_day">改变一天的开始</string>
     <string name="settings_start_of_day_hint">一天的开始将根据标志向前或向后移动指定的时间量。</string>
     <string name="settings_start_of_day_hint_value">今天开始于 %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">存档</string>
     <string name="settings_data_edit">数据编辑</string>
     <string name="settings_complex_rules">复杂的规则</string>
+    <string name="settings_activity_suggestions">活动建议</string>
     <string name="settings_edit_categories">编辑类别和标签</string>
     <string name="settings_edit_categories_hint">将类别分配给活动，将标签分配给记录。</string>
     <string name="settings_show_record_tag_selection">显示记录标签选择</string>
     <string name="settings_show_record_tag_selection_hint">启动计时器时，如果活动有任何记录标签，则会显示一个选择对话框。</string>
     <string name="settings_show_record_tag_close_hint">选择一个标签后关闭</string>
+    <string name="settings_show_comment_input">显示评论输入</string>
+    <string name="settings_show_comment_input_hint">启动计时器时 - 将显示注释输入对话框。</string>
     <string name="settings_rate">给我们评分</string>
     <string name="settings_rate_description">评价应用程序并留下评论。</string>
     <string name="settings_support_development">支持发展</string>
@@ -348,29 +365,20 @@
 <b>Action</b> - \"%s\" 或 \"%s\"。<br/>
 <b>Extra</b> - 带有应启动或停止的活动名称的\"%s\"。<br/>
 <b>Package</b> - \"%s\"。<br/>
-<br/>
-启动活动的可选参数：<br/>
-<br/>
-<b>Extra</b> - 带有记录评论的\"%s\"。<br/>
-<b>Extra</b> - 带有记录标签名称的\"%s\"。<br/>
-<br/>
-额外的：<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" 以及附加功能：\"%s\"、\"%s\"、\"%s\" 和 \"%s\"、\"%s\" 格式为 \"yyyy-MM-dd HH:mm:ss\" 或 UTC 时间戳。<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">发送事件</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-如果启用了 <b>\"%s\"</b> 设置，应用程序将在活动开始或停止时将事件发送到第三方应用程序以使用以下参数进行自动跟踪：<br/>
-<br/>
-<b>Action</b> - \"%s\" 或 \"%s\"。<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+如果启用<b>\"%s\"</b>设置，应用程序将在活动开始或停止时发送事件给第三方应用程序进行自动跟踪。<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">可用的操作：</string>
+    <string name="settings_automated_tracking_available_events">可用活动：</string>
+    <string name="settings_automated_tracking_extras_description">描述：</string>
+    <string name="settings_automated_tracking_extra_name">带有应启动或停止的活动名称的。</string>
+    <string name="settings_automated_tracking_extra_tag">带有记录标签名称的。或以逗号分隔的标签名称列表。</string>
+    <string name="settings_automated_tracking_extra_time">格式为 \"yyyy-MM-dd HH:mm:ss\" 或 UTC 时间戳。</string>
+    <string name="settings_automated_tracking_find_record_mode">选择要更改的记录。</string>
+    <string name="settings_automated_tracking_comment_mode">选择如何更改所选记录的注释。</string>
+    <string name="settings_automated_tracking_find_with_activity">如果存在多个当前记录或最后记录，则还可以按活动名称选择记录。</string>
 
     <string name="settings_save_backup">保存备份</string>
     <string name="settings_save_description">保存前，请确保已安装最新版本的应用程序，以避免冲突。</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">最后保存：</string>
     <string name="settings_restore_backup">还原备份</string>
     <string name="settings_restore_description">当前数据将丢失。</string>
+    <string name="settings_backup_options">高级选项</string>
     <string name="settings_dialog_message">恢复备份？</string>
     <string name="settings_export_csv">导出为电子表格</string>
     <string name="settings_export_csv_description">将活动记录导出为csv文件以在电子表格应用程序中查看。</string>
@@ -412,9 +421,22 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="message_import_complete">导入完成</string>
     <string name="message_import_complete_hint">添加的记录：%s</string>
     <string name="message_import_error">导入错误</string>
+    <string name="message_action_share">分享</string>
     <string name="message_automatic_backup_error">自动备份出错。</string>
     <string name="message_automatic_export_error">自动导出时出错。</string>
     <string name="message_automatic_error_hint">尝试选择不同的位置</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">进口</string>
+    <string name="backup_options_save_without_records">保存备份无记录</string>
+    <string name="backup_options_save_without_records_hint">可用于共享设置。</string>
+    <string name="backup_options_full_restore">完全恢复</string>
+    <string name="backup_options_full_restore_hint">恢复数据和设置。需要重新启动应用程序。</string>
+    <string name="backup_options_partial_restore">从备份导入数据</string>
+    <string name="backup_options_partial_restore_hint">允许选择要导入的数据。当前数据不会丢失。</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">选择将从文件中导入哪些数据。</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">每小时</string>
@@ -427,6 +449,7 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">按活动划分</string>
 
     <string name="statistics_detail_range_averages_title">期间平均: %s</string>
     <string name="statistics_detail_range_averages">对于整个范围</string>
@@ -449,12 +472,16 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="statistics_detail_streaks_latest">最新的</string>
     <string name="statistics_detail_streaks_any">任何持续时间</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">活动分布</string>
-    <string name="statistics_detail_tag_split_hint">标签分布</string>
+    <string name="statistics_detail_data_split_hint">分配</string>
+    <string name="statistics_detail_data_split_pie_chart">圆圈</string>
+    <string name="statistics_detail_data_split_bar_chart">专栏</string>
     <string name="statistics_detail_day_split_hint">每日分布</string>
     <string name="statistics_detail_duration_split_hint">记录持续时间分布</string>
     <string name="statistics_detail_next_activities_hint">下一个热门活动</string>
     <string name="statistics_detail_multitasking_activities_hint">顶级多任务处理</string>
+    <string name="statistics_detail_goals_hint">目标超出或不足</string>
+    <string name="statistics_detail_goals_excess">过量的</string>
+    <string name="statistics_detail_goals_deficit">赤字</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Records</item>-->
@@ -478,7 +505,9 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="notification_activity_title">活动提醒</string>
     <string name="notification_activity_text">你还在做：%s？</string>
     <string name="notification_goal_time_description">达到的目标</string>
+    <string name="notification_limit_time_description">达到限制</string>
     <string name="notification_time_started">从 %s 开始</string>
+    <string name="notification_time_ended">于 %s 完成</string>
     <string name="notification_record_type_stop">停止</string>
     <string name="notification_pomodoro_subtitle">开始：%s (%s)</string>
 
@@ -502,14 +531,18 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="data_edit_hint">这些更改无法撤消。确保在执行任何操作之前创建备份文件。</string>
     <string name="data_edit_select_records">选择记录</string>
     <string name="data_edit_change_activity">更改活动</string>
+    <string name="data_edit_change_tag">更改标签</string>
     <string name="data_edit_change_activity_hint">当前活动的标签将被删除。</string>
     <string name="data_edit_change_comment">更改评论</string>
     <string name="data_edit_change_add_tag">添加标签</string>
     <string name="data_edit_change_remove_tag">删除标签</string>
     <string name="data_edit_button_change">改变</string>
+    <string name="data_edit_button_delete_records">删除所有记录</string>
+    <string name="data_edit_button_delete_data">删除所有数据</string>
     <string name="data_edit_success_message">数据已更改</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">重复</string>
     <string name="records_filter_select_tags">选择标签</string>
     <string name="records_filter_filter_tags">排除标签</string>
     <string name="records_filter_manually_filtered">已过滤</string>
@@ -517,12 +550,20 @@ csv 文件必须包含以逗号分隔的这些列：<br/>
     <string name="records_filter_any_comment">任何意见</string>
     <string name="records_filter_select">选择</string>
     <string name="records_filter_invert_selection">反转选择</string>
+    <string name="records_filter_duration_min">最低限度</string>
+    <string name="records_filter_duration_max">最大限度</string>
+    <string name="records_filter_duplications_same_activity">相同的活动</string>
+    <string name="records_filter_duplications_same_times">同一时间</string>
+    <string name="records_filter_duplications_manually_fitler">过滤重复项</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">焦点</string>
     <string name="pomodoro_state_break">中断</string>
     <string name="pomodoro_state_long_break">长时间休息</string>
     <string name="pomodoro_settings_periods_until_long_break">长时间休息前的时间</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">选择您一直在做的事情</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">微笑与情感</string>

@@ -3,14 +3,15 @@ package com.example.util.simpletimetracker.feature_archive.interactor
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.feature_archive.R
 import com.example.util.simpletimetracker.feature_archive.viewData.ArchiveViewData
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class ArchiveViewDataInteractor @Inject constructor(
@@ -39,7 +40,7 @@ class ArchiveViewDataInteractor @Inject constructor(
                 numberOfCards = numberOfCards,
                 isDarkTheme = isDarkTheme,
                 isFiltered = false,
-                isChecked = null,
+                checkState = GoalCheckmarkView.CheckState.HIDDEN,
                 isComplete = false,
             )
         }

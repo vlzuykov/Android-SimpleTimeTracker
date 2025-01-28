@@ -31,6 +31,8 @@ fun getMainStartIntent(context: Context): PendingIntent {
 
 fun String.padDuration(): String = this.padStart(2, '0')
 
+fun Int?.orZero(): Int = this ?: 0
+
 fun Long?.orZero(): Long = this ?: 0
 
 @Suppress("UNCHECKED_CAST")

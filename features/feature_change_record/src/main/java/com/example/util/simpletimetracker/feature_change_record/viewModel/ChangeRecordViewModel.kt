@@ -9,18 +9,18 @@ import com.example.util.simpletimetracker.core.interactor.RecordTypesViewDataInt
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.AddRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.FavouriteCommentInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalTimeInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInteractor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.record.interactor.AddRecordMediator
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteCommentInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.feature_change_record.interactor.ChangeRecordViewDataInteractor
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordViewData
 import com.example.util.simpletimetracker.navigation.Router
@@ -36,17 +36,16 @@ import javax.inject.Inject
 class ChangeRecordViewModel @Inject constructor(
     recordTypesViewDataInteractor: RecordTypesViewDataInteractor,
     recordTagViewDataInteractor: RecordTagViewDataInteractor,
-    prefsInteractor: PrefsInteractor,
     snackBarMessageNavigationInteractor: SnackBarMessageNavigationInteractor,
     changeRecordActionsDelegate: ChangeRecordActionsDelegateImpl,
     recordTypeToTagInteractor: RecordTypeToTagInteractor,
     favouriteCommentInteractor: FavouriteCommentInteractor,
+    private val prefsInteractor: PrefsInteractor,
     private val router: Router,
     private val recordInteractor: RecordInteractor,
     private val addRecordMediator: AddRecordMediator,
     private val changeRecordViewDataInteractor: ChangeRecordViewDataInteractor,
-    private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val timeMapper: TimeMapper,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
 ) : ChangeRecordBaseViewModel(
@@ -121,7 +120,9 @@ class ChangeRecordViewModel @Inject constructor(
         )
     }
 
-    override suspend fun onSaveClickDelegate() {
+    override suspend fun onSaveClickDelegate(
+        doAfter: suspend () -> Unit,
+    ) {
         // Zero id creates new record
         val id = recordId.orZero()
         Record(
@@ -134,9 +135,10 @@ class ChangeRecordViewModel @Inject constructor(
         ).let {
             addRecordMediator.add(it)
             if (newTypeId != originalTypeId) {
-                notificationTypeInteractor.checkAndShow(originalTypeId)
-                notificationGoalTimeInteractor.checkAndReschedule(listOf(originalTypeId))
+                externalViewsInteractor.onRecordChangeType(originalTypeId)
             }
+            doAfter()
+            warmupCache(extra.daysFromToday)
             router.back()
         }
     }
@@ -157,6 +159,17 @@ class ChangeRecordViewModel @Inject constructor(
         super.onTimeStartedChanged()
     }
 
+    private suspend fun warmupCache(actualShift: Int) {
+        if (prefsInteractor.getShowRecordsCalendar()) return
+        val range = timeMapper.getRangeStartAndEnd(
+            rangeLength = RangeLength.Day,
+            shift = actualShift,
+            firstDayOfWeek = DayOfWeek.MONDAY, // Doesn't matter for days.
+            startOfDayShift = prefsInteractor.getStartOfDayShift(),
+        )
+        recordInteractor.getFromRange(range)
+    }
+
     private fun getInitialTimeEnded(daysFromToday: Int): Long {
         return timeMapper.toTimestampShifted(daysFromToday, RangeLength.Day)
     }
@@ -165,10 +178,7 @@ class ChangeRecordViewModel @Inject constructor(
         val default = newTimeEnded - ONE_HOUR
 
         return if (daysFromToday == 0) {
-            recordInteractor.getPrev(newTimeEnded)
-                .firstOrNull()
-                ?.timeEnded
-                ?: default
+            recordInteractor.getPrev(newTimeEnded)?.timeEnded ?: default
         } else {
             default
         }

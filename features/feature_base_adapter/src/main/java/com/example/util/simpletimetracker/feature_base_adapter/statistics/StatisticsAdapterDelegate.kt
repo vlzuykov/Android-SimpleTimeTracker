@@ -7,14 +7,13 @@ import com.example.util.simpletimetracker.feature_base_adapter.databinding.ItemS
 import com.example.util.simpletimetracker.feature_base_adapter.statistics.StatisticsViewData as ViewData
 
 fun createStatisticsAdapterDelegate(
-    onItemClick: ((ViewData, Map<Any, String>) -> Unit),
+    onItemClick: ((ViewData, Map<Any, String>) -> Unit)?,
 ) = createRecyclerBindingAdapterDelegate<ViewData, Binding>(
     Binding::inflate,
 ) { binding, item, _ ->
 
     with(binding.viewStatisticsItem) {
         item as ViewData
-        val transitionName = item.transitionName
 
         itemColor = item.color
         itemName = item.name
@@ -28,7 +27,10 @@ fun createStatisticsAdapterDelegate(
             itemIconVisible = false
         }
 
-        setOnClick { onItemClick(item, mapOf(this to transitionName)) }
-        ViewCompat.setTransitionName(this, transitionName)
+        if (onItemClick != null) {
+            val transitionName = item.transitionName
+            setOnClick { onItemClick(item, mapOf(this to transitionName)) }
+            ViewCompat.setTransitionName(this, transitionName)
+        }
     }
 }

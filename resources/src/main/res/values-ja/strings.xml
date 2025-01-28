@@ -19,6 +19,7 @@
     <string name="select_nothing">何も選択しない</string>
     <string name="no_data">データなし</string>
     <string name="general_error">何か問題が発生しました。もう一度試すか、アプリを再起動してください。</string>
+    <string name="copied_to_clipboard">クリップボードにコピーされました</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">昨日</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">未計測</string>
     <string name="uncategorized_time_name">未分類</string>
     <string name="multitask_time_name">マルチタスク</string>
-    <string name="running_record_goal_time">目標 %s</string>
     <string name="record_types_empty">アクティビティがありません</string>
     <string name="record_tag_selection_hint">計測タグを選択</string>
     <string name="time_now">今</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">行動</string>
     <string name="change_record_last_comments_hint">最新コメント</string>
     <string name="change_record_favourite_comments_hint">お気に入り</string>
+    <string name="change_record_favourite_comments_hint_long">お気に入りのコメント</string>
+    <string name="change_record_similar_comments_hint">同様のコメント</string>
     <string name="change_record_categories_empty">計測タグがありません</string>
     <string name="change_record_save">保存</string>
     <string name="change_record_untagged">タグを外す</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">名称</string>
     <string name="change_record_type_new_icon_text_hint">新しいテキストを入力してください</string>
     <string name="change_record_type_color_hint">色</string>
+    <string name="change_record_favourite_colors_hint">好きな色</string>
     <string name="change_record_type_icon_image_hint">アイコン</string>
     <string name="change_record_type_icon_text_hint">文章</string>
     <string name="change_record_type_icon_emoji_hint">絵文字</string>
     <string name="change_record_type_icon_search_hint">検索（英語）</string>
     <string name="change_record_type_no_icon">アイコンなし</string>
+    <string name="change_record_favourite_icons_hint">お気に入りのアイコン</string>
     <string name="change_record_type_save">保存</string>
     <string name="change_record_message_choose_name">名称を入力してください</string>
     <string name="change_record_message_name_exist">名前はすでに使用されています</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">カテゴリが追加されていません</string>
     <string name="change_record_type_goal_time_disabled">未設定</string>
     <string name="change_record_type_goal_time_hint">目標</string>
+    <string name="change_record_type_limit_time_hint">限界</string>
     <string name="change_record_type_additional_hint">追加</string>
     <string name="change_record_type_default_duration">デフォルトの期間</string>
     <string name="change_record_type_default_duration_hint">デフォルトの期間のアクティビティは、クリックするとすぐに追跡されます。</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">アクションを選択してください</string>
     <string name="change_complex_rule_choose_condition">条件を選択してください</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">現在のアクティビティまたは最後のアクティビティに基づいて次のアクティビティの提案を表示します</string>
+    <string name="activity_suggestions_calculate">統計から計算する</string>
+    <string name="activity_suggestions_select_activity_hint">選択したアクティビティの提案が表示されます</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">アクティビティフィルター</string>
     <string name="change_activity_filter_removed">フィルタを取り外しました</string>
     <string name="change_activity_filter_save">保存</string>
     <string name="change_activity_filter_type">フィルタの種類</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">色の調整</string>
     <string name="color_selection_final_color_hint">作成する色</string>
 
-    <string name="csv_export_settings_range">範囲</string>
-    <string name="csv_export_settings_all">すべて</string>
+    <string name="csv_export_settings_filename_hint">カスタムファイル名</string>
+    <string name="csv_export_settings_filename_default">デフォルト</string>
     <string name="csv_export_settings_hint">時間範囲を選択、または全計測記録をエクスポート</string>
 
     <string name="schedule_exact_alarms">正確なアラームをスケジュールするには、このアプリのシステム設定を有効にする必要があります</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">二度と表示しないでください</string>
 
     <string name="record_tag_selection_exclude_activities_title">アクティビティを除外する</string>
-    <string name="record_tag_selection_exclude_activities_hint">選択したアクティビティに対してタグ選択ダイアログは表示されません。</string>
+    <string name="record_tag_selection_exclude_activities_hint">選択したアクティビティに対してダイアログは表示されません。</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">アクティビティを選択する</string>
     <string name="select_activities_to_autostart_pomodoro_hint">選択したアクティビティが開始されると、ポモドーロが自動的に開始されます。</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">計測記録をソート</string>
     <string name="records_all_sort_time_started">時間の開始</string>
     <string name="records_all_sort_duration">期間</string>
-    <string name="records_all_search_comment">検索コメント</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">追跡を開始するには、%s ボタンをクリックしてアクティビティを追加するか、%s ボタンをクリックしてデフォルトのプリセットを使用します。</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">名前</string>
     <string name="settings_sort_by_color">色</string>
     <string name="settings_sort_manually">手動</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">アクティビティの順序</string>
     <string name="settings_first_day_of_week">週の始まり</string>
     <string name="settings_show_repeat_button">メイン画面にリピートボタンを表示</string>
     <string name="settings_repeat_button_type">モード</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">タイマーの通知を表示する</string>
     <string name="settings_show_notifications_hint">タイマー作動時に通知を表示する。</string>
     <string name="settings_show_notifications_controls">通知からのアクティビティ切り替えを有効にする</string>
+    <string name="settings_show_notifications_controls_hint">ロック画面からアクティビティを切り替えるためにも使用できます。</string>
+    <string name="settings_show_notification_even_with_no_timers">タイマーが実行されていないときでも表示する</string>
     <string name="settings_keep_statistics_range">統計値を保持する範囲</string>
     <string name="settings_keep_statistics_range_hint">有効にすると、統計で選択された同じ時間範囲で詳細な統計が開かれます。</string>
+    <string name="settings_retroactive_tracking_mode">遡及的な時間追跡を有効にする</string>
+    <string name="settings_retroactive_tracking_mode_hint">これから行うアクティビティではなく、前回以降に行ったアクティビティを選択して時間を追跡します。</string>
     <string name="settings_start_of_day">1日の開始時間</string>
     <string name="settings_start_of_day_hint">一日の始まりは、標識に応じて、指定した時間だけ前後に移動します。</string>
     <string name="settings_start_of_day_hint_value">今日は %s から始まります</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">アーカイブ</string>
     <string name="settings_data_edit">データ編集</string>
     <string name="settings_complex_rules">複雑なルール</string>
+    <string name="settings_activity_suggestions">アクティビティの提案</string>
     <string name="settings_edit_categories">カテゴリとタグを編集する</string>
     <string name="settings_edit_categories_hint">アクティビティにカテゴリを割り当て、レコードにタグを割り当てます。</string>
     <string name="settings_show_record_tag_selection">記録タグの選択を表示</string>
     <string name="settings_show_record_tag_selection_hint">計測を開始する際、アクティビティに記録タグがある場合、選択ダイアログが表示されます。</string>
     <string name="settings_show_record_tag_close_hint">タグを1つ選択したら閉じる</string>
+    <string name="settings_show_comment_input">コメント入力を表示</string>
+    <string name="settings_show_comment_input_hint">タイマーを開始すると、コメント入力ダイアログが表示されます。</string>
     <string name="settings_rate">評価する</string>
     <string name="settings_rate_description">アプリを評価して、レビューを残す。</string>
     <string name="settings_support_development">サポート開発</string>
@@ -348,29 +365,20 @@
 <b>Action</b> - \"%s\" または \"%s\".<br/>
 <b>Extra</b> - \"%s\" を開始または停止する必要があるアクティビティ名で指定します。<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-アクティビティを開始するためのオプション パラメータ:<br/>
-<br/>
-<b>Extra</b> - \"%s\" レコード コメント付き。<br/>
-<b>Extra</b> - \"%s\" にレコード タグの名前を付けます。<br/>
-<br/>
-追加：<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" と追加機能: \"%s\"、\"%s\"、\"%s\" および \"%s\"、\"%s\" 形式は 「yyyy-MM-dd HH:mm:ss」 または UTC タイムスタンプです。<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">イベントを送信する</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-<b>\"%s\"</b> 設定が有効になっている場合、アプリはアクティビティの開始または停止に関するイベントをサードパーティ アプリケーションに送信し、これらのパラメータを使用して自動追跡を行います:<br/>
-<br/>
-<b>Action</b> - \"%s\" または \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+<b>\"%s\"</b> 設定が有効になっている場合、アプリはアクティビティの開始または停止に関するイベントをサードパーティのアプリケーションに送信し、自動追跡を行います。<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">利用可能なアクション:</string>
+    <string name="settings_automated_tracking_available_events">利用可能なイベント:</string>
+    <string name="settings_automated_tracking_extras_description">説明：</string>
+    <string name="settings_automated_tracking_extra_name">を開始または停止する必要があるアクティビティ名で指定します。</string>
+    <string name="settings_automated_tracking_extra_tag">にレコード タグの名前を付けます。または、カンマで区切られたタグ名のリスト。</string>
+    <string name="settings_automated_tracking_extra_time">形式は 「yyyy-MM-dd HH:mm:ss」 または UTC タイムスタンプです。</string>
+    <string name="settings_automated_tracking_find_record_mode">変更するレコードを選択します。</string>
+    <string name="settings_automated_tracking_comment_mode">選択したレコードのコメントを変更する方法を選択します。</string>
+    <string name="settings_automated_tracking_find_with_activity">現在のレコードまたは最後のレコードが複数ある場合は、アクティビティ名でレコードをさらに選択します。</string>
 
     <string name="settings_save_backup">バックアップの保存</string>
     <string name="settings_save_description">保存する前に競合を避けるため、最新バージョンのアプリがインストールされていることを確認してください。</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">最後の保存:</string>
     <string name="settings_restore_backup">バックアップの復元</string>
     <string name="settings_restore_description">現在のデータは失われます。</string>
+    <string name="settings_backup_options">詳細オプション</string>
     <string name="settings_dialog_message">バックアップを復元しますか？</string>
     <string name="settings_export_csv">スプレッドシートのエクスポート</string>
     <string name="settings_export_csv_description">アクティビティ記録をcsvファイルとしてエクスポートし、お好みのスプレッドシートアプリケーションで表示することができます。</string>
@@ -412,9 +421,22 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="message_import_complete">インポートが完了しました</string>
     <string name="message_import_complete_hint">追加されたレコード: %s</string>
     <string name="message_import_error">インポートエラー</string>
+    <string name="message_action_share">共有</string>
     <string name="message_automatic_backup_error">自動バックアップでエラーが発生しました。</string>
     <string name="message_automatic_export_error">自動エクスポートでエラーが発生しました。</string>
     <string name="message_automatic_error_hint">別の場所を選択してみてください</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">輸入</string>
+    <string name="backup_options_save_without_records">記録なしでバックアップを保存する</string>
+    <string name="backup_options_save_without_records_hint">セットアップを共有するために使用できます。</string>
+    <string name="backup_options_full_restore">完全復元</string>
+    <string name="backup_options_full_restore_hint">データと設定を復元します。アプリの再起動が必要です。</string>
+    <string name="backup_options_partial_restore">バックアップからデータをインポートする</string>
+    <string name="backup_options_partial_restore_hint">どのデータをインポートするかを選択できます。現在のデータは失われません。</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">ファイルからインポートするデータを選択します。</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">毎時</string>
@@ -427,6 +449,7 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">アクティビティごとに分割</string>
 
     <string name="statistics_detail_range_averages_title">期間平均：%s</string>
     <string name="statistics_detail_range_averages">全範囲</string>
@@ -449,12 +472,16 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="statistics_detail_streaks_latest">最新</string>
     <string name="statistics_detail_streaks_any">任意の期間</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">活動分布</string>
-    <string name="statistics_detail_tag_split_hint">タグ配布</string>
+    <string name="statistics_detail_data_split_hint">分布</string>
+    <string name="statistics_detail_data_split_pie_chart">丸</string>
+    <string name="statistics_detail_data_split_bar_chart">コラム</string>
     <string name="statistics_detail_day_split_hint">日次記録</string>
     <string name="statistics_detail_duration_split_hint">記録期間分布</string>
     <string name="statistics_detail_next_activities_hint">次に注目のアクティビティ</string>
     <string name="statistics_detail_multitasking_activities_hint">トップのマルチタスク</string>
+    <string name="statistics_detail_goals_hint">目標超過または不足</string>
+    <string name="statistics_detail_goals_excess">過剰</string>
+    <string name="statistics_detail_goals_deficit">赤字</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">記録</item>-->
@@ -478,7 +505,9 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="notification_activity_title">アクティビティリマインダー</string>
     <string name="notification_activity_text">まだやってますか: %s?</string>
     <string name="notification_goal_time_description">目標到達</string>
+    <string name="notification_limit_time_description">限界に達しました</string>
     <string name="notification_time_started">%s に開始</string>
+    <string name="notification_time_ended">%sに終了しました</string>
     <string name="notification_record_type_stop">ストップ</string>
     <string name="notification_pomodoro_subtitle">開始中: %s (%s)</string>
 
@@ -502,14 +531,18 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="data_edit_hint">これらの変更は元に戻せません。何かを行う前に、必ずバックアップ ファイルを作成してください。</string>
     <string name="data_edit_select_records">レコードを選択</string>
     <string name="data_edit_change_activity">アクティビティを変更</string>
+    <string name="data_edit_change_tag">タグを変更する</string>
     <string name="data_edit_change_activity_hint">現在のアクティビティのタグは削除されます。</string>
     <string name="data_edit_change_comment">コメントを変更</string>
     <string name="data_edit_change_add_tag">タグを追加する</string>
     <string name="data_edit_change_remove_tag">タグを削除</string>
     <string name="data_edit_button_change">変化</string>
+    <string name="data_edit_button_delete_records">すべてのレコードを削除する</string>
+    <string name="data_edit_button_delete_data">すべてのデータを削除する</string>
     <string name="data_edit_success_message">データが変更されました</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">重複</string>
     <string name="records_filter_select_tags">タグを選択</string>
     <string name="records_filter_filter_tags">タグを除外する</string>
     <string name="records_filter_manually_filtered">フィルタリングされた</string>
@@ -517,12 +550,20 @@ CSV ファイルには、カンマで区切られた次の列が含まれてい�
     <string name="records_filter_any_comment">任意のコメント</string>
     <string name="records_filter_select">選択する</string>
     <string name="records_filter_invert_selection">選択範囲を反転する</string>
+    <string name="records_filter_duration_min">最小</string>
+    <string name="records_filter_duration_max">最大</string>
+    <string name="records_filter_duplications_same_activity">同じアクティビティ</string>
+    <string name="records_filter_duplications_same_times">同じ時間</string>
+    <string name="records_filter_duplications_manually_fitler">重複をフィルタリングする</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">フォーカス</string>
     <string name="pomodoro_state_break">休憩</string>
     <string name="pomodoro_state_long_break">長期休暇</string>
     <string name="pomodoro_settings_periods_until_long_break">長期休暇までの期間</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">何をしていたのかを選択してください</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">顔文字とエモート</string>

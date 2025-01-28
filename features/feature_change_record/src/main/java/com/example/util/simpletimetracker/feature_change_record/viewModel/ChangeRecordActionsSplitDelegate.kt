@@ -1,13 +1,16 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.AddRecordMediator
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.AddRecordMediator
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
+import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordSliderViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeAdjustmentViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.interactor.ChangeRecordViewDataInteractor
@@ -15,10 +18,14 @@ import com.example.util.simpletimetracker.feature_change_record.mapper.ChangeRec
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordDateTimeFieldsState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordPreview
+import kotlinx.coroutines.coroutineScope
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.ensureActive
 
 class ChangeRecordActionsSplitDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val changeRecordViewDataInteractor: ChangeRecordViewDataInteractor,
     private val addRecordMediator: AddRecordMediator,
     private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
@@ -36,8 +43,11 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
     }
 
     override suspend fun updateViewData() {
-        viewData = loadViewData()
-        parent?.update()
+        coroutineScope {
+            viewData = loadViewData()
+            ensureActive()
+            parent?.update()
+        }
     }
 
     suspend fun onSplitClickDelegate() {
@@ -64,7 +74,7 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
         val newTimeStarted = params.newTimeStarted
         val newTimeEnded = params.splitPreviewTimeEnded
         val showTimeEnded = params.showTimeEndedOnSplitPreview
-        val isButtonEnabled = params.isButtonEnabled
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(resourceRepo.getString(R.string.change_record_split_hint))
@@ -75,6 +85,12 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
         result += ChangeRecordTimeAdjustmentViewData(
             block = ChangeRecordActionsBlock.SplitTimeAdjustment,
             items = loadTimeSplitAdjustmentItems(),
+        )
+        result += ChangeRecordSliderViewData(
+            block = ChangeRecordActionsBlock.SplitSlider,
+            min = 0f,
+            max = TimeUnit.MILLISECONDS.toSeconds(newTimeEnded - newTimeStarted).toFloat(),
+            value = TimeUnit.MILLISECONDS.toSeconds(newTimeSplit - newTimeStarted).toFloat(),
         )
         val previewData = loadSplitPreviewViewData(
             newTypeId = newTypeId,
@@ -93,12 +109,10 @@ class ChangeRecordActionsSplitDelegate @Inject constructor(
             isCheckVisible = false,
             isCompareVisible = false,
         )
-        result += ChangeRecordButtonViewData(
-            block = ChangeRecordActionsBlock.SplitButton,
-            text = resourceRepo.getString(R.string.change_record_split),
-            icon = R.drawable.action_divide,
-            iconSizeDp = 18,
-            isEnabled = isButtonEnabled,
+        result += changeRecordViewDataMapper.mapRecordActionButton(
+            action = RecordQuickAction.SPLIT,
+            isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }

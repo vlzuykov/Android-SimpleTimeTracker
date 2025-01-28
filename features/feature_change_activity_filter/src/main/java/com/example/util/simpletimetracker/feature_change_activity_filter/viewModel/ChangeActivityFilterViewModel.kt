@@ -8,14 +8,15 @@ import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSel
 import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.ActivityFilterViewDataMapper
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.ActivityFilterInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.activityFilter.interactor.ActivityFilterInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
@@ -86,13 +87,13 @@ class ChangeActivityFilterViewModel @Inject constructor(
     val keyboardVisibility: LiveData<Boolean> by lazy { MutableLiveData(filterId == 0L) }
 
     private val filterId: Long get() = (extra as? ChangeActivityFilterParams.Change)?.id.orZero()
-    private val newSelectedIds: List<Long>
+    private val newSelectedIds: Set<Long>
         get() = when (newType) {
             is ActivityFilter.Type.Activity -> newTypeIds
             is ActivityFilter.Type.Category -> newCategoryIds
         }
-    private var newTypeIds: MutableList<Long> = mutableListOf()
-    private var newCategoryIds: MutableList<Long> = mutableListOf()
+    private var newTypeIds: MutableSet<Long> = mutableSetOf()
+    private var newCategoryIds: MutableSet<Long> = mutableSetOf()
     private var newType: ActivityFilter.Type = ActivityFilter.Type.Activity
     private var newName: String = ""
     private var wasSelected: Boolean = true
@@ -171,7 +172,7 @@ class ChangeActivityFilterViewModel @Inject constructor(
                 id = filterId,
                 selectedIds = newSelectedIds,
                 type = newType,
-                name = newName,
+                name = newName.trimIfNotBlank(),
                 color = colorSelectionViewModelDelegateImpl.newColor,
                 selected = wasSelected,
             ).let {
@@ -230,10 +231,10 @@ class ChangeActivityFilterViewModel @Inject constructor(
             activityFilterInteractor.get(filterId)?.let {
                 when (it.type) {
                     is ActivityFilter.Type.Activity -> {
-                        newTypeIds = it.selectedIds.toMutableList()
+                        newTypeIds = it.selectedIds.toMutableSet()
                     }
                     is ActivityFilter.Type.Category -> {
-                        newCategoryIds = it.selectedIds.toMutableList()
+                        newCategoryIds = it.selectedIds.toMutableSet()
                     }
                 }
                 newType = it.type

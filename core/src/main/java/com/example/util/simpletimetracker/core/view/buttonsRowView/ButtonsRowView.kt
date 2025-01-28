@@ -2,12 +2,12 @@ package com.example.util.simpletimetracker.core.view.buttonsRowView
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.core.databinding.ButtonsRowViewLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -31,8 +31,7 @@ class ButtonsRowView @JvmOverloads constructor(
         )
     }
 
-    private val binding: ButtonsRowViewLayoutBinding = ButtonsRowViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = ButtonsRowViewLayoutBinding.inflate(layoutInflater, this)
 
     private val selectedColor by lazy {
         var defaultColor = ContextCompat.getColor(context, R.color.colorPrimary)

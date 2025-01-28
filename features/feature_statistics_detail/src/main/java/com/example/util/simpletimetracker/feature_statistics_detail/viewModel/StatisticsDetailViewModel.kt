@@ -10,11 +10,11 @@ import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toParams
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
 import com.example.util.simpletimetracker.core.viewData.RangesViewData
-import com.example.util.simpletimetracker.domain.model.Coordinates
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.base.Coordinates
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailPreviewsViewData
@@ -29,6 +29,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.de
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailDailyCalendarViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailDurationSplitViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailFilterViewModelDelegate
+import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailGoalsViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailNextActivitiesViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailPreviewViewModelDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.viewModel.delegate.StatisticsDetailRangeViewModelDelegate
@@ -60,6 +61,7 @@ class StatisticsDetailViewModel @Inject constructor(
     private val rangeDelegate: StatisticsDetailRangeViewModelDelegate,
     private val filterDelegate: StatisticsDetailFilterViewModelDelegate,
     private val dailyCalendarDelegate: StatisticsDetailDailyCalendarViewModelDelegate,
+    private val goalsDelegate: StatisticsDetailGoalsViewModelDelegate,
 ) : BaseViewModel() {
 
     val scrollToTop: LiveData<Unit> = SingleLiveEvent()
@@ -82,6 +84,7 @@ class StatisticsDetailViewModel @Inject constructor(
         rangeDelegate,
         filterDelegate,
         dailyCalendarDelegate,
+        goalsDelegate,
     )
 
     init {
@@ -126,12 +129,32 @@ class StatisticsDetailViewModel @Inject constructor(
                 chartDelegate.onChartGroupingClick(viewData)
             StatisticsDetailBlock.ChartLength ->
                 chartDelegate.onChartLengthClick(viewData)
+            StatisticsDetailBlock.GoalChartGrouping ->
+                goalsDelegate.onChartGroupingClick(viewData)
+            StatisticsDetailBlock.GoalChartLength ->
+                goalsDelegate.onChartLengthClick(viewData)
             StatisticsDetailBlock.SeriesGoal ->
                 streaksDelegate.onStreaksGoalClick(viewData)
             StatisticsDetailBlock.SeriesType ->
                 streaksDelegate.onStreaksTypeClick(viewData)
             StatisticsDetailBlock.SplitChartGrouping ->
                 splitChartDelegate.onSplitChartGroupingClick(viewData)
+            StatisticsDetailBlock.DataDistributionMode ->
+                statsDelegate.onDataDistributionModeClick(viewData)
+            StatisticsDetailBlock.DataDistributionGraph ->
+                statsDelegate.onDataDistributionGraphClick(viewData)
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+    fun onButtonClick(block: StatisticsDetailBlock) {
+        when (block) {
+            StatisticsDetailBlock.ChartSplitByActivity ->
+                chartDelegate.onSplitByActivityClick()
+            StatisticsDetailBlock.ChartSplitByActivitySort ->
+                chartDelegate.onSplitByActivitySortClick()
             else -> {
                 // Do nothing
             }
@@ -197,13 +220,11 @@ class StatisticsDetailViewModel @Inject constructor(
     }
 
     private fun onRecordsClick() {
-        viewModelScope.launch {
-            val finalFilters = filterDelegate.provideFilter()
-                .plus(rangeDelegate.getDateFilter())
-                .map(RecordsFilter::toParams).toList()
+        val finalFilters = filterDelegate.provideFilter()
+            .plus(rangeDelegate.getDateFilter())
+            .map(RecordsFilter::toParams).toList()
 
-            router.navigate(RecordsAllParams(finalFilters))
-        }
+        router.navigate(RecordsAllParams(finalFilters))
     }
 
     private fun checkTopScroll(
@@ -225,6 +246,7 @@ class StatisticsDetailViewModel @Inject constructor(
         splitChartDelegate.updateSplitChartViewData()
         durationSplitDelegate.updateViewData()
         nextActivitiesDelegate.updateViewData()
+        goalsDelegate.updateViewData()
     }
 
     private fun updateContent() {
@@ -250,6 +272,7 @@ class StatisticsDetailViewModel @Inject constructor(
             durationSplitChartViewData = durationSplitDelegate.viewData.value,
             comparisonDurationSplitChartViewData = durationSplitDelegate.comparisonViewData.value,
             nextActivitiesViewData = nextActivitiesDelegate.viewData.value,
+            goalsViewData = goalsDelegate.viewData.value,
         )
     }
 
@@ -284,7 +307,7 @@ class StatisticsDetailViewModel @Inject constructor(
                 this@StatisticsDetailViewModel.updateViewData()
             }
 
-            override suspend fun getDateFilter(): List<RecordsFilter> {
+            override fun getDateFilter(): List<RecordsFilter> {
                 return rangeDelegate.getDateFilter()
             }
 

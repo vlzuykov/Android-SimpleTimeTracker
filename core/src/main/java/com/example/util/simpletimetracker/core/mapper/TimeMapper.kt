@@ -4,18 +4,19 @@ import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.extension.setToStartOfDay
 import com.example.util.simpletimetracker.core.extension.setWeekToFirstDay
 import com.example.util.simpletimetracker.core.extension.shift
-import com.example.util.simpletimetracker.domain.provider.CurrentTimestampProvider
+import com.example.util.simpletimetracker.domain.base.CurrentTimestampProvider
 import com.example.util.simpletimetracker.core.provider.LocaleProvider
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.padDuration
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RangeLength
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.abs
 
 class TimeMapper @Inject constructor(
     localeProvider: LocaleProvider,
@@ -31,9 +32,6 @@ class TimeMapper @Inject constructor(
     private val timeFormatMilitaryWithSeconds by lazy { SimpleDateFormat("HH:mm:ss", locale) }
 
     private val dateFormat by lazy { SimpleDateFormat("MMM d", locale) }
-    private val dateFormatWithSeconds by lazy { SimpleDateFormat("MMM d", locale) }
-    private val dateFormatMilitary by lazy { SimpleDateFormat("MMM d", locale) }
-    private val dateFormatMilitaryWithSeconds by lazy { SimpleDateFormat("MMM d", locale) }
 
     private val dateTimeFormat by lazy { SimpleDateFormat("MMM d h:mm a", locale) }
     private val dateTimeFormatWithSeconds by lazy { SimpleDateFormat("MMM d h:mm:ss a", locale) }
@@ -73,14 +71,8 @@ class TimeMapper @Inject constructor(
     // Mar 11
     fun formatDate(
         time: Long,
-        useMilitaryTime: Boolean,
-        showSeconds: Boolean,
     ): String = synchronized(lock) {
-        return if (useMilitaryTime) {
-            if (showSeconds) dateFormatMilitaryWithSeconds else dateFormatMilitary
-        } else {
-            if (showSeconds) dateFormatWithSeconds else dateFormat
-        }.format(time)
+        return dateFormat.format(time)
     }
 
     // Mar 11 12:21
@@ -478,13 +470,13 @@ class TimeMapper @Inject constructor(
         val secondString = resourceRepo.getString(R.string.time_second)
 
         val hr: Long = TimeUnit.MILLISECONDS.toHours(
-            interval,
+            abs(interval),
         )
         val min: Long = TimeUnit.MILLISECONDS.toMinutes(
-            interval - TimeUnit.HOURS.toMillis(hr),
+            abs(interval) - TimeUnit.HOURS.toMillis(hr),
         )
         val sec: Long = TimeUnit.MILLISECONDS.toSeconds(
-            interval - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min),
+            abs(interval) - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min),
         )
 
         if (useProportionalMinutes) {
@@ -510,6 +502,8 @@ class TimeMapper @Inject constructor(
         if (willShowMinutes) res += "$min$minuteString"
         if (willShowMinutes && willShowSeconds) res += " "
         if (willShowSeconds) res += "$sec$secondString"
+
+        res = if (interval < 0) "-$res" else res
 
         return res
     }
@@ -683,8 +677,6 @@ class TimeMapper @Inject constructor(
         return DateTime(
             date = formatDate(
                 time = time,
-                useMilitaryTime = useMilitaryTime,
-                showSeconds = showSeconds,
             ),
             time = formatTime(
                 time = time,

@@ -2,11 +2,11 @@ package com.example.util.simpletimetracker.feature_views.spinner
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import com.example.util.simpletimetracker.feature_views.R
 import com.example.util.simpletimetracker.feature_views.databinding.SpinnerLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.onItemSelected
 import com.example.util.simpletimetracker.feature_views.extension.setOnClick
 
@@ -23,8 +23,7 @@ class CustomSpinner @JvmOverloads constructor(
     var onItemSelected: (CustomSpinnerItem) -> Unit = {}
     var onPositionSelected: (Int) -> Unit = {}
 
-    private val binding: SpinnerLayoutBinding = SpinnerLayoutBinding
-        .inflate(LayoutInflater.from(context), this, true)
+    private val binding = SpinnerLayoutBinding.inflate(layoutInflater, this, true)
 
     private var adapter: ArrayAdapter<String>? = null
     private var items: List<CustomSpinnerItem> = emptyList()

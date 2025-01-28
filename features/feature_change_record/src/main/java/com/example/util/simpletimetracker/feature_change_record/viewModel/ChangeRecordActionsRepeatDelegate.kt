@@ -1,17 +1,21 @@
 package com.example.util.simpletimetracker.feature_change_record.viewModel
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.RecordActionRepeatMediator
+import com.example.util.simpletimetracker.domain.extension.plusAssign
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordAction.interactor.RecordActionRepeatMediator
+import com.example.util.simpletimetracker.domain.recordAction.model.RecordQuickAction
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
-import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordActionsBlock
+import com.example.util.simpletimetracker.feature_change_record.mapper.ChangeRecordViewDataMapper
 import javax.inject.Inject
 
 class ChangeRecordActionsRepeatDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
+    private val prefsInteractor: PrefsInteractor,
     private val recordActionRepeatMediator: RecordActionRepeatMediator,
+    private val changeRecordViewDataMapper: ChangeRecordViewDataMapper,
 ) : ChangeRecordActionsSubDelegate<ChangeRecordActionsRepeatDelegate.Parent> {
 
     private var parent: Parent? = null
@@ -32,30 +36,32 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
 
     suspend fun onRepeatClickDelegate() {
         val params = parent?.getViewDataParams() ?: return
-        recordActionRepeatMediator.execute(
-            typeId = params.newTypeId,
-            comment = params.newComment,
-            tagIds = params.newCategoryIds,
-        )
         // Exit.
-        parent?.onSaveClickDelegate()
+        parent?.onSaveClickDelegate(
+            doAfter = {
+                recordActionRepeatMediator.execute(
+                    typeId = params.newTypeId,
+                    comment = params.newComment,
+                    tagIds = params.newCategoryIds,
+                )
+            },
+        )
     }
 
-    private fun loadRepeatViewData(): List<ViewHolderType> {
+    private suspend fun loadRepeatViewData(): List<ViewHolderType> {
         val params = parent?.getViewDataParams()
             ?: return emptyList()
-        if (!params.isAdditionalActionsAvailable) return emptyList()
+        if (!params.isAvailable) return emptyList()
+        val isDarkTheme = prefsInteractor.getDarkMode()
 
         val result = mutableListOf<ViewHolderType>()
         result += HintViewData(
             text = resourceRepo.getString(R.string.change_record_repeat_hint),
         )
-        result += ChangeRecordButtonViewData(
-            block = ChangeRecordActionsBlock.RepeatButton,
-            text = resourceRepo.getString(R.string.change_record_repeat),
-            icon = R.drawable.repeat,
-            iconSizeDp = 24,
+        result += changeRecordViewDataMapper.mapRecordActionButton(
+            action = RecordQuickAction.REPEAT,
             isEnabled = params.isButtonEnabled,
+            isDarkTheme = isDarkTheme,
         )
         return result
     }
@@ -64,13 +70,13 @@ class ChangeRecordActionsRepeatDelegate @Inject constructor(
 
         fun getViewDataParams(): ViewDataParams?
         fun update()
-        suspend fun onSaveClickDelegate()
+        suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit)
 
         data class ViewDataParams(
             val newTypeId: Long,
             val newComment: String,
             val newCategoryIds: List<Long>,
-            val isAdditionalActionsAvailable: Boolean,
+            val isAvailable: Boolean,
             val isButtonEnabled: Boolean,
         )
     }

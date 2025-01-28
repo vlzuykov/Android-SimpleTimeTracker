@@ -14,17 +14,19 @@ import com.example.util.simpletimetracker.core.extension.toViewData
 import com.example.util.simpletimetracker.core.utils.InsetConfiguration
 import com.example.util.simpletimetracker.core.utils.fragmentArgumentDelegate
 import com.example.util.simpletimetracker.core.viewData.RangesViewData
-import com.example.util.simpletimetracker.domain.model.Range
+import com.example.util.simpletimetracker.domain.record.model.Range
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
-import com.example.util.simpletimetracker.feature_base_adapter.statisticsTag.createStatisticsTagAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.statistics.createStatisticsAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailBarChartAdapterDelegate
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailButtonsRowAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailCardAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailCardDoubleAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailDayCalendarAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailNextActivitiesAdapterDelegate
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailPieChartAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailPreviewsAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailSeriesCalendarAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailSeriesChartAdapterDelegate
@@ -59,9 +61,13 @@ class StatisticsDetailFragment :
         BaseRecyclerAdapter(
             createStatisticsDetailPreviewsAdapterDelegate(),
             createStatisticsDetailBarChartAdapterDelegate(),
+            createStatisticsDetailPieChartAdapterDelegate(),
             createStatisticsDetailDayCalendarAdapterDelegate(),
             createStatisticsDetailButtonsRowAdapterDelegate(
                 onClick = viewModel::onButtonsRowClick,
+            ),
+            createStatisticsDetailButtonAdapterDelegate(
+                onClick = viewModel::onButtonClick,
             ),
             createStatisticsDetailCardAdapterDelegate(
                 onClick = throttle(viewModel::onCardClick),
@@ -77,7 +83,9 @@ class StatisticsDetailFragment :
             createStatisticsDetailHintAdapterDelegate(),
             createStatisticsDetailNextActivitiesAdapterDelegate(),
             createHintAdapterDelegate(),
-            createStatisticsTagAdapterDelegate(),
+            createStatisticsAdapterDelegate(
+                onItemClick = null,
+            ),
         )
     }
     private val params: StatisticsDetailParams by fragmentArgumentDelegate(

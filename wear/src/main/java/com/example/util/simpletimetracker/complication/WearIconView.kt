@@ -23,7 +23,7 @@ class WearIconView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: WearIconViewLayoutBinding = WearIconViewLayoutBinding
+    private val binding = WearIconViewLayoutBinding
         .inflate(LayoutInflater.from(context), this)
 
     var itemIcon: WearActivityIcon = WearActivityIcon.Image(0)

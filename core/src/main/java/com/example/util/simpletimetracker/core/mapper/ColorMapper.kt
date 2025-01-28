@@ -4,8 +4,8 @@ import android.graphics.Color
 import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.mapper.AppColorMapper
-import com.example.util.simpletimetracker.domain.model.AppColor
+import com.example.util.simpletimetracker.domain.color.mapper.AppColorMapper
+import com.example.util.simpletimetracker.domain.color.model.AppColor
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import javax.inject.Inject
 
@@ -20,6 +20,7 @@ class ColorMapper @Inject constructor(
         }
     }
 
+    // TODO use resourceRepo getThemedAttr, also others
     fun toUntrackedColor(isDarkTheme: Boolean): Int {
         return if (isDarkTheme) {
             R.color.colorUntrackedDark

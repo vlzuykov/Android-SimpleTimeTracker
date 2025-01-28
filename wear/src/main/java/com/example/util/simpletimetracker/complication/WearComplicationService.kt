@@ -73,24 +73,42 @@ class WearComplicationService : SuspendingComplicationDataSourceService() {
     }
 
     private suspend fun buildShortTextData(): ComplicationData {
+        val settings = wearDataRepo.loadSettings(forceReload = false)
+            .getOrNull()
         val activities = wearDataRepo.loadActivities(forceReload = false)
             .getOrNull().orEmpty()
-        val currentActivities = wearDataRepo.loadCurrentActivities(forceReload = false)
-            .getOrNull().orEmpty()
+        val currentState = wearDataRepo.loadCurrentActivities(forceReload = false)
+            .getOrNull()
+        val currentActivities = currentState?.currentActivities.orEmpty()
+        val retroactiveModeEnabled = settings?.retroactiveTrackingMode == true
 
-        // Take most current activity.
-        val currentActivity = currentActivities.maxByOrNull { it.startedAt }
-        val activity = activities.firstOrNull { it.id == currentActivity?.id }
-        val name = if (currentActivities.size > 1) {
-            "+${currentActivities.size - 1}"
+        val activityName: String?
+        val activityIcon: WearActivityIcon?
+        val startedAt: Long?
+
+        if (retroactiveModeEnabled) {
+            val lastRecord = currentState?.lastRecords?.maxByOrNull { it.startedAt }
+            val lastRecordActivity = activities.firstOrNull { it.id == lastRecord?.activityId }
+            activityName = lastRecordActivity?.name
+            activityIcon = lastRecordActivity?.icon?.let(iconMapper::mapIcon)
+            startedAt = lastRecord?.finishedAt
         } else {
-            activity?.name
+            // Take most current activity.
+            val currentActivity = currentActivities.maxByOrNull { it.startedAt }
+            val activity = activities.firstOrNull { it.id == currentActivity?.id }
+            activityName = if (currentActivities.size > 1) {
+                "+${currentActivities.size - 1}"
+            } else {
+                activity?.name
+            }
+            activityIcon = activity?.icon?.let(iconMapper::mapIcon)
+            startedAt = currentActivity?.startedAt
         }
 
         return getShortTextData(
-            startedAt = currentActivity?.startedAt,
-            activityName = name,
-            activityIcon = activity?.icon?.let(iconMapper::mapIcon),
+            startedAt = startedAt,
+            activityName = activityName,
+            activityIcon = activityIcon,
             onClick = getMainStartIntent(this),
         )
     }

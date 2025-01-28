@@ -1,6 +1,9 @@
 package com.example.util.simpletimetracker.feature_change_record.adapter
 
+import android.content.res.ColorStateList
 import android.text.TextWatcher
+import androidx.annotation.ColorInt
+import androidx.core.view.ViewCompat
 import androidx.core.widget.doAfterTextChanged
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
@@ -10,7 +13,7 @@ import com.example.util.simpletimetracker.feature_change_record.databinding.Chan
 
 fun createChangeRecordCommentFieldAdapterDelegate(
     afterTextChange: (String) -> Unit,
-    onSearchClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
 ) = createRecyclerBindingAdapterDelegate<ViewData, Binding>(
     Binding::inflate,
 ) { binding, item, _ ->
@@ -20,8 +23,13 @@ fun createChangeRecordCommentFieldAdapterDelegate(
 
         if (item.text != etChangeRecordCommentField.text.toString()) {
             etChangeRecordCommentField.setText(item.text)
+            etChangeRecordCommentField.setSelection(item.text.length)
         }
-        btnChangeRecordSearchCommentField.setOnClick { onSearchClick() }
+        ViewCompat.setBackgroundTintList(
+            binding.ivChangeRecordFavouriteComment,
+            ColorStateList.valueOf(item.iconColor),
+        )
+        btnChangeRecordFavouriteComment.setOnClick { onFavouriteClick() }
 
         etChangeRecordCommentField.removeTextChangedListener(textWatcher)
         textWatcher = etChangeRecordCommentField.doAfterTextChanged { afterTextChange(it.toString()) }
@@ -31,6 +39,7 @@ fun createChangeRecordCommentFieldAdapterDelegate(
 data class ChangeRecordCommentFieldViewData(
     val id: Long,
     val text: String,
+    @ColorInt val iconColor: Int,
 ) : ViewHolderType {
 
     override fun getUniqueId(): Long = id

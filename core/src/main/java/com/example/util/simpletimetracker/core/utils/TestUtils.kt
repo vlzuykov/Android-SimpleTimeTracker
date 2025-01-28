@@ -3,29 +3,37 @@ package com.example.util.simpletimetracker.core.utils
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconImageMapper
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.ActivityFilterInteractor
-import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.ClearDataInteractor
-import com.example.util.simpletimetracker.domain.interactor.ComplexRuleInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToDefaultTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.model.ActivityFilter
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.Category
-import com.example.util.simpletimetracker.domain.model.ComplexRule
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.Record
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.activityFilter.interactor.ActivityFilterInteractor
+import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
+import com.example.util.simpletimetracker.domain.backup.interactor.ClearDataInteractor
+import com.example.util.simpletimetracker.domain.complexRule.interactor.ComplexRuleInteractor
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteColorInteractor
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteCommentInteractor
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteIconInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.category.interactor.RecordTypeCategoryInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToDefaultTagInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.activitySuggestion.interactor.ActivitySuggestionInteractor
+import com.example.util.simpletimetracker.domain.activitySuggestion.model.ActivitySuggestion
+import com.example.util.simpletimetracker.domain.category.model.Category
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.favourite.model.FavouriteColor
+import com.example.util.simpletimetracker.domain.favourite.model.FavouriteComment
+import com.example.util.simpletimetracker.domain.favourite.model.FavouriteIcon
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -41,7 +49,11 @@ class TestUtils @Inject constructor(
     private val recordTypeToDefaultTagInteractor: RecordTypeToDefaultTagInteractor,
     private val activityFilterInteractor: ActivityFilterInteractor,
     private val recordTypeGoalInteractor: RecordTypeGoalInteractor,
+    private val favouriteCommentInteractor: FavouriteCommentInteractor,
+    private val favouriteIconInteractor: FavouriteIconInteractor,
+    private val favouriteColorInteractor: FavouriteColorInteractor,
     private val complexRuleInteractor: ComplexRuleInteractor,
+    private val activitySuggestionInteractor: ActivitySuggestionInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val iconImageMapper: IconImageMapper,
     private val clearDataInteractor: ClearDataInteractor,
@@ -185,6 +197,7 @@ class TestUtils @Inject constructor(
         typeName: String? = null,
         archived: Boolean = false,
         color: Int? = null,
+        icon: Int? = null,
         note: String = "",
         defaultTypes: List<String> = emptyList(),
     ) = runBlocking {
@@ -194,9 +207,14 @@ class TestUtils @Inject constructor(
         val colorId = colors.indexOf(color).takeUnless { it == -1 }
             ?: (0..colors.size).random()
 
+        val icons = iconImageMapper
+            .getAvailableImages(loadSearchHints = false).values
+            .flatten().associateBy { it.iconName }.mapValues { it.value.iconResId }
+        val iconId = icons.filterValues { it == icon }.keys.firstOrNull()
+
         val data = RecordTag(
             name = tagName,
-            icon = "",
+            icon = iconId.orEmpty(),
             color = AppColor(colorId = colorId, colorInt = ""),
             iconColorSource = type?.id.orZero(),
             note = note,
@@ -242,7 +260,7 @@ class TestUtils @Inject constructor(
                     availableCategories.firstOrNull { it.name == name }?.id
                 }
             }
-        }
+        }.toSet()
 
         val data = ActivityFilter(
             selectedIds = selectedIds,
@@ -255,6 +273,24 @@ class TestUtils @Inject constructor(
         activityFilterInteractor.add(data)
     }
 
+    fun addFavouriteComment(
+        text: String,
+    ) = runBlocking {
+        favouriteCommentInteractor.add(FavouriteComment(comment = text))
+    }
+
+    fun addFavouriteIcon(
+        text: String,
+    ) = runBlocking {
+        favouriteIconInteractor.add(FavouriteIcon(icon = text))
+    }
+
+    fun addFavouriteColor(
+        colorInt: Int,
+    ) = runBlocking {
+        favouriteColorInteractor.add(FavouriteColor(colorInt = colorInt.toString()))
+    }
+
     fun addComplexRule(
         action: ComplexRule.Action,
         assignTagNames: List<String> = emptyList(),
@@ -263,13 +299,6 @@ class TestUtils @Inject constructor(
         daysOfWeek: List<DayOfWeek> = emptyList(),
     ) = runBlocking {
         val availableTypes = recordTypeInteractor.getAll()
-
-        fun getTypeIds(names: List<String>): Set<Long> {
-            return names.mapNotNull { name ->
-                availableTypes.firstOrNull { it.name == name }?.id
-            }.toSet()
-        }
-
         val assignTagIds = recordTagInteractor.getAll()
             .filter { it.name in assignTagNames }
             .map { it.id }
@@ -279,11 +308,40 @@ class TestUtils @Inject constructor(
             disabled = false,
             action = action,
             actionAssignTagIds = assignTagIds,
-            conditionStartingTypeIds = getTypeIds(startingTypeNames),
-            conditionCurrentTypeIds = getTypeIds(currentTypeNames),
+            conditionStartingTypeIds = getTypeIds(availableTypes, startingTypeNames),
+            conditionCurrentTypeIds = getTypeIds(availableTypes, currentTypeNames),
             conditionDaysOfWeek = daysOfWeek.toSet(),
         )
 
         complexRuleInteractor.add(data)
+    }
+
+    fun addSuggestion(
+        forTypeName: String,
+        names: List<String> = emptyList(),
+    ) = runBlocking {
+        val availableTypes = recordTypeInteractor.getAll()
+
+        val data = ActivitySuggestion(
+            forTypeId = getTypeIds(
+                availableTypes = availableTypes,
+                names = listOf(forTypeName),
+            ).firstOrNull() ?: return@runBlocking,
+            suggestionIds = getTypeIds(
+                availableTypes = availableTypes,
+                names = names,
+            ),
+        )
+
+        activitySuggestionInteractor.add(listOf(data))
+    }
+
+    private fun getTypeIds(
+        availableTypes: List<RecordType>,
+        names: List<String>,
+    ): Set<Long> {
+        return names.mapNotNull { name ->
+            availableTypes.firstOrNull { it.name == name }?.id
+        }.toSet()
     }
 }

@@ -10,16 +10,16 @@ import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigat
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.FavouriteCommentInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.UpdateRunningRecordFromChangeScreenInteractor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.record.interactor.AddRunningRecordMediator
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteCommentInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.feature_change_record.interactor.ChangeRecordViewDataInteractor
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordChooserState
 import com.example.util.simpletimetracker.feature_change_record.viewModel.ChangeRecordActionsDelegateImpl
@@ -106,7 +106,7 @@ class ChangeRunningRecordViewModel @Inject constructor(
     fun onDeleteClick() {
         (deleteButtonEnabled as MutableLiveData).value = false
         viewModelScope.launch {
-            removeRunningRecordMediator.remove(extra.id, updateWidgets = true)
+            removeRunningRecordMediator.remove(extra.id)
             showMessage(R.string.change_running_record_removed)
             router.back()
         }
@@ -127,15 +127,22 @@ class ChangeRunningRecordViewModel @Inject constructor(
         )
     }
 
-    override suspend fun onSaveClickDelegate() {
+    override suspend fun onSaveClickDelegate(
+        doAfter: suspend () -> Unit,
+    ) {
         // Widgets will update on adding.
-        removeRunningRecordMediator.remove(extra.id, updateWidgets = false)
+        removeRunningRecordMediator.remove(
+            typeId = extra.id,
+            updateWidgets = false,
+            updateNotificationSwitch = false,
+        )
         addRunningRecordMediator.addAfterChange(
             typeId = newTypeId,
             timeStarted = newTimeStarted,
             comment = newComment,
             tagIds = newCategoryIds,
         )
+        doAfter()
         sendPreviewUpdate(fullUpdate = true)
         router.back()
     }

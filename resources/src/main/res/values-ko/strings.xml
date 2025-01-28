@@ -19,6 +19,7 @@
     <string name="select_nothing">아무것도 선택하지 마세요</string>
     <string name="no_data">데이터 없음</string>
     <string name="general_error">문제가 발생했습니다. 다시 시도하거나 앱을 다시 시작하세요.</string>
+    <string name="copied_to_clipboard">클립보드에 복사됨</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">어제</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">미기록</string>
     <string name="uncategorized_time_name">미분류됨</string>
     <string name="multitask_time_name">멀티태스크</string>
-    <string name="running_record_goal_time">목표 %s</string>
     <string name="record_types_empty">추가된 활동이 없습니다</string>
     <string name="record_tag_selection_hint">기록 태그를 선택하세요</string>
     <string name="time_now">지금</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">수정</string>
     <string name="change_record_last_comments_hint">이전 코멘트</string>
     <string name="change_record_favourite_comments_hint">자주쓰는 코멘트</string>
+    <string name="change_record_favourite_comments_hint_long">즐겨찾는 댓글</string>
+    <string name="change_record_similar_comments_hint">비슷한 댓글</string>
     <string name="change_record_categories_empty">기록 태그 없음</string>
     <string name="change_record_save">저장</string>
     <string name="change_record_untagged">태그 없음</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">이름을 입력하세요</string>
     <string name="change_record_type_new_icon_text_hint">텍스트를 입력하세요</string>
     <string name="change_record_type_color_hint">색</string>
+    <string name="change_record_favourite_colors_hint">좋아하는 색상</string>
     <string name="change_record_type_icon_image_hint">아이콘</string>
     <string name="change_record_type_icon_text_hint">텍스트</string>
     <string name="change_record_type_icon_emoji_hint">이모지</string>
     <string name="change_record_type_icon_search_hint">검색(영문)</string>
     <string name="change_record_type_no_icon">아이콘 없음</string>
+    <string name="change_record_favourite_icons_hint">즐겨찾는 아이콘</string>
     <string name="change_record_type_save">저장</string>
     <string name="change_record_message_choose_name">이름을 입력하세요</string>
     <string name="change_record_message_name_exist">이미 사용된 이름</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">카테고리 추가되지 않음</string>
     <string name="change_record_type_goal_time_disabled">비활성화됨</string>
     <string name="change_record_type_goal_time_hint">목표</string>
+    <string name="change_record_type_limit_time_hint">한계</string>
     <string name="change_record_type_additional_hint">추가의</string>
     <string name="change_record_type_default_duration">기본 기간</string>
     <string name="change_record_type_default_duration_hint">기본 기간이 있는 활동은 클릭 시 즉시 추적됩니다.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">작업 선택</string>
     <string name="change_complex_rule_choose_condition">조건을 선택하세요</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">현재 또는 마지막 활동을 기반으로 다음 활동에 대한 제안을 표시합니다.</string>
+    <string name="activity_suggestions_calculate">통계에서 계산</string>
+    <string name="activity_suggestions_select_activity_hint">선택한 활동에 대한 제안이 표시됩니다.</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">활동 필터</string>
     <string name="change_activity_filter_removed">필터 삭제됨</string>
     <string name="change_activity_filter_save">저장</string>
     <string name="change_activity_filter_type">필터 종류</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">색 조정</string>
     <string name="color_selection_final_color_hint">최종 색</string>
 
-    <string name="csv_export_settings_range">범위</string>
-    <string name="csv_export_settings_all">모두</string>
+    <string name="csv_export_settings_filename_hint">사용자 정의 파일 이름</string>
+    <string name="csv_export_settings_filename_default">기본</string>
     <string name="csv_export_settings_hint">시간 범위를 선택하거나, 모든 기록을 내보내기</string>
 
     <string name="schedule_exact_alarms">정확한 알림을 위해서 시스템 설정이 필요합니다</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">다시 표시하지 않음</string>
 
     <string name="record_tag_selection_exclude_activities_title">활동 제외</string>
-    <string name="record_tag_selection_exclude_activities_hint">선택한 활동에 대해서는 태그 선택 대화 상자가 표시되지 않습니다.</string>
+    <string name="record_tag_selection_exclude_activities_hint">선택한 활동에 대해서는 대화상자가 표시되지 않습니다.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">활동 선택</string>
     <string name="select_activities_to_autostart_pomodoro_hint">선택한 활동이 시작되면 Pomodoro가 자동으로 시작됩니다.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">기록 정렬</string>
     <string name="records_all_sort_time_started">시작한 시간</string>
     <string name="records_all_sort_duration">기간</string>
-    <string name="records_all_search_comment">코멘트 검색</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">기록을 시작하기 위해 %s 버튼을 눌러 활동을 추가하거나 %s 버튼을 눌러 기본 템플릿을 사용하세요</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">이름</string>
     <string name="settings_sort_by_color">색상</string>
     <string name="settings_sort_manually">수동</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">활동 순서</string>
     <string name="settings_first_day_of_week">한 주의 시작</string>
     <string name="settings_show_repeat_button">메인 화면에 반복 버튼 표시</string>
     <string name="settings_repeat_button_type">방법</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">타이머 알림 표기</string>
     <string name="settings_show_notifications_hint">타이머 활성화시 알림창에 표시합니다.</string>
     <string name="settings_show_notifications_controls">알림창에서 활동 변경 활성화</string>
+    <string name="settings_show_notifications_controls_hint">잠금 화면에서 활동을 전환하는 데에도 사용할 수 있습니다.</string>
+    <string name="settings_show_notification_even_with_no_timers">타이머가 실행되지 않는 경우에도 표시</string>
     <string name="settings_keep_statistics_range">통계 범위 유지</string>
     <string name="settings_keep_statistics_range_hint">활성화시 상세 통계가 같은 기간 범위를 가지게 됩니다.</string>
+    <string name="settings_retroactive_tracking_mode">소급 시간 추적 활성화</string>
+    <string name="settings_retroactive_tracking_mode_hint">지금부터 수행할 활동보다는 지난번 이후에 수행한 활동을 선택하여 시간을 추적하세요.</string>
     <string name="settings_start_of_day">하루의 시작 시간 옮기기</string>
     <string name="settings_start_of_day_hint">하루의 시작 시간을 정해진 시간만큼 앞당기거나 늦춥니다.</string>
     <string name="settings_start_of_day_hint_value">오늘은 %s에 시작됩니다</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">보관</string>
     <string name="settings_data_edit">데이터 수정</string>
     <string name="settings_complex_rules">복잡한 규칙</string>
+    <string name="settings_activity_suggestions">활동 제안</string>
     <string name="settings_edit_categories">카테고리와 태그 수정</string>
     <string name="settings_edit_categories_hint">활동에 카테고리를 할당하고 기록에 태그를 지정합니다.</string>
     <string name="settings_show_record_tag_selection">기록 태그 선택 표시</string>
     <string name="settings_show_record_tag_selection_hint">타이머를 시작할 때 활동에 기록 태그가 있는 경우 선택 대화 상자가 표시됩니다.</string>
     <string name="settings_show_record_tag_close_hint">하나의 태그를 선택한 후 닫기.</string>
+    <string name="settings_show_comment_input">댓글 입력 표시</string>
+    <string name="settings_show_comment_input_hint">타이머를 시작하면 코멘트 입력 대화상자가 표시됩니다.</string>
     <string name="settings_rate">평가하기</string>
     <string name="settings_rate_description">앱을 평가하고 리뷰를 남겨주세요.</string>
     <string name="settings_support_development">개발 지원</string>
@@ -348,29 +365,20 @@
 <b>Action</b> - \"%s\" 또는 \"%s\".<br/>
 <b>Extra</b> - \"%s\" 시작 또는 정지할 앱의 이름.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-활동 시작에 사용할 수 있는 선택적 파라미터:<br/>
-<br/>
-<b>Extra</b> - \"%s\" 코멘트<br/>
-<b>Extra</b> - \"%s\" 기록 태그<br/>
-<br/>
-추가사항:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" 추가 항목 포함: \"%s\", \"%s\", \"%s\" 및 \"%s\", \"%s\" 형식은 \"yyyy-MM-dd HH:mm:ss\" 또는 UTC 타임스탬프입니다.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">이벤트 보내기</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-만약 <b>\"%s\"</b> 설정이 활성화 되어있다면, 이 앱은 활동이 시작 또는 중지될 때 제 3자 앱에게 다음과 같은 파라미터와 함께 이벤트를 보낼 것 입니다:<br/>
-<br/>
-<b>Action</b> - \"%s\" or \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+<b>\"%s\"</b> 설정이 활성화된 경우, 앱은 활동이 시작되거나 중지될 때 이벤트를 타사 애플리케이션으로 전송하여 자동 추적을 수행합니다.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">사용 가능한 작업:</string>
+    <string name="settings_automated_tracking_available_events">사용 가능한 이벤트:</string>
+    <string name="settings_automated_tracking_extras_description">설명:</string>
+    <string name="settings_automated_tracking_extra_name">시작 또는 정지할 앱의 이름.</string>
+    <string name="settings_automated_tracking_extra_tag">기록 태그. 또는 쉼표로 구분된 태그 이름 목록입니다.</string>
+    <string name="settings_automated_tracking_extra_time">형식은 \"yyyy-MM-dd HH:mm:ss\" 또는 UTC 타임스탬프입니다.</string>
+    <string name="settings_automated_tracking_find_record_mode">어떤 레코드를 변경할지 선택합니다.</string>
+    <string name="settings_automated_tracking_comment_mode">선택한 레코드의 주석을 변경하는 방법을 선택합니다.</string>
+    <string name="settings_automated_tracking_find_with_activity">현재 또는 마지막 레코드가 여러 개 있는 경우, 활동 이름으로 레코드를 추가로 선택합니다.</string>
 
     <string name="settings_save_backup">백업 저장</string>
     <string name="settings_save_description">저장 전, 충돌을 방지하기 위해 앱이 최신 버전인지 확인하세요.</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">마지막 저장:</string>
     <string name="settings_restore_backup">백업 복구</string>
     <string name="settings_restore_description">현재 기록은 모두 사라질 것입니다.</string>
+    <string name="settings_backup_options">고급 옵션</string>
     <string name="settings_dialog_message">백업을 복구하시겠습니까?</string>
     <string name="settings_export_csv">스프레드시트로 내보내기</string>
     <string name="settings_export_csv_description">활동 기록을 .csv 형식으로 내보내 원하는 스프레드시트 프로그램에서 사용 할 수 있습니다.</string>
@@ -412,9 +421,22 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="message_import_complete">가져오기 완료</string>
     <string name="message_import_complete_hint">추가된 기록 수: %s</string>
     <string name="message_import_error">가져오기 오류</string>
+    <string name="message_action_share">공유하다</string>
     <string name="message_automatic_backup_error">자동 백업 오류 발생</string>
     <string name="message_automatic_export_error">자동 내보내기 오류 발생</string>
     <string name="message_automatic_error_hint">다른 위치를 선택해 보세요</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">수입</string>
+    <string name="backup_options_save_without_records">기록 없이 백업 저장</string>
+    <string name="backup_options_save_without_records_hint">설정을 공유하는 데 사용할 수 있습니다.</string>
+    <string name="backup_options_full_restore">전체 복원</string>
+    <string name="backup_options_full_restore_hint">데이터와 설정을 복원합니다. 앱을 다시 시작해야 합니다.</string>
+    <string name="backup_options_partial_restore">백업에서 데이터 가져오기</string>
+    <string name="backup_options_partial_restore_hint">가져올 데이터를 선택할 수 있습니다. 현재 데이터는 손실되지 않습니다.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">파일에서 가져올 데이터를 선택합니다.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">시간별</string>
@@ -427,6 +449,7 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">분</string>
     <string name="statistics_detail_legend_hour_suffix">시간</string>
+    <string name="statistics_detail_chart_split">활동별로 나누기</string>
 
     <string name="statistics_detail_range_averages_title">기간 평균: %s</string>
     <string name="statistics_detail_range_averages">전 기간</string>
@@ -449,12 +472,16 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="statistics_detail_streaks_latest">최근 기간</string>
     <string name="statistics_detail_streaks_any">모든 기간</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">활동 분포</string>
-    <string name="statistics_detail_tag_split_hint">태그 분포</string>
+    <string name="statistics_detail_data_split_hint">분포</string>
+    <string name="statistics_detail_data_split_pie_chart">원</string>
+    <string name="statistics_detail_data_split_bar_chart">열</string>
     <string name="statistics_detail_day_split_hint">일별 분포</string>
     <string name="statistics_detail_duration_split_hint">기록 기간 분포</string>
     <string name="statistics_detail_next_activities_hint">다음 주요 활동</string>
     <string name="statistics_detail_multitasking_activities_hint">최고의 멀티태스킹</string>
+    <string name="statistics_detail_goals_hint">목표 초과 또는 적자</string>
+    <string name="statistics_detail_goals_excess">과잉</string>
+    <string name="statistics_detail_goals_deficit">부족</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">기록</item>-->
@@ -478,7 +505,9 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="notification_activity_title">활동 알림</string>
     <string name="notification_activity_text">아직도 하고있나요?: %s</string>
     <string name="notification_goal_time_description">목표 달성</string>
+    <string name="notification_limit_time_description">한도에 도달함</string>
     <string name="notification_time_started">%s에 시작함</string>
+    <string name="notification_time_ended">%s에 완료됨</string>
     <string name="notification_record_type_stop">정지</string>
     <string name="notification_pomodoro_subtitle">시작: %s (%s)</string>
 
@@ -502,14 +531,18 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="data_edit_hint">이 변경 사항은 되돌릴 수 없습니다. 어떤 작업을 하기 전에 반드시 백업 파일을 생성하세요.</string>
     <string name="data_edit_select_records">기록 선택</string>
     <string name="data_edit_change_activity">활동 변경</string>
+    <string name="data_edit_change_tag">태그 변경</string>
     <string name="data_edit_change_activity_hint">현재 활동의 태그가 제거됩니다.</string>
     <string name="data_edit_change_comment">코멘트 변경</string>
     <string name="data_edit_change_add_tag">태그 추가</string>
     <string name="data_edit_change_remove_tag">태그 제거</string>
     <string name="data_edit_button_change">변경</string>
+    <string name="data_edit_button_delete_records">모든 기록 삭제</string>
+    <string name="data_edit_button_delete_data">모든 데이터 삭제</string>
     <string name="data_edit_success_message">데이터 변경됨</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">중복</string>
     <string name="records_filter_select_tags">태그 선택</string>
     <string name="records_filter_filter_tags">태그 제외</string>
     <string name="records_filter_manually_filtered">필터링됨</string>
@@ -517,12 +550,20 @@ csv 파일은 다음과 같은 열(column)들을 가져야합니다:<br/>
     <string name="records_filter_any_comment">어떤 코멘트</string>
     <string name="records_filter_select">선택</string>
     <string name="records_filter_invert_selection">선택 반전</string>
+    <string name="records_filter_duration_min">최저한의</string>
+    <string name="records_filter_duration_max">최고</string>
+    <string name="records_filter_duplications_same_activity">동일한 활동</string>
+    <string name="records_filter_duplications_same_times">같은 시간</string>
+    <string name="records_filter_duplications_manually_fitler">중복 필터링</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">초점</string>
     <string name="pomodoro_state_break">중단</string>
     <string name="pomodoro_state_long_break">긴 휴식</string>
     <string name="pomodoro_settings_periods_until_long_break">긴 휴식까지의 기간</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">지금까지 하고 있던 일을 선택하세요.</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">스마일리 &amp; 감정</string>

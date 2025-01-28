@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.util.simpletimetracker.core.extension.setToStartOfDay
+import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
@@ -457,6 +458,8 @@ class StatisticsDetailTest : BaseUiTest() {
         )
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag, "2$hourString 0$minuteString", "67%")
         checkTagItem(
             viewsR.color.colorUntracked,
@@ -559,6 +562,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(3)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkNoTagItem(tag)
         checkTagItem(
             viewsR.color.colorUntracked,
@@ -673,6 +678,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(3)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag, "3$hourString 0$minuteString", "100%")
         checkNoTagItem(getString(coreR.string.change_record_untagged))
 
@@ -803,6 +810,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(3)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag1, "1$hourString 0$minuteString", "33%")
         checkTagItem(lastColor, tag2, "2$hourString 0$minuteString", "67%")
         checkNoTagItem("Untagged")
@@ -1037,6 +1046,8 @@ class StatisticsDetailTest : BaseUiTest() {
         checkAllRecords(4)
 
         // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
         checkTagItem(color, tag, "3$hourString 0$minuteString", "100%")
         checkNoTagItem(getString(coreR.string.change_record_untagged))
     }
@@ -1254,6 +1265,121 @@ class StatisticsDetailTest : BaseUiTest() {
         checkRecordsCard(2)
     }
 
+    @Test
+    fun splitByActivity() {
+        val name1 = "name1"
+        val name2 = "name2"
+
+        // Add data
+        testUtils.addActivity(name1)
+        testUtils.addActivity(name2)
+        testUtils.addRecord(name1)
+        testUtils.addRecord(name2)
+
+        // Check on one record
+        NavUtils.openStatisticsScreen()
+        tryAction { clickOnView(allOf(withText(name1), isCompletelyDisplayed())) }
+        clickOnViewWithIdOnPager(statisticsDetailR.id.btnStatisticsDetailToday)
+        clickOnViewWithText(coreR.string.range_overall)
+        checkViewDoesNotExist(
+            allOf(withTag(StatisticsDetailBlock.ChartSplitByActivity), isCompletelyDisplayed()),
+        )
+
+        // Check several records
+        pressBack()
+        clickOnView(withText(R.string.statistics_total_tracked))
+        tryAction { clickOnView(withText(R.string.statistics_detail_chart_split)) }
+        clickOnView(withText(R.string.settings_sort_activity))
+        clickOnView(withText(R.string.records_all_sort_duration))
+
+        // Not visible for days
+        clickOnViewWithIdOnPager(statisticsDetailR.id.btnStatisticsDetailToday)
+        clickOnViewWithText(coreR.string.range_day)
+        checkViewDoesNotExist(
+            allOf(withTag(StatisticsDetailBlock.ChartSplitByActivity), isCompletelyDisplayed()),
+        )
+    }
+
+    @Test
+    fun dataSplit() {
+        val color1 = ColorMapper.getAvailableColors()[0]
+        val color2 = ColorMapper.getAvailableColors()[1]
+        val color3 = ColorMapper.getAvailableColors()[2]
+        val name1 = "name1"
+        val name2 = "name2"
+        val name3 = "name3"
+        val tag1 = "tag1"
+        val tag2 = "tag2"
+        val category1 = "category1"
+        val category2 = "category2"
+
+        // Add data
+        testUtils.addCategory(category1, color = color1)
+        testUtils.addCategory(category2, color = color1)
+        testUtils.addRecordTag(tag1, color = color2)
+        testUtils.addRecordTag(tag2, color = color2)
+        testUtils.addActivity(name1, color = color3, categories = listOf(category1))
+        testUtils.addActivity(name2, color = color3, categories = listOf(category2))
+        testUtils.addActivity(name3, color = color3)
+
+        testUtils.addRecord(name1, tagNames = listOf(tag1))
+        testUtils.addRecord(name1, tagNames = listOf(tag1))
+        testUtils.addRecord(name1, tagNames = listOf(tag1))
+        testUtils.addRecord(name2, tagNames = listOf(tag2))
+        testUtils.addRecord(name2, tagNames = listOf(tag2))
+        testUtils.addRecord(name3)
+
+        // Open stats
+        NavUtils.openStatisticsScreen()
+        tryAction { clickOnView(allOf(withText(R.string.statistics_total_tracked), isCompletelyDisplayed())) }
+        clickOnViewWithIdOnPager(statisticsDetailR.id.btnStatisticsDetailToday)
+        clickOnViewWithText(coreR.string.range_overall)
+
+        // Activity split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.activity_hint))
+        checkTagItem(color3, name1, "3$hourString 0$minuteString", "50%")
+        checkTagItem(color3, name2, "2$hourString 0$minuteString", "33%")
+        checkTagItem(color3, name3, "1$hourString 0$minuteString", "17%")
+
+        // Category split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.category_hint))
+        checkTagItem(color1, category1, "3$hourString 0$minuteString", "50%")
+        checkTagItem(color1, category2, "2$hourString 0$minuteString", "33%")
+        checkTagItem(
+            viewsR.color.colorUntracked,
+            getString(coreR.string.uncategorized_time_name),
+            "1$hourString 0$minuteString",
+            "17%",
+        )
+
+        // Tag split
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionMode)
+        clickOnView(withText(R.string.record_tag_hint_short))
+        checkTagItem(color2, tag1, "3$hourString 0$minuteString", "50%")
+        checkTagItem(color2, tag2, "2$hourString 0$minuteString", "33%")
+        checkTagItem(
+            viewsR.color.colorUntracked,
+            getString(coreR.string.change_record_untagged),
+            "1$hourString 0$minuteString",
+            "17%",
+        )
+
+        // Check graphs
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionGraph)
+        clickOnView(withText(R.string.statistics_detail_data_split_pie_chart))
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionPieChart)
+        checkViewIsDisplayed(
+            allOf(withTag(StatisticsDetailBlock.DataDistributionPieChart), isCompletelyDisplayed()),
+        )
+        clickOnView(withText(R.string.statistics_detail_data_split_bar_chart))
+        scrollStatDetailRecyclerToTag(StatisticsDetailBlock.DataDistributionBarChart)
+        checkViewIsDisplayed(
+            allOf(withTag(StatisticsDetailBlock.DataDistributionBarChart), isCompletelyDisplayed()),
+        )
+    }
+
     private fun checkPreview(color: Int, icon: Int, name: String) {
         checkViewIsDisplayed(
             allOf(
@@ -1378,8 +1504,7 @@ class StatisticsDetailTest : BaseUiTest() {
         checkCard(coreR.string.statistics_detail_first_record, "-")
         checkCard(coreR.string.statistics_detail_last_record, "-")
 
-        checkViewDoesNotExist(withText(R.string.statistics_detail_activity_split_hint))
-        checkViewDoesNotExist(withText(R.string.statistics_detail_tag_split_hint))
+        checkViewDoesNotExist(withText(R.string.statistics_detail_data_split_hint))
     }
 
     private fun checkAllRecords(count: Int) {
@@ -1393,7 +1518,7 @@ class StatisticsDetailTest : BaseUiTest() {
         // If scroll is not possible - view is not displayed.
         scrollStatDetailRecycler(
             allOf(
-                withId(baseR.id.viewStatisticsTagItem),
+                withId(baseR.id.viewStatisticsItem),
                 withCardColor(color),
                 hasDescendant(withText(name)),
                 hasDescendant(withText(duration)),
@@ -1405,7 +1530,7 @@ class StatisticsDetailTest : BaseUiTest() {
     private fun checkNoTagItem(name: String) {
         checkViewDoesNotExist(
             allOf(
-                withId(baseR.id.viewStatisticsTagItem),
+                withId(baseR.id.viewStatisticsItem),
                 hasDescendant(withText(name)),
             ),
         )

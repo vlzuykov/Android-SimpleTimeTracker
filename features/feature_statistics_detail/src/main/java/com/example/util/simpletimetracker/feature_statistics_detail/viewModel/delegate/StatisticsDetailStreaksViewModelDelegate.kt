@@ -6,10 +6,10 @@ import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
-import com.example.util.simpletimetracker.domain.extension.getDaily
-import com.example.util.simpletimetracker.domain.model.Coordinates
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.recordType.extension.getDaily
+import com.example.util.simpletimetracker.domain.base.Coordinates
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.customView.SeriesCalendarView
 import com.example.util.simpletimetracker.feature_statistics_detail.interactor.StatisticsDetailGetGoalFromFilterInteractor
@@ -44,8 +44,8 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
     private var parent: StatisticsDetailViewModelDelegate.Parent? = null
     private var streaksType: StreaksType = StreaksType.LONGEST
     private var streaksGoal: StreaksGoal = StreaksGoal.ANY
-    private var dailyGoal: Result<RecordTypeGoal.Type?>? = null
-    private var compareDailyGoal: Result<RecordTypeGoal.Type?>? = null
+    private var dailyGoal: Result<RecordTypeGoal?>? = null
+    private var compareDailyGoal: Result<RecordTypeGoal?>? = null
 
     override fun attach(parent: StatisticsDetailViewModelDelegate.Parent) {
         this.parent = parent
@@ -99,12 +99,12 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
 
     private suspend fun getDailyGoalType(
         filters: List<RecordsFilter>,
-    ): RecordTypeGoal.Type? {
+    ): RecordTypeGoal? {
         return statisticsDetailGetGoalFromFilterInteractor.execute(filters)
-            .getDaily()?.type
+            .getDaily()
     }
 
-    private suspend fun getDailyGoal(): RecordTypeGoal.Type? {
+    private suspend fun getDailyGoal(): RecordTypeGoal? {
         // Initialize if null.
         val goal = dailyGoal
         val parent = parent ?: return null
@@ -116,7 +116,7 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
         }
     }
 
-    private suspend fun getCompareDailyGoal(): RecordTypeGoal.Type? {
+    private suspend fun getCompareDailyGoal(): RecordTypeGoal? {
         // Initialize if null.
         val goal = compareDailyGoal
         val parent = parent ?: return null
@@ -143,8 +143,8 @@ class StatisticsDetailStreaksViewModelDelegate @Inject constructor(
             rangePosition = parent.rangePosition,
             streaksType = streaksType,
             streaksGoal = streaksGoal,
-            goalType = getDailyGoal(),
-            compareGoalType = getCompareDailyGoal(),
+            goal = getDailyGoal(),
+            compareGoal = getCompareDailyGoal(),
         )
     }
 

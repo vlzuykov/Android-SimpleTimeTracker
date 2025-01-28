@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_settings.interactor
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
@@ -44,10 +44,12 @@ class SettingsNotificationsViewDataInteractor @Inject constructor(
 
         if (!isCollapsed) {
             val showNotifications = prefsInteractor.getShowNotifications()
+            val showNotificationsControls = prefsInteractor.getShowNotificationsControls()
             result += SettingsCheckboxViewData(
                 block = SettingsBlock.NotificationsShow,
                 title = resourceRepo.getString(R.string.settings_show_notifications),
-                subtitle = resourceRepo.getString(R.string.settings_show_notifications_hint),
+                subtitle = resourceRepo.getString(R.string.settings_show_notifications_hint) + "\n" +
+                    resourceRepo.getString(R.string.settings_show_notifications_controls_hint),
                 isChecked = showNotifications,
                 bottomSpaceIsVisible = !showNotifications,
                 dividerIsVisible = !showNotifications,
@@ -58,7 +60,17 @@ class SettingsNotificationsViewDataInteractor @Inject constructor(
                     block = SettingsBlock.NotificationsShowControls,
                     title = resourceRepo.getString(R.string.settings_show_notifications_controls),
                     subtitle = "",
-                    isChecked = prefsInteractor.getShowNotificationsControls(),
+                    isChecked = showNotificationsControls,
+                    bottomSpaceIsVisible = false,
+                    dividerIsVisible = false,
+                )
+                result += SettingsCheckboxViewData(
+                    block = SettingsBlock.NotificationsShowEvenWithNoTimers,
+                    title = resourceRepo.getString(R.string.settings_show_notification_even_with_no_timers),
+                    subtitle = "",
+                    isChecked = prefsInteractor.getShowNotificationEvenWithNoTimers(),
+                    bottomSpaceIsVisible = true,
+                    dividerIsVisible = true,
                 )
             }
 

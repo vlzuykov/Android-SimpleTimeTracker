@@ -20,7 +20,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import com.example.util.simpletimetracker.feature_base_adapter.R as baseR
 import com.example.util.simpletimetracker.feature_change_record.R as changeRecordR
-import com.example.util.simpletimetracker.feature_dialogs.R as dialogsR
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -99,8 +98,8 @@ class DeleteRunningRecordTest : BaseUiTest() {
         longClickOnView(
             allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name), isCompletelyDisplayed()),
         )
-        checkViewIsDisplayed(withId(dialogsR.id.btnRecordQuickActionsDelete))
-        clickOnViewWithId(dialogsR.id.btnRecordQuickActionsDelete)
+        checkViewIsDisplayed(withText(R.string.archive_dialog_delete))
+        clickOnViewWithText(R.string.archive_dialog_delete)
 
         // Record is deleted
         tryAction {

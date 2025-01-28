@@ -3,9 +3,11 @@ package com.example.util.simpletimetracker.core.utils
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.util.simpletimetracker.core.R
-import com.example.util.simpletimetracker.domain.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor.GoalState
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.RunningRecordViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView.CheckState
 import com.example.util.simpletimetracker.feature_views.RunningRecordView
 import com.example.util.simpletimetracker.feature_views.extension.getThemedAttr
 
@@ -43,7 +45,11 @@ fun updateRunningRecordPreview(
             // Update if goal was shown and need update.
             if (it.itemGoalTime.isNotEmpty() && update.goalText.isNotEmpty()) {
                 it.itemGoalTime = update.goalText
-                it.itemGoalTimeComplete = update.goalComplete
+                it.itemGoalTimeCheck = when (update.goalState) {
+                    is GoalState.Hidden -> CheckState.HIDDEN
+                    is GoalState.Goal -> CheckState.GOAL_REACHED
+                    is GoalState.Limit -> CheckState.LIMIT_REACHED
+                }
             }
 
             update.additionalData?.let { additionalUpdate ->

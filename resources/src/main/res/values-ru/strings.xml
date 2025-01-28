@@ -19,6 +19,7 @@
     <string name="select_nothing">Ничего не выбирать</string>
     <string name="no_data">Нет данных</string>
     <string name="general_error">Что-то пошло не так. Пожалуйста, попробуйте еще раз или перезапустите приложение.</string>
+    <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Вчера</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Без отслеживания</string>
     <string name="uncategorized_time_name">Без категории</string>
     <string name="multitask_time_name">Многозадачность</string>
-    <string name="running_record_goal_time">цель %s</string>
     <string name="record_types_empty">Активности не добавлены</string>
     <string name="record_tag_selection_hint">Выберите тег для записи</string>
     <string name="time_now">Сейчас</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Действия</string>
     <string name="change_record_last_comments_hint">Последние комментарии</string>
     <string name="change_record_favourite_comments_hint">Избранные</string>
+    <string name="change_record_favourite_comments_hint_long">Избранные комментарии</string>
+    <string name="change_record_similar_comments_hint">Похожие комментарии</string>
     <string name="change_record_categories_empty">Теги для записей не добавлены</string>
     <string name="change_record_save">Сохранить</string>
     <string name="change_record_untagged">Без тега</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Введите новое имя</string>
     <string name="change_record_type_new_icon_text_hint">Введите новый текст</string>
     <string name="change_record_type_color_hint">Цвет</string>
+    <string name="change_record_favourite_colors_hint">Любимые цвета</string>
     <string name="change_record_type_icon_image_hint">Иконка</string>
     <string name="change_record_type_icon_text_hint">Текст</string>
     <string name="change_record_type_icon_emoji_hint">Эмодзи</string>
     <string name="change_record_type_icon_search_hint">Поиск (на английском)</string>
     <string name="change_record_type_no_icon">Без иконки</string>
+    <string name="change_record_favourite_icons_hint">Избранные иконки</string>
     <string name="change_record_type_save">Сохранить</string>
     <string name="change_record_message_choose_name">Выберите имя</string>
     <string name="change_record_message_name_exist">Имя уже использовано</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">Категории не добавлены</string>
     <string name="change_record_type_goal_time_disabled">Выкл.</string>
     <string name="change_record_type_goal_time_hint">Цель</string>
+    <string name="change_record_type_limit_time_hint">Лимит</string>
     <string name="change_record_type_additional_hint">Дополнительно</string>
     <string name="change_record_type_default_duration">Продолжительность по умолчанию</string>
     <string name="change_record_type_default_duration_hint">Действия с продолжительностью по умолчанию отслеживаются сразу по клику.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Выберите действие</string>
     <string name="change_complex_rule_choose_condition">Выберите условия</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Показывает предложения для следующего действия на основе текущего или последнего действия</string>
+    <string name="activity_suggestions_calculate">Рассчитать по статистике</string>
+    <string name="activity_suggestions_select_activity_hint">Предложения будут показаны для выбранных активностей</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Фильтры активности</string>
     <string name="change_activity_filter_removed">Фильтр удален</string>
     <string name="change_activity_filter_save">Сохранить</string>
     <string name="change_activity_filter_type">Тип фильтра</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Отрегулируйте цвет</string>
     <string name="color_selection_final_color_hint">Окончательный цвет</string>
 
-    <string name="csv_export_settings_range">Диапазон</string>
-    <string name="csv_export_settings_all">Все</string>
+    <string name="csv_export_settings_filename_hint">Пользовательское имя файла</string>
+    <string name="csv_export_settings_filename_default">По умолчанию</string>
     <string name="csv_export_settings_hint">Выберите временной диапазон или экспортируйте все записи</string>
 
     <string name="schedule_exact_alarms">Системные настройки должны быть изменены для этого приложения, чтобы планировать точные оповещения.</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">Больше не показывать</string>
 
     <string name="record_tag_selection_exclude_activities_title">Исключить активности</string>
-    <string name="record_tag_selection_exclude_activities_hint">Диалог выбора тега не будет отображаться для выбранных активностей.</string>
+    <string name="record_tag_selection_exclude_activities_hint">Диалог не будет отображаться для выбранных активностей.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Выбрать активности</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro будет автоматически запускаться при запуске выбранных действий.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Сортировка</string>
     <string name="records_all_sort_time_started">Дата</string>
     <string name="records_all_sort_duration">Продолж.</string>
-    <string name="records_all_search_comment">Поиск комментария</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Чтобы начать отслеживание, добавьте активности нажав кнопку %s, или используйте предустановки по умолчанию нажав кнопку %s</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Имя</string>
     <string name="settings_sort_by_color">Цвет</string>
     <string name="settings_sort_manually">Вручную</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Порядок действий</string>
     <string name="settings_first_day_of_week">Первый день недели</string>
     <string name="settings_show_repeat_button">Показывать кнопку повтора на главном экране</string>
     <string name="settings_repeat_button_type">Режим</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Показывать уведомления таймера</string>
     <string name="settings_show_notifications_hint">Показывать уведомления, когда таймеры работают.</string>
     <string name="settings_show_notifications_controls">Включить переключение активности с уведомления</string>
+    <string name="settings_show_notifications_controls_hint">Также может использоваться для переключения действий с экрана блокировки.</string>
+    <string name="settings_show_notification_even_with_no_timers">Показывать, даже если таймеры не работают</string>
     <string name="settings_keep_statistics_range">Сохранить диапазон статистики</string>
     <string name="settings_keep_statistics_range_hint">Если включено, подробная статистика будет открыта с тем же временным диапазоном, который выбран в статистике.</string>
+    <string name="settings_retroactive_tracking_mode">Включить ретроспективный учет времени</string>
+    <string name="settings_retroactive_tracking_mode_hint">Отслеживайте время, выбирая, какие действия были выполнены с прошлого раза, а не какие действия будут выполняться сейчас.</string>
     <string name="settings_start_of_day">Сдвинуть начало дня</string>
     <string name="settings_start_of_day_hint">Начало дня будет сдвинуто на указанное количество времени вперед или назад в зависимости от знака.</string>
     <string name="settings_start_of_day_hint_value">Сегодня начинается в %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Архив</string>
     <string name="settings_data_edit">Редактировать данные</string>
     <string name="settings_complex_rules">Сложные правила</string>
+    <string name="settings_activity_suggestions">Предложения по активности</string>
     <string name="settings_edit_categories">Редактировать категории и теги</string>
     <string name="settings_edit_categories_hint">Назначайте категории действиям и теги записям.</string>
     <string name="settings_show_record_tag_selection">Показывать диалог выбора тега для записи</string>
     <string name="settings_show_record_tag_selection_hint">При запуске таймера, если у активности есть теги для записей - будет показан диалог для выбора.</string>
     <string name="settings_show_record_tag_close_hint">Закрыть после выбора одного тега</string>
+    <string name="settings_show_comment_input">Показать ввод комментариев</string>
+    <string name="settings_show_comment_input_hint">При запуске таймера будет показан диалог ввода комментария.</string>
     <string name="settings_rate">Оцените нас</string>
     <string name="settings_rate_description">Оцените приложение и оставьте отзыв.</string>
     <string name="settings_support_development">Поддержать разработку</string>
@@ -348,29 +365,20 @@
 <b>Action</b> - \"%s\" или \"%s\".<br/>
 <b>Extra</b> - \"%s\" с именем действия, которое следует запустить или остановить.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Необязательные параметры для начала действия:<br/>
-<br/>
-<b>Extra</b> - \"%s\" с комментарием к записи.<br/>
-<b>Extra</b> - \"%s\" с названием тега записи.<br/>
-<br/>
-Дополнительно:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> – \"%s\" с дополнительными функциями: \"%s\", \"%s\", \"%s\" и \"%s\", \"%s\" в формате \"гггг-ММ-дд ЧЧ:мм:сс\" или временной метке UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Отправлять события</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Если параметр <b>\"%s\"</b> включен, приложение будет отправлять события о начале или остановке активности сторонним приложениям для автоматического отслеживания со следующими параметрами:<br/>
-<br/>
-<b>Action</b> - \"%s\" или \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Если параметр <b>\"%s\"</b> включен, приложение будет отправлять события о начале или остановке активности сторонним приложениям для автоматического отслеживания.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Доступные действия:</string>
+    <string name="settings_automated_tracking_available_events">Доступные события:</string>
+    <string name="settings_automated_tracking_extras_description">Описание:</string>
+    <string name="settings_automated_tracking_extra_name">с именем действия, которое следует запустить или остановить.</string>
+    <string name="settings_automated_tracking_extra_tag">с названием тега записи. Или список названий тегов, разделенных запятой.</string>
+    <string name="settings_automated_tracking_extra_time">в формате \"гггг-ММ-дд ЧЧ:мм:сс\" или временной метке UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">выбирает, какую запись изменить.</string>
+    <string name="settings_automated_tracking_comment_mode">выбирает способ изменения комментария выбранной записи.</string>
+    <string name="settings_automated_tracking_find_with_activity">дополнительно выбирает запись по названию действия, если есть несколько текущих или последних записей.</string>
 
     <string name="settings_save_backup">Сохранить резервную копию</string>
     <string name="settings_save_description">Перед сохранением убедитесь, что у вас установлена последняя версия приложения, чтобы избежать конфликтов.</string>
@@ -380,6 +388,7 @@
     <string name="settings_automatic_last_save">Последнее сохранение:</string>
     <string name="settings_restore_backup">Восстановление резервной копии</string>
     <string name="settings_restore_description">Текущие данные будут потеряны.</string>
+    <string name="settings_backup_options">Расширенные параметры</string>
     <string name="settings_dialog_message">Восстановить из резервной копии?</string>
     <string name="settings_export_csv">Экспорт таблицы</string>
     <string name="settings_export_csv_description">Экспортируйте записи в виде файла CSV для просмотра в предпочтительном приложении для работы с электронными таблицами.</string>
@@ -412,9 +421,22 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="message_import_complete">Импорт завершен</string>
     <string name="message_import_complete_hint">Добавлено записей: %s</string>
     <string name="message_import_error">Ошибка импорта</string>
+    <string name="message_action_share">Поделиться</string>
     <string name="message_automatic_backup_error">Произошла ошибка с автоматическим резервным копированием.</string>
     <string name="message_automatic_export_error">Произошла ошибка при автоматическом экспорте.</string>
     <string name="message_automatic_error_hint">Попробуйте выбрать другое место</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Импортировать</string>
+    <string name="backup_options_save_without_records">Сохранить резервную копию без записей</string>
+    <string name="backup_options_save_without_records_hint">Может использоваться для обмена настройками.</string>
+    <string name="backup_options_full_restore">Полное восстановление</string>
+    <string name="backup_options_full_restore_hint">Восстанавливает данные и настройки. Требует перезапуска приложения.</string>
+    <string name="backup_options_partial_restore">Импортировать данные из резервной копии</string>
+    <string name="backup_options_partial_restore_hint">Позволяет выбрать, какие данные импортировать. Текущие данные не будут потеряны.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Выберите, какие данные будут импортированы из файла.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">час</string>
@@ -427,6 +449,7 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">м</string>
     <string name="statistics_detail_legend_hour_suffix">ч</string>
+    <string name="statistics_detail_chart_split">Разделить по активности</string>
 
     <string name="statistics_detail_range_averages_title">Среднее за период: %s</string>
     <string name="statistics_detail_range_averages">За весь диапазон</string>
@@ -449,12 +472,16 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="statistics_detail_streaks_latest">Последние</string>
     <string name="statistics_detail_streaks_any">Любая продолжительность</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Распределение активностей</string>
-    <string name="statistics_detail_tag_split_hint">Распределение тегов</string>
+    <string name="statistics_detail_data_split_hint">Распределение</string>
+    <string name="statistics_detail_data_split_pie_chart">Круг</string>
+    <string name="statistics_detail_data_split_bar_chart">Столбцы</string>
     <string name="statistics_detail_day_split_hint">Распределение в течении дня</string>
     <string name="statistics_detail_duration_split_hint">Распределение продолжительности записи</string>
     <string name="statistics_detail_next_activities_hint">Топ следующих активностей</string>
     <string name="statistics_detail_multitasking_activities_hint">Топ многозадачности</string>
+    <string name="statistics_detail_goals_hint">Превышение или дефицит цели</string>
+    <string name="statistics_detail_goals_excess">Превышение</string>
+    <string name="statistics_detail_goals_deficit">Дефицит</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Записей</item>-->
@@ -478,7 +505,9 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="notification_activity_title">Напоминание об активности</string>
     <string name="notification_activity_text">Вы все еще делаете: %s?</string>
     <string name="notification_goal_time_description">цель достигнута</string>
+    <string name="notification_limit_time_description">лимит достигнут</string>
     <string name="notification_time_started">Начато в %s</string>
+    <string name="notification_time_ended">Завершено в %s</string>
     <string name="notification_record_type_stop">Стоп</string>
     <string name="notification_pomodoro_subtitle">Начинается: %s (%s)</string>
 
@@ -502,14 +531,18 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="data_edit_hint">Эти изменения нельзя отменить. Обязательно создайте файл резервной копии, прежде чем что-либо делать.</string>
     <string name="data_edit_select_records">Выберите записи</string>
     <string name="data_edit_change_activity">Изменить активность</string>
+    <string name="data_edit_change_tag">Изменить теги</string>
     <string name="data_edit_change_activity_hint">Теги текущей активности будут удалены.</string>
     <string name="data_edit_change_comment">Изменить комментарий</string>
     <string name="data_edit_change_add_tag">Добавить теги</string>
     <string name="data_edit_change_remove_tag">Удалить теги</string>
     <string name="data_edit_button_change">Изменить</string>
+    <string name="data_edit_button_delete_records">Удалить все записи</string>
+    <string name="data_edit_button_delete_data">Удалить все данные</string>
     <string name="data_edit_success_message">Данные изменены</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Дублирование</string>
     <string name="records_filter_select_tags">Выбрать теги</string>
     <string name="records_filter_filter_tags">Исключить теги</string>
     <string name="records_filter_manually_filtered">Отфильтровано</string>
@@ -517,12 +550,20 @@ CSV-файл должен содержать следующие столбцы, 
     <string name="records_filter_any_comment">Любой комментарий</string>
     <string name="records_filter_select">Выбрать</string>
     <string name="records_filter_invert_selection">Инвертировать выбор</string>
+    <string name="records_filter_duration_min">Минимум</string>
+    <string name="records_filter_duration_max">Максимум</string>
+    <string name="records_filter_duplications_same_activity">Та же деятельность</string>
+    <string name="records_filter_duplications_same_times">В то же время</string>
+    <string name="records_filter_duplications_manually_fitler">Фильтровать дубликаты</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Фокус</string>
     <string name="pomodoro_state_break">Перерыв</string>
     <string name="pomodoro_state_long_break">Длинный перерыв</string>
     <string name="pomodoro_settings_periods_until_long_break">Периоды до длительного перерыва</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Выберите, чем вы занимались</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Смайлы и эмоции</string>

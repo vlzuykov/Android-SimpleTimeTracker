@@ -3,10 +3,10 @@ package com.example.util.simpletimetracker.feature_views
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.feature_views.databinding.RecordViewLayoutBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.setForegroundSpan
 import com.example.util.simpletimetracker.feature_views.extension.toSpannableString
 import com.example.util.simpletimetracker.feature_views.extension.visible
@@ -22,8 +22,7 @@ class RecordView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: RecordViewLayoutBinding = RecordViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = RecordViewLayoutBinding.inflate(layoutInflater, this)
 
     var itemName: String = ""
         set(value) {

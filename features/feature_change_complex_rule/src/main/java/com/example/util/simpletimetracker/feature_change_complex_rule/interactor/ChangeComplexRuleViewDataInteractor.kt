@@ -4,10 +4,10 @@ import com.example.util.simpletimetracker.core.mapper.CommonViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.DayOfWeekViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.model.ComplexRule
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.complexRule.model.ComplexRule
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.dayOfWeek.DayOfWeekViewData
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
@@ -17,6 +17,7 @@ import com.example.util.simpletimetracker.feature_change_complex_rule.adapter.Ch
 import com.example.util.simpletimetracker.feature_change_complex_rule.mapper.ChangeComplexRuleViewDataMapper
 import com.example.util.simpletimetracker.feature_change_complex_rule.viewData.ChangeComplexRuleActionChooserViewData
 import com.example.util.simpletimetracker.feature_change_complex_rule.viewData.ChangeComplexRuleTypesChooserViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class ChangeComplexRuleViewDataInteractor @Inject constructor(
@@ -70,7 +71,7 @@ class ChangeComplexRuleViewDataInteractor @Inject constructor(
                     recordType = it,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                 )
             }
@@ -105,7 +106,7 @@ class ChangeComplexRuleViewDataInteractor @Inject constructor(
     ): ChangeComplexRuleTypesChooserViewData {
         val isDarkTheme = prefsInteractor.getDarkMode()
         val viewData = dayOfWeekViewDataMapper.mapViewData(
-            selectedDaysOfWeek = daysOfWeek.toList(),
+            selectedDaysOfWeek = daysOfWeek,
             isDarkTheme = isDarkTheme,
             width = DayOfWeekViewData.Width.MatchParent,
             paddingHorizontalDp = 2,

@@ -2,13 +2,13 @@ package com.example.util.simpletimetracker.core.mapper
 
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.MULTITASK_ITEM_ID
-import com.example.util.simpletimetracker.domain.UNCATEGORIZED_ITEM_ID
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.Category
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.base.MULTITASK_ITEM_ID
+import com.example.util.simpletimetracker.domain.base.UNCATEGORIZED_ITEM_ID
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.category.model.Category
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryAddViewData
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData

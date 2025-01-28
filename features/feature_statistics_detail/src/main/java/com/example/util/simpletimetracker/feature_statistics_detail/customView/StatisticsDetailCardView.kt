@@ -2,17 +2,17 @@ package com.example.util.simpletimetracker.feature_statistics_detail.customView
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.updatePadding
-import com.example.util.simpletimetracker.domain.model.Coordinates
+import com.example.util.simpletimetracker.domain.base.Coordinates
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsDetailCardInternalAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.databinding.StatisticsDetailCardViewBinding
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailCardInternalViewData
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.visible
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -43,8 +43,8 @@ class StatisticsDetailCardView @JvmOverloads constructor(
             field = value
         }
 
-    private val binding: StatisticsDetailCardViewBinding = StatisticsDetailCardViewBinding
-        .inflate(LayoutInflater.from(context), this, true)
+    private val binding = StatisticsDetailCardViewBinding
+        .inflate(layoutInflater, this, true)
 
     private var itemsCount: Int
     private val typesAdapter: BaseRecyclerAdapter by lazy {

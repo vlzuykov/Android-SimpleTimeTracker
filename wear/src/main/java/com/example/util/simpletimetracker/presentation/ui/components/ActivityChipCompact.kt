@@ -7,6 +7,7 @@ package com.example.util.simpletimetracker.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,7 +39,9 @@ data class ActivityChipCompatState(
     val id: Long,
     val icon: WearActivityIcon,
     val color: Long,
-    val startedAt: Long? = null,
+    val type: ActivityChipType = ActivityChipType.Base,
+    val timeHint: ActivityChipState.TimeHint = ActivityChipState.TimeHint.None,
+    val timeHint2: ActivityChipState.TimeHint = ActivityChipState.TimeHint.None,
     val isLoading: Boolean = false,
 )
 
@@ -70,26 +73,45 @@ fun ActivityChipCompact(
             ),
             onClick = onClick,
         )
-        if (state.startedAt != null) {
-            val startedDiff = rememberDurationSince(state.startedAt)
-            val text = durationToLabelShort(startedDiff)
-            Box(
+        TimeHint(state.timeHint, Alignment.TopCenter)
+        TimeHint(state.timeHint2, Alignment.BottomCenter)
+    }
+}
+
+@Composable
+private fun BoxScope.TimeHint(
+    timeHint: ActivityChipState.TimeHint,
+    alignment: Alignment,
+) {
+    when (timeHint) {
+        is ActivityChipState.TimeHint.Timer -> {
+            val startedDiff = rememberDurationSince(timeHint.startedAt)
+            durationToLabelShort(startedDiff)
+        }
+        is ActivityChipState.TimeHint.Duration -> {
+            val timestamp = java.time.Duration.ofMillis(timeHint.millis)
+            durationToLabelShort(timestamp)
+        }
+        is ActivityChipState.TimeHint.None -> {
+            null
+        }
+    }?.let {
+        Box(
+            modifier = Modifier
+                .align(alignment)
+                .clip(CircleShape)
+                .background(color = Color.Black.copy(alpha = .7F)),
+        ) {
+            Text(
                 modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .clip(CircleShape)
-                    .background(color = Color.Black.copy(alpha = .7F)),
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 2.dp),
-                    text = text,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.scaledSp(),
-                    letterSpacing = (-0.3).sp,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
+                    .padding(horizontal = 2.dp),
+                text = it,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 10.scaledSp(),
+                letterSpacing = (-0.3).sp,
+                fontWeight = FontWeight.Bold,
+            )
         }
     }
 }
@@ -103,7 +125,6 @@ private fun Preview() {
             id = 0,
             icon = WearActivityIcon.Text("🎉"),
             color = 0xFF123456,
-            startedAt = null,
         ),
     )
 }
@@ -117,7 +138,6 @@ private fun PreviewText() {
             id = 0,
             icon = WearActivityIcon.Text("Zzzz"),
             color = 0xFFABCDEF,
-            startedAt = null,
         ),
     )
 }
@@ -131,7 +151,6 @@ private fun PreviewIcon() {
             id = 0,
             icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
             color = 0xFFABCDEF,
-            startedAt = null,
         ),
     )
 }
@@ -145,7 +164,6 @@ private fun PreviewLoading() {
             id = 0,
             icon = WearActivityIcon.Image(R.drawable.ic_hotel_24px),
             color = 0xFFABCDEF,
-            startedAt = null,
             isLoading = true,
         ),
     )
@@ -160,7 +178,9 @@ private fun PreviewRunning() {
             id = 0,
             icon = WearActivityIcon.Text("🎉"),
             color = 0xFF123456,
-            startedAt = Instant.now().toEpochMilli() - 36500000,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 36500000,
+            ),
         ),
     )
 }
@@ -174,7 +194,9 @@ private fun PreviewRunningFontScale() {
             id = 0,
             icon = WearActivityIcon.Text("🎉"),
             color = 0xFF123456,
-            startedAt = Instant.now().toEpochMilli() - 36500000,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 36500000,
+            ),
         ),
     )
 }
@@ -188,8 +210,29 @@ private fun PreviewRunningLoading() {
             id = 0,
             icon = WearActivityIcon.Text("🎉"),
             color = 0xFF123456,
-            startedAt = Instant.now().toEpochMilli() - 36500000,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 36500000,
+            ),
             isLoading = true,
+        ),
+    )
+}
+
+@Preview(device = WearDevices.LARGE_ROUND)
+@Composable
+private fun PreviewDuration() {
+    ActivityChipCompact(
+        modifier = Modifier.size(48.dp),
+        state = ActivityChipCompatState(
+            id = 0,
+            icon = WearActivityIcon.Text("🎉"),
+            color = 0xFF123456,
+            timeHint = ActivityChipState.TimeHint.Timer(
+                Instant.now().toEpochMilli() - 3650000,
+            ),
+            timeHint2 = ActivityChipState.TimeHint.Duration(
+                36500000,
+            ),
         ),
     )
 }

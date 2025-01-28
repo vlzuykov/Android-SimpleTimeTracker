@@ -158,11 +158,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/edit_screen_field_margin_horizontal"
-        android:layout_marginBottom="2dp"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/containerChangeRecordTypeGoal"
         tools:itemCount="1"
         tools:listitem="@layout/item_day_of_week" />
+
+    <com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowView
+        android:id="@+id/btnChangeRecordTypeGoalSubtype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvChangeRecordTypeGoalDays" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

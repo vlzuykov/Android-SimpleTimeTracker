@@ -4,9 +4,9 @@ import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.domain.extension.dropSeconds
 import com.example.util.simpletimetracker.domain.extension.getFullName
-import com.example.util.simpletimetracker.domain.model.Record
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.empty.EmptyViewData
 import com.example.util.simpletimetracker.feature_base_adapter.hintBig.HintBigViewData
@@ -98,6 +98,33 @@ class RecordViewDataMapper @Inject constructor(
             iconId = RecordTypeIcon.Image(R.drawable.unknown),
             color = colorMapper.toUntrackedColor(isDarkTheme),
         )
+    }
+
+    fun mapFilteredRecord(
+        record: Record,
+        recordTypes: Map<Long, RecordType>,
+        allRecordTags: List<RecordTag>,
+        isDarkTheme: Boolean,
+        useMilitaryTime: Boolean,
+        useProportionalMinutes: Boolean,
+        showSeconds: Boolean,
+        isFiltered: Boolean,
+    ): RecordViewData.Tracked? {
+        return map(
+            record = record,
+            recordType = recordTypes[record.typeId] ?: return null,
+            recordTags = allRecordTags.filter { it.id in record.tagIds },
+            isDarkTheme = isDarkTheme,
+            useMilitaryTime = useMilitaryTime,
+            useProportionalMinutes = useProportionalMinutes,
+            showSeconds = showSeconds,
+        ).let {
+            if (isFiltered) {
+                it.copy(color = colorMapper.toFilteredColor(isDarkTheme))
+            } else {
+                it
+            }
+        }
     }
 
     fun mapToEmpty(): ViewHolderType {

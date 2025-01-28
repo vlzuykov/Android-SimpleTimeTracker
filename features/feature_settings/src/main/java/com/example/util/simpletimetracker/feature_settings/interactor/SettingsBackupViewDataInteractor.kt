@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_settings.interactor
 
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
@@ -47,6 +47,13 @@ class SettingsBackupViewDataInteractor @Inject constructor(
                 subtitle = resourceRepo.getString(R.string.settings_save_description),
             )
 
+            result += SettingsTextViewData(
+                block = SettingsBlock.BackupRestore,
+                title = resourceRepo.getString(R.string.settings_restore_backup),
+                subtitle = resourceRepo.getString(R.string.settings_restore_description),
+                subtitleColor = SettingsTextColor.Attention,
+            )
+
             val automaticBackupLastSaveTime = loadAutomaticBackupLastSaveTime()
             val automaticBackupLastSaveTimeVisible = automaticBackupLastSaveTime.isNotEmpty()
             result += SettingsCheckboxViewData(
@@ -68,10 +75,9 @@ class SettingsBackupViewDataInteractor @Inject constructor(
             }
 
             result += SettingsTextViewData(
-                block = SettingsBlock.BackupRestore,
-                title = resourceRepo.getString(R.string.settings_restore_backup),
-                subtitle = resourceRepo.getString(R.string.settings_restore_description),
-                subtitleColor = SettingsTextColor.Attention,
+                block = SettingsBlock.BackupCustomized,
+                title = resourceRepo.getString(R.string.settings_backup_options),
+                subtitle = "",
                 dividerIsVisible = false,
             )
         }

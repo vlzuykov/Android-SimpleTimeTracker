@@ -1,22 +1,19 @@
-import com.example.util.simpletimetracker.Deps
-
 plugins {
-    id("java-library")
-    id("kotlin")
+    id(libs.plugins.javaLibrary.get().pluginId)
+    alias(libs.plugins.kotlinLibrary)
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 dependencies {
-    api(Deps.javax)
-    api(Deps.coroutines)
-    api(Deps.timber)
-    api(Deps.kotlin)
+    api(libs.javax)
+    api(libs.coroutines)
+    api(libs.timber)
+    api(libs.kotlin)
 
-    testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.mockito)
-    testImplementation(Deps.Test.mockitoInline)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.mockitoKotlin)
 }

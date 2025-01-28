@@ -59,6 +59,7 @@ class ChangeRecordTest : BaseUiTest() {
         testUtils.addActivity(name = newName, color = lastColor, text = lastEmoji)
         testUtils.addRecordTag(tag1, name)
         testUtils.addRecordTag(tag2, newName)
+        Thread.sleep(1000)
 
         // Add record
         NavUtils.openRecordsScreen()
@@ -81,7 +82,7 @@ class ChangeRecordTest : BaseUiTest() {
             .let { timeMapper.formatInterval(interval = it, forceSeconds = false, useProportionalMinutes = false) }
 
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         clickOnViewWithText(coreR.string.change_record_comment_field)
         clickOnViewWithText(coreR.string.change_record_type_field)
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name))
@@ -98,7 +99,7 @@ class ChangeRecordTest : BaseUiTest() {
         checkViewIsDisplayed(withId(changeRecordR.id.btnChangeRecordStatistics))
         checkViewIsNotDisplayed(withId(changeRecordR.id.rvChangeRecordType))
         checkViewIsNotDisplayed(withId(changeRecordR.id.rvChangeRecordCategories))
-        checkViewIsNotDisplayed(allOf(withId(changeRecordR.id.etChangeRecordComment), withText(comment)))
+        checkViewIsNotDisplayed(withId(changeRecordR.id.rvChangeRecordComments))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedDate), withText(timeStarted.date)))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeStartedTime), withText(timeStarted.time)))
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeEndedDate), withText(timeEnded.date)))
@@ -179,7 +180,7 @@ class ChangeRecordTest : BaseUiTest() {
         checkViewIsDisplayed(allOf(withId(changeRecordR.id.tvChangeRecordTimeEndedTime), withText(timeEnded.time)))
 
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, newComment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, newComment)
         clickOnViewWithText(coreR.string.change_record_comment_field)
 
         // Preview is updated
@@ -303,7 +304,7 @@ class ChangeRecordTest : BaseUiTest() {
 
         // From quick actions
         longClickOnView(allOf(withText(name), isCompletelyDisplayed()))
-        clickOnViewWithId(dialogsR.id.btnRecordQuickActionsStatistics)
+        clickOnViewWithText(R.string.shortcut_navigation_statistics)
         checkViewIsDisplayed(
             allOf(
                 withId(statisticsDetailR.id.viewStatisticsDetailItem),

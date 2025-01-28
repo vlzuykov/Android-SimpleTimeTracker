@@ -3,13 +3,13 @@ package com.example.util.simpletimetracker.feature_statistics_detail.customView
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsPreviewAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.createStatisticsPreviewCompareAdapterDelegate
 import com.example.util.simpletimetracker.feature_statistics_detail.databinding.StatisticsDetailPreviewsViewLayoutBinding
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailPreviewViewData
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -32,8 +32,7 @@ class StatisticsDetailPreviewsView @JvmOverloads constructor(
         )
     }
 
-    private val binding = StatisticsDetailPreviewsViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = StatisticsDetailPreviewsViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         initRecycler()

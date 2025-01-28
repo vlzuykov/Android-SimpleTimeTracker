@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker
 
+import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
@@ -7,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.utils.BaseUiTest
 import com.example.util.simpletimetracker.utils.NavUtils
 import com.example.util.simpletimetracker.utils.checkViewDoesNotExist
@@ -49,7 +50,8 @@ class StartRecordTest : BaseUiTest() {
                     idData = RecordTypeGoal.IdData.Type(0),
                     range = RecordTypeGoal.Range.Session,
                     type = RecordTypeGoal.Type.Duration(firstGoalTime),
-                    daysOfWeek = emptyList(),
+                    subtype = RecordTypeGoal.Subtype.Goal,
+                    daysOfWeek = emptySet(),
                 ),
             ),
         )
@@ -151,8 +153,9 @@ class StartRecordTest : BaseUiTest() {
         // Add comment
         longClickOnView(allOf(isDescendantOfA(withId(baseR.id.viewRunningRecordItem)), withText(name)))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        typeTextIntoView(changeRecordR.id.etChangeRecordComment, comment)
+        typeTextIntoView(changeRecordR.id.etChangeRecordCommentField, comment)
         clickOnViewWithText(coreR.string.change_record_comment_field)
+        closeSoftKeyboard()
         clickOnViewWithText(coreR.string.change_record_save)
 
         // Stop timer
@@ -170,7 +173,7 @@ class StartRecordTest : BaseUiTest() {
         )
         clickOnView(allOf(withText(name), isCompletelyDisplayed()))
         clickOnViewWithText(coreR.string.change_record_comment_field)
-        checkViewIsDisplayed(allOf(withId(changeRecordR.id.etChangeRecordComment), withText(comment)))
+        checkViewIsDisplayed(allOf(withId(changeRecordR.id.etChangeRecordCommentField), withText(comment)))
     }
 
     @Test

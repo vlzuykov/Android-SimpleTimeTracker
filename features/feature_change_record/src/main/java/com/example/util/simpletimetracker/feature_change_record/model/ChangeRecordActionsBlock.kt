@@ -3,6 +3,7 @@ package com.example.util.simpletimetracker.feature_change_record.model
 enum class ChangeRecordActionsBlock {
     SplitTimePreview,
     SplitTimeAdjustment,
+    SplitSlider,
     SplitButton,
 
     AdjustTimePreview,

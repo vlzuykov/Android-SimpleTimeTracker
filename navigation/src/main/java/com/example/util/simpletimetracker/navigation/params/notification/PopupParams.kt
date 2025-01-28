@@ -1,6 +1,6 @@
 package com.example.util.simpletimetracker.navigation.params.notification
 
-import com.example.util.simpletimetracker.domain.model.Coordinates
+import com.example.util.simpletimetracker.domain.base.Coordinates
 
 data class PopupParams(
     val message: String,

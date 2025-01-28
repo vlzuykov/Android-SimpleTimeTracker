@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import com.example.util.simpletimetracker.feature_views.databinding.RecordSimpleViewLayoutBinding
 import com.example.util.simpletimetracker.feature_views.extension.getThemedAttr
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 class RecordSimpleView @JvmOverloads constructor(
@@ -22,8 +22,7 @@ class RecordSimpleView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding: RecordSimpleViewLayoutBinding = RecordSimpleViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = RecordSimpleViewLayoutBinding.inflate(layoutInflater, this)
 
     var itemName: String = ""
         set(value) {

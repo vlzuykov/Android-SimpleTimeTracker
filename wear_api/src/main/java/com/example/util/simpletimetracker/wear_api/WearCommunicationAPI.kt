@@ -18,7 +18,7 @@ interface WearCommunicationAPI {
      *
      * Retrieves a list of the currently running activity/activities
      */
-    suspend fun queryCurrentActivities(): List<WearCurrentActivityDTO>
+    suspend fun queryCurrentActivities(): WearCurrentStateDTO
 
     /**
      * [WearRequests.START_ACTIVITY]
@@ -33,6 +33,13 @@ interface WearCommunicationAPI {
      * Stops timer.
      */
     suspend fun stopActivity(request: WearStopActivityRequest)
+
+    /**
+     * [WearRequests.REPEAT_ACTIVITY]
+     *
+     * Repeat last timer.
+     */
+    suspend fun repeatActivity(): WearRecordRepeatResponse
 
     /**
      * [WearRequests.QUERY_TAGS_FOR_ACTIVITY]

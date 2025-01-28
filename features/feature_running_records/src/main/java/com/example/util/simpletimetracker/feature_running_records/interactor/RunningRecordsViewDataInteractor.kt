@@ -1,17 +1,19 @@
 package com.example.util.simpletimetracker.feature_running_records.interactor
 
 import com.example.util.simpletimetracker.core.interactor.ActivityFilterViewDataInteractor
+import com.example.util.simpletimetracker.core.interactor.ActivitySuggestionViewDataInteractor
 import com.example.util.simpletimetracker.core.interactor.FilterGoalsByDayOfWeekInteractor
 import com.example.util.simpletimetracker.core.interactor.GetCurrentRecordsDurationInteractor
 import com.example.util.simpletimetracker.core.interactor.GetRunningRecordViewDataMediator
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_running_records.mapper.RunningRecordsViewDataMapper
@@ -23,12 +25,14 @@ class RunningRecordsViewDataInteractor @Inject constructor(
     private val recordTagInteractor: RecordTagInteractor,
     private val recordTypeGoalInteractor: RecordTypeGoalInteractor,
     private val runningRecordInteractor: RunningRecordInteractor,
+    private val recordInteractor: RecordInteractor,
     private val activityFilterViewDataInteractor: ActivityFilterViewDataInteractor,
     private val mapper: RunningRecordsViewDataMapper,
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
     private val getRunningRecordViewDataMediator: GetRunningRecordViewDataMediator,
     private val getCurrentRecordsDurationInteractor: GetCurrentRecordsDurationInteractor,
     private val filterGoalsByDayOfWeekInteractor: FilterGoalsByDayOfWeekInteractor,
+    private val activitySuggestionViewDataInteractor: ActivitySuggestionViewDataInteractor,
 ) {
 
     suspend fun getViewData(
@@ -49,6 +53,7 @@ class RunningRecordsViewDataInteractor @Inject constructor(
         val showPomodoroButton = prefsInteractor.getEnablePomodoroMode()
         val showRepeatButton = prefsInteractor.getEnableRepeatButton()
         val isPomodoroStarted = prefsInteractor.getPomodoroModeStartedTimestampMs() != 0L
+        val retroactiveTrackingModeEnabled = prefsInteractor.getRetroactiveTrackingMode()
         val goals = filterGoalsByDayOfWeekInteractor
             .execute(recordTypeGoalInteractor.getAllTypeGoals())
             .groupBy { it.idData.value }
@@ -63,10 +68,26 @@ class RunningRecordsViewDataInteractor @Inject constructor(
         }
 
         val runningRecordsViewData = when {
-            showFirstEnterHint ->
+            showFirstEnterHint -> {
                 listOf(mapper.mapToTypesEmpty())
-            runningRecords.isEmpty() ->
+            }
+            retroactiveTrackingModeEnabled -> {
+                val prevRecord = recordInteractor.getAllPrev(
+                    timeStarted = System.currentTimeMillis(),
+                )
+                mapper.mapToRetroActiveMode(
+                    typesMap = recordTypesMap,
+                    recordTags = recordTags,
+                    prevRecords = prevRecord,
+                    isDarkTheme = isDarkTheme,
+                    useProportionalMinutes = useProportionalMinutes,
+                    useMilitaryTime = useMilitaryTime,
+                    showSeconds = showSeconds,
+                )
+            }
+            runningRecords.isEmpty() -> {
                 listOf(mapper.mapToEmpty())
+            }
             else -> {
                 runningRecords
                     .sortedByDescending(RunningRecord::timeStarted)
@@ -89,6 +110,8 @@ class RunningRecordsViewDataInteractor @Inject constructor(
                         mapper.mapToHasRunningRecords(),
                     )
             }
+        }.let {
+            it + DividerViewData(1)
         }
 
         val filter = activityFilterViewDataInteractor.getFilter()
@@ -98,6 +121,18 @@ class RunningRecordsViewDataInteractor @Inject constructor(
             appendAddButton = true,
         ).let {
             if (it.isNotEmpty()) it + DividerViewData(2) else it
+        }
+
+        val suggestionsViewData = activitySuggestionViewDataInteractor.getSuggestionsViewData(
+            recordTypesMap = recordTypesMap,
+            goals = goals,
+            runningRecords = runningRecords,
+            allDailyCurrents = allDailyCurrents,
+            completeTypeIds = completeTypeIds,
+            numberOfCards = numberOfCards,
+            isDarkTheme = isDarkTheme,
+        ).let {
+            if (it.isNotEmpty()) it + DividerViewData(3) else it
         }
 
         val recordTypesViewData = recordTypes
@@ -113,7 +148,7 @@ class RunningRecordsViewDataInteractor @Inject constructor(
                     isFiltered = it.id in recordTypesRunning,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = recordTypeViewDataMapper.mapGoalCheckmark(
+                    checkState = recordTypeViewDataMapper.mapGoalCheckmark(
                         type = it,
                         goals = goals,
                         allDailyCurrents = allDailyCurrents,
@@ -151,8 +186,8 @@ class RunningRecordsViewDataInteractor @Inject constructor(
             }
 
         return runningRecordsViewData +
-            listOf(DividerViewData(1)) +
             filtersViewData +
+            suggestionsViewData +
             recordTypesViewData
     }
 }

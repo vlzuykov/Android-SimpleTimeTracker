@@ -2,19 +2,17 @@ package com.example.util.simpletimetracker.feature_settings.viewModel.delegate
 
 import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.domain.extension.flip
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PomodoroStopInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordsContainerUpdateInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
-import com.example.util.simpletimetracker.domain.model.CardOrder
-import com.example.util.simpletimetracker.domain.model.CardTagOrder
-import com.example.util.simpletimetracker.domain.model.WidgetTransparencyPercent
-import com.example.util.simpletimetracker.domain.model.WidgetType
+import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.statistics.model.WidgetTransparencyPercent
+import com.example.util.simpletimetracker.domain.pomodoro.interactor.PomodoroStopInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordsContainerUpdateInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.R
+import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.feature_settings.interactor.SettingsDisplayViewDataInteractor
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.feature_settings.viewModel.SettingsViewModel
@@ -31,8 +29,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
     private val resourceRepo: ResourceRepo,
     private val prefsInteractor: PrefsInteractor,
     private val settingsMapper: SettingsMapper,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
-    private val widgetInteractor: WidgetInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val settingsDisplayViewDataInteractor: SettingsDisplayViewDataInteractor,
     private val pomodoroStopInteractor: PomodoroStopInteractor,
     private val recordsContainerUpdateInteractor: RecordsContainerUpdateInteractor,
@@ -137,7 +134,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
             if (newValue == currentValue) return@launch
             prefsInteractor.setWidgetBackgroundTransparencyPercent(newValue.value)
             parent?.updateContent()
-            widgetInteractor.updateWidgets()
+            externalViewsInteractor.onWidgetsTransparencyChange()
         }
     }
 
@@ -201,7 +198,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = !prefsInteractor.getShowUntrackedInStatistics()
             prefsInteractor.setShowUntrackedInStatistics(newValue)
-            widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
+            externalViewsInteractor.onShowUntrackedInStatisticsChange()
             parent?.updateContent()
         }
     }
@@ -291,7 +288,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = !prefsInteractor.getEnableRepeatButton()
             prefsInteractor.setEnableRepeatButton(newValue)
-            notificationTypeInteractor.updateNotifications()
+            externalViewsInteractor.onRepeatEnabled()
             parent?.updateContent()
         }
     }
@@ -318,6 +315,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
             selectedTypeIds = prefsInteractor.getAutostartPomodoroActivities(),
             isMultiSelectAvailable = true,
             idsShouldBeVisible = emptyList(),
+            showHints = true,
         ).let(router::navigate)
     }
 
@@ -351,7 +349,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = !prefsInteractor.getUseMilitaryTimeFormat()
             prefsInteractor.setUseMilitaryTimeFormat(newValue)
-            notificationTypeInteractor.updateNotifications()
+            externalViewsInteractor.onUseMilitaryChange()
             parent?.updateContent()
         }
     }
@@ -368,8 +366,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = !prefsInteractor.getUseProportionalMinutes()
             prefsInteractor.setUseProportionalMinutes(newValue)
-            notificationTypeInteractor.updateNotifications()
-            widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
+            externalViewsInteractor.onUseProportionalMinutesChange()
             parent?.updateContent()
         }
     }
@@ -379,8 +376,7 @@ class SettingsDisplayViewModelDelegate @Inject constructor(
             val newValue = !prefsInteractor.getShowSeconds()
             prefsInteractor.setShowSeconds(newValue)
             parent?.updateContent()
-            notificationTypeInteractor.updateNotifications()
-            widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
+            externalViewsInteractor.onShowSecondsChange()
         }
     }
 

@@ -2,9 +2,9 @@ package com.example.util.simpletimetracker.core.mapper
 
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.IconEmoji
-import com.example.util.simpletimetracker.domain.model.IconEmojiCategory
-import com.example.util.simpletimetracker.domain.model.IconEmojiType
+import com.example.util.simpletimetracker.domain.icon.IconEmoji
+import com.example.util.simpletimetracker.domain.icon.IconEmojiCategory
+import com.example.util.simpletimetracker.domain.icon.IconEmojiType
 import javax.inject.Inject
 import javax.inject.Singleton
 

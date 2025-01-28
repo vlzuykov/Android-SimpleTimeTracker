@@ -1,10 +1,10 @@
 package com.example.util.simpletimetracker.feature_notification.goalTime.interactor
 
 import com.example.util.simpletimetracker.core.interactor.GetRangeInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalRangeEndInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.notifications.interactor.NotificationGoalRangeEndInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_notification.goalTime.scheduler.NotificationRangeEndScheduler
 import javax.inject.Inject
 

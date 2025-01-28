@@ -5,14 +5,18 @@
  */
 package com.example.util.simpletimetracker.feature_wear
 
+import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
 import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
-import com.example.util.simpletimetracker.domain.mapper.AppColorMapper
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.color.mapper.AppColorMapper
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.wear_api.WearActivityDTO
 import com.example.util.simpletimetracker.wear_api.WearCurrentActivityDTO
+import com.example.util.simpletimetracker.wear_api.WearLastRecordDTO
+import com.example.util.simpletimetracker.wear_api.WearRecordRepeatResponse
 import com.example.util.simpletimetracker.wear_api.WearSettingsDTO
 import com.example.util.simpletimetracker.wear_api.WearTagDTO
 import javax.inject.Inject
@@ -45,6 +49,18 @@ class WearDataLocalMapper @Inject constructor(
     }
 
     fun map(
+        record: Record,
+        tags: List<WearTagDTO>,
+    ): WearLastRecordDTO {
+        return WearLastRecordDTO(
+            activityId = record.typeId,
+            startedAt = record.timeStarted,
+            finishedAt = record.timeEnded,
+            tags = tags,
+        )
+    }
+
+    fun map(
         recordTag: RecordTag,
         types: Map<Long, RecordType>,
     ): WearTagDTO {
@@ -61,10 +77,29 @@ class WearDataLocalMapper @Inject constructor(
     fun map(
         allowMultitasking: Boolean,
         recordTagSelectionCloseAfterOne: Boolean,
+        enableRepeatButton: Boolean,
+        retroactiveTrackingMode: Boolean,
     ): WearSettingsDTO {
         return WearSettingsDTO(
             allowMultitasking = allowMultitasking,
             recordTagSelectionCloseAfterOne = recordTagSelectionCloseAfterOne,
+            enableRepeatButton = enableRepeatButton,
+            retroactiveTrackingMode = retroactiveTrackingMode,
+        )
+    }
+
+    fun map(
+        result: RecordRepeatInteractor.ActionResult,
+    ): WearRecordRepeatResponse {
+        return WearRecordRepeatResponse(
+            result = when (result) {
+                is RecordRepeatInteractor.ActionResult.Started ->
+                    WearRecordRepeatResponse.ActionResult.STARTED
+                is RecordRepeatInteractor.ActionResult.NoPreviousFound ->
+                    WearRecordRepeatResponse.ActionResult.NO_PREVIOUS_FOUND
+                is RecordRepeatInteractor.ActionResult.AlreadyTracking ->
+                    WearRecordRepeatResponse.ActionResult.ALREADY_TRACKING
+            },
         )
     }
 

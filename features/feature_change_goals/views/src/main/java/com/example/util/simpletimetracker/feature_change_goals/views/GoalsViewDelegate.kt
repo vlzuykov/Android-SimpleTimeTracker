@@ -4,7 +4,7 @@ import android.text.TextWatcher
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_change_goals.api.ChangeRecordTypeGoalsViewData
 import com.example.util.simpletimetracker.feature_change_goals.api.GoalsViewModelDelegate
@@ -68,6 +68,9 @@ object GoalsViewDelegate {
             }
             view.fieldChangeRecordTypeGoalDuration.setOnClick {
                 viewModel.onGoalTimeClick(range)
+            }
+            view.btnChangeRecordTypeGoalSubtype.listener = {
+                viewModel.onGoalSubTypeSelected(range, it)
             }
         }
 
@@ -154,6 +157,13 @@ object GoalsViewDelegate {
                     view.fieldChangeRecordTypeGoalDuration.isInvisible = true
                     view.inputChangeRecordTypeGoalCount.isVisible = true
                 }
+            }
+
+            if (goal.subtypeItems.isNotEmpty()) {
+                view.btnChangeRecordTypeGoalSubtype.visible = true
+                view.btnChangeRecordTypeGoalSubtype.adapter.replace(goal.subtypeItems)
+            } else {
+                view.btnChangeRecordTypeGoalSubtype.visible = false
             }
         }
 

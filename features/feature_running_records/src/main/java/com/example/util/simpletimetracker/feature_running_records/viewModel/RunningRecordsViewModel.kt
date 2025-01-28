@@ -7,28 +7,31 @@ import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.base.SingleLiveEvent
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toParams
-import com.example.util.simpletimetracker.core.extension.toRecordParams
+import com.example.util.simpletimetracker.core.interactor.GetChangeRecordNavigationParamsInteractor
 import com.example.util.simpletimetracker.core.interactor.RecordRepeatInteractor
-import com.example.util.simpletimetracker.core.mapper.ChangeRecordDateTimeMapper
 import com.example.util.simpletimetracker.core.model.NavigationTab
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.ChangeSelectedActivityFilterMediator
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.AddRunningRecordMediator
+import com.example.util.simpletimetracker.domain.activityFilter.interactor.ChangeSelectedActivityFilterMediator
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.record.model.RecordDataSelectionDialogResult
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterViewData
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
+import com.example.util.simpletimetracker.feature_base_adapter.record.RecordViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.RunningRecordTypeSpecialViewData
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.RunningRecordViewData
 import com.example.util.simpletimetracker.feature_running_records.interactor.RunningRecordsViewDataInteractor
-import com.example.util.simpletimetracker.feature_views.TransitionNames
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeActivityFilterParams
+import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordFromMainParams
+import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordParams
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordTypeParams
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRunningRecordFromMainParams
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRunningRecordParams
@@ -54,12 +57,12 @@ class RunningRecordsViewModel @Inject constructor(
     private val changeSelectedActivityFilterMediator: ChangeSelectedActivityFilterMediator,
     private val prefsInteractor: PrefsInteractor,
     private val updateRunningRecordFromChangeScreenInteractor: UpdateRunningRecordFromChangeScreenInteractor,
-    private val changeRecordDateTimeMapper: ChangeRecordDateTimeMapper,
     private val recordTypeInteractor: RecordTypeInteractor,
+    private val getChangeRecordNavigationParamsInteractor: GetChangeRecordNavigationParamsInteractor,
 ) : ViewModel() {
 
     val runningRecords: LiveData<List<ViewHolderType>> by lazy {
-        MutableLiveData(listOf(LoaderViewData() as ViewHolderType))
+        MutableLiveData(listOf(LoaderViewData()))
     }
     val resetScreen: SingleLiveEvent<Unit> =
         SingleLiveEvent()
@@ -85,7 +88,7 @@ class RunningRecordsViewModel @Inject constructor(
                 // Start running record
                 val wasStarted = addRunningRecordMediator.tryStartTimer(
                     typeId = item.id,
-                    onNeedToShowTagSelection = { showTagSelection(item.id) },
+                    onNeedToShowTagSelection = { showTagSelection(item.id, it) },
                 )
                 if (wasStarted) {
                     onRecordTypeWithDefaultDurationClick(item.id)
@@ -95,10 +98,10 @@ class RunningRecordsViewModel @Inject constructor(
         }
     }
 
-    fun onRecordTypeLongClick(item: RecordTypeViewData, sharedElements: Map<Any, String>) {
+    fun onRecordTypeLongClick(item: RecordTypeViewData, sharedElements: Pair<Any, String>) {
         router.navigate(
             data = ChangeRecordTypeParams.Change(
-                transitionName = TransitionNames.RECORD_TYPE + item.id,
+                transitionName = sharedElements.second,
                 id = item.id,
                 sizePreview = ChangeRecordTypeParams.SizePreview(
                     width = item.width,
@@ -111,7 +114,7 @@ class RunningRecordsViewModel @Inject constructor(
                     color = item.color,
                 ),
             ),
-            sharedElements = sharedElements,
+            sharedElements = mapOf(sharedElements),
         )
     }
 
@@ -143,7 +146,10 @@ class RunningRecordsViewModel @Inject constructor(
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun onRunningRecordClick(item: RunningRecordViewData, sharedElements: Pair<Any, String>) {
+    fun onRunningRecordClick(
+        item: RunningRecordViewData,
+        sharedElements: Pair<Any, String>,
+    ) {
         viewModelScope.launch {
             runningRecordInteractor.get(item.id)
                 ?.let { removeRunningRecordMediator.removeWithRecordAdd(it) }
@@ -158,32 +164,44 @@ class RunningRecordsViewModel @Inject constructor(
         val useMilitaryTimeFormat = prefsInteractor.getUseMilitaryTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
 
-        val params = ChangeRunningRecordParams(
-            transitionName = sharedElements.second,
-            id = item.id,
-            from = ChangeRunningRecordParams.From.RunningRecords,
-            preview = ChangeRunningRecordParams.Preview(
+        if (item.id == UNTRACKED_ITEM_ID) {
+            // Currently possible in retroactive mode.
+            // Open running record as an untracked record.
+            val timeEndedTimestamp = System.currentTimeMillis()
+            val recordItem = RecordViewData.Untracked(
+                timeStartedTimestamp = item.timeStartedTimestamp,
+                timeEndedTimestamp = timeEndedTimestamp,
                 name = item.name,
-                tagName = item.tagName,
                 timeStarted = item.timeStarted,
-                timeStartedDateTime = changeRecordDateTimeMapper.map(
-                    param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeStartedTimestamp),
-                    field = ChangeRecordDateTimeMapper.Field.Start,
-                    useMilitaryTimeFormat = useMilitaryTimeFormat,
-                    showSeconds = showSeconds,
-                ).toRecordParams(),
+                timeFinished = "",
                 duration = item.timer,
-                durationTotal = item.timerTotal,
-                goalTime = item.goalTime.toParams(),
-                iconId = item.iconId.toParams(),
+                iconId = item.iconId,
                 color = item.color,
-                comment = item.comment,
-            ),
-        )
-        router.navigate(
-            ChangeRunningRecordFromMainParams(params = params),
-            sharedElements = sharedElements.let(::mapOf),
-        )
+            )
+            val params = getChangeRecordNavigationParamsInteractor.execute(
+                item = recordItem,
+                from = ChangeRecordParams.From.Records,
+                shift = 0,
+                useMilitaryTimeFormat = useMilitaryTimeFormat,
+                showSeconds = showSeconds,
+                sharedElements = null,
+            )
+            router.navigate(
+                data = ChangeRecordFromMainParams(params = params),
+            )
+        } else {
+            val params = getChangeRecordNavigationParamsInteractor.execute(
+                item = item,
+                from = ChangeRunningRecordParams.From.RunningRecords,
+                useMilitaryTimeFormat = useMilitaryTimeFormat,
+                showSeconds = showSeconds,
+                sharedElements = sharedElements,
+            )
+            router.navigate(
+                data = ChangeRunningRecordFromMainParams(params = params),
+                sharedElements = sharedElements.let(::mapOf),
+            )
+        }
     }
 
     fun onActivityFilterClick(item: ActivityFilterViewData) {
@@ -244,8 +262,11 @@ class RunningRecordsViewModel @Inject constructor(
         }
     }
 
-    private fun showTagSelection(typeId: Long) {
-        router.navigate(RecordTagSelectionParams(typeId))
+    private fun showTagSelection(
+        typeId: Long,
+        result: RecordDataSelectionDialogResult,
+    ) {
+        router.navigate(RecordTagSelectionParams(typeId, result.toParams()))
     }
 
     private fun subscribeToUpdates() {
@@ -264,7 +285,7 @@ class RunningRecordsViewModel @Inject constructor(
 
     private fun updateRunningRecords() = viewModelScope.launch {
         val data = loadRunningRecordsViewData()
-        (runningRecords as MutableLiveData).value = data
+        runningRecords.set(data)
     }
 
     private suspend fun loadRunningRecordsViewData(): List<ViewHolderType> {

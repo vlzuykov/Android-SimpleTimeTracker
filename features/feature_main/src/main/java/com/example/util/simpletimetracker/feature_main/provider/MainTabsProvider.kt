@@ -6,7 +6,7 @@ import com.example.util.simpletimetracker.core.utils.SHORTCUT_NAVIGATION_RECORDS
 import com.example.util.simpletimetracker.core.utils.SHORTCUT_NAVIGATION_SETTINGS
 import com.example.util.simpletimetracker.core.utils.SHORTCUT_NAVIGATION_STATISTICS
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.feature_main.R
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject

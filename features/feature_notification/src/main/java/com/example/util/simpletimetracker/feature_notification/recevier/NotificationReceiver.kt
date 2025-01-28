@@ -5,38 +5,45 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.example.util.simpletimetracker.core.extension.goAsync
-import com.example.util.simpletimetracker.core.utils.ACTION_ADD_RECORD
-import com.example.util.simpletimetracker.core.utils.ACTION_RESTART_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_START_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_ALL_ACTIVITIES
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_LONGEST_ACTIVITY
-import com.example.util.simpletimetracker.core.utils.ACTION_STOP_SHORTEST_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_ADD_RECORD
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_CHANGE_RECORD
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_RESTART_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_START_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_ALL_ACTIVITIES
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY
+import com.example.util.simpletimetracker.core.utils.ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY
 import com.example.util.simpletimetracker.core.utils.EXTRA_ACTIVITY_NAME
+import com.example.util.simpletimetracker.core.utils.EXTRA_FIND_RECORD_MODE
+import com.example.util.simpletimetracker.core.utils.EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_COMMENT_MODE
 import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TAG_NAME
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_ENDED
-import com.example.util.simpletimetracker.core.utils.EXTRA_TIME_STARTED
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_ENDED
+import com.example.util.simpletimetracker.core.utils.EXTRA_RECORD_TIME_STARTED
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_notification.activity.controller.NotificationActivityBroadcastController
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_STOP
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_TAGS_NEXT
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_TAGS_PREV
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_TAG_CLICK
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_TYPES_NEXT
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_TYPES_PREV
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ACTION_NOTIFICATION_CONTROLS_TYPE_CLICK
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_CONTROLS_FROM
 import com.example.util.simpletimetracker.feature_notification.automaticBackup.controller.AutomaticBackupBroadcastController
 import com.example.util.simpletimetracker.feature_notification.automaticExport.controller.AutomaticExportBroadcastController
 import com.example.util.simpletimetracker.feature_notification.goalTime.controller.NotificationGoalTimeBroadcastController
 import com.example.util.simpletimetracker.feature_notification.inactivity.controller.NotificationInactivityBroadcastController
 import com.example.util.simpletimetracker.feature_notification.pomodoro.controller.NotificationPomodoroBroadcastController
 import com.example.util.simpletimetracker.feature_notification.recordType.controller.NotificationTypeBroadcastController
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_STOP
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TAGS_NEXT
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TAGS_PREV
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TAG_CLICK
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TYPES_NEXT
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TYPES_PREV
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TYPE_CLICK
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ARGS_SELECTED_TYPE_ID
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ARGS_TAGS_SHIFT
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ARGS_TAG_ID
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ARGS_TYPES_SHIFT
-import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ARGS_TYPE_ID
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_SELECTED_TYPE_ID
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TAGS_SHIFT
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TAG_ID
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TYPES_SHIFT
+import com.example.util.simpletimetracker.feature_notification.activitySwitch.manager.NotificationControlsManager.Companion.ARGS_TYPE_ID
+import com.example.util.simpletimetracker.feature_notification.external.NotificationExternalBroadcastController
+import com.example.util.simpletimetracker.feature_notification.recordType.manager.NotificationTypeManager.Companion.ACTION_NOTIFICATION_TYPE_STOP
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -63,6 +70,9 @@ class NotificationReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var pomodoroController: NotificationPomodoroBroadcastController
+
+    @Inject
+    lateinit var externalController: NotificationExternalBroadcastController
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent?.action
@@ -126,47 +136,53 @@ class NotificationReceiver : BroadcastReceiver() {
                 finally = { automaticExportController.onFinished() },
                 block = { automaticExportController.onReminder() },
             )
-            ACTION_START_ACTIVITY -> {
+            ACTION_EXTERNAL_START_ACTIVITY -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
-                    ?.slipTagNames().orEmpty()
-                typeController.onActionActivityStart(
+                    ?.splitTagNames().orEmpty()
+                val timeStarted = intent.getStringExtra(EXTRA_RECORD_TIME_STARTED)
+                externalController.onActionExternalActivityStart(
                     name = name,
                     comment = comment,
                     tagNames = tagNames,
+                    timeStarted = timeStarted,
                 )
             }
-            ACTION_STOP_ACTIVITY -> {
+            ACTION_EXTERNAL_STOP_ACTIVITY -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
-                typeController.onActionActivityStop(name)
+                val timeEnded = intent.getStringExtra(EXTRA_RECORD_TIME_ENDED)
+                externalController.onActionExternalActivityStop(
+                    name = name,
+                    timeEnded = timeEnded,
+                )
             }
-            ACTION_STOP_ALL_ACTIVITIES -> {
-                typeController.onActionActivityStopAll()
+            ACTION_EXTERNAL_STOP_ALL_ACTIVITIES -> {
+                externalController.onActionExternalActivityStopAll()
             }
-            ACTION_STOP_SHORTEST_ACTIVITY -> {
-                typeController.onActionActivityStopShortest()
+            ACTION_EXTERNAL_STOP_SHORTEST_ACTIVITY -> {
+                externalController.onActionExternalActivityStopShortest()
             }
-            ACTION_STOP_LONGEST_ACTIVITY -> {
-                typeController.onActionActivityStopLongest()
+            ACTION_EXTERNAL_STOP_LONGEST_ACTIVITY -> {
+                externalController.onActionExternalActivityStopLongest()
             }
-            ACTION_RESTART_ACTIVITY -> {
+            ACTION_EXTERNAL_RESTART_ACTIVITY -> {
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
-                    ?.slipTagNames().orEmpty()
-                typeController.onActionActivityRestart(
+                    ?.splitTagNames().orEmpty()
+                externalController.onActionExternalActivityRestart(
                     comment = comment,
                     tagNames = tagNames,
                 )
             }
-            ACTION_ADD_RECORD -> {
+            ACTION_EXTERNAL_ADD_RECORD -> {
                 val name = intent.getStringExtra(EXTRA_ACTIVITY_NAME)
-                val timeStarted = intent.getStringExtra(EXTRA_TIME_STARTED)
-                val timeEnded = intent.getStringExtra(EXTRA_TIME_ENDED)
+                val timeStarted = intent.getStringExtra(EXTRA_RECORD_TIME_STARTED)
+                val timeEnded = intent.getStringExtra(EXTRA_RECORD_TIME_ENDED)
                 val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
                 val tagNames = intent.getStringExtra(EXTRA_RECORD_TAG_NAME)
-                    ?.slipTagNames().orEmpty()
-                typeController.onActionRecordAdd(
+                    ?.splitTagNames().orEmpty()
+                externalController.onActionExternalRecordAdd(
                     name = name,
                     timeStarted = timeStarted,
                     timeEnded = timeEnded,
@@ -174,42 +190,64 @@ class NotificationReceiver : BroadcastReceiver() {
                     tagNames = tagNames,
                 )
             }
-            ACTION_NOTIFICATION_STOP -> {
+            ACTION_EXTERNAL_CHANGE_RECORD -> {
+                val findMode = intent.getStringExtra(EXTRA_FIND_RECORD_MODE)
+                val name = intent.getStringExtra(EXTRA_FIND_RECORD_WITH_ACTIVITY_NAME)
+                val comment = intent.getStringExtra(EXTRA_RECORD_COMMENT)
+                val commentMode = intent.getStringExtra(EXTRA_RECORD_COMMENT_MODE)
+                externalController.onActionExternalRecordChange(
+                    findMode = findMode,
+                    name = name,
+                    comment = comment,
+                    commentMode = commentMode,
+                )
+            }
+            ACTION_NOTIFICATION_TYPE_STOP -> {
                 val typeId = intent.getLongExtra(ARGS_TYPE_ID, 0)
                 typeController.onActionActivityStop(typeId)
             }
-            ACTION_NOTIFICATION_TYPE_CLICK -> {
+            ACTION_NOTIFICATION_CONTROLS_STOP -> {
+                val typeId = intent.getLongExtra(ARGS_TYPE_ID, 0)
+                typeController.onActionActivityStop(typeId)
+            }
+            ACTION_NOTIFICATION_CONTROLS_TYPE_CLICK -> {
+                val from = intent.getIntExtra(ARGS_CONTROLS_FROM, 0)
                 val typeId = intent.getLongExtra(ARGS_TYPE_ID, 0)
                 val selectedTypeId = intent.getLongExtra(ARGS_SELECTED_TYPE_ID, 0)
                 val typesShift = intent.getIntExtra(ARGS_TYPES_SHIFT, 0)
                 typeController.onActionTypeClick(
+                    from = from,
                     typeId = typeId,
                     selectedTypeId = selectedTypeId,
                     typesShift = typesShift,
                 )
             }
-            ACTION_NOTIFICATION_TYPES_PREV,
-            ACTION_NOTIFICATION_TYPES_NEXT,
-            ACTION_NOTIFICATION_TAGS_PREV,
-            ACTION_NOTIFICATION_TAGS_NEXT,
+            ACTION_NOTIFICATION_CONTROLS_TYPES_PREV,
+            ACTION_NOTIFICATION_CONTROLS_TYPES_NEXT,
+            ACTION_NOTIFICATION_CONTROLS_TAGS_PREV,
+            ACTION_NOTIFICATION_CONTROLS_TAGS_NEXT,
             -> {
+                val from = intent.getIntExtra(ARGS_CONTROLS_FROM, 0)
                 val typeId = intent.getLongExtra(ARGS_TYPE_ID, 0)
                 val selectedTypeId = intent.getLongExtra(ARGS_SELECTED_TYPE_ID, 0)
                 val typesShift = intent.getIntExtra(ARGS_TYPES_SHIFT, 0)
                 val tagsShift = intent.getIntExtra(ARGS_TAGS_SHIFT, 0)
                 typeController.onRequestUpdate(
+                    from = from,
                     typeId = typeId,
                     selectedTypeId = selectedTypeId,
                     typesShift = typesShift,
                     tagsShift = tagsShift,
                 )
             }
-            ACTION_NOTIFICATION_TAG_CLICK -> {
+            ACTION_NOTIFICATION_CONTROLS_TAG_CLICK -> {
+                val from = intent.getIntExtra(ARGS_CONTROLS_FROM, 0)
                 val typeId = intent.getLongExtra(ARGS_TYPE_ID, 0)
                 val selectedTypeId = intent.getLongExtra(ARGS_SELECTED_TYPE_ID, 0)
                 val tagId = intent.getLongExtra(ARGS_TAG_ID, 0)
                 val typesShift = intent.getIntExtra(ARGS_TYPES_SHIFT, 0)
                 typeController.onActionTagClick(
+                    from = from,
                     typeId = typeId,
                     selectedTypeId = selectedTypeId,
                     tagId = tagId,
@@ -236,7 +274,7 @@ class NotificationReceiver : BroadcastReceiver() {
         pomodoroController.onBootCompleted()
     }
 
-    private fun String.slipTagNames(): List<String> {
+    private fun String.splitTagNames(): List<String> {
         return split(',').map(String::trim)
     }
 

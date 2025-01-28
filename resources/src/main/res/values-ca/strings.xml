@@ -19,6 +19,7 @@
     <string name="select_nothing">No seleccioneu res</string>
     <string name="no_data">No hi ha dades</string>
     <string name="general_error">Alguna cosa va fallar. Torneu-ho a provar o reinicieu l\'aplicació.</string>
+    <string name="copied_to_clipboard">S\'ha copiat al porta-retalls</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ahir</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Sense enregistrar</string>
     <string name="uncategorized_time_name">Sense categoria</string>
     <string name="multitask_time_name">Multitasca</string>
-    <string name="running_record_goal_time">objectiu %s</string>
     <string name="record_types_empty">No s\'ha afegit cap activitat</string>
     <string name="record_tag_selection_hint">Seleccioneu etiqueta</string>
     <string name="time_now">Ara</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Accions</string>
     <string name="change_record_last_comments_hint">Últims comentaris</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
+    <string name="change_record_favourite_comments_hint_long">Comentaris preferits</string>
+    <string name="change_record_similar_comments_hint">Comentaris semblants</string>
     <string name="change_record_categories_empty">No s\'han afegit etiquetes</string>
     <string name="change_record_save">Desa</string>
     <string name="change_record_untagged">Sense etiquetar</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Introduïu un nom nou</string>
     <string name="change_record_type_new_icon_text_hint">Introduïu un nou text</string>
     <string name="change_record_type_color_hint">Color</string>
+    <string name="change_record_favourite_colors_hint">Colors preferits</string>
     <string name="change_record_type_icon_image_hint">Icona</string>
     <string name="change_record_type_icon_text_hint">Text</string>
     <string name="change_record_type_icon_emoji_hint">Emoticona</string>
     <string name="change_record_type_icon_search_hint">Cerca (en anglès)</string>
     <string name="change_record_type_no_icon">Sense icona</string>
+    <string name="change_record_favourite_icons_hint">Icones preferides</string>
     <string name="change_record_type_save">Desa</string>
     <string name="change_record_message_choose_name">Trieu un nom</string>
     <string name="change_record_message_name_exist">Nom ja utilitzat</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">No s\'han afegit categories</string>
     <string name="change_record_type_goal_time_disabled">Desactivat</string>
     <string name="change_record_type_goal_time_hint">Objectiu</string>
+    <string name="change_record_type_limit_time_hint">Límit</string>
     <string name="change_record_type_additional_hint">Addicional</string>
     <string name="change_record_type_default_duration">Durada per defecte</string>
     <string name="change_record_type_default_duration_hint">Les activitats amb una durada predeterminada es fan un seguiment immediatament en fer clic.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Trieu l\'acció</string>
     <string name="change_complex_rule_choose_condition">Trieu condicions</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Mostra suggeriments per a la següent activitat basats en l\'activitat actual o darrera</string>
+    <string name="activity_suggestions_calculate">Calcula a partir d\'estadístiques</string>
+    <string name="activity_suggestions_select_activity_hint">Es mostraran suggeriments per a les activitats seleccionades</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Filtres d\'activitat</string>
     <string name="change_activity_filter_removed">Filtre suprimit</string>
     <string name="change_activity_filter_save">Desa</string>
     <string name="change_activity_filter_type">Tipus de filtre</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Ajusteu el color</string>
     <string name="color_selection_final_color_hint">Color final</string>
 
-    <string name="csv_export_settings_range">Rang</string>
-    <string name="csv_export_settings_all">Tot</string>
+    <string name="csv_export_settings_filename_hint">Nom de fitxer personalitzat</string>
+    <string name="csv_export_settings_filename_default">Per defecte</string>
     <string name="csv_export_settings_hint">Seleccioneu un interval de temps o exporteu tots els enregistraments</string>
 
     <string name="schedule_exact_alarms">La configuració del sistema ha de ser habilitada per a aquesta aplicació per programar alarmes exactes</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">No tornis a mostrar</string>
 
     <string name="record_tag_selection_exclude_activities_title">Exclou activitats</string>
-    <string name="record_tag_selection_exclude_activities_hint">El diàleg de selecció d\'etiquetes no es mostrarà per a les activitats seleccionades.</string>
+    <string name="record_tag_selection_exclude_activities_hint">El diàleg no es mostrarà per a les activitats seleccionades.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Seleccioneu activitats</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro s\'iniciarà automàticament quan s\'iniciïn les activitats seleccionades.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Endreça els enregistraments</string>
     <string name="records_all_sort_time_started">Temps d\'inici</string>
     <string name="records_all_sort_duration">Durada</string>
-    <string name="records_all_search_comment">Cerca un comentari</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Per començar el seguiment, afegiu activitats fent clic al botó %s o utilitzeu els valors predeterminats fent clic al botó %s</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Nom</string>
     <string name="settings_sort_by_color">Color</string>
     <string name="settings_sort_manually">Manual</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Ordre de l\'activitat</string>
     <string name="settings_first_day_of_week">Primer dia de la setmana</string>
     <string name="settings_show_repeat_button">Mostra el botó de repetició a la pantalla principal</string>
     <string name="settings_repeat_button_type">Mode</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Mostra notificacions del temporitzador</string>
     <string name="settings_show_notifications_hint">Mostra notificacions quan el temporitzador sigui actiu.</string>
     <string name="settings_show_notifications_controls">Activa el canvi d\'activitat des de la notificació</string>
+    <string name="settings_show_notifications_controls_hint">També es pot utilitzar per canviar les activitats des de la pantalla de bloqueig.</string>
+    <string name="settings_show_notification_even_with_no_timers">Mostra fins i tot quan no s\'executa cap temporitzador</string>
     <string name="settings_keep_statistics_range">Mantingues el rang d\'estadístiques</string>
     <string name="settings_keep_statistics_range_hint">Si és habilitat, les estadístiques detallades s\'obriran amb el mateix rang de temps seleccionat a les estadístiques</string>
+    <string name="settings_retroactive_tracking_mode">Activa el seguiment de temps retroactiu</string>
+    <string name="settings_retroactive_tracking_mode_hint">Feu un seguiment del temps seleccionant quina activitat s\'ha fet des de l\'última vegada en lloc de quina activitat es farà a partir d\'ara.</string>
     <string name="settings_start_of_day">Canvia l\'inici del dia</string>
     <string name="settings_start_of_day_hint">L\'inici del dia es desplaçarà per la quantitat de temps especificada, cap endavant o cap enrere segons el signe.</string>
     <string name="settings_start_of_day_hint_value">Avui comença a %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Arxiu</string>
     <string name="settings_data_edit">Edició de dades</string>
     <string name="settings_complex_rules">Regles complexes</string>
+    <string name="settings_activity_suggestions">Suggeriments d\'activitats</string>
     <string name="settings_edit_categories">Edita les categories i etiquetes</string>
     <string name="settings_edit_categories_hint">Assigneu categories a activitats i etiquetes als enregistraments.</string>
     <string name="settings_show_record_tag_selection">Mostra selecció d\'etiquetes d\'enregistrament</string>
     <string name="settings_show_record_tag_selection_hint">Quan s\'iniciï un temporitzador, si l\'activitat té una etiqueta d\'enregistrament assignada, podreu triar l\'etiqueta amb una finestra de selecció.</string>
     <string name="settings_show_record_tag_close_hint">Tanca després de seleccionar una etiqueta</string>
+    <string name="settings_show_comment_input">Mostra l\'entrada de comentaris</string>
+    <string name="settings_show_comment_input_hint">Quan s\'inicia un temporitzador, es mostrarà un diàleg d\'entrada de comentaris.</string>
     <string name="settings_rate">Valoreu-nos</string>
     <string name="settings_rate_description">Valoreu l\'aplicació i deixeu un comentari</string>
     <string name="settings_support_development">Suport al desenvolupament</string>
@@ -348,29 +365,20 @@ Per activar aquest comportament, aquestes aplicacions han d\'admetre l\'enviamen
 <b>Action</b> - \"%s\" o \"%s\".<br/>
 <b>Extra</b> - \"%s\" amb el nom de l\'activitat que s\'ha d\'iniciar o aturar.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Paràmetres opcionals per començar l\'activitat:<br/>
-<br/>
-<b>Extra</b> - \"%s\" amb el comentari de l\'enregistrament.<br/>
-<b>Extra</b> - \"%s\" amb el nom d\'una etiqueta.<br/>
-<br/>
-Addicional:<br/>
-<br/>
-<b>Action</b>- \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" amb extres: \"%s\", \"%s\", \"%s\" i \"%s\", \"%s\" en el format \"aaaa-MM-dd HH:mm:ss\" o marca d\'hora UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Envia esdeveniments</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Si la configuració <b>\"%s\"</b> és habilitada, l\'aplicació enviarà esdeveniments sobre l\'activitat començada o aturada a aplicacions de tercers per un seguiment automàtic amb aquests paràmetres:<br/>
-<br/>
-<b>Action</b> - \"%s\" or \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Si la configuració <b>\"%s\"</b> és habilitada, l\'aplicació enviarà esdeveniments sobre l\'activitat començada o aturada a aplicacions de tercers per un seguiment automàtic.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Accions disponibles:</string>
+    <string name="settings_automated_tracking_available_events">Esdeveniments disponibles:</string>
+    <string name="settings_automated_tracking_extras_description">Descripció:</string>
+    <string name="settings_automated_tracking_extra_name">amb el nom de l\'activitat que s\'ha d\'iniciar o aturar.</string>
+    <string name="settings_automated_tracking_extra_tag">amb el nom d\'una etiqueta. O una llista de noms d\'etiquetes separats per comes.</string>
+    <string name="settings_automated_tracking_extra_time">en el format \"aaaa-MM-dd HH:mm:ss\" o marca d\'hora UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">selecciona quin registre es canviarà.</string>
+    <string name="settings_automated_tracking_comment_mode">selecciona com canviar el comentari del registre seleccionat.</string>
+    <string name="settings_automated_tracking_find_with_activity">a més, selecciona registre per nom de l\'activitat, si hi ha diversos registres actuals o darrers.</string>
 
     <string name="settings_save_backup">Desa còpia de seguretat</string>
     <string name="settings_save_description">Abans de desar, assegureu-vos de tenir l\'última versió de l\'aplicació instal·lada per evitar conflictes.</string>
@@ -380,6 +388,7 @@ Si la configuració <b>\"%s\"</b> és habilitada, l\'aplicació enviarà esdeven
     <string name="settings_automatic_last_save">Últim desat:</string>
     <string name="settings_restore_backup">Recupera còpia de seguretat</string>
     <string name="settings_restore_description">Les dades actuals s\'esborraran.</string>
+    <string name="settings_backup_options">Opcions avançades</string>
     <string name="settings_dialog_message">Voleu restaurar la còpia de seguretat?</string>
     <string name="settings_export_csv">Exporta a full de càlcul</string>
     <string name="settings_export_csv_description">Exporteu els enregistraments de l\'activitat com un fitxer csv per a veure\'ls al programa de fulls de càlcul preferit.</string>
@@ -412,9 +421,22 @@ Exemple:<br/>
     <string name="message_import_complete">Importació completada</string>
     <string name="message_import_complete_hint">Registres afegits: %s</string>
     <string name="message_import_error">Error d\'importació</string>
+    <string name="message_action_share">Comparteix</string>
     <string name="message_automatic_backup_error">Hi ha hagut un error amb la còpia de seguretat automàtica.</string>
     <string name="message_automatic_export_error">Hi ha hagut un error amb l\'exportació automàtica.</string>
     <string name="message_automatic_error_hint">Proveu de seleccionar una ubicació diferent</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Importar</string>
+    <string name="backup_options_save_without_records">Desa còpia de seguretat sense registres</string>
+    <string name="backup_options_save_without_records_hint">Es pot utilitzar per compartir la configuració.</string>
+    <string name="backup_options_full_restore">Restauració completa</string>
+    <string name="backup_options_full_restore_hint">Restaura les dades i la configuració. Requereix el reinici de l\'aplicació.</string>
+    <string name="backup_options_partial_restore">Importa dades des de la còpia de seguretat</string>
+    <string name="backup_options_partial_restore_hint">Permet triar quines dades importar. Les dades actuals no es perdran.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Seleccioneu quines dades s\'importaran del fitxer.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">hora</string>
@@ -427,6 +449,7 @@ Exemple:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Dividit per activitat</string>
 
     <string name="statistics_detail_range_averages_title">Mitjana per període: %s</string>
     <string name="statistics_detail_range_averages">Per a tot el rang</string>
@@ -449,12 +472,16 @@ Exemple:<br/>
     <string name="statistics_detail_streaks_latest">Última</string>
     <string name="statistics_detail_streaks_any">Qualsevol durada</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Distribució de l\'activitat</string>
-    <string name="statistics_detail_tag_split_hint">Distribució d\'etiquetes</string>
+    <string name="statistics_detail_data_split_hint">Distribució</string>
+    <string name="statistics_detail_data_split_pie_chart">Cercle</string>
+    <string name="statistics_detail_data_split_bar_chart">Columnes</string>
     <string name="statistics_detail_day_split_hint">Distribució diària</string>
     <string name="statistics_detail_duration_split_hint">Distribució de la durada de l\'enregistrament</string>
     <string name="statistics_detail_next_activities_hint">Les properes activitats principals</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasca</string>
+    <string name="statistics_detail_goals_hint">Excés o dèficit d\'objectius</string>
+    <string name="statistics_detail_goals_excess">Excés</string>
+    <string name="statistics_detail_goals_deficit">Dèficit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Enregistraments</item>-->
@@ -477,8 +504,10 @@ Exemple:<br/>
     <string name="notification_inactivity_text">No us oblideu d\'enregistrar el temps</string>
     <string name="notification_activity_title">Recordatori d\'activitat</string>
     <string name="notification_activity_text">Encara estàs fent: %s?</string>
-    <string name="notification_goal_time_description">Heu assolit l\'objectiu</string>
+    <string name="notification_goal_time_description">heu assolit l\'objectiu</string>
+    <string name="notification_limit_time_description">límit assolit</string>
     <string name="notification_time_started">Començat a %s</string>
+    <string name="notification_time_ended">S\'ha acabat a les %s</string>
     <string name="notification_record_type_stop">Atura</string>
     <string name="notification_pomodoro_subtitle">Inici: %s (%s)</string>
 
@@ -502,14 +531,18 @@ Exemple:<br/>
     <string name="data_edit_hint">Aquests canvis no es poden desfer. Assegureu-vos de crear un fitxer de còpia de seguretat abans de fer res.</string>
     <string name="data_edit_select_records">Seleccioneu registres</string>
     <string name="data_edit_change_activity">Canvia l\'activitat</string>
+    <string name="data_edit_change_tag">Canvia les etiquetes</string>
     <string name="data_edit_change_activity_hint">Les etiquetes de l\'activitat actual s\'eliminaran.</string>
     <string name="data_edit_change_comment">Canvia el comentari</string>
     <string name="data_edit_change_add_tag">Afegeix etiquetes</string>
     <string name="data_edit_change_remove_tag">Elimina les etiquetes</string>
     <string name="data_edit_button_change">Canviar</string>
+    <string name="data_edit_button_delete_records">Suprimeix tots els registres</string>
+    <string name="data_edit_button_delete_data">Suprimeix totes les dades</string>
     <string name="data_edit_success_message">Dades canviades</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplicacions</string>
     <string name="records_filter_select_tags">Seleccioneu etiquetes</string>
     <string name="records_filter_filter_tags">Exclou etiquetes</string>
     <string name="records_filter_manually_filtered">Filtrat</string>
@@ -517,12 +550,20 @@ Exemple:<br/>
     <string name="records_filter_any_comment">Qualsevol comentari</string>
     <string name="records_filter_select">Seleccioneu</string>
     <string name="records_filter_invert_selection">Inverteix la selecció</string>
+    <string name="records_filter_duration_min">Mínim</string>
+    <string name="records_filter_duration_max">Màxim</string>
+    <string name="records_filter_duplications_same_activity">La mateixa activitat</string>
+    <string name="records_filter_duplications_same_times">El mateix temps</string>
+    <string name="records_filter_duplications_manually_fitler">Filtra els duplicats</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Enfocament</string>
     <string name="pomodoro_state_break">Pausa</string>
     <string name="pomodoro_state_long_break">Pausa llarga</string>
     <string name="pomodoro_settings_periods_until_long_break">Períodes fins a una pausa llarga</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Seleccioneu el que heu estat fent</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Emoticones i Emocions</string>

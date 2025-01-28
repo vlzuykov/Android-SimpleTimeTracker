@@ -8,18 +8,21 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.example.util.simpletimetracker.core.R
+import com.example.util.simpletimetracker.core.base.BaseFragment
 import com.example.util.simpletimetracker.core.databinding.IconSelectionLayoutBinding
-import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionCategoryInfoViewData
+import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionScrollViewData
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionSelectorStateViewData
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionStateViewData
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewData.IconSelectionSwitchViewData
+import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.repo.DeviceRepo
 import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
-import com.example.util.simpletimetracker.domain.model.IconEmojiType
-import com.example.util.simpletimetracker.domain.model.IconImageState
-import com.example.util.simpletimetracker.domain.model.IconType
+import com.example.util.simpletimetracker.domain.icon.IconEmojiType
+import com.example.util.simpletimetracker.domain.icon.IconImageState
+import com.example.util.simpletimetracker.domain.icon.IconType
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
@@ -91,6 +94,66 @@ object IconSelectionViewDelegate {
         )
     }
 
+    fun <T : ViewBinding> initViewModel(
+        fragment: BaseFragment<T>,
+        viewModel: IconSelectionViewModelDelegate,
+        layout: IconSelectionLayoutBinding,
+        iconsAdapter: BaseRecyclerAdapter,
+        iconCategoriesAdapter: BaseRecyclerAdapter,
+        iconsLayoutManager: GridLayoutManager?,
+    ) {
+        fragment.initIconSelectionViewModel(
+            viewModel = viewModel,
+            layout = layout,
+            iconsAdapter = iconsAdapter,
+            iconCategoriesAdapter = iconCategoriesAdapter,
+            iconsLayoutManager = iconsLayoutManager,
+        )
+    }
+
+    private fun <T : ViewBinding> BaseFragment<T>.initIconSelectionViewModel(
+        viewModel: IconSelectionViewModelDelegate,
+        layout: IconSelectionLayoutBinding,
+        iconsAdapter: BaseRecyclerAdapter,
+        iconCategoriesAdapter: BaseRecyclerAdapter,
+        iconsLayoutManager: GridLayoutManager?,
+    ) = with(viewModel) {
+        icons.observe {
+            updateIconsState(
+                state = it,
+                layout = layout,
+                iconsAdapter = iconsAdapter,
+            )
+        }
+        iconCategories.observe {
+            updateIconCategories(
+                data = it,
+                iconCategoriesAdapter = iconCategoriesAdapter,
+            )
+        }
+        iconsTypeViewData.observe {
+            updateIconsTypeViewData(
+                data = it,
+                layout = layout,
+            )
+        }
+        iconSelectorViewData.observe {
+            updateIconSelectorViewData(
+                data = it,
+                layout = layout,
+            )
+        }
+        expandIconTypeSwitch.observe {
+            updateBarExpanded(layout)
+        }
+        iconsScrollPosition.observe {
+            if (it is IconSelectionScrollViewData.ScrollTo) {
+                iconsLayoutManager?.scrollToPositionWithOffset(it.position, 0)
+                onScrolled()
+            }
+        }
+    }
+
     fun onDestroyView(
         textWatcher: TextWatcher?,
         layout: IconSelectionLayoutBinding,
@@ -112,20 +175,20 @@ object IconSelectionViewDelegate {
         etIconSelectionText.doAfterTextChanged { viewModel.onIconTextChange(it.toString()) }
     }
 
-    fun updateBarExpanded(
+    private fun updateBarExpanded(
         layout: IconSelectionLayoutBinding,
     ) = with(layout) {
         appBarIconSelection.setExpanded(true)
     }
 
-    fun updateIconsTypeViewData(
+    private fun updateIconsTypeViewData(
         data: List<ViewHolderType>,
         layout: IconSelectionLayoutBinding,
     ) = with(layout) {
         btnIconSelectionSwitch.adapter.replace(data)
     }
 
-    fun updateIconsState(
+    private fun updateIconsState(
         state: IconSelectionStateViewData,
         layout: IconSelectionLayoutBinding,
         iconsAdapter: BaseRecyclerAdapter,
@@ -143,7 +206,7 @@ object IconSelectionViewDelegate {
         }
     }
 
-    fun updateIconCategories(
+    private fun updateIconCategories(
         data: List<ViewHolderType>,
         iconCategoriesAdapter: BaseRecyclerAdapter,
     ) {
@@ -199,7 +262,7 @@ object IconSelectionViewDelegate {
             ?.scrollFlags = scrollFlags
     }
 
-    fun updateIconSelectorViewData(
+    private fun updateIconSelectorViewData(
         data: IconSelectionSelectorStateViewData,
         layout: IconSelectionLayoutBinding,
     ) = with(layout) {

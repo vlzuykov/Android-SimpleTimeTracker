@@ -4,11 +4,10 @@ import com.example.util.simpletimetracker.core.base.SingleLiveEvent
 import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.interactor.LanguageInteractor
-import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
-import com.example.util.simpletimetracker.domain.model.WidgetType
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
 import com.example.util.simpletimetracker.feature_settings.interactor.SettingsMainViewDataInteractor
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.navigation.Router
@@ -22,7 +21,7 @@ class SettingsMainViewModelDelegate @Inject constructor(
     private val prefsInteractor: PrefsInteractor,
     private val languageInteractor: LanguageInteractor,
     private val settingsMapper: SettingsMapper,
-    private val widgetInteractor: WidgetInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val settingsMainViewDataInteractor: SettingsMainViewDataInteractor,
 ) : ViewModelDelegate() {
 
@@ -71,7 +70,7 @@ class SettingsMainViewModelDelegate @Inject constructor(
         delegateScope.launch {
             val newValue = !prefsInteractor.getAllowMultitasking()
             prefsInteractor.setAllowMultitasking(newValue)
-            widgetInteractor.updateWidgets(listOf(WidgetType.QUICK_SETTINGS))
+            externalViewsInteractor.onAllowMultitaskingChange()
             parent?.updateContent()
         }
     }

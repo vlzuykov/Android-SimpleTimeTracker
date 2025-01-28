@@ -3,7 +3,7 @@ package com.example.util.simpletimetracker.feature_settings.interactor
 import com.example.util.simpletimetracker.core.extension.shiftTimeStamp
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.R
 import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
@@ -85,11 +85,34 @@ class SettingsAdditionalViewDataInteractor @Inject constructor(
                 )
             }
 
+            val showCommentInput = prefsInteractor.getShowCommentInput()
+            result += SettingsCheckboxWithButtonViewData(
+                data = SettingsCheckboxViewData(
+                    block = SettingsBlock.AdditionalShowCommentInput,
+                    title = resourceRepo.getString(R.string.settings_show_comment_input),
+                    subtitle = resourceRepo.getString(R.string.settings_show_comment_input_hint),
+                    isChecked = showCommentInput,
+                    bottomSpaceIsVisible = true,
+                    dividerIsVisible = true,
+                ),
+                buttonBlock = SettingsBlock.AdditionalCommentInputExcludeActivities,
+                isButtonVisible = showCommentInput,
+            )
+
             result += SettingsCheckboxViewData(
                 block = SettingsBlock.AdditionalKeepStatisticsRange,
                 title = resourceRepo.getString(R.string.settings_keep_statistics_range),
                 subtitle = resourceRepo.getString(R.string.settings_keep_statistics_range_hint),
                 isChecked = prefsInteractor.getKeepStatisticsRange(),
+                bottomSpaceIsVisible = true,
+                dividerIsVisible = true,
+            )
+
+            result += SettingsCheckboxViewData(
+                block = SettingsBlock.AdditionalRetroactiveTrackingMode,
+                title = resourceRepo.getString(R.string.settings_retroactive_tracking_mode),
+                subtitle = resourceRepo.getString(R.string.settings_retroactive_tracking_mode_hint),
+                isChecked = prefsInteractor.getRetroactiveTrackingMode(),
                 bottomSpaceIsVisible = true,
                 dividerIsVisible = true,
             )
@@ -158,6 +181,11 @@ class SettingsAdditionalViewDataInteractor @Inject constructor(
             result += SettingsTextViewData(
                 block = SettingsBlock.AdditionalComplexRules,
                 title = resourceRepo.getString(R.string.settings_complex_rules),
+                subtitle = "",
+            )
+            result += SettingsTextViewData(
+                block = SettingsBlock.AdditionalActivitySuggestions,
+                title = resourceRepo.getString(R.string.settings_activity_suggestions),
                 subtitle = "",
                 dividerIsVisible = false,
             )

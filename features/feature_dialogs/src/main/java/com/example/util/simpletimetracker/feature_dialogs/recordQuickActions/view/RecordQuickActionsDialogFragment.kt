@@ -4,30 +4,36 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.util.simpletimetracker.core.base.BaseBottomSheetFragment
 import com.example.util.simpletimetracker.core.di.BaseViewModelFactory
 import com.example.util.simpletimetracker.core.dialog.RecordQuickActionDialogListener
+import com.example.util.simpletimetracker.core.dialog.TypesSelectionDialogListener
 import com.example.util.simpletimetracker.core.extension.findListener
 import com.example.util.simpletimetracker.core.extension.setSkipCollapsed
 import com.example.util.simpletimetracker.core.sharedViewModel.RemoveRecordViewModel
 import com.example.util.simpletimetracker.core.utils.fragmentArgumentDelegate
 import com.example.util.simpletimetracker.domain.extension.orZero
+import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.adapter.RecordQuickActionsWidthHolder
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.adapter.createRecordQuickActionsButtonAdapterDelegate
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.adapter.createRecordQuickActionsButtonBigAdapterDelegate
+import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.model.RecordQuickActionsButton
 import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.model.RecordQuickActionsState
 import com.example.util.simpletimetracker.feature_dialogs.recordQuickActions.viewModel.RecordQuickActionsViewModel
-import com.example.util.simpletimetracker.feature_views.extension.setOnClick
-import com.example.util.simpletimetracker.feature_views.extension.visible
+import com.example.util.simpletimetracker.feature_views.extension.setSpanSizeLookup
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordParams
 import com.example.util.simpletimetracker.navigation.params.screen.RecordQuickActionsParams
-import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.example.util.simpletimetracker.feature_dialogs.databinding.RecordQuickActionsDialogFragmentBinding as Binding
 
 @AndroidEntryPoint
-class RecordQuickActionsDialogFragment : BaseBottomSheetFragment<Binding>() {
+class RecordQuickActionsDialogFragment :
+    BaseBottomSheetFragment<Binding>(),
+    TypesSelectionDialogListener {
 
     override val inflater: (LayoutInflater, ViewGroup?, Boolean) -> Binding =
         Binding::inflate
@@ -39,6 +45,13 @@ class RecordQuickActionsDialogFragment : BaseBottomSheetFragment<Binding>() {
     private val removeRecordViewModel: RemoveRecordViewModel by activityViewModels(
         factoryProducer = { removeRecordViewModelFactory },
     )
+
+    private val contentAdapter: BaseRecyclerAdapter by lazy {
+        BaseRecyclerAdapter(
+            createRecordQuickActionsButtonBigAdapterDelegate(::onButtonClick),
+            createRecordQuickActionsButtonAdapterDelegate(::onButtonClick),
+        )
+    }
 
     private val params: RecordQuickActionsParams by fragmentArgumentDelegate(
         key = ARGS_PARAMS, default = RecordQuickActionsParams(),
@@ -54,47 +67,28 @@ class RecordQuickActionsDialogFragment : BaseBottomSheetFragment<Binding>() {
         setSkipCollapsed()
     }
 
-    override fun initUx(): Unit = with(binding) {
-        btnRecordQuickActionsDelete.setOnClick {
-            viewModel.onDeleteClicked()
-            removeRecordViewModel.onDeleteClick(ChangeRecordParams.From.Records)
+    override fun initUi(): Unit = with(binding) {
+        rvRecordQuickActions.apply {
+            val manager = GridLayoutManager(context, SPAN_COUNT)
+            layoutManager = manager
+            adapter = contentAdapter
+            setIconsSpanSize(manager, contentAdapter)
         }
-        btnRecordQuickActionsStatistics.setOnClick(viewModel::onStatisticsClicked)
-        btnRecordQuickActionsContinue.setOnClick(viewModel::onContinueClicked)
-        btnRecordQuickActionsRepeat.setOnClick(viewModel::onRepeatClicked)
-        btnRecordQuickActionsDuplicate.setOnClick(viewModel::onDuplicateClicked)
-        btnRecordQuickActionsMerge.setOnClick(viewModel::onMergeClicked)
     }
 
     override fun initViewModel(): Unit = with(viewModel) {
         extra = params
         state.observe(::updateState)
-        buttonsEnabled.observe(::updateButtonsEnabled)
         actionComplete.observe { onActionComplete() }
         prepareRemoveRecordViewModel()
     }
 
-    private fun updateState(state: RecordQuickActionsState) = with(binding) {
-        fun CardView.setButtonState(state: RecordQuickActionsState.Button?) {
-            if (state != null) {
-                this.visible = true
-                (layoutParams as? FlexboxLayout.LayoutParams)?.apply {
-                    isWrapBefore = state.wrapBefore
-                }
-            } else {
-                this.visible = false
-            }
-        }
-
-        getButtonsList().forEach { (view, clazz) ->
-            state.buttons.firstOrNull { it::class.java == clazz }.let(view::setButtonState)
-        }
+    override fun onDataSelected(dataIds: List<Long>, tag: String?) {
+        viewModel.onTypesSelected(dataIds, tag)
     }
 
-    private fun updateButtonsEnabled(isEnabled: Boolean) {
-        getButtonsList().forEach { (view, _) ->
-            view.isEnabled = isEnabled
-        }
+    private fun updateState(state: RecordQuickActionsState) {
+        contentAdapter.replace(state.buttons)
     }
 
     private fun prepareRemoveRecordViewModel() {
@@ -106,19 +100,28 @@ class RecordQuickActionsDialogFragment : BaseBottomSheetFragment<Binding>() {
         listener?.onActionComplete()
     }
 
-    private fun getButtonsList(): List<Pair<CardView, Class<out RecordQuickActionsState.Button>>> = with(binding) {
-        return listOf(
-            btnRecordQuickActionsStatistics to RecordQuickActionsState.Button.Statistics::class.java,
-            btnRecordQuickActionsDelete to RecordQuickActionsState.Button.Delete::class.java,
-            btnRecordQuickActionsContinue to RecordQuickActionsState.Button.Continue::class.java,
-            btnRecordQuickActionsRepeat to RecordQuickActionsState.Button.Repeat::class.java,
-            btnRecordQuickActionsDuplicate to RecordQuickActionsState.Button.Duplicate::class.java,
-            btnRecordQuickActionsMerge to RecordQuickActionsState.Button.Merge::class.java,
-        )
+    private fun setIconsSpanSize(
+        layoutManager: GridLayoutManager?,
+        adapter: BaseRecyclerAdapter,
+    ) {
+        layoutManager?.setSpanSizeLookup { position ->
+            val item = adapter.getItemByPosition(position)
+            val isFullWidth = item is RecordQuickActionsWidthHolder &&
+                item.width is RecordQuickActionsWidthHolder.Width.Full
+            if (isFullWidth) SPAN_COUNT else 1
+        }
+    }
+
+    private fun onButtonClick(block: RecordQuickActionsButton) {
+        viewModel.onButtonClick(block)
+        if (block == RecordQuickActionsButton.DELETE) {
+            removeRecordViewModel.onDeleteClick(ChangeRecordParams.From.Records)
+        }
     }
 
     companion object {
         private const val ARGS_PARAMS = "args_params"
+        private const val SPAN_COUNT = 2
 
         fun createBundle(data: RecordQuickActionsParams): Bundle = Bundle().apply {
             putParcelable(ARGS_PARAMS, data)

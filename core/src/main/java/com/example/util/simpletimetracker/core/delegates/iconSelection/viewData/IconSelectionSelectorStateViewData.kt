@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.core.delegates.iconSelection.viewData
 
 import androidx.annotation.ColorInt
-import com.example.util.simpletimetracker.domain.model.IconImageState
+import com.example.util.simpletimetracker.domain.icon.IconImageState
 
 sealed interface IconSelectionSelectorStateViewData {
 

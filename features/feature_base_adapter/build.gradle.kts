@@ -1,11 +1,10 @@
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    alias(libs.plugins.gradleLibrary)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
 }
 
 applyAndroidLibrary()
@@ -17,11 +16,12 @@ android {
 dependencies {
     implementation(project(":feature_views"))
     implementation(project(":domain"))
+    implementation(project(":resources"))
 
-    implementation(Deps.Androidx.recyclerView)
-    implementation(Deps.Androidx.constraintLayout)
-    implementation(Deps.Androidx.cardView)
-    implementation(Deps.Androidx.material)
-    implementation(Deps.Google.flexBox)
-    implementation(Deps.Ktx.core)
+    implementation(libs.androidx.recyclerView)
+    implementation(libs.androidx.constraintLayout)
+    implementation(libs.androidx.cardView)
+    implementation(libs.androidx.material)
+    implementation(libs.google.flexBox)
+    implementation(libs.ktx.core)
 }

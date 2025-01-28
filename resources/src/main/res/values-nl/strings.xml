@@ -19,6 +19,7 @@
     <string name="select_nothing">Selecteer niets</string>
     <string name="no_data">Geen gegevens</string>
     <string name="general_error">Er is iets misgegaan. Probeer het opnieuw of start de app opnieuw.</string>
+    <string name="copied_to_clipboard">Gekopieerd naar klembord</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Gisteren</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Niet bijgehouden</string>
     <string name="uncategorized_time_name">Niet gecategoriseerd</string>
     <string name="multitask_time_name">Multitasken</string>
-    <string name="running_record_goal_time">doel %s</string>
     <string name="record_types_empty">Geen activiteiten toegevoegd</string>
     <string name="record_tag_selection_hint">Selecteer recordlabel</string>
     <string name="time_now">Nu</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Acties</string>
     <string name="change_record_last_comments_hint">Laatste opmerkingen</string>
     <string name="change_record_favourite_comments_hint">Favoriet</string>
+    <string name="change_record_favourite_comments_hint_long">Favoriete opmerkingen</string>
+    <string name="change_record_similar_comments_hint">Soortgelijke opmerkingen</string>
     <string name="change_record_categories_empty">Geen opname labels toegevoegd</string>
     <string name="change_record_save">Opslaan</string>
     <string name="change_record_untagged">Niet gelabeld</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Nieuwe naam invoeren</string>
     <string name="change_record_type_new_icon_text_hint">Voer nieuwe tekst in</string>
     <string name="change_record_type_color_hint">Kleur</string>
+    <string name="change_record_favourite_colors_hint">Favoriete kleuren</string>
     <string name="change_record_type_icon_image_hint">Icoon</string>
     <string name="change_record_type_icon_text_hint">Tekst</string>
     <string name="change_record_type_icon_emoji_hint">Emoji</string>
     <string name="change_record_type_icon_search_hint">Zoeken (in het Engels)</string>
     <string name="change_record_type_no_icon">Geen pictogram</string>
+    <string name="change_record_favourite_icons_hint">Favoriete iconen</string>
     <string name="change_record_type_save">Opslaan</string>
     <string name="change_record_message_choose_name">Kies een naam</string>
     <string name="change_record_message_name_exist">Naam al gebruikt</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">Geen categorieën toegevoegd</string>
     <string name="change_record_type_goal_time_disabled">Uitgeschakeld</string>
     <string name="change_record_type_goal_time_hint">Doel</string>
+    <string name="change_record_type_limit_time_hint">Beperken</string>
     <string name="change_record_type_additional_hint">Aanvullend</string>
     <string name="change_record_type_default_duration">Standaardduur</string>
     <string name="change_record_type_default_duration_hint">Activiteiten met een standaardduur worden onmiddellijk na klikken gevolgd.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Kies actie</string>
     <string name="change_complex_rule_choose_condition">Kies voorwaarden</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Geeft suggesties voor de volgende activiteit op basis van de huidige of laatste activiteit</string>
+    <string name="activity_suggestions_calculate">Berekenen vanuit statistieken</string>
+    <string name="activity_suggestions_select_activity_hint">Er worden suggesties getoond voor geselecteerde activiteiten</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Activiteitsfilters</string>
     <string name="change_activity_filter_removed">Filter verwijderd</string>
     <string name="change_activity_filter_save">Opslaan</string>
     <string name="change_activity_filter_type">Filtertype</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Kleur aanpassen</string>
     <string name="color_selection_final_color_hint">Eindkleur</string>
 
-    <string name="csv_export_settings_range">Bereik</string>
-    <string name="csv_export_settings_all">Alles</string>
+    <string name="csv_export_settings_filename_hint">Aangepaste bestandsnaam</string>
+    <string name="csv_export_settings_filename_default">Standaard</string>
     <string name="csv_export_settings_hint">Selecteer tijdbereik of exporteer alle records</string>
 
     <string name="schedule_exact_alarms">Systeeminstellingen moeten voor deze app zijn ingeschakeld om exacte alarmen in te plannen</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">Niet meer laten zien</string>
 
     <string name="record_tag_selection_exclude_activities_title">Exclusief activiteiten</string>
-    <string name="record_tag_selection_exclude_activities_hint">Het dialoogvenster voor tagselectie wordt niet weergegeven voor geselecteerde activiteiten.</string>
+    <string name="record_tag_selection_exclude_activities_hint">Dialoogvenster wordt niet weergegeven voor geselecteerde activiteiten.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Selecteer activiteiten</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro wordt automatisch gestart wanneer geselecteerde activiteiten worden gestart.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Records sorteren</string>
     <string name="records_all_sort_time_started">Tijd begonnen</string>
     <string name="records_all_sort_duration">Looptijd</string>
-    <string name="records_all_search_comment">Opmerking zoeken</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Om het volgen te starten, voegt u activiteiten toe door op de %s-knop te klikken of gebruikt u standaardinstellingen door op de %s-knop te klikken</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Naam</string>
     <string name="settings_sort_by_color">Kleur</string>
     <string name="settings_sort_manually">Handmatig</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Volgorde van activiteit</string>
     <string name="settings_first_day_of_week">Eerste dag van de week</string>
     <string name="settings_show_repeat_button">Toon de herhaalknop op het hoofdscherm</string>
     <string name="settings_repeat_button_type">Modus</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Timer-meldingen tonen</string>
     <string name="settings_show_notifications_hint">Toon meldingen wanneer timers lopen.</string>
     <string name="settings_show_notifications_controls">Schakel overschakelen van activiteit vanuit melding in</string>
+    <string name="settings_show_notifications_controls_hint">Kan ook worden gebruikt om van activiteit te wisselen vanaf het vergrendelscherm.</string>
+    <string name="settings_show_notification_even_with_no_timers">Toon zelfs als er geen timers actief zijn</string>
     <string name="settings_keep_statistics_range">Statistiekbereik behouden</string>
     <string name="settings_keep_statistics_range_hint">Indien ingeschakeld worden gedetailleerde statistieken geopend met hetzelfde tijdbereik geselecteerd in statistieken.</string>
+    <string name="settings_retroactive_tracking_mode">Schakel tijdregistratie met terugwerkende kracht in</string>
+    <string name="settings_retroactive_tracking_mode_hint">Houd de tijd bij door te selecteren welke activiteit sinds de vorige keer is uitgevoerd, in plaats van welke activiteit vanaf nu zal worden uitgevoerd.</string>
     <string name="settings_start_of_day">Shift begin van de dag</string>
     <string name="settings_start_of_day_hint">Het begin van de dag wordt verschoven met de opgegeven hoeveelheid tijd, vooruit of achteruit, afhankelijk van het teken.</string>
     <string name="settings_start_of_day_hint_value">Vandaag begint bij %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Archief</string>
     <string name="settings_data_edit">Gegevens bewerken</string>
     <string name="settings_complex_rules">Complexe regels</string>
+    <string name="settings_activity_suggestions">Suggesties voor activiteiten</string>
     <string name="settings_edit_categories">Categorieën en labels bewerken</string>
     <string name="settings_edit_categories_hint">Wijs categorieën toe aan activiteiten en labels aan records.</string>
     <string name="settings_show_record_tag_selection">Toon opname label selectie</string>
     <string name="settings_show_record_tag_selection_hint">Als bij het starten van een timer, een activiteit opname labels heeft, wordt er een selectiedialoogvenster weergegeven.</string>
     <string name="settings_show_record_tag_close_hint">Sluiten na het selecteren van een label</string>
+    <string name="settings_show_comment_input">Toon commentaarinvoer</string>
+    <string name="settings_show_comment_input_hint">Bij het starten van een timer wordt een dialoogvenster voor commentaarinvoer weergegeven.</string>
     <string name="settings_rate">Beoordeel ons</string>
     <string name="settings_rate_description">Beoordeel de app en laat een recensie achter.</string>
     <string name="settings_support_development">Ondersteuning van ontwikkeling</string>
@@ -348,29 +365,20 @@ Om dit gedrag mogelijk te maken, moeten deze toepassingen het verzenden van \"in
 <b>Action</b> - \"%s\" of \"%s\".<br/>
 <b>Extra</b> - \"%s\" met de naam van de activiteit die moet worden gestart of gestopt.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Optionele parameters voor het starten van activiteit:<br/>
-<br/>
-<b>Extra</b> - \"%s\" met recordopmerking.<br/>
-<b>Extra</b> - \"%s\" met de naam van een recordtag.<br/>
-<br/>
-Aanvullend:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" met extra\'s: \"%s\", \"%s\", \"%s\" en \"%s\", \"%s\" in de notatie \"jjjj-MM-dd HH:mm:ss\" of UTC-tijdstempel.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Stuur evenementen</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Als de instelling <b>\"%s\"</b> is ingeschakeld, stuurt de app gebeurtenissen over gestarte of gestopte activiteit naar applicaties van derden voor automatische tracking met deze parameters:<br/>
-<br/>
-<b>Action</b> - \"%s\" of \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Als de instelling <b>\"%s\"</b> is ingeschakeld, stuurt de app gebeurtenissen over gestarte of gestopte activiteit naar applicaties van derden voor automatische tracking.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Beschikbare acties:</string>
+    <string name="settings_automated_tracking_available_events">Beschikbare evenementen:</string>
+    <string name="settings_automated_tracking_extras_description">Beschrijving:</string>
+    <string name="settings_automated_tracking_extra_name">met de naam van de activiteit die moet worden gestart of gestopt.</string>
+    <string name="settings_automated_tracking_extra_tag">met de naam van een recordtag. Of een lijst met tagnamen, gescheiden door een komma.</string>
+    <string name="settings_automated_tracking_extra_time">in de notatie \"jjjj-MM-dd HH:mm:ss\" of UTC-tijdstempel.</string>
+    <string name="settings_automated_tracking_find_record_mode">selecteert welke record gewijzigd moet worden.</string>
+    <string name="settings_automated_tracking_comment_mode">selecteert hoe de opmerking van het geselecteerde record moet worden gewijzigd.</string>
+    <string name="settings_automated_tracking_find_with_activity">selecteert bovendien records op basis van de activiteitsnaam, als er meerdere huidige of laatste records zijn.</string>
 
     <string name="settings_save_backup">Back-up opslaan</string>
     <string name="settings_save_description">Zorg ervoor dat je de nieuwste versie van de app hebt geïnstalleerd voordat je opslaat om conflicten te voorkomen.</string>
@@ -380,6 +388,7 @@ Als de instelling <b>\"%s\"</b> is ingeschakeld, stuurt de app gebeurtenissen ov
     <string name="settings_automatic_last_save">Laatste opslag:</string>
     <string name="settings_restore_backup">Back-up terugzetten</string>
     <string name="settings_restore_description">De huidige gegevens gaan verloren.</string>
+    <string name="settings_backup_options">Geavanceerde opties</string>
     <string name="settings_dialog_message">Back-up terugzetten?</string>
     <string name="settings_export_csv">Spreadsheet exporteren</string>
     <string name="settings_export_csv_description">Exporteer activiteitenrecords als een csv-bestand om ze te bekijken in een voorkeurspreadsheet-applicatie.</string>
@@ -412,9 +421,22 @@ Voorbeeld:<br/>
     <string name="message_import_complete">Importeren voltooid</string>
     <string name="message_import_complete_hint">Records toegevoegd: %s</string>
     <string name="message_import_error">Fout importeren</string>
+    <string name="message_action_share">Deel</string>
     <string name="message_automatic_backup_error">Er is een fout opgetreden bij de automatische back-up.</string>
     <string name="message_automatic_export_error">Er is een fout opgetreden bij het automatisch exporteren.</string>
     <string name="message_automatic_error_hint">Probeer een andere locatie te selecteren</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Importeren</string>
+    <string name="backup_options_save_without_records">Sla een back-up op zonder records</string>
+    <string name="backup_options_save_without_records_hint">Kan worden gebruikt om de opstelling te delen.</string>
+    <string name="backup_options_full_restore">Volledig herstel</string>
+    <string name="backup_options_full_restore_hint">Herstelt gegevens en instellingen. Vereist herstart van de app.</string>
+    <string name="backup_options_partial_restore">Importeer gegevens uit een back-up</string>
+    <string name="backup_options_partial_restore_hint">Hiermee kunt u kiezen welke gegevens u wilt importeren. Actuele gegevens gaan niet verloren.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Selecteer welke gegevens uit het bestand worden geïmporteerd.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">elk uur</string>
@@ -427,6 +449,7 @@ Voorbeeld:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">u</string>
+    <string name="statistics_detail_chart_split">Opgesplitst per activiteit</string>
 
     <string name="statistics_detail_range_averages_title">Gemiddelde voor periode: %s</string>
     <string name="statistics_detail_range_averages">Voor het hele bereik</string>
@@ -449,12 +472,16 @@ Voorbeeld:<br/>
     <string name="statistics_detail_streaks_latest">Laatste</string>
     <string name="statistics_detail_streaks_any">Elke duur</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Activiteitsverdeling</string>
-    <string name="statistics_detail_tag_split_hint">Label verdeling</string>
+    <string name="statistics_detail_data_split_hint">Verdeling</string>
+    <string name="statistics_detail_data_split_pie_chart">Cirkel</string>
+    <string name="statistics_detail_data_split_bar_chart">Kolommen</string>
     <string name="statistics_detail_day_split_hint">Dagelijkse verdeling</string>
     <string name="statistics_detail_duration_split_hint">Verdeling opname duur</string>
     <string name="statistics_detail_next_activities_hint">Top volgende activiteiten</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasken</string>
+    <string name="statistics_detail_goals_hint">Doeloverschot of -tekort</string>
+    <string name="statistics_detail_goals_excess">Overmaat</string>
+    <string name="statistics_detail_goals_deficit">Tekort</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Gegevens</item>-->
@@ -478,7 +505,9 @@ Voorbeeld:<br/>
     <string name="notification_activity_title">Activiteitsherinnering</string>
     <string name="notification_activity_text">Ben je nog steeds bezig met: %s?</string>
     <string name="notification_goal_time_description">doel bereikt</string>
+    <string name="notification_limit_time_description">limiet bereikt</string>
     <string name="notification_time_started">Gestart om %s</string>
+    <string name="notification_time_ended">Klaar om %s</string>
     <string name="notification_record_type_stop">Beëindigen</string>
     <string name="notification_pomodoro_subtitle">Beginnend: %s (%s)</string>
 
@@ -502,14 +531,18 @@ Voorbeeld:<br/>
     <string name="data_edit_hint">Deze wijzigingen kunnen niet ongedaan worden gemaakt. Zorg ervoor dat u een back-upbestand maakt voordat u iets doet.</string>
     <string name="data_edit_select_records">Selecteer records</string>
     <string name="data_edit_change_activity">Activiteit wijzigen</string>
+    <string name="data_edit_change_tag">Wijzig tags</string>
     <string name="data_edit_change_activity_hint">Tags van huidige activiteit worden verwijderd.</string>
     <string name="data_edit_change_comment">Opmerking wijzigen</string>
     <string name="data_edit_change_add_tag">Labels toevoegen</string>
     <string name="data_edit_change_remove_tag">Labels verwijderen</string>
     <string name="data_edit_button_change">Wijziging</string>
+    <string name="data_edit_button_delete_records">Verwijder alle records</string>
+    <string name="data_edit_button_delete_data">Verwijder alle gegevens</string>
     <string name="data_edit_success_message">Gegevens gewijzigd</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplicaties</string>
     <string name="records_filter_select_tags">Selecteer labels</string>
     <string name="records_filter_filter_tags">Labels uitsluiten</string>
     <string name="records_filter_manually_filtered">Gefilterd</string>
@@ -517,12 +550,20 @@ Voorbeeld:<br/>
     <string name="records_filter_any_comment">Elke opmerking</string>
     <string name="records_filter_select">Selecteer</string>
     <string name="records_filter_invert_selection">Omgekeerde selectie</string>
+    <string name="records_filter_duration_min">Minimum</string>
+    <string name="records_filter_duration_max">Maximaal</string>
+    <string name="records_filter_duplications_same_activity">Dezelfde activiteit</string>
+    <string name="records_filter_duplications_same_times">Zelfde tijd</string>
+    <string name="records_filter_duplications_manually_fitler">Filter duplicaten</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Focus</string>
     <string name="pomodoro_state_break">Pauze</string>
     <string name="pomodoro_state_long_break">Lange pauze</string>
     <string name="pomodoro_settings_periods_until_long_break">Perioden tot lange pauze</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selecteer wat je hebt gedaan</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Emotie</string>

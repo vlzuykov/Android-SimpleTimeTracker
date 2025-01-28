@@ -1,6 +1,10 @@
 package com.example.util.simpletimetracker.feature_statistics_detail.model
 
-class ChartBarDataDuration(
+data class ChartBarDataDuration(
+    val rangeStart: Long,
     val legend: String,
-    val duration: Long,
-)
+    val durations: List<Pair<Long, Int>>,
+) {
+
+    val totalDuration = durations.sumOf { it.first }
+}

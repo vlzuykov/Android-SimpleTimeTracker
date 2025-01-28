@@ -1,6 +1,5 @@
 package com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial
 
-import com.example.util.simpletimetracker.domain.extension.orFalse
 import com.example.util.simpletimetracker.feature_base_adapter.createRecyclerBindingAdapterDelegate
 import com.example.util.simpletimetracker.feature_views.extension.dpToPx
 import com.example.util.simpletimetracker.feature_views.extension.setOnClickWith
@@ -17,16 +16,15 @@ fun createRunningRecordTypeSpecialAdapterDelegate(
         item as ViewData
 
         layoutParams = layoutParams.also { params ->
-            params.width = item.width.dpToPx()
-            params.height = item.height.dpToPx()
+            item.width?.dpToPx()?.let { params.width = it }
+            item.height?.dpToPx()?.let { params.height = it }
         }
 
         itemIsRow = item.asRow
         itemColor = item.color
         itemIcon = item.iconId
         itemName = item.name
-        itemWithCheck = item.isChecked != null
-        itemIsChecked = item.isChecked.orFalse()
+        itemCheckState = item.checkState
         setOnClickWith(item, onItemClick)
     }
 }

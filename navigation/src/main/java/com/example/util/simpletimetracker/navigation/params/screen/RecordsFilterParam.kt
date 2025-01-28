@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.navigation.params.screen
 
 import android.os.Parcelable
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
 import kotlinx.parcelize.Parcelize
 
 sealed interface RecordsFilterParam : Parcelable {
@@ -22,7 +22,7 @@ sealed interface RecordsFilterParam : Parcelable {
     data class Comment(val items: List<CommentItem>) : RecordsFilterParam
 
     @Parcelize
-    data class Date(val rangeStart: Long, val rangeEnd: Long) : RecordsFilterParam
+    data class Date(val range: RangeLengthParams, val position: Int) : RecordsFilterParam
 
     @Parcelize
     data class SelectedTags(val items: List<TagItem>) : RecordsFilterParam
@@ -41,6 +41,9 @@ sealed interface RecordsFilterParam : Parcelable {
 
     @Parcelize
     data class Duration(val range: RangeParams) : RecordsFilterParam
+
+    @Parcelize
+    data class Duplications(val items: List<DuplicationsItem>) : RecordsFilterParam
 
     sealed interface CommentItem : Parcelable {
         @Parcelize
@@ -67,5 +70,13 @@ sealed interface RecordsFilterParam : Parcelable {
 
         @Parcelize
         object Untagged : TagItem
+    }
+
+    sealed interface DuplicationsItem : Parcelable {
+        @Parcelize
+        object SameActivity : DuplicationsItem
+
+        @Parcelize
+        object SameTimes : DuplicationsItem
     }
 }

@@ -27,7 +27,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAd
 import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.multitaskRecord.createMultitaskRecordAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.record.createRecordAdapterDelegate
-import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.createRecordFilterAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.recordFilter.createFilterAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordsDateDivider.createRecordsDateDividerAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.createRunningRecordAdapterDelegate
@@ -62,7 +62,7 @@ class RecordsFilterFragment :
     private val filtersAdapter: BaseRecyclerAdapter by lazy {
         BaseRecyclerAdapter(
             createLoaderAdapterDelegate(),
-            createRecordFilterAdapterDelegate(
+            createFilterAdapterDelegate(
                 onClick = viewModel::onFilterClick,
                 onRemoveClick = viewModel::onFilterRemoveClick,
             ),
@@ -77,13 +77,13 @@ class RecordsFilterFragment :
             createRecordsDateDividerAdapterDelegate(),
             createRecordTypeAdapterDelegate(viewModel::onRecordTypeClick),
             createCategoryAdapterDelegate(viewModel::onCategoryClick),
-            createRecordAdapterDelegate(viewModel::onRecordClick),
+            createRecordAdapterDelegate(onItemClick = viewModel::onRecordClick),
             createSelectionButtonAdapterDelegate(viewModel::onSelectionButtonClick),
             createRecordsFilterCommentAdapterDelegate(viewModel::onCommentChange),
             createRecordsFilterButtonAdapterDelegate(viewModel::onInnerFilterButtonClick),
             createDayOfWeekAdapterDelegate(viewModel::onDayOfWeekClick),
             createRecordsFilterRangeAdapterDelegate(viewModel::onRangeTimeClick),
-            createRecordFilterAdapterDelegate(
+            createFilterAdapterDelegate(
                 onClick = viewModel::onInnerFilterClick,
                 onRemoveClick = {},
             ),
@@ -94,13 +94,13 @@ class RecordsFilterFragment :
             createLoaderAdapterDelegate(),
             createEmptyAdapterDelegate(),
             createRecordsDateDividerAdapterDelegate(),
-            createRunningRecordAdapterDelegate("", { _, _ -> }),
+            createRunningRecordAdapterDelegate(""),
             createRecordAdapterDelegate(viewModel::onRecordClick),
             createMultitaskRecordAdapterDelegate(),
         )
     }
     private val params: RecordsFilterParams by fragmentArgumentDelegate(
-        key = ARGS_PARAMS, default = RecordsFilterParams(),
+        key = ARGS_PARAMS, default = RecordsFilterParams.Empty,
     )
     private var listener: RecordsFilterListener? = null
 
@@ -179,7 +179,7 @@ class RecordsFilterFragment :
         tvRecordsFilterTitle.isInvisible = viewData.isLoading
         tvRecordsFilterTitle.text = viewData.selectedRecordsCount
         ivRecordsFilterShowList.isVisible = !viewData.isLoading && viewData.showListButtonIsVisible
-        recordsAdapter.replaceAsNew(viewData.recordsViewData)
+        recordsAdapter.replace(viewData.recordsViewData)
     }
 
     private fun showKeyboard(visible: Boolean) {

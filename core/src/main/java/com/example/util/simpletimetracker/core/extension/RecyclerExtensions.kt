@@ -3,16 +3,52 @@ package com.example.util.simpletimetracker.core.extension
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
+import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import java.util.Collections
 
 fun RecyclerView.onItemMoved(
+    getIsSelectable: (RecyclerView.ViewHolder?) -> Boolean = { true },
+    getSelectablePositions: ((RecyclerView.ViewHolder?) -> Pair<Int, Int>)? = null,
     onSelected: (RecyclerView.ViewHolder?) -> Unit = {},
     onClear: (RecyclerView.ViewHolder) -> Unit = {},
-    onMoved: (Int, Int) -> Unit = { _, _ -> },
+    onMoved: (items: List<ViewHolderType>, from: Int, to: Int) -> Unit = { _, _, _ -> },
 ) {
-    val dragDirections =
-        ItemTouchHelper.DOWN or ItemTouchHelper.UP or ItemTouchHelper.START or ItemTouchHelper.END
+    val dragDirections = ItemTouchHelper.DOWN or ItemTouchHelper.UP or
+        ItemTouchHelper.START or ItemTouchHelper.END
 
-    ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(dragDirections, 0) {
+    fun getNewItems(
+        adapter: BaseRecyclerAdapter,
+        fromPosition: Int,
+        toPosition: Int,
+    ): List<ViewHolderType> {
+        val newList = adapter.currentList.toList()
+
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(newList, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(newList, i, i - 1)
+            }
+        }
+
+        return newList
+    }
+
+    val helper = object : ItemTouchHelper.SimpleCallback(0, 0) {
+
+        override fun getDragDirs(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+        ): Int {
+            return if (getIsSelectable(viewHolder)) {
+                dragDirections
+            } else {
+                0
+            }
+        }
+
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
@@ -21,9 +57,15 @@ fun RecyclerView.onItemMoved(
             val fromPosition = viewHolder.adapterPosition
             val toPosition = target.adapterPosition
 
-            onMoved(fromPosition, toPosition)
-            (adapter as? BaseRecyclerAdapter)?.apply {
-                onMove(fromPosition, toPosition)
+            getSelectablePositions?.invoke(viewHolder)?.let { (start, end) ->
+                if (toPosition < start) return false
+                if (toPosition > end) return false
+            }
+
+            (adapter as? BaseRecyclerAdapter)?.let { adapter ->
+                val newItems = getNewItems(adapter, fromPosition, toPosition)
+                adapter.submitList(newItems)
+                onMoved(newItems, fromPosition, toPosition)
             }
 
             return true
@@ -42,5 +84,7 @@ fun RecyclerView.onItemMoved(
             super.clearView(recyclerView, viewHolder)
             onClear(viewHolder)
         }
-    }).attachToRecyclerView(this)
+    }
+
+    (ItemTouchHelper(helper)).attachToRecyclerView(this)
 }

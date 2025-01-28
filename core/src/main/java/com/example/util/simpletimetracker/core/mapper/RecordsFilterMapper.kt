@@ -1,9 +1,9 @@
 package com.example.util.simpletimetracker.core.mapper
 
-import com.example.util.simpletimetracker.domain.UNCATEGORIZED_ITEM_ID
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.base.UNCATEGORIZED_ITEM_ID
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import javax.inject.Inject
 
 class RecordsFilterMapper @Inject constructor() {

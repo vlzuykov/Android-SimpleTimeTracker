@@ -8,11 +8,11 @@ import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.WearInteractor
-import com.example.util.simpletimetracker.domain.model.CardOrder
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.info.InfoViewData
@@ -20,6 +20,7 @@ import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderView
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_dialogs.R
 import com.example.util.simpletimetracker.feature_dialogs.defaultTypesSelection.interactor.GetDefaultRecordTypesInteractor
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.StandardDialogParams
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,7 @@ class DefaultTypesSelectionViewModel @Inject constructor(
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
     private val getDefaultRecordTypesInteractor: GetDefaultRecordTypesInteractor,
     private val resourceRepo: ResourceRepo,
-    private val wearInteractor: WearInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
 ) : ViewModel() {
 
     val types: LiveData<List<ViewHolderType>> by lazy {
@@ -82,7 +83,7 @@ class DefaultTypesSelectionViewModel @Inject constructor(
             if (!prefsInteractor.hasCardOrder()) {
                 prefsInteractor.setCardOrder(CardOrder.COLOR)
             }
-            wearInteractor.update()
+            externalViewsInteractor.onDefaultTypesAdd()
             close.set(Unit)
         }
     }
@@ -131,7 +132,7 @@ class DefaultTypesSelectionViewModel @Inject constructor(
                 recordType = type,
                 numberOfCards = numberOfCards,
                 isDarkTheme = isDarkTheme,
-                isChecked = null,
+                checkState = GoalCheckmarkView.CheckState.HIDDEN,
                 isComplete = false,
             )
         }

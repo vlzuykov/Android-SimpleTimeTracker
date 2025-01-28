@@ -1,8 +1,8 @@
 package com.example.util.simpletimetracker.core.mapper
 
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import javax.inject.Inject
 
 class RecordTagViewDataMapper @Inject constructor() {

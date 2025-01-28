@@ -2,16 +2,17 @@ package com.example.util.simpletimetracker.core.interactor
 
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.AddRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.model.RepeatButtonType
+import com.example.util.simpletimetracker.domain.record.interactor.AddRunningRecordMediator
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.record.model.RepeatButtonType
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.notification.SnackBarParams
 import com.example.util.simpletimetracker.navigation.params.notification.ToastParams
 import javax.inject.Inject
 
+// Repeats previous record, if any.
 class RecordRepeatInteractor @Inject constructor(
     private val recordInteractor: RecordInteractor,
     private val runningRecordInteractor: RunningRecordInteractor,
@@ -21,7 +22,7 @@ class RecordRepeatInteractor @Inject constructor(
     private val resourceRepo: ResourceRepo,
 ) {
 
-    suspend fun repeat(): Boolean {
+    suspend fun repeat(): ActionResult {
         return execute { messageResId ->
             SnackBarParams(
                 message = resourceRepo.getString(messageResId),
@@ -39,26 +40,34 @@ class RecordRepeatInteractor @Inject constructor(
         }
     }
 
+    suspend fun repeatWithoutMessage(): ActionResult {
+        return execute(messageShower = {})
+    }
+
     private suspend fun execute(
         messageShower: (messageResId: Int) -> Unit,
-    ): Boolean {
+    ): ActionResult {
         val type = prefsInteractor.getRepeatButtonType()
 
+        // TODO repeat several records?
         val prevRecord = recordInteractor.getPrev(
             timeStarted = System.currentTimeMillis(),
-            limit = 2,
         ).let {
             when (type) {
-                is RepeatButtonType.RepeatLast -> it.getOrNull(0)
-                is RepeatButtonType.RepeatBeforeLast -> it.getOrNull(1)
+                is RepeatButtonType.RepeatLast -> it
+                is RepeatButtonType.RepeatBeforeLast -> if (it != null) {
+                    recordInteractor.getPrev(timeStarted = it.timeEnded - 1)
+                } else {
+                    null
+                }
             }
         } ?: run {
             messageShower(R.string.running_records_repeat_no_prev_record)
-            return false
+            return ActionResult.NoPreviousFound
         }
         if (runningRecordInteractor.get(prevRecord.typeId) != null) {
             messageShower(R.string.running_records_repeat_already_tracking)
-            return false
+            return ActionResult.AlreadyTracking
         }
 
         addRunningRecordMediator.startTimer(
@@ -66,6 +75,12 @@ class RecordRepeatInteractor @Inject constructor(
             tagIds = prevRecord.tagIds,
             comment = prevRecord.comment,
         )
-        return true
+        return ActionResult.Started
+    }
+
+    sealed interface ActionResult {
+        object Started : ActionResult
+        object NoPreviousFound : ActionResult
+        object AlreadyTracking : ActionResult
     }
 }

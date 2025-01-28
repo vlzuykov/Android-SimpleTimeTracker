@@ -10,6 +10,7 @@ import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSel
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.iconSelection.viewModelDelegate.IconSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
@@ -18,21 +19,18 @@ import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.ActivityFilterInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalTimeInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.RemoveRecordTypeMediator
-import com.example.util.simpletimetracker.domain.interactor.RemoveRunningRecordMediator
-import com.example.util.simpletimetracker.domain.interactor.RunningRecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.WearInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.activityFilter.interactor.ActivityFilterInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.category.interactor.RecordTypeCategoryInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RemoveRecordTypeMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RemoveRunningRecordMediator
+import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_change_goals.api.GoalsViewModelDelegate
@@ -63,10 +61,7 @@ class ChangeRecordTypeViewModel @Inject constructor(
     private val viewDataInteractor: ChangeRecordTypeViewDataInteractor,
     private val recordTypeCategoryInteractor: RecordTypeCategoryInteractor,
     private val activityFilterInteractor: ActivityFilterInteractor,
-    private val widgetInteractor: WidgetInteractor,
-    private val wearInteractor: WearInteractor,
-    private val notificationTypeInteractor: NotificationTypeInteractor,
-    private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val prefsInteractor: PrefsInteractor,
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
     private val snackBarMessageNavigationInteractor: SnackBarMessageNavigationInteractor,
@@ -169,8 +164,8 @@ class ChangeRecordTypeViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val type = recordTypeInteractor.get(name)
-            val error = if (type != null && type.id != recordTypeId) {
+            val items = recordTypeInteractor.get(name).filter { it.id != recordTypeId }
+            val error = if (items.isNotEmpty()) {
                 resourceRepo.getString(R.string.change_record_message_name_exist)
             } else {
                 ""
@@ -180,11 +175,9 @@ class ChangeRecordTypeViewModel @Inject constructor(
     }
 
     fun onNoteChange(note: String) {
-        viewModelScope.launch {
-            if (note != newNote) {
-                newNote = note
-                updateNoteState()
-            }
+        if (note != newNote) {
+            newNote = note
+            updateNoteState()
         }
     }
 
@@ -246,11 +239,10 @@ class ChangeRecordTypeViewModel @Inject constructor(
         viewModelScope.launch {
             if (recordTypeId != 0L) {
                 recordTypeInteractor.archive(recordTypeId)
-                notificationTypeInteractor.updateNotifications()
                 runningRecordInteractor.get(recordTypeId)?.let { runningRecord ->
                     removeRunningRecordMediator.removeWithRecordAdd(runningRecord)
                 }
-                wearInteractor.update()
+                externalViewsInteractor.onTypeArchive()
                 showArchivedMessage(R.string.change_record_type_archived)
                 keyboardVisibility.set(false)
                 router.back()
@@ -293,10 +285,7 @@ class ChangeRecordTypeViewModel @Inject constructor(
             val addedId = saveRecordType()
             saveCategories(addedId)
             goalsViewModelDelegate.saveGoals(RecordTypeGoal.IdData.Type(addedId))
-            notificationTypeInteractor.updateNotifications()
-            notificationGoalTimeInteractor.checkAndReschedule(listOf(recordTypeId))
-            widgetInteractor.updateWidgets()
-            wearInteractor.update()
+            externalViewsInteractor.onTypeAddOrChange(recordTypeId)
             keyboardVisibility.set(false)
             router.back()
         }
@@ -319,7 +308,7 @@ class ChangeRecordTypeViewModel @Inject constructor(
             goalsViewModelDelegate.saveGoals(RecordTypeGoal.IdData.Type(addedId))
             activityFilterInteractor.getByTypeId(recordTypeId).forEach { filter ->
                 val newFilter = filter.copy(
-                    selectedIds = (filter.selectedIds + addedId).toSet().toList(),
+                    selectedIds = (filter.selectedIds + addedId).toSet(),
                 )
                 activityFilterInteractor.add(newFilter)
             }
@@ -356,16 +345,13 @@ class ChangeRecordTypeViewModel @Inject constructor(
         updateAdditionalState()
     }
 
-    // TODO check all after actions that need to be done after type delete,
-    //  also tag, category, record, running record etc.
     private fun delete() {
         router.back() // Close dialog.
         deleteButtonEnabled.set(false)
         viewModelScope.launch {
             if (recordTypeId != 0L) {
-                removeRunningRecordMediator.remove(recordTypeId, updateWidgets = true)
-                removeRecordTypeMediator.remove(recordTypeId)
-                notificationTypeInteractor.updateNotifications()
+                removeRunningRecordMediator.remove(recordTypeId)
+                removeRecordTypeMediator.remove(recordTypeId, fromArchive = false)
                 showMessage(R.string.archive_activity_deleted)
                 keyboardVisibility.set(false)
                 router.back()
@@ -409,7 +395,7 @@ class ChangeRecordTypeViewModel @Inject constructor(
     private suspend fun saveRecordType(): Long {
         val recordType = RecordType(
             id = recordTypeId,
-            name = newName,
+            name = newName.trimIfNotBlank(),
             icon = iconSelectionViewModelDelegateImpl.newIcon,
             color = colorSelectionViewModelDelegateImpl.newColor,
             defaultDuration = newDefaultDuration,

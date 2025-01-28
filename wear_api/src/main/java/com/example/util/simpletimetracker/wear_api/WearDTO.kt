@@ -28,11 +28,33 @@ data class WearActivityDTO(
 ) : Parcelable
 
 @Parcelize
+data class WearCurrentStateDTO(
+    @SerializedName("currentActivities")
+    val currentActivities: List<WearCurrentActivityDTO>,
+    @SerializedName("lastRecords")
+    val lastRecords: List<WearLastRecordDTO>,
+    @SerializedName("suggestionIds")
+    val suggestionIds: List<Long>,
+) : Parcelable
+
+@Parcelize
 data class WearCurrentActivityDTO(
     @SerializedName("id")
     val id: Long,
     @SerializedName("startedAt")
     val startedAt: Long,
+    @SerializedName("tags")
+    val tags: List<WearTagDTO>,
+) : Parcelable
+
+@Parcelize
+data class WearLastRecordDTO(
+    @SerializedName("activityId")
+    val activityId: Long,
+    @SerializedName("startedAt")
+    val startedAt: Long,
+    @SerializedName("finishedAt")
+    val finishedAt: Long,
     @SerializedName("tags")
     val tags: List<WearTagDTO>,
 ) : Parcelable
@@ -53,6 +75,10 @@ data class WearSettingsDTO(
     val allowMultitasking: Boolean,
     @SerializedName("recordTagSelectionCloseAfterOne")
     val recordTagSelectionCloseAfterOne: Boolean,
+    @SerializedName("enableRepeatButton")
+    val enableRepeatButton: Boolean,
+    @SerializedName("retroactiveTrackingMode")
+    val retroactiveTrackingMode: Boolean,
 ) : Parcelable
 
 @Parcelize
@@ -80,3 +106,16 @@ data class WearShouldShowTagSelectionResponse(
     @SerializedName("shouldShow")
     val shouldShow: Boolean,
 ) : Parcelable
+
+@Parcelize
+data class WearRecordRepeatResponse(
+    @SerializedName("result")
+    val result: ActionResult,
+) : Parcelable {
+
+    enum class ActionResult {
+        STARTED,
+        NO_PREVIOUS_FOUND,
+        ALREADY_TRACKING,
+    }
+}

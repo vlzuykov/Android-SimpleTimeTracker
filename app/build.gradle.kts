@@ -1,12 +1,11 @@
 import com.example.util.simpletimetracker.Base
-import com.example.util.simpletimetracker.Deps
 import com.example.util.simpletimetracker.applyAndroidLibrary
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.gradleApplication)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 applyAndroidLibrary()
@@ -53,17 +52,27 @@ android {
     }
 
     flavorDimensions += "version"
-
+    val baseFlavor = "base"
+    val playFlavor = "play"
     productFlavors {
         // F-Droid version, no google play services, no Wear OS support.
-        create("base") {
+        create(baseFlavor) {
             dimension = "version"
         }
         // Google Play version, with google play services, Wear OS support.
-        create("play") {
+        create(playFlavor) {
             dimension = "version"
             isDefault = true
         }
+    }
+
+    // Disables dependency metadata when building APKs.
+    // If enabled, creates a file in app/build/outputs/sdk-dependencies/
+    dependenciesInfo {
+        val taskName = gradle.startParameter.taskRequests.toString().lowercase()
+        val enabled = taskName.contains("assemble${playFlavor}release")
+        includeInApk = enabled
+        includeInBundle = enabled
     }
 
     buildFeatures {
@@ -110,23 +119,24 @@ dependencies {
     implementation(project(":feature_goals"))
     implementation(project(":feature_pomodoro"))
     implementation(project(":feature_complex_rules"))
+    implementation(project(":feature_suggestions"))
     implementation(project(":feature_change_complex_rule"))
     implementation(project(":feature_change_goals"))
     implementation(project(":feature_change_goals:api"))
     implementation(project(":feature_change_goals:views"))
     "playImplementation"(project(":feature_wear"))
 
-    implementation(Deps.Androidx.room)
-    implementation(Deps.Ktx.navigationFragment)
-    implementation(Deps.Ktx.navigationUi)
-    implementation(Deps.Google.dagger)
+    implementation(libs.androidx.room)
+    implementation(libs.ktx.navigationFragment)
+    implementation(libs.ktx.navigationUi)
+    implementation(libs.google.dagger)
 
-    kapt(Deps.Kapt.dagger)
-    kaptAndroidTest(Deps.Kapt.dagger)
+    ksp(libs.kapt.dagger)
+    kspAndroidTest(libs.kapt.dagger)
 
-    androidTestImplementation(Deps.UiTest.junit)
-    androidTestImplementation(Deps.UiTest.espresso)
-    androidTestImplementation(Deps.UiTest.espressoContrib)
-    androidTestImplementation(Deps.UiTest.dagger)
-    androidTestImplementation(Deps.UiTest.room)
+    androidTestImplementation(libs.uitest.junit)
+    androidTestImplementation(libs.uitest.espresso)
+    androidTestImplementation(libs.uitest.espressoContrib)
+    androidTestImplementation(libs.uitest.dagger)
+    androidTestImplementation(libs.uitest.room)
 }

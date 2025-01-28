@@ -4,8 +4,9 @@ import android.graphics.Color
 import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.IconMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RunningRecord
+import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.record.model.RunningRecord
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
@@ -46,6 +47,35 @@ class WidgetUniversalViewDataMapper @Inject constructor(
         )
     }
 
+    fun mapToRetroactiveWidgetViewData(
+        prevRecord: Record,
+        recordTypes: Map<Long, RecordType>,
+        isDarkTheme: Boolean,
+        backgroundTransparency: Long,
+    ): WidgetUniversalViewData {
+        val recordType = recordTypes[prevRecord.typeId]
+        val data = listOf(
+            IconStackData(
+                icon = RecordTypeIcon.Image(R.drawable.unknown),
+                iconBackgroundColor = colorMapper.toUntrackedColor(isDarkTheme),
+            ),
+            IconStackData(
+                icon = recordType?.icon
+                    ?.let(iconMapper::mapIcon)
+                    ?: RecordTypeIcon.Image(R.drawable.unknown),
+                iconBackgroundColor = recordType?.color
+                    ?.let { colorMapper.mapToColorInt(it, isDarkTheme) }
+                    ?: Color.BLACK,
+            ),
+        )
+
+        return WidgetUniversalViewData(
+            data = data,
+            iconColor = R.color.white.let(resourceRepo::getColor),
+            backgroundAlpha = 1f - backgroundTransparency / 100f,
+        )
+    }
+
     fun mapToEmptyWidgetViewData(
         backgroundTransparency: Long,
     ): WidgetUniversalViewData {
@@ -60,9 +90,14 @@ class WidgetUniversalViewDataMapper @Inject constructor(
         )
     }
 
-    fun mapToHint(): ViewHolderType {
-        return HintViewData(
-            text = R.string.running_records_empty.let(resourceRepo::getString),
-        )
+    fun mapToHint(
+        retroactiveTrackingMode: Boolean,
+    ): ViewHolderType {
+        val text = if (retroactiveTrackingMode) {
+            R.string.retroactive_tracking_mode_hint
+        } else {
+            R.string.running_records_empty
+        }.let(resourceRepo::getString)
+        return HintViewData(text = text)
     }
 }

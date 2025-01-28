@@ -2,6 +2,7 @@ package com.example.util.simpletimetracker.feature_base_adapter.statisticsGoal
 
 import androidx.annotation.ColorInt
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 
 data class StatisticsGoalViewData(
@@ -20,7 +21,7 @@ data class StatisticsGoalViewData(
         val goalCurrent: String,
         val goal: String,
         val goalPercent: String,
-        val goalComplete: Boolean,
+        val goalState: GoalCheckmarkView.CheckState,
         val percent: Long,
     )
 }

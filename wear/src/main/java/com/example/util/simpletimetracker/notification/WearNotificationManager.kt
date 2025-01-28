@@ -17,9 +17,7 @@ import com.example.util.simpletimetracker.R
 import com.example.util.simpletimetracker.data.WearDataRepo
 import com.example.util.simpletimetracker.data.WearIconMapper
 import com.example.util.simpletimetracker.data.WearPermissionRepo
-import com.example.util.simpletimetracker.domain.model.WearActivity
 import com.example.util.simpletimetracker.domain.model.WearActivityIcon
-import com.example.util.simpletimetracker.domain.model.WearCurrentActivity
 import com.example.util.simpletimetracker.utils.getMainStartIntent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -34,18 +32,40 @@ class WearNotificationManager @Inject constructor(
         NotificationManagerCompat.from(context)
 
     suspend fun updateNotifications() {
-        val currentActivity = wearDataRepo.loadCurrentActivities(forceReload = false)
+        val settings = wearDataRepo.loadSettings(forceReload = false)
             .getOrNull()
-            .orEmpty()
-            .maxByOrNull { it.startedAt }
-        val activity = wearDataRepo.loadActivities(forceReload = false)
+        val activities = wearDataRepo.loadActivities(forceReload = false)
+            .getOrNull().orEmpty()
+        val currentState = wearDataRepo.loadCurrentActivities(forceReload = false)
             .getOrNull()
-            .orEmpty()
-            .firstOrNull { it.id == currentActivity?.id }
+        val currentActivities = currentState?.currentActivities.orEmpty()
+        val retroactiveModeEnabled = settings?.retroactiveTrackingMode == true
+
+        val activityName: String?
+        val activityIcon: WearActivityIcon?
+        val startedAt: Long?
+
+        if (retroactiveModeEnabled) {
+            val lastRecord = currentState?.lastRecords?.maxByOrNull { it.startedAt }
+            val lastRecordActivity = activities.firstOrNull { it.id == lastRecord?.activityId }
+            activityName = lastRecordActivity?.name
+            activityIcon = lastRecordActivity?.icon?.let(wearIconMapper::mapIcon)
+            startedAt = lastRecord?.finishedAt
+        } else {
+            val currentActivity = currentActivities.maxByOrNull { it.startedAt }
+            val activity = activities.firstOrNull { it.id == currentActivity?.id }
+            activityName = activity?.name
+            activityIcon = activity?.icon?.let(wearIconMapper::mapIcon)
+            startedAt = currentActivity?.startedAt
+        }
 
         hide()
-        if (currentActivity != null && activity != null) {
-            show(currentActivity, activity)
+        if (activityIcon != null && activityName != null && startedAt != null) {
+            show(
+                timeStarted = startedAt,
+                activityIcon = activityIcon,
+                activityName = activityName,
+            )
         }
     }
 
@@ -54,15 +74,14 @@ class WearNotificationManager @Inject constructor(
     }
 
     private fun show(
-        currentActivity: WearCurrentActivity,
-        activity: WearActivity,
+        timeStarted: Long,
+        activityIcon: WearActivityIcon,
+        activityName: String,
     ) {
         if (!wearPermissionRepo.checkPostNotificationsPermission()) return
 
         // TODO can pass bitmap but emulator crashing.
-        val icon = when (
-            val activityIcon = wearIconMapper.mapIcon(activity.icon)
-        ) {
+        val icon = when (activityIcon) {
             is WearActivityIcon.Image -> activityIcon.iconId
             is WearActivityIcon.Text -> R.drawable.app_ic_launcher_monochrome
         }
@@ -72,12 +91,11 @@ class WearNotificationManager @Inject constructor(
             .setOngoing(true)
 
         val statusTemplate = "#$TEMPLATE_PART_TIME# #$TEMPLATE_PART_TYPE#"
-        val timeStarted = currentActivity.startedAt
         val runStartTime = SystemClock.elapsedRealtime() - (System.currentTimeMillis() - timeStarted)
 
         val ongoingActivityStatus = Status.Builder()
             .addTemplate(statusTemplate)
-            .addPart(TEMPLATE_PART_TYPE, Status.TextPart(activity.name))
+            .addPart(TEMPLATE_PART_TYPE, Status.TextPart(activityName))
             .addPart(TEMPLATE_PART_TIME, Status.StopwatchPart(runStartTime))
             .build()
 

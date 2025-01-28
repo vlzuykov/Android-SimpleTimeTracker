@@ -18,7 +18,8 @@
     <string name="select_all">Selectează toate</string>
     <string name="select_nothing">Nu selecta nimic</string>
     <string name="no_data">Nu există informații</string>
-    <string name="general_error">Ceva a mers prost. Vă rugăm să încercați din nou sau reporniți aplicația.</string>
+    <string name="general_error">Ceva a mers greşit. Vă rugăm să încercați din nou sau reporniți aplicația.</string>
+    <string name="copied_to_clipboard">Copiat în clipboard</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ieri</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Neurmărit</string>
     <string name="uncategorized_time_name">Necategorizat</string>
     <string name="multitask_time_name">Multitask</string>
-    <string name="running_record_goal_time">Țel %s</string>
     <string name="record_types_empty">Nu sunt activități adăugate</string>
     <string name="record_tag_selection_hint">Alege eticheta</string>
     <string name="time_now">Acum</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Acțiuni</string>
     <string name="change_record_last_comments_hint">Ultimele comentarii</string>
     <string name="change_record_favourite_comments_hint">Favorite</string>
+    <string name="change_record_favourite_comments_hint_long">Comentarii preferate</string>
+    <string name="change_record_similar_comments_hint">Comentarii similare</string>
     <string name="change_record_categories_empty">Nu au fost adăugate etichete</string>
     <string name="change_record_save">Salvează</string>
     <string name="change_record_untagged">Ne-etichetat</string>
@@ -116,7 +118,7 @@
     <string name="change_record_split">Împarte</string>
     <string name="change_record_split_hint">Va împarți înregistrarea curentă în două părți la momentul specificat</string>
     <string name="change_record_continue">Continuă</string>
-    <string name="change_record_continue_hint">Va șterge înregistrarea curentă și va continua să urmărească această activitate</string>
+    <string name="change_record_continue_hint">Va șterge înregistrarea curentă și va continua să urmărească activitatea selectată</string>
     <string name="change_record_repeat">@string/running_records_repeat</string>
     <string name="change_record_repeat_hint">Va repeta urmărirea acestei activități</string>
     <string name="change_record_duplicate">Duplică</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Introdu nume nou</string>
     <string name="change_record_type_new_icon_text_hint">Introdu text nou</string>
     <string name="change_record_type_color_hint">Culoare</string>
+    <string name="change_record_favourite_colors_hint">Culorile preferate</string>
     <string name="change_record_type_icon_image_hint">Iconița</string>
     <string name="change_record_type_icon_text_hint">Text</string>
     <string name="change_record_type_icon_emoji_hint">Emoji</string>
     <string name="change_record_type_icon_search_hint">Caută (în engleză)</string>
     <string name="change_record_type_no_icon">Fără pictogramă</string>
+    <string name="change_record_favourite_icons_hint">Pictograme preferate</string>
     <string name="change_record_type_save">Salvează</string>
     <string name="change_record_message_choose_name">Alege un nume</string>
     <string name="change_record_message_name_exist">Nume folosit deja</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">Nu au fost categorii adăugate</string>
     <string name="change_record_type_goal_time_disabled">Dezactivat</string>
     <string name="change_record_type_goal_time_hint">Țel</string>
+    <string name="change_record_type_limit_time_hint">Limită</string>
     <string name="change_record_type_additional_hint">Adiţional</string>
     <string name="change_record_type_default_duration">Durată implicită</string>
     <string name="change_record_type_default_duration_hint">Activitățile cu durată implicită sunt urmărite imediat la clic.</string>
@@ -180,10 +185,16 @@
     <string name="change_complex_starting_activity">Activitatea de inceput</string>
     <string name="change_complex_previous_activity">Activitatea anterioară</string>
     <string name="change_complex_rule_removed">Regulă stearsă</string>
-    <string name="change_complex_rule_choose_action">Alege ațiuneas</string>
+    <string name="change_complex_rule_choose_action">Alege ațiunea</string>
     <string name="change_complex_rule_choose_condition">Alege condițiile</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Afișează sugestii pentru următoarea activitate pe baza activității curente sau ultimei</string>
+    <string name="activity_suggestions_calculate">Calculați din statistici</string>
+    <string name="activity_suggestions_select_activity_hint">Vor fi afișate sugestii pentru activitățile selectate</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Filtre de activitate</string>
     <string name="change_activity_filter_removed">Filtru scos</string>
     <string name="change_activity_filter_save">Salvează</string>
     <string name="change_activity_filter_type">Tip filtru</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Ajustează culoarea</string>
     <string name="color_selection_final_color_hint">Culoarea finală</string>
 
-    <string name="csv_export_settings_range">Interval</string>
-    <string name="csv_export_settings_all">Toate</string>
+    <string name="csv_export_settings_filename_hint">Nume de fișier personalizat</string>
+    <string name="csv_export_settings_filename_default">Implicit</string>
     <string name="csv_export_settings_hint">Alege intervalul de timp sau exportă toate înregistrările</string>
 
     <string name="schedule_exact_alarms">Setări de sistem trebuie activate pentru această aplicație pentru a programa alarme exacte</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">Nu mai arăta</string>
 
     <string name="record_tag_selection_exclude_activities_title">Excludeți activități</string>
-    <string name="record_tag_selection_exclude_activities_hint">Dialogul de selecție a etichetelor nu va fi afișat pentru activitățile selectate.</string>
+    <string name="record_tag_selection_exclude_activities_hint">Dialogul nu va fi afișat pentru activitățile selectate.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Selectați activități</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro va fi pornit automat atunci când activitățile selectate sunt pornite.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Sortează înregistrările</string>
     <string name="records_all_sort_time_started">Ora de început</string>
     <string name="records_all_sort_duration">Durata</string>
-    <string name="records_all_search_comment">Caută comentariu</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Pentru a începe urmărirea, adaugă activitatea prin apăsarea butonului %s sau folosește setările de bază apăsând butonul %s</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Nume</string>
     <string name="settings_sort_by_color">Culoare</string>
     <string name="settings_sort_manually">Manual</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Ordinea activității</string>
     <string name="settings_first_day_of_week">Prima zi a săptămânii</string>
     <string name="settings_show_repeat_button">Afișați butonul de repetare pe ecranul principal</string>
     <string name="settings_repeat_button_type">Mod</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Arată notificările cronometrului</string>
     <string name="settings_show_notifications_hint">Arată notificări când cronometrul este pornit.</string>
     <string name="settings_show_notifications_controls">Permite comutarea activităților din notificări</string>
+    <string name="settings_show_notifications_controls_hint">Poate fi folosit și pentru a comuta activitățile de pe ecranul de blocare.</string>
+    <string name="settings_show_notification_even_with_no_timers">Afișați chiar și atunci când nu rulează cronometre</string>
     <string name="settings_keep_statistics_range">Pastreză intervalul în statistici</string>
     <string name="settings_keep_statistics_range_hint">Dacă este activat, statisticile detaliate vor fi deschise cu același interval în statistici.</string>
+    <string name="settings_retroactive_tracking_mode">Activați urmărirea timpului retroactiv</string>
+    <string name="settings_retroactive_tracking_mode_hint">Urmăriți timpul selectând ce activitate au fost efectuate de data trecută, mai degrabă decât ce activitate va fi efectuată de acum.</string>
     <string name="settings_start_of_day">Modifică începutul zilei</string>
     <string name="settings_start_of_day_hint">Începutul zilei va fi modificat cu intervalul de timp specificat, înainte sau înapoi în funcție de semn.</string>
     <string name="settings_start_of_day_hint_value">Azi începe la %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Arhivă</string>
     <string name="settings_data_edit">Editează informațiile</string>
     <string name="settings_complex_rules">Reguli complexe</string>
-    <string name="settings_edit_categories">Editează categoriile si etichetele</string>
+    <string name="settings_activity_suggestions">Sugestii de activitate</string>
+    <string name="settings_edit_categories">Editează categoriile şi etichetele</string>
     <string name="settings_edit_categories_hint">Atribuiți categorii activităților și etichete înregistrărilor.</string>
     <string name="settings_show_record_tag_selection">Arată etichetele atașate</string>
-    <string name="settings_show_record_tag_selection_hint">Când este pornit un cronometru, dacă activitatea are etichete, un dailog de alegere va fi afișat.</string>
+    <string name="settings_show_record_tag_selection_hint">Când este pornit un cronometru, dacă activitatea are etichete, un dialog de alegere va fi afișat.</string>
     <string name="settings_show_record_tag_close_hint">Închide după alegerea unei etichete</string>
+    <string name="settings_show_comment_input">Afișează introducerea comentariilor</string>
+    <string name="settings_show_comment_input_hint">La pornirea unui temporizator - va fi afișat un dialog de introducere a comentariilor.</string>
     <string name="settings_rate">Evaluează-ne</string>
     <string name="settings_rate_description">Evaluează aplicatia și scrie un recenzie.</string>
     <string name="settings_support_development">Susține dezvoltarea</string>
@@ -348,29 +365,20 @@ Pentru a activa aceste aspecte, aplicațiile trebuie sa permită trimiterea de \
 <b>Acțiune</b> - \"%s\" sau \"%s\".<br/>
 <b>Extra</b> - \"%s\" cu numele activității care trebuie începută sau oprită.<br/>
 <b>Pachet</b> - \"%s\".<br/>
-<br/>
-Parametri opționali pentru începerea activității:<br/>
-<br/>
-<b>Extra</b> - \"%s\" cu comentariu înregistrării.<br/>
-<b>Extra</b> - \"%s\" cu numele etichetei înregistrării.<br/>
-<br/>
-Adițional:<br/>
-<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\".<br/>
-<b>Acțiune</b> - \"%s\" cu extra: \"%s\", \"%s\", \"%s\" și \"%s\", \"%s\" în formatul \"aaaa-ll-zz HH:mm:ss\" sau marcaj orar UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Trimite eveniment</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Dacă opțiunea <b>\"%s\"</b> este activă, aplicația va trimite evenimente la pornirea sau oprirea unei activități către o aplicație terță parte pentru urmărirea automată cu următorii parametri:<br/>
-<br/>
-<b>Acțiune</b> - \"%s\" or \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Dacă opțiunea <b>\"%s\"</b> este activă, aplicația va trimite evenimente la pornirea sau oprirea unei activități către o aplicație terță parte pentru urmărirea automată.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Acțiuni disponibile:</string>
+    <string name="settings_automated_tracking_available_events">Evenimente disponibile:</string>
+    <string name="settings_automated_tracking_extras_description">Descriere:</string>
+    <string name="settings_automated_tracking_extra_name">cu numele activității care trebuie începută sau oprită.</string>
+    <string name="settings_automated_tracking_extra_tag">cu numele etichetei înregistrării. Sau o listă de nume de etichete separate prin virgulă.</string>
+    <string name="settings_automated_tracking_extra_time">în formatul \"aaaa-ll-zz HH:mm:ss\" sau marcaj orar UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">selectează ce înregistrare să schimbe.</string>
+    <string name="settings_automated_tracking_comment_mode">selectează modul de modificare a comentariului înregistrării selectate.</string>
+    <string name="settings_automated_tracking_find_with_activity">selectează suplimentar înregistrarea după numele activității, dacă există mai multe înregistrări curente sau ultime.</string>
 
     <string name="settings_save_backup">Salvează backup</string>
     <string name="settings_save_description">Înainte de a salva, asigură-te ca ai ultima versiune a aplicației pentru a evita conflictele.</string>
@@ -380,6 +388,7 @@ Dacă opțiunea <b>\"%s\"</b> este activă, aplicația va trimite evenimente la 
     <string name="settings_automatic_last_save">Ultima salvare:</string>
     <string name="settings_restore_backup">Restaurare backup</string>
     <string name="settings_restore_description">Informația curentă va fi pierdută.</string>
+    <string name="settings_backup_options">Opțiuni avansate</string>
     <string name="settings_dialog_message">Restaurare backup?</string>
     <string name="settings_export_csv">Export foaie de calcul</string>
     <string name="settings_export_csv_description">Exportă înregistrările ca fișier csv pentru a fi vizualizat în aplicația preferată.</string>
@@ -405,16 +414,29 @@ Examplu:<br/>
     <string name="message_backup_saved">Backup salvat</string>
     <string name="message_backup_restored">Backup restaurat</string>
     <string name="message_save_error">Eroare la salvarea backup-ului</string>
-    <string name="message_restore_error">Eroare la restauarea backup-ului</string>
+    <string name="message_restore_error">Eroare la restaurarea backup-ului</string>
     <string name="message_app_not_found">Aplicația nu a fost găsită</string>
     <string name="message_export_complete">Export completat</string>
     <string name="message_export_error">Eroare de export</string>
     <string name="message_import_complete">Import completat</string>
     <string name="message_import_complete_hint">Înregistrări adăugate %s</string>
     <string name="message_import_error">Eroare la import</string>
+    <string name="message_action_share">Distribuie</string>
     <string name="message_automatic_backup_error">A fost o eroare la backup-ul automat.</string>
     <string name="message_automatic_export_error">A fost o eroare la exportul automat.</string>
     <string name="message_automatic_error_hint">Încearcă să alegi o altă locație</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Import</string>
+    <string name="backup_options_save_without_records">Salvați backup fără înregistrări</string>
+    <string name="backup_options_save_without_records_hint">Poate fi folosit pentru a partaja configurația.</string>
+    <string name="backup_options_full_restore">Restaurare completă</string>
+    <string name="backup_options_full_restore_hint">Restabilește datele și setările. Necesită repornirea aplicației.</string>
+    <string name="backup_options_partial_restore">Importă date din backup</string>
+    <string name="backup_options_partial_restore_hint">Vă permite să alegeți ce date să importați. Datele curente nu se vor pierde.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Selectați ce date vor fi importate din fișier.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">orar</string>
@@ -427,6 +449,7 @@ Examplu:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Împărțit în funcție de activitate</string>
 
     <string name="statistics_detail_range_averages_title">Media pentru perioada: %s</string>
     <string name="statistics_detail_range_averages">Pentru întregul interval</string>
@@ -449,12 +472,16 @@ Examplu:<br/>
     <string name="statistics_detail_streaks_latest">Ultimul</string>
     <string name="statistics_detail_streaks_any">Orice durata</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Distribuția activității</string>
-    <string name="statistics_detail_tag_split_hint">Distribuția etichetelor</string>
+    <string name="statistics_detail_data_split_hint">Distributie</string>
+    <string name="statistics_detail_data_split_pie_chart">Cerc</string>
+    <string name="statistics_detail_data_split_bar_chart">Coloane</string>
     <string name="statistics_detail_day_split_hint">Distribuția zilnică</string>
     <string name="statistics_detail_duration_split_hint">Distribuția înregistrărilor</string>
     <string name="statistics_detail_next_activities_hint">Top următoare activități</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasked</string>
+    <string name="statistics_detail_goals_hint">Exces sau deficit de obiectiv</string>
+    <string name="statistics_detail_goals_excess">Exces</string>
+    <string name="statistics_detail_goals_deficit">Deficit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Înregistrări</item>-->
@@ -477,8 +504,10 @@ Examplu:<br/>
     <string name="notification_inactivity_text">Nu uita să urmărești timpul</string>
     <string name="notification_activity_title">Memento activitate</string>
     <string name="notification_activity_text">Înca mai faci: %s?</string>
-    <string name="notification_goal_time_description">Țel atins</string>
+    <string name="notification_goal_time_description">țel atins</string>
+    <string name="notification_limit_time_description">limita atinsa</string>
     <string name="notification_time_started">Început la %s</string>
+    <string name="notification_time_ended">Terminat la %s</string>
     <string name="notification_record_type_stop">Stop</string>
     <string name="notification_pomodoro_subtitle">Începând: %s (%s)</string>
 
@@ -502,14 +531,18 @@ Examplu:<br/>
     <string name="data_edit_hint">Aceste modificări nu pot fi reversate. Fii sigur că ai facut un backup înainte de a face orice altceva.</string>
     <string name="data_edit_select_records">Alege înregistrarea</string>
     <string name="data_edit_change_activity">Modifică activitatea</string>
+    <string name="data_edit_change_tag">Schimbați etichetele</string>
     <string name="data_edit_change_activity_hint">Etichetele activității curente vor fi eliminate.</string>
     <string name="data_edit_change_comment">Schimbă comentariul</string>
     <string name="data_edit_change_add_tag">Adaug etichete</string>
     <string name="data_edit_change_remove_tag">Șterge etichete</string>
     <string name="data_edit_button_change">Modifică</string>
-    <string name="data_edit_success_message">informații modificate</string>
+    <string name="data_edit_button_delete_records">Ștergeți toate înregistrările</string>
+    <string name="data_edit_button_delete_data">Ștergeți toate datele</string>
+    <string name="data_edit_success_message">Informații modificate</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplicări</string>
     <string name="records_filter_select_tags">Alege etichetele</string>
     <string name="records_filter_filter_tags">Exclude etichete</string>
     <string name="records_filter_manually_filtered">Filtrate</string>
@@ -517,12 +550,20 @@ Examplu:<br/>
     <string name="records_filter_any_comment">Orice comentariu</string>
     <string name="records_filter_select">Alege</string>
     <string name="records_filter_invert_selection">Inversează selecția</string>
+    <string name="records_filter_duration_min">Minim</string>
+    <string name="records_filter_duration_max">Maxim</string>
+    <string name="records_filter_duplications_same_activity">Aceeași activitate</string>
+    <string name="records_filter_duplications_same_times">Același timp</string>
+    <string name="records_filter_duplications_manually_fitler">Filtrați duplicatele</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Concentrare</string>
     <string name="pomodoro_state_break">Pauza</string>
     <string name="pomodoro_state_long_break">Pauză lungă</string>
     <string name="pomodoro_settings_periods_until_long_break">Perioade până la pauză lungă</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selectați ceea ce ați făcut</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Smileys &amp; Emoție</string>

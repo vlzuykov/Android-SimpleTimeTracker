@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 
 interface RecyclerAdapterDelegate {
     fun isForValidType(check: ViewHolderType): Boolean
@@ -30,7 +31,7 @@ inline fun <reified T : ViewHolderType, B : ViewBinding> createRecyclerBindingAd
 
     override fun onCreateViewHolder(parent: ViewGroup): BaseRecyclerBindingViewHolder<B> =
         BaseRecyclerBindingViewHolder(
-            binding = inflater(LayoutInflater.from(parent.context), parent, false),
+            binding = inflater(parent.layoutInflater, parent, false),
             onBind = onBind,
         )
 
@@ -38,7 +39,7 @@ inline fun <reified T : ViewHolderType, B : ViewBinding> createRecyclerBindingAd
 }
 
 class BaseRecyclerBindingViewHolder<B : ViewBinding>(
-    private val binding: B,
+    val binding: B,
     private val onBind: (B, ViewHolderType, List<Any>) -> Unit,
 ) : BaseRecyclerViewHolder(binding.root) {
 

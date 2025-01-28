@@ -25,6 +25,7 @@
     <attr name="appTabSelectedColor" format="reference" />
     <attr name="appTabUnselectedColor" format="reference" />
     <attr name="appActiveColor" format="reference" />
+    <attr name="appActiveGradientEndColor" format="reference" />
     <attr name="appInactiveColor" format="reference" />
     <attr name="appIconColor" format="reference" />
     <attr name="appLegendColor" format="reference" />
@@ -42,8 +43,13 @@
     </declare-styleable>
 
     <declare-styleable name="GoalCheckmarkView">
-        <attr name="itemWithCheck" format="boolean" />
-        <attr name="itemIsChecked" format="boolean" />
+        <attr name="itemCheckState" format="enum">
+            <enum name="hidden" value="0" />
+            <enum name="goalNotReached" value="1" />
+            <enum name="goalReached" value="2" />
+            <enum name="limitNotReached" value="3" />
+            <enum name="limitReached" value="4" />
+        </attr>
         <attr name="itemIsFiltered" format="boolean" />
     </declare-styleable>
 
@@ -55,8 +61,7 @@
         <attr name="itemName" format="string" />
         <attr name="itemColor" format="color" />
         <attr name="itemIsRow" format="boolean" />
-        <attr name="itemWithCheck" />
-        <attr name="itemIsChecked" />
+        <attr name="itemCheckState" />
         <attr name="itemIsComplete" format="boolean" />
         <attr name="itemCompleteIsAnimated" format="boolean" />
     </declare-styleable>
@@ -105,7 +110,7 @@
         <attr name="itemGoalCurrent" format="string" />
         <attr name="itemGoal" format="string" />
         <attr name="itemGoalPercent" format="string" />
-        <attr name="itemGoalTimeComplete" format="boolean" />
+        <attr name="itemCheckState" />
     </declare-styleable>
 
     <declare-styleable name="RunningRecordView">

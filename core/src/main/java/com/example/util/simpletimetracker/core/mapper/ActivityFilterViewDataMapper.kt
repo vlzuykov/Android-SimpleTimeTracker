@@ -2,7 +2,7 @@ package com.example.util.simpletimetracker.core.mapper
 
 import com.example.util.simpletimetracker.core.R
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.ActivityFilter
+import com.example.util.simpletimetracker.domain.activityFilter.model.ActivityFilter
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterAddViewData
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.ActivityFilterViewData
 import javax.inject.Inject
@@ -16,7 +16,18 @@ class ActivityFilterViewDataMapper @Inject constructor(
         filter: ActivityFilter,
         isDarkTheme: Boolean,
     ): ActivityFilterViewData {
-        val selected = filter.selected
+        return mapFiltered(
+            filter = filter,
+            isDarkTheme = isDarkTheme,
+            selected = filter.selected,
+        )
+    }
+
+    fun mapFiltered(
+        filter: ActivityFilter,
+        isDarkTheme: Boolean,
+        selected: Boolean,
+    ): ActivityFilterViewData {
         return ActivityFilterViewData(
             id = filter.id,
             name = filter.name,

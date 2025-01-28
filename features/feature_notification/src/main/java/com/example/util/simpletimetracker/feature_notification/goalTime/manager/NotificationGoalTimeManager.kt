@@ -9,15 +9,15 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.view.ContextThemeWrapper
-import android.view.View
 import android.widget.RemoteViews
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.util.simpletimetracker.core.extension.allowVmViolations
 import com.example.util.simpletimetracker.core.utils.PendingIntents
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_notification.R
 import com.example.util.simpletimetracker.feature_notification.recordType.customView.NotificationIconView
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.feature_views.extension.getBitmapFromView
 import com.example.util.simpletimetracker.feature_views.extension.measureExactly
 import com.example.util.simpletimetracker.navigation.Router
@@ -33,19 +33,17 @@ class NotificationGoalTimeManager @Inject constructor(
 
     private val notificationManager: NotificationManagerCompat =
         NotificationManagerCompat.from(context)
-    private val iconView =
+    private val iconView = allowVmViolations {
         NotificationIconView(ContextThemeWrapper(context, R.style.AppTheme))
+    }
+    private val checkView = allowVmViolations {
+        GoalCheckmarkView(ContextThemeWrapper(context, R.style.AppTheme))
+    }
     private val iconSize by lazy {
         context.resources.getDimensionPixelSize(R.dimen.notification_icon_size)
     }
-    private val checkView = AppCompatImageView(
-        ContextThemeWrapper(context, R.style.AppTheme),
-    ).apply {
-        val size = context.resources.getDimensionPixelSize(R.dimen.notification_icon_half_size)
-        val specWidth = View.MeasureSpec.makeMeasureSpec(size, View.MeasureSpec.EXACTLY)
-        val specHeight = View.MeasureSpec.makeMeasureSpec(size, View.MeasureSpec.EXACTLY)
-        measure(specWidth, specHeight)
-        layout(0, 0, measuredWidth, measuredHeight)
+    private val checkSize by lazy {
+        context.resources.getDimensionPixelSize(R.dimen.notification_icon_half_size)
     }
 
     fun show(params: NotificationGoalTimeParams) {
@@ -119,7 +117,8 @@ class NotificationGoalTimeManager @Inject constructor(
         }
         val checkBitmap = synchronized(checkView) {
             checkView.apply {
-                setBackgroundResource(R.drawable.spinner_check_mark)
+                itemCheckState = params.checkState
+                measureExactly(checkSize)
             }.getBitmapFromView()
         }
 

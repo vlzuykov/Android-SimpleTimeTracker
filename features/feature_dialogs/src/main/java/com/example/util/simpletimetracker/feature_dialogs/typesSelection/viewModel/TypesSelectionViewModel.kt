@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.core.extension.set
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
@@ -44,6 +44,8 @@ class TypesSelectionViewModel @Inject constructor(
 
     private var initialized: Boolean = false
     private var viewDataCache: List<TypesSelectionCacheHolder> = emptyList()
+
+    // TODO switch to LongList from androidx.collections
     private var dataIdsSelected: MutableList<Long> = mutableListOf()
 
     fun onRecordTypeClick(item: RecordTypeViewData) {
@@ -65,6 +67,7 @@ class TypesSelectionViewModel @Inject constructor(
     }
 
     fun onShowAllClick() {
+        dataIdsSelected.clear()
         dataIdsSelected.addAll(viewDataCache.map(TypesSelectionCacheHolder::id))
         updateViewData()
     }

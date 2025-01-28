@@ -1,13 +1,14 @@
 package com.example.util.simpletimetracker.core.interactor
 
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
-import com.example.util.simpletimetracker.domain.UNTRACKED_ITEM_ID
-import com.example.util.simpletimetracker.domain.interactor.GetUntrackedRecordsInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.mapper.UntrackedRecordMapper
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.base.UNTRACKED_ITEM_ID
+import com.example.util.simpletimetracker.domain.extension.dropMillis
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.GetUntrackedRecordsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.record.mapper.UntrackedRecordMapper
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.record.model.Record
 import java.util.Calendar
 import javax.inject.Inject
 import kotlin.math.max
@@ -29,7 +30,7 @@ class GetUntrackedRecordsInteractorImpl @Inject constructor(
         val minStart = recordInteractor.getNext(0)?.timeStarted ?: return emptyList()
         // Bound end range of calculation to current time,
         // to not show untracked time in the future
-        val maxEnd = System.currentTimeMillis()
+        val maxEnd = System.currentTimeMillis().dropMillis()
 
         // If range is all records - calculate from first records to current time.
         val actualRange = if (range.timeStarted == 0L && range.timeEnded == 0L) {

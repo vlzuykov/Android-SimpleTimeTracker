@@ -19,6 +19,7 @@
     <string name="select_nothing">No seleccionar nada</string>
     <string name="no_data">Sin datos</string>
     <string name="general_error">Algo salió mal. Inténtalo de nuevo o reinicia la aplicación.</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Ayer</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Sin seguimiento</string>
     <string name="uncategorized_time_name">Sin categorizar</string>
     <string name="multitask_time_name">Tarea múltiple</string>
-    <string name="running_record_goal_time">objetivo %s</string>
     <string name="record_types_empty">No se añadieron actividades</string>
     <string name="record_tag_selection_hint">Seleccione etiqueta</string>
     <string name="time_now">Ahora</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Comportamiento</string>
     <string name="change_record_last_comments_hint">Últimos comentarios</string>
     <string name="change_record_favourite_comments_hint">Favorito</string>
+    <string name="change_record_favourite_comments_hint_long">Comentarios favoritos</string>
+    <string name="change_record_similar_comments_hint">Comentarios similares</string>
     <string name="change_record_categories_empty">No se añadieron etiquetas</string>
     <string name="change_record_save">Guardar</string>
     <string name="change_record_untagged">Sin etiquetar</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Introduzca un nuevo nombre</string>
     <string name="change_record_type_new_icon_text_hint">Ingrese nuevo texto</string>
     <string name="change_record_type_color_hint">Color</string>
+    <string name="change_record_favourite_colors_hint">Colores favoritos</string>
     <string name="change_record_type_icon_image_hint">Icono</string>
     <string name="change_record_type_icon_text_hint">Texto</string>
     <string name="change_record_type_icon_emoji_hint">Emoji</string>
     <string name="change_record_type_icon_search_hint">Buscar (en inglés)</string>
     <string name="change_record_type_no_icon">Sin icono</string>
+    <string name="change_record_favourite_icons_hint">Iconos favoritos</string>
     <string name="change_record_type_save">Guardar</string>
     <string name="change_record_message_choose_name">Escoja un nombre</string>
     <string name="change_record_message_name_exist">Nombre ya usado</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">No se añadieron categorías</string>
     <string name="change_record_type_goal_time_disabled">Deshabilitado</string>
     <string name="change_record_type_goal_time_hint">Objetivo</string>
+    <string name="change_record_type_limit_time_hint">Límite</string>
     <string name="change_record_type_additional_hint">Adicional</string>
     <string name="change_record_type_default_duration">Duración predeterminada</string>
     <string name="change_record_type_default_duration_hint">Las actividades con duración predeterminada se rastrean inmediatamente al hacer clic.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Elige Acción</string>
     <string name="change_complex_rule_choose_condition">Elige condiciones</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Muestra sugerencias para la próxima actividad en función de la actividad actual o la última</string>
+    <string name="activity_suggestions_calculate">Calcular a partir de estadísticas</string>
+    <string name="activity_suggestions_select_activity_hint">Se mostrarán sugerencias para actividades seleccionadas.</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Filtros de actividad</string>
     <string name="change_activity_filter_removed">Filtro eliminado</string>
     <string name="change_activity_filter_save">Guardar</string>
     <string name="change_activity_filter_type">Tipo de filtro</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Ajustar el color</string>
     <string name="color_selection_final_color_hint">Color final</string>
 
-    <string name="csv_export_settings_range">Intervalo</string>
-    <string name="csv_export_settings_all">Todo</string>
+    <string name="csv_export_settings_filename_hint">Nombre de archivo personalizado</string>
+    <string name="csv_export_settings_filename_default">Por defecto</string>
     <string name="csv_export_settings_hint">Selecione un intervalo de timpo o exporte todos los registros</string>
 
     <string name="schedule_exact_alarms">La configuración del sistema debe estar habilitada para esta aplicación para programar alarmas exactas</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">No volver a mostrar</string>
 
     <string name="record_tag_selection_exclude_activities_title">Excluir actividades</string>
-    <string name="record_tag_selection_exclude_activities_hint">El cuadro de diálogo de selección de etiquetas no se mostrará para las actividades seleccionadas.</string>
+    <string name="record_tag_selection_exclude_activities_hint">El cuadro de diálogo no se mostrará para las actividades seleccionadas.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Seleccionar actividades</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro se iniciará automáticamente cuando se inicien las actividades seleccionadas.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Ordenar los registros</string>
     <string name="records_all_sort_time_started">Tiempo de inicio</string>
     <string name="records_all_sort_duration">Duración</string>
-    <string name="records_all_search_comment">Buscar comentario</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Para comenzar a rastrear, agregue actividades haciendo clic en el botón %s o use los ajustes preestablecidos predeterminados haciendo clic en el botón %s</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Nombre</string>
     <string name="settings_sort_by_color">Color</string>
     <string name="settings_sort_manually">Manual</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Orden de actividad</string>
     <string name="settings_first_day_of_week">Primer día de la semana</string>
     <string name="settings_show_repeat_button">Mostrar botón de repetición en la pantalla principal</string>
     <string name="settings_repeat_button_type">Modo</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Mostrar notificaciones del temporizador</string>
     <string name="settings_show_notifications_hint">Mostrar notificaciones cuando el temporizador esté activo.</string>
     <string name="settings_show_notifications_controls">Habilitar el cambio de actividad desde la notificación</string>
+    <string name="settings_show_notifications_controls_hint">También se puede utilizar para cambiar de actividad desde la pantalla de bloqueo.</string>
+    <string name="settings_show_notification_even_with_no_timers">Mostrar incluso cuando no hay temporizadores en ejecución</string>
     <string name="settings_keep_statistics_range">Mantener rango de estadísticas</string>
     <string name="settings_keep_statistics_range_hint">Si está habilitado, se abrirán estadísticas detalladas con el mismo rango de tiempo seleccionado en estadísticas.</string>
+    <string name="settings_retroactive_tracking_mode">Habilitar seguimiento de tiempo retroactivo</string>
+    <string name="settings_retroactive_tracking_mode_hint">Realice un seguimiento del tiempo seleccionando qué actividad se realizó desde la última vez en lugar de qué actividad se realizará a partir de ahora.</string>
     <string name="settings_start_of_day">Cambio de inicio del día</string>
     <string name="settings_start_of_day_hint">El inicio del día se desplazará la cantidad de tiempo especificada, hacia adelante o hacia atrás, según la señal.</string>
     <string name="settings_start_of_day_hint_value">Hoy empieza en %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Archivar</string>
     <string name="settings_data_edit">Edición de datos</string>
     <string name="settings_complex_rules">Reglas complejas</string>
+    <string name="settings_activity_suggestions">Sugerencias de actividades</string>
     <string name="settings_edit_categories">Editar categorías y etiquetas</string>
     <string name="settings_edit_categories_hint">Asigne categorías a actividades y etiquetas a registros.</string>
     <string name="settings_show_record_tag_selection">Mostrar selección de etiqueta de registro</string>
     <string name="settings_show_record_tag_selection_hint">Cuando se inicie un temporizador, si la actividad tiene asignada alguna etiqueta de registro – se mostrará una ventana de selección.</string>
     <string name="settings_show_record_tag_close_hint">Cerrar después de seleccionar una etiqueta</string>
+    <string name="settings_show_comment_input">Mostrar entrada de comentario</string>
+    <string name="settings_show_comment_input_hint">Al iniciar un temporizador, se mostrará un cuadro de diálogo para ingresar comentarios.</string>
     <string name="settings_rate">Valórenos</string>
     <string name="settings_rate_description">Valore la aplicación y deje un comentario.</string>
     <string name="settings_support_development">Apoyar el desarrollo</string>
@@ -348,29 +365,20 @@ Para habilitar este comportamiento, estas aplicaciones deben admitir el envío d
 <b>Action</b> - \"%s\" o \"%s\".<br/>
 <b>Extra</b> - \"%s\" con el nombre de la actividad que debe iniciarse o detenerse.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Parámetros opcionales para iniciar la actividad:<br/>
-<br/>
-<b>Extra</b> - \"%s\" con comentario de registro.<br/>
-<b>Extra</b> - \"%s\" con el nombre de una etiqueta de registro.<br/>
-<br/>
-Adicional:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" con extras: \"%s\", \"%s\", \"%s\" y \"%s\", \"%s\" en el formato \"yyyy-MM-dd HH:mm:ss\" o marca de tiempo UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Enviar eventos</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Si la configuración <b>\"%s\"</b> está habilitada, la aplicación enviará eventos sobre la actividad iniciada o detenida a aplicaciones de terceros para un seguimiento automático con estos parámetros:<br/>
-<br/>
-<b>Action</b> - \"%s\" o \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Si la configuración <b>\"%s\"</b> está habilitada, la aplicación enviará eventos sobre la actividad iniciada o detenida a aplicaciones de terceros para un seguimiento automático.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Acciones disponibles:</string>
+    <string name="settings_automated_tracking_available_events">Eventos disponibles:</string>
+    <string name="settings_automated_tracking_extras_description">Descripción:</string>
+    <string name="settings_automated_tracking_extra_name">con el nombre de la actividad que debe iniciarse o detenerse.</string>
+    <string name="settings_automated_tracking_extra_tag">con el nombre de una etiqueta de registro. O lista de nombres de etiquetas separados por coma.</string>
+    <string name="settings_automated_tracking_extra_time">en el formato \"yyyy-MM-dd HH:mm:ss\" o marca de tiempo UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">selecciona qué registro cambiar.</string>
+    <string name="settings_automated_tracking_comment_mode">selecciona cómo cambiar el comentario del registro seleccionado.</string>
+    <string name="settings_automated_tracking_find_with_activity">además, selecciona el registro por nombre de actividad, si hay varios registros actuales o últimos.</string>
 
     <string name="settings_save_backup">Guardar copia de seguridad</string>
     <string name="settings_save_description">Antes de guardar, asegúrese de que tiene la última versión de la aplicación instalada para evitar conflictos.</string>
@@ -380,6 +388,7 @@ Si la configuración <b>\"%s\"</b> está habilitada, la aplicación enviará eve
     <string name="settings_automatic_last_save">Último guardado:</string>
     <string name="settings_restore_backup">Restaurar copia de seguridad</string>
     <string name="settings_restore_description">Los datos actuales serán eliminados.</string>
+    <string name="settings_backup_options">Opciones avanzadas</string>
     <string name="settings_dialog_message">¿Desea restaurar la copia de seguridad?</string>
     <string name="settings_export_csv">Exportar hoja de cálculo</string>
     <string name="settings_export_csv_description">Exportar registros como un archivo csv para visualizar los datos en su programa de hojas de cálculo preferido.</string>
@@ -412,9 +421,22 @@ Ejemplo:<br/>
     <string name="message_import_complete">Importación completada</string>
     <string name="message_import_complete_hint">Registros agregados: %s</string>
     <string name="message_import_error">Error de importación</string>
+    <string name="message_action_share">Compartir</string>
     <string name="message_automatic_backup_error">Hubo un error con la copia de seguridad automática.</string>
     <string name="message_automatic_export_error">Hubo un error con la exportación automática.</string>
     <string name="message_automatic_error_hint">Intenta seleccionar una ubicación diferente</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Importar</string>
+    <string name="backup_options_save_without_records">Guardar copia de seguridad sin registros</string>
+    <string name="backup_options_save_without_records_hint">Se puede utilizar para compartir la configuración.</string>
+    <string name="backup_options_full_restore">Restauración completa</string>
+    <string name="backup_options_full_restore_hint">Restaura datos y configuraciones. Requiere reiniciar la aplicación.</string>
+    <string name="backup_options_partial_restore">Importar datos desde la copia de seguridad</string>
+    <string name="backup_options_partial_restore_hint">Permite elegir qué datos importar. Los datos actuales no se perderán.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Seleccione qué datos se importarán del archivo.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">hora</string>
@@ -427,6 +449,7 @@ Ejemplo:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Dividido por actividad</string>
 
     <string name="statistics_detail_range_averages_title">Promedio por período: %s</string>
     <string name="statistics_detail_range_averages">Para toda la gama</string>
@@ -449,12 +472,16 @@ Ejemplo:<br/>
     <string name="statistics_detail_streaks_latest">Más reciente</string>
     <string name="statistics_detail_streaks_any">Cualquier duración</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Distribución de actividad</string>
-    <string name="statistics_detail_tag_split_hint">Distribución de etiquetas</string>
+    <string name="statistics_detail_data_split_hint">Distribución</string>
+    <string name="statistics_detail_data_split_pie_chart">Círculo</string>
+    <string name="statistics_detail_data_split_bar_chart">Columnas</string>
     <string name="statistics_detail_day_split_hint">Distribución diaria</string>
     <string name="statistics_detail_duration_split_hint">Distribución de la duración del registro</string>
     <string name="statistics_detail_next_activities_hint">Principales próximas actividades</string>
     <string name="statistics_detail_multitasking_activities_hint">Principal multitarea</string>
+    <string name="statistics_detail_goals_hint">Exceso o déficit de goles</string>
+    <string name="statistics_detail_goals_excess">Exceso</string>
+    <string name="statistics_detail_goals_deficit">Déficit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Registros</item>-->
@@ -478,7 +505,9 @@ Ejemplo:<br/>
     <string name="notification_activity_title">Recordatorio de actividad</string>
     <string name="notification_activity_text">¿Sigues haciendo: %s?</string>
     <string name="notification_goal_time_description">objetivo alcanzado</string>
+    <string name="notification_limit_time_description">límite alcanzado</string>
     <string name="notification_time_started">Comenzó en %s</string>
+    <string name="notification_time_ended">Terminado en %s</string>
     <string name="notification_record_type_stop">Detener</string>
     <string name="notification_pomodoro_subtitle">Inicio: %s (%s)</string>
 
@@ -502,14 +531,18 @@ Ejemplo:<br/>
     <string name="data_edit_hint">Estos cambios no se pueden deshacer. Asegúrese de crear un archivo de copia de seguridad antes de hacer nada.</string>
     <string name="data_edit_select_records">Seleccionar registros</string>
     <string name="data_edit_change_activity">Cambiar actividad</string>
+    <string name="data_edit_change_tag">Cambiar etiquetas</string>
     <string name="data_edit_change_activity_hint">Se eliminarán las etiquetas de la actividad actual.</string>
     <string name="data_edit_change_comment">Cambiar comentario</string>
     <string name="data_edit_change_add_tag">Agregar etiquetas</string>
     <string name="data_edit_change_remove_tag">Eliminar etiquetas</string>
     <string name="data_edit_button_change">Cambiar</string>
+    <string name="data_edit_button_delete_records">Eliminar todos los registros</string>
+    <string name="data_edit_button_delete_data">Eliminar todos los datos</string>
     <string name="data_edit_success_message">Datos cambiados</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplicaciones</string>
     <string name="records_filter_select_tags">Seleccionar etiquetas</string>
     <string name="records_filter_filter_tags">Excluir etiquetas</string>
     <string name="records_filter_manually_filtered">Filtrada</string>
@@ -517,12 +550,20 @@ Ejemplo:<br/>
     <string name="records_filter_any_comment">Cualquier comentario</string>
     <string name="records_filter_select">Seleccionar</string>
     <string name="records_filter_invert_selection">Invertir selección</string>
+    <string name="records_filter_duration_min">Mínima</string>
+    <string name="records_filter_duration_max">Máxima</string>
+    <string name="records_filter_duplications_same_activity">Misma actividad</string>
+    <string name="records_filter_duplications_same_times">Mismo tiempo</string>
+    <string name="records_filter_duplications_manually_fitler">Filtrar duplicados</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Enfoque</string>
     <string name="pomodoro_state_break">Descanso</string>
     <string name="pomodoro_state_long_break">Largo descanso</string>
     <string name="pomodoro_settings_periods_until_long_break">Períodos hasta un descanso largo</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Selecciona lo que has estado haciendo</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Emoticonos y Emociones</string>

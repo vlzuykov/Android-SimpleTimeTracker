@@ -75,7 +75,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         clickOnViewWithText(fullName)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
 
         // Check no record
@@ -124,7 +127,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         // Continue untracked doesn't work
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
@@ -137,7 +143,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         // Continue
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
 
         checkViewIsDisplayed(
@@ -185,7 +194,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         // Continue untracked doesn't work
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
@@ -198,7 +210,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         // Continue
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
 
         checkViewDoesNotExist(
@@ -251,7 +266,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         clickOnView(allOf(withText(name), isCompletelyDisplayed()))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
         // Snackbar is in the way of Add button
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
@@ -272,7 +290,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         adjust("+5")
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
 
         // Still on edit screen
@@ -318,7 +339,10 @@ class RecordActionsContinueTest : BaseUiTest() {
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
 
         // Running record stopped
@@ -351,16 +375,59 @@ class RecordActionsContinueTest : BaseUiTest() {
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name2))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_continue))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
         clickOnViewWithText(coreR.string.change_record_continue)
 
         // Running record stopped
-        checkViewIsDisplayed(allOf(withText(name1), isCompletelyDisplayed()))
+        checkViewIsDisplayed(
+            allOf(
+                withId(baseR.id.viewRecordItem),
+                hasDescendant(withText(name1)),
+                hasDescendant(withText("0$minuteString")),
+                isCompletelyDisplayed(),
+            ),
+        )
 
         // New running record
         NavUtils.openRunningRecordsScreen()
         checkViewIsDisplayed(
-            allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name2)), isCompletelyDisplayed()),
+            allOf(
+                withId(baseR.id.viewRunningRecordItem),
+                hasDescendant(withText(name2)),
+                isCompletelyDisplayed(),
+            ),
+        )
+    }
+
+    @Test
+    fun continueDefaultDuration() {
+        val name = "name"
+
+        // Setup
+        testUtils.addActivity(
+            name = name,
+            defaultDuration = TimeUnit.MINUTES.toMillis(5),
+        )
+        Thread.sleep(1000)
+        tryAction { clickOnViewWithText(name) }
+
+        // Continue
+        NavUtils.openRecordsScreen()
+        clickOnView(allOf(withText(name), isCompletelyDisplayed()))
+        clickOnViewWithText(coreR.string.change_record_actions_hint)
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_continue)),
+        )
+        clickOnViewWithText(coreR.string.change_record_continue)
+
+        // New running record
+        NavUtils.openRunningRecordsScreen()
+        checkViewIsDisplayed(
+            allOf(withId(baseR.id.viewRunningRecordItem), hasDescendant(withText(name)), isCompletelyDisplayed()),
         )
     }
 

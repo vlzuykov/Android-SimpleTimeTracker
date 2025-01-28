@@ -8,8 +8,9 @@ import com.example.util.simpletimetracker.core.viewData.SelectDateViewData
 import com.example.util.simpletimetracker.core.viewData.SelectLastDaysViewData
 import com.example.util.simpletimetracker.core.viewData.SelectRangeViewData
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.RangeLength
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
 import javax.inject.Inject
 
 class RangeViewDataMapper @Inject constructor(
@@ -51,6 +52,7 @@ class RangeViewDataMapper @Inject constructor(
         position: Int,
         startOfDayShift: Long,
         firstDayOfWeek: DayOfWeek,
+        useShortCustomRange: Boolean = false,
     ): String {
         return when (rangeLength) {
             is RangeLength.Day -> timeMapper.toDayTitle(position, startOfDayShift)
@@ -58,8 +60,12 @@ class RangeViewDataMapper @Inject constructor(
             is RangeLength.Month -> timeMapper.toMonthTitle(position, startOfDayShift)
             is RangeLength.Year -> timeMapper.toYearTitle(position, startOfDayShift)
             is RangeLength.All -> resourceRepo.getString(R.string.range_overall)
-            is RangeLength.Custom -> mapToSelectRangeName()
-            is RangeLength.Last -> mapToSelectLastDaysName(rangeLength.days)
+            is RangeLength.Last -> mapToLastDaysTitle(rangeLength.days)
+            is RangeLength.Custom -> if (useShortCustomRange) {
+                mapToSelectRangeName()
+            } else {
+                mapToCustomRangeTitle(rangeLength.range)
+            }
         }
     }
 
@@ -120,12 +126,19 @@ class RangeViewDataMapper @Inject constructor(
         return resourceRepo.getString(R.string.range_custom)
     }
 
+    private fun mapToCustomRangeTitle(range: Range): String {
+        // Time ended is the end of selected day, meaning the beginning on the next day.
+        return timeMapper.formatDate(range.timeStarted) +
+            " - " +
+            timeMapper.formatDate(range.timeEnded - 1)
+    }
+
     private fun mapToSelectLastDays(days: Int): SelectLastDaysViewData {
-        val text = mapToSelectLastDaysName(days)
+        val text = mapToLastDaysTitle(days)
         return SelectLastDaysViewData(text)
     }
 
-    private fun mapToSelectLastDaysName(days: Int): String {
+    private fun mapToLastDaysTitle(days: Int): String {
         return resourceRepo.getQuantityString(R.plurals.range_last, days, days)
     }
 

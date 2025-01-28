@@ -12,19 +12,20 @@ import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigat
 import com.example.util.simpletimetracker.core.view.timeAdjustment.TimeAdjustmentView
 import com.example.util.simpletimetracker.domain.extension.addOrRemove
 import com.example.util.simpletimetracker.domain.extension.orFalse
-import com.example.util.simpletimetracker.domain.interactor.FavouriteCommentInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeToTagInteractor
-import com.example.util.simpletimetracker.domain.model.FavouriteComment
-import com.example.util.simpletimetracker.domain.model.Record
+import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteCommentInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTypeToTagInteractor
+import com.example.util.simpletimetracker.domain.favourite.model.FavouriteComment
+import com.example.util.simpletimetracker.domain.record.model.Record
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
+import com.example.util.simpletimetracker.feature_base_adapter.button.ButtonViewData
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_change_record.R
-import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordButtonViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordChangePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordCommentViewData
+import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordSliderViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeAdjustmentViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimeDoublePreviewViewData
 import com.example.util.simpletimetracker.feature_change_record.adapter.ChangeRecordTimePreviewViewData
@@ -34,8 +35,6 @@ import com.example.util.simpletimetracker.feature_change_record.model.ChangeReco
 import com.example.util.simpletimetracker.feature_change_record.model.ChangeRecordDateTimeFieldsState
 import com.example.util.simpletimetracker.feature_change_record.model.TimeAdjustmentState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordChooserState
-import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordFavCommentState
-import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordSearchCommentState
 import com.example.util.simpletimetracker.feature_change_record.viewData.ChangeRecordTagsViewData
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordTagFromScreen
@@ -77,11 +76,11 @@ abstract class ChangeRecordBaseViewModel(
             initial
         }
     }
-    val lastComments: LiveData<List<ViewHolderType>> by lazy {
+    val comments: LiveData<List<ViewHolderType>> by lazy {
         return@lazy MutableLiveData<List<ViewHolderType>>().let { initial ->
             viewModelScope.launch {
                 initializePreviewViewData()
-                initial.value = loadLastCommentsViewData()
+                initial.value = loadCommentsViewData()
             }
             initial
         }
@@ -98,18 +97,8 @@ abstract class ChangeRecordBaseViewModel(
             previous = ChangeRecordChooserState.State.Closed,
         ),
     )
-    val searchCommentViewData: LiveData<ChangeRecordSearchCommentState> by lazy {
-        return@lazy MutableLiveData<ChangeRecordSearchCommentState>().let { initial ->
-            viewModelScope.launch {
-                initial.value = loadSearchCommentViewData(isLoading = false, isEnabled = false)
-            }
-            initial
-        }
-    }
     val saveButtonEnabled: LiveData<Boolean> = MutableLiveData(true)
     val keyboardVisibility: LiveData<Boolean> = MutableLiveData(false)
-    val comment: LiveData<String> = MutableLiveData()
-    val favCommentViewData: LiveData<ChangeRecordFavCommentState> = MutableLiveData()
     val timeEndedVisibility: LiveData<Boolean> by lazy { MutableLiveData(isTimeEndedAvailable) }
     val deleteIconVisibility: LiveData<Boolean> by lazy { MutableLiveData(isDeleteButtonVisible) }
     val statsIconVisibility: LiveData<Boolean> by lazy { MutableLiveData(isStatisticsButtonVisible) }
@@ -131,7 +120,7 @@ abstract class ChangeRecordBaseViewModel(
 
     protected abstract suspend fun updatePreview()
     protected abstract fun getChangeCategoryParams(data: ChangeTagData): ChangeRecordTagFromScreen
-    protected abstract suspend fun onSaveClickDelegate()
+    protected abstract suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit = {})
     protected open suspend fun sendPreviewUpdate(fullUpdate: Boolean) {}
     protected abstract val forceSecondsInDurationDialog: Boolean
     protected abstract val mergeAvailable: Boolean
@@ -147,7 +136,6 @@ abstract class ChangeRecordBaseViewModel(
     protected abstract val isStatisticsButtonVisible: Boolean
 
     private var prevRecord: Record? = null
-    private var searchComment: String = ""
     private var searchLoadJob: Job? = null
 
     init {
@@ -162,7 +150,6 @@ abstract class ChangeRecordBaseViewModel(
     protected open suspend fun initializePreviewViewData() {
         // Don't wait for the completion.
         viewModelScope.launch { initializeActions() }
-        viewModelScope.launch { updateFavCommentViewData() }
     }
 
     protected open suspend fun onTimeStartedChanged() {
@@ -279,7 +266,7 @@ abstract class ChangeRecordBaseViewModel(
         )
     }
 
-    fun onItemButtonClick(viewData: ChangeRecordButtonViewData) {
+    fun onItemButtonClick(viewData: ButtonViewData) {
         changeRecordActionsDelegate.onItemButtonClick(viewData)
     }
 
@@ -291,8 +278,8 @@ abstract class ChangeRecordBaseViewModel(
                 viewModelScope.launch {
                     updatePreview()
                     updateCategoriesViewData()
-                    updateLastCommentsViewData()
                 }
+                updateCommentsViewData()
                 updateActionsData()
             }
 
@@ -351,8 +338,7 @@ abstract class ChangeRecordBaseViewModel(
     }
 
     fun onCommentClick(item: ChangeRecordCommentViewData) {
-        // View update through text change listener.
-        comment.set(item.text)
+        onCommentChange(item.text)
     }
 
     fun onCommentChange(comment: String) {
@@ -360,20 +346,7 @@ abstract class ChangeRecordBaseViewModel(
             if (comment != newComment) {
                 newComment = comment
                 updatePreview()
-                updateFavCommentViewData()
-            }
-        }
-    }
-
-    fun onSearchCommentChange(search: String) {
-        val isEnabled = searchCommentViewData.value?.enabled ?: return
-
-        if (search != searchComment && isEnabled) {
-            searchComment = search
-            searchLoadJob?.cancel()
-            searchLoadJob = viewModelScope.launch {
-                updateSearchCommentViewData(isLoading = true, isEnabled = true)
-                updateSearchCommentViewData(isLoading = false, isEnabled = true)
+                updateCommentsViewData()
             }
         }
     }
@@ -388,20 +361,7 @@ abstract class ChangeRecordBaseViewModel(
                     val new = FavouriteComment(comment = newComment)
                     favouriteCommentInteractor.add(new)
                 }
-            updateLastCommentsViewData()
-            updateFavCommentViewData()
-        }
-    }
-
-    fun onSearchCommentClick() {
-        val currentlyEnabled = searchCommentViewData.value?.enabled.orFalse()
-
-        keyboardVisibility.set(false)
-        viewModelScope.launch {
-            updateSearchCommentViewData(
-                isEnabled = !currentlyEnabled,
-                isLoading = false,
-            )
+            updateCommentsViewData()
         }
     }
 
@@ -460,6 +420,16 @@ abstract class ChangeRecordBaseViewModel(
         }
     }
 
+    fun onSliderValueChanged(viewData: ChangeRecordSliderViewData, value: Float) {
+        when (viewData.block) {
+            ChangeRecordActionsBlock.SplitSlider ->
+                onSliderSplitValueChanged(value)
+            else -> {
+                // Do nothing.
+            }
+        }
+    }
+
     fun onAdjustTimeStartedItemClick(viewData: TimeAdjustmentView.ViewData) {
         onAdjustTimeItemClick(TimeAdjustmentState.TIME_STARTED, viewData)
     }
@@ -501,21 +471,24 @@ abstract class ChangeRecordBaseViewModel(
     }
 
     private fun onAdjustTimeSplitItemClick(viewData: TimeAdjustmentView.ViewData) {
-        viewModelScope.launch {
-            when (viewData) {
-                is TimeAdjustmentView.ViewData.Now -> {
-                    newTimeSplit = System.currentTimeMillis()
-                    onTimeSplitChanged()
-                }
-                is TimeAdjustmentView.ViewData.Zero -> {
-                    // Do nothing, shouldn't be there.
-                }
-                is TimeAdjustmentView.ViewData.Adjust -> {
-                    newTimeSplit += TimeUnit.MINUTES.toMillis(viewData.value)
-                    onTimeSplitChanged()
-                }
+        when (viewData) {
+            is TimeAdjustmentView.ViewData.Now -> {
+                newTimeSplit = System.currentTimeMillis()
+                onTimeSplitChanged()
+            }
+            is TimeAdjustmentView.ViewData.Zero -> {
+                // Do nothing, shouldn't be there.
+            }
+            is TimeAdjustmentView.ViewData.Adjust -> {
+                newTimeSplit += TimeUnit.MINUTES.toMillis(viewData.value)
+                onTimeSplitChanged()
             }
         }
+    }
+
+    private fun onSliderSplitValueChanged(value: Float) {
+        newTimeSplit = newTimeStarted + TimeUnit.SECONDS.toMillis(value.toLong())
+        onTimeSplitChanged()
     }
 
     private fun onRecordChangeButtonClick(
@@ -546,8 +519,7 @@ abstract class ChangeRecordBaseViewModel(
         }
 
         // Show keyboard on comment chooser opened, hide otherwise.
-        val showKeyboard = newState is ChangeRecordChooserState.State.Comment &&
-            !searchCommentViewData.value?.enabled.orFalse()
+        val showKeyboard = newState is ChangeRecordChooserState.State.Comment
         keyboardVisibility.set(showKeyboard)
 
         chooserState.set(
@@ -762,14 +734,14 @@ abstract class ChangeRecordBaseViewModel(
                         showTimeEndedOnSplitPreview = showTimeEndedOnSplitPreview,
                     ),
                     duplicateParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.DuplicateParams(
-                        isAdditionalActionsAvailable = isAdditionalActionsAvailable,
+                        isAvailable = isAdditionalActionsAvailable,
                     ),
                     continueParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.ContinueParams(
                         originalRecordId = originalRecordId,
-                        isAdditionalActionsAvailable = isAdditionalActionsAvailable,
+                        isAvailable = isAdditionalActionsAvailable,
                     ),
                     repeatParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.RepeatParams(
-                        isAdditionalActionsAvailable = isAdditionalActionsAvailable,
+                        isAvailable = isAdditionalActionsAvailable,
                     ),
                     adjustParams = ChangeRecordActionsDelegate.Parent.ViewDataParams.AdjustParams(
                         originalRecordId = originalRecordId,
@@ -802,8 +774,8 @@ abstract class ChangeRecordBaseViewModel(
                 )
             }
 
-            override suspend fun onSaveClickDelegate() {
-                this@ChangeRecordBaseViewModel.onSaveClickDelegate()
+            override suspend fun onSaveClickDelegate(doAfter: suspend () -> Unit) {
+                this@ChangeRecordBaseViewModel.onSaveClickDelegate(doAfter)
             }
 
             override suspend fun onSplitComplete() {
@@ -823,7 +795,7 @@ abstract class ChangeRecordBaseViewModel(
     }
 
     private suspend fun initializePrevRecord() {
-        prevRecord = recordInteractor.getPrev(timeStarted = originalTimeStarted).firstOrNull()
+        prevRecord = recordInteractor.getPrev(timeStarted = originalTimeStarted)
     }
 
     private suspend fun loadTypesViewData(): List<ViewHolderType> {
@@ -873,41 +845,17 @@ abstract class ChangeRecordBaseViewModel(
         )
     }
 
-    private suspend fun updateLastCommentsViewData() {
-        lastComments.set(loadLastCommentsViewData())
+    private fun updateCommentsViewData() {
+        searchLoadJob?.cancel()
+        searchLoadJob = viewModelScope.launch {
+            comments.set(loadCommentsViewData())
+        }
     }
 
-    private suspend fun loadLastCommentsViewData(): List<ViewHolderType> {
-        return changeRecordViewDataInteractor.getLastCommentsViewData(newTypeId)
-    }
-
-    private suspend fun updateFavCommentViewData() {
-        favCommentViewData.set(loadFavCommentViewData())
-    }
-
-    private suspend fun loadFavCommentViewData(): ChangeRecordFavCommentState {
-        return changeRecordViewDataInteractor.getFavCommentViewData(newComment)
-    }
-
-    private suspend fun updateSearchCommentViewData(
-        isLoading: Boolean,
-        isEnabled: Boolean,
-    ) {
-        val data = loadSearchCommentViewData(
-            isLoading = isLoading,
-            isEnabled = isEnabled,
-        )
-        searchCommentViewData.set(data)
-    }
-
-    private suspend fun loadSearchCommentViewData(
-        isLoading: Boolean,
-        isEnabled: Boolean,
-    ): ChangeRecordSearchCommentState {
-        return changeRecordViewDataInteractor.getSearchCommentViewData(
-            isEnabled = isEnabled,
-            isLoading = isLoading,
-            search = searchComment,
+    private suspend fun loadCommentsViewData(): List<ViewHolderType> {
+        return changeRecordViewDataInteractor.getCommentsViewData(
+            comment = newComment,
+            typeId = newTypeId,
         )
     }
 

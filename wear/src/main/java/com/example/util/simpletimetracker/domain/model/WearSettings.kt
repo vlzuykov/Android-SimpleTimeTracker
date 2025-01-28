@@ -8,4 +8,6 @@ package com.example.util.simpletimetracker.domain.model
 data class WearSettings(
     val allowMultitasking: Boolean,
     val recordTagSelectionCloseAfterOne: Boolean,
+    val enableRepeatButton: Boolean,
+    val retroactiveTrackingMode: Boolean,
 )

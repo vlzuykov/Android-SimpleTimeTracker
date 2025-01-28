@@ -19,6 +19,7 @@
     <string name="select_nothing">Pilih apa pun</string>
     <string name="no_data">Tidak ada data</string>
     <string name="general_error">Ada yang tidak beres. Silakan coba lagi atau mulai ulang aplikasi.</string>
+    <string name="copied_to_clipboard">Disalin ke papan klip</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Kemarin</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Tidak dilacak</string>
     <string name="uncategorized_time_name">Tidak dikategorikan</string>
     <string name="multitask_time_name">Multitugas</string>
-    <string name="running_record_goal_time">tujuan %s</string>
     <string name="record_types_empty">Tidak ada kegiatan yang ditambahkan</string>
     <string name="record_tag_selection_hint">Pilih label rekaman</string>
     <string name="time_now">Sekarang</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Tindakan</string>
     <string name="change_record_last_comments_hint">Komentar terakhir</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
+    <string name="change_record_favourite_comments_hint_long">Komentar favorit</string>
+    <string name="change_record_similar_comments_hint">Komentar serupa</string>
     <string name="change_record_categories_empty">Tidak ada label rekaman yang ditambahkan</string>
     <string name="change_record_save">Simpan</string>
     <string name="change_record_untagged">Tidak berlabel</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Masukkan nama baru</string>
     <string name="change_record_type_new_icon_text_hint">Masukkan teks baru</string>
     <string name="change_record_type_color_hint">Warna</string>
+    <string name="change_record_favourite_colors_hint">Warna favorit</string>
     <string name="change_record_type_icon_image_hint">Ikon</string>
     <string name="change_record_type_icon_text_hint">Teks</string>
     <string name="change_record_type_icon_emoji_hint">Emoji</string>
     <string name="change_record_type_icon_search_hint">Pencarian (dalam bahasa Inggris)</string>
     <string name="change_record_type_no_icon">Tidak ada ikon</string>
+    <string name="change_record_favourite_icons_hint">Ikon favorit</string>
     <string name="change_record_type_save">Simpan</string>
     <string name="change_record_message_choose_name">Pilih sebuah nama</string>
     <string name="change_record_message_name_exist">Nama sudah digunakan</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">Tidak ada kategori yang ditambahkan</string>
     <string name="change_record_type_goal_time_disabled">Dinonaktifkan</string>
     <string name="change_record_type_goal_time_hint">Tujuan</string>
+    <string name="change_record_type_limit_time_hint">Membatasi</string>
     <string name="change_record_type_additional_hint">Tambahan</string>
     <string name="change_record_type_default_duration">Durasi bawaan</string>
     <string name="change_record_type_default_duration_hint">Aktivitas dengan durasi default dilacak langsung saat diklik.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Pilih tindakan</string>
     <string name="change_complex_rule_choose_condition">Pilih kondisi</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Menampilkan saran untuk aktivitas berikutnya berdasarkan aktivitas saat ini atau terakhir</string>
+    <string name="activity_suggestions_calculate">Hitung dari statistik</string>
+    <string name="activity_suggestions_select_activity_hint">Saran akan ditampilkan untuk aktivitas yang dipilih</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Filter aktivitas</string>
     <string name="change_activity_filter_removed">Filter dihapus</string>
     <string name="change_activity_filter_save">Simpan</string>
     <string name="change_activity_filter_type">Jenis filter</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Sesuaikan warna</string>
     <string name="color_selection_final_color_hint">Warna akhir</string>
 
-    <string name="csv_export_settings_range">Rentang</string>
-    <string name="csv_export_settings_all">Semua</string>
+    <string name="csv_export_settings_filename_hint">Nama file khusus</string>
+    <string name="csv_export_settings_filename_default">Bawaan</string>
     <string name="csv_export_settings_hint">Pilih rentang waktu atau ekspor semua rekor</string>
 
     <string name="schedule_exact_alarms">Setelan sistem harus diaktifkan untuk aplikasi ini agar dapat menjadwalkan alarm yang tepat</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">Jangan tampilkan lagi</string>
 
     <string name="record_tag_selection_exclude_activities_title">Kecualikan aktivitas</string>
-    <string name="record_tag_selection_exclude_activities_hint">Dialog pemilihan tag tidak akan ditampilkan untuk aktivitas yang dipilih.</string>
+    <string name="record_tag_selection_exclude_activities_hint">Dialog tidak akan ditampilkan untuk aktivitas yang dipilih.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Pilih aktivitas</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro akan dimulai secara otomatis ketika aktivitas yang dipilih dimulai.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Urutkan rekor</string>
     <string name="records_all_sort_time_started">Waktu dimulai</string>
     <string name="records_all_sort_duration">Durasi</string>
-    <string name="records_all_search_comment">Cari komentar</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">Untuk memulai pelacakan, tambahkan aktivitas dengan mengklik tombol %s atau gunakan preset default dengan mengklik tombol %s</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Nama</string>
     <string name="settings_sort_by_color">Warna</string>
     <string name="settings_sort_manually">Secara manual</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Urutan aktivitas</string>
     <string name="settings_first_day_of_week">Hari pertama dalam seminggu</string>
     <string name="settings_show_repeat_button">Tampilkan tombol ulangi di layar utama</string>
     <string name="settings_repeat_button_type">Mode</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Tampilkan notifikasi pewaktu</string>
     <string name="settings_show_notifications_hint">Tampilkan notifikasi saat pewaktu berjalan.</string>
     <string name="settings_show_notifications_controls">Aktifkan pengalihan aktivitas dari notifikasi</string>
+    <string name="settings_show_notifications_controls_hint">Dapat juga digunakan untuk berpindah aktivitas dari layar kunci.</string>
+    <string name="settings_show_notification_even_with_no_timers">Tampilkan bahkan saat tidak ada pengatur waktu yang berjalan</string>
     <string name="settings_keep_statistics_range">Pertahankan rentang statistik</string>
     <string name="settings_keep_statistics_range_hint">Jika diaktifkan, statistik terperinci akan dibuka dengan rentang waktu yang sama yang dipilih dalam statistik.</string>
+    <string name="settings_retroactive_tracking_mode">Aktifkan pelacakan waktu retroaktif</string>
+    <string name="settings_retroactive_tracking_mode_hint">Lacak waktu dengan memilih aktivitas mana yang telah dilakukan sejak terakhir kali, bukan aktivitas mana yang akan dilakukan mulai sekarang.</string>
     <string name="settings_start_of_day">Pergeseran awal hari</string>
     <string name="settings_start_of_day_hint">Permulaan hari akan digeser dengan jumlah waktu yang ditentukan, maju atau mundur tergantung pada tandanya.</string>
     <string name="settings_start_of_day_hint_value">Hari ini mulai di %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Arsip</string>
     <string name="settings_data_edit">Pengeditan data</string>
     <string name="settings_complex_rules">Aturan yang rumit</string>
+    <string name="settings_activity_suggestions">Saran aktivitas</string>
     <string name="settings_edit_categories">Sunting kategori dan label</string>
     <string name="settings_edit_categories_hint">Tetapkan kategori untuk aktivitas dan label untuk rekaman.</string>
     <string name="settings_show_record_tag_selection">Tampilkan pilihan label rekor</string>
     <string name="settings_show_record_tag_selection_hint">Saat memulai mengatur waktu, jika kegiatan memiliki label rekor apa pun - dialog pemilihan akan ditampilkan.</string>
     <string name="settings_show_record_tag_close_hint">Tutup setelah memilih satu tag</string>
+    <string name="settings_show_comment_input">Tampilkan masukan komentar</string>
+    <string name="settings_show_comment_input_hint">Saat memulai pengatur waktu - dialog input komentar akan ditampilkan.</string>
     <string name="settings_rate">Nilai kami</string>
     <string name="settings_rate_description">Nilai aplikasi dan tinggalkan sebuah ulasan.</string>
     <string name="settings_support_development">Mendukung pengembangan</string>
@@ -348,29 +365,20 @@ Untuk mengaktifkan perilaku ini, aplikasi ini harus mendukung pengiriman \"inten
 <b>Action</b> - \"%s\" atau \"%s\".<br/>
 <b>Extra</b> - \"%s\" dengan nama aktivitas yang harus dimulai atau dihentikan.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Parameter opsional untuk memulai aktivitas:<br/>
-<br/>
-<b>Extra</b> - \"%s\" dengan catatan komentar.<br/>
-<b>Extra</b> - \"%s\" dengan nama tag rekaman.<br/>
-<br/>
-Tambahan:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" dengan tambahan: \"%s\", \"%s\", \"%s\" dan \"%s\", \"%s\" dalam format \"yyyy-MM-dd HH:mm:ss\" atau stempel waktu UTC.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Kirim acara</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Jika setelan <b>\"%s\"</b> diaktifkan, aplikasi akan mengirimkan peristiwa pada aktivitas yang dimulai atau dihentikan ke aplikasi pihak ketiga untuk pelacakan otomatis dengan parameter berikut:<br/>
-<br/>
-<b>Action</b> - \"%s\" atau \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Jika setelan <b>\"%s\"</b> diaktifkan, aplikasi akan mengirimkan peristiwa pada aktivitas yang dimulai atau dihentikan ke aplikasi pihak ketiga untuk pelacakan otomatis.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Tindakan yang tersedia:</string>
+    <string name="settings_automated_tracking_available_events">Acara yang tersedia:</string>
+    <string name="settings_automated_tracking_extras_description">Keterangan:</string>
+    <string name="settings_automated_tracking_extra_name">dengan nama aktivitas yang harus dimulai atau dihentikan.</string>
+    <string name="settings_automated_tracking_extra_tag">dengan nama tag rekaman. Atau daftar nama tag dipisahkan dengan koma.</string>
+    <string name="settings_automated_tracking_extra_time">dalam format \"yyyy-MM-dd HH:mm:ss\" atau stempel waktu UTC.</string>
+    <string name="settings_automated_tracking_find_record_mode">memilih rekaman mana yang akan diubah.</string>
+    <string name="settings_automated_tracking_comment_mode">memilih cara mengubah komentar pada rekaman yang dipilih.</string>
+    <string name="settings_automated_tracking_find_with_activity">selain itu memilih rekaman berdasarkan nama aktivitas, jika ada beberapa rekaman saat ini atau terakhir.</string>
 
     <string name="settings_save_backup">Simpan cadangan</string>
     <string name="settings_save_description">Sebelum menyimpan, pastikan Anda memiliki versi terbaru aplikasi terinstal untuk menghindari masalah teknis.</string>
@@ -380,6 +388,7 @@ Jika setelan <b>\"%s\"</b> diaktifkan, aplikasi akan mengirimkan peristiwa pada 
     <string name="settings_automatic_last_save">Penyimpanan terakhir:</string>
     <string name="settings_restore_backup">Pulihkan cadangan</string>
     <string name="settings_restore_description">Data saat ini akan lenyap.</string>
+    <string name="settings_backup_options">Opsi lanjutan</string>
     <string name="settings_dialog_message">Pulihkan cadangan?</string>
     <string name="settings_export_csv">Ekspor lembar kerja</string>
     <string name="settings_export_csv_description">Ekspor rekor-rekor kegiatan sebagai sebuah berkas csv untuk melihatnya dalam aplikasi spreadsheet yang diinginkan.</string>
@@ -412,9 +421,22 @@ Contoh:<br/>
     <string name="message_import_complete">Impor selesai</string>
     <string name="message_import_complete_hint">Catatan ditambahkan: %s</string>
     <string name="message_import_error">Kesalahan impor</string>
+    <string name="message_action_share">Membagikan</string>
     <string name="message_automatic_backup_error">Terjadi kesalahan dengan pencadangan otomatis.</string>
     <string name="message_automatic_export_error">Terjadi kesalahan dengan ekspor otomatis.</string>
     <string name="message_automatic_error_hint">Cobalah untuk memilih lokasi yang berbeda</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Impor</string>
+    <string name="backup_options_save_without_records">Simpan cadangan tanpa catatan</string>
+    <string name="backup_options_save_without_records_hint">Dapat digunakan untuk berbagi pengaturan.</string>
+    <string name="backup_options_full_restore">Pemulihan penuh</string>
+    <string name="backup_options_full_restore_hint">Mengembalikan data dan pengaturan. Memerlukan restart aplikasi.</string>
+    <string name="backup_options_partial_restore">Impor data dari cadangan</string>
+    <string name="backup_options_partial_restore_hint">Memungkinkan untuk memilih data mana yang akan diimpor. Data saat ini tidak akan hilang.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Pilih data mana yang akan diimpor dari file.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">jam</string>
@@ -427,6 +449,7 @@ Contoh:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">h</string>
+    <string name="statistics_detail_chart_split">Pisahkan berdasarkan aktivitas</string>
 
     <string name="statistics_detail_range_averages_title">Rata-rata untuk periode: %s</string>
     <string name="statistics_detail_range_averages">Untuk seluruh rentang</string>
@@ -449,12 +472,16 @@ Contoh:<br/>
     <string name="statistics_detail_streaks_latest">Terbaru</string>
     <string name="statistics_detail_streaks_any">Durasi berapa pun</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Distribusi aktivitas</string>
-    <string name="statistics_detail_tag_split_hint">Distribusi label</string>
+    <string name="statistics_detail_data_split_hint">Distribusi</string>
+    <string name="statistics_detail_data_split_pie_chart">Lingkaran</string>
+    <string name="statistics_detail_data_split_bar_chart">Kolom</string>
     <string name="statistics_detail_day_split_hint">Distribusi harian</string>
     <string name="statistics_detail_duration_split_hint">Distribusi durasi rekaman</string>
     <string name="statistics_detail_next_activities_hint">Aktivitas teratas selanjutnya</string>
     <string name="statistics_detail_multitasking_activities_hint">Multitugas teratas</string>
+    <string name="statistics_detail_goals_hint">Kelebihan atau kekurangan gol</string>
+    <string name="statistics_detail_goals_excess">Kelebihan</string>
+    <string name="statistics_detail_goals_deficit">Defisit</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Rekor</item>-->
@@ -478,7 +505,9 @@ Contoh:<br/>
     <string name="notification_activity_title">Pengingat aktivitas</string>
     <string name="notification_activity_text">Apakah Anda masih melakukan: %s?</string>
     <string name="notification_goal_time_description">tujuan tercapai</string>
+    <string name="notification_limit_time_description">batas tercapai</string>
     <string name="notification_time_started">Dimulai pada %s</string>
+    <string name="notification_time_ended">Selesai pada %s</string>
     <string name="notification_record_type_stop">Berhenti</string>
     <string name="notification_pomodoro_subtitle">Mulai: %s (%s)</string>
 
@@ -502,14 +531,18 @@ Contoh:<br/>
     <string name="data_edit_hint">Perubahan ini tidak dapat diurungkan. Pastikan untuk membuat file cadangan sebelum melakukan apa pun.</string>
     <string name="data_edit_select_records">Pilih rekaman</string>
     <string name="data_edit_change_activity">Ubah aktivitas</string>
+    <string name="data_edit_change_tag">Ubah tag</string>
     <string name="data_edit_change_activity_hint">Tag aktivitas saat ini akan dihapus.</string>
     <string name="data_edit_change_comment">Ubah komentar</string>
     <string name="data_edit_change_add_tag">Tambahkan tanda</string>
     <string name="data_edit_change_remove_tag">Hapus tag</string>
     <string name="data_edit_button_change">Mengubah</string>
+    <string name="data_edit_button_delete_records">Hapus semua catatan</string>
+    <string name="data_edit_button_delete_data">Hapus semua data</string>
     <string name="data_edit_success_message">Data berubah</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Duplikasi</string>
     <string name="records_filter_select_tags">Pilih tag</string>
     <string name="records_filter_filter_tags">Kecualikan tag</string>
     <string name="records_filter_manually_filtered">Tersaring</string>
@@ -517,12 +550,20 @@ Contoh:<br/>
     <string name="records_filter_any_comment">Ada komentar</string>
     <string name="records_filter_select">Pilih</string>
     <string name="records_filter_invert_selection">Pilihan sebaliknya</string>
+    <string name="records_filter_duration_min">Minimum</string>
+    <string name="records_filter_duration_max">Maksimum</string>
+    <string name="records_filter_duplications_same_activity">Aktivitas yang sama</string>
+    <string name="records_filter_duplications_same_times">Waktu yang sama</string>
+    <string name="records_filter_duplications_manually_fitler">Filter duplikat</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Fokus</string>
     <string name="pomodoro_state_break">Istirahat</string>
     <string name="pomodoro_state_long_break">Istirahat panjang</string>
     <string name="pomodoro_settings_periods_until_long_break">Periode hingga jeda panjang</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Pilih apa yang telah Anda lakukan</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Senyuman &amp; Emosi</string>

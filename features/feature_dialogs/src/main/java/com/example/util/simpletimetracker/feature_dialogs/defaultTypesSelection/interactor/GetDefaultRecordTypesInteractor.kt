@@ -1,7 +1,7 @@
 package com.example.util.simpletimetracker.feature_dialogs.defaultTypesSelection.interactor
 
-import com.example.util.simpletimetracker.domain.model.AppColor
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.color.model.AppColor
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import javax.inject.Inject
 
 class GetDefaultRecordTypesInteractor @Inject constructor() {

@@ -9,8 +9,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.example.util.simpletimetracker.core.utils.TestUtils
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_change_record.R
 import com.example.util.simpletimetracker.utils.checkViewDoesNotExist
 import com.example.util.simpletimetracker.utils.checkViewIsDisplayed
@@ -218,7 +218,8 @@ object GoalsTestUtils {
             idData = RecordTypeGoal.IdData.Type(0),
             range = range,
             type = RecordTypeGoal.Type.Duration(duration),
-            daysOfWeek = DayOfWeek.values().toList(),
+            subtype = RecordTypeGoal.Subtype.Goal,
+            daysOfWeek = DayOfWeek.entries.toSet(),
         )
     }
 
@@ -238,7 +239,8 @@ object GoalsTestUtils {
             idData = RecordTypeGoal.IdData.Type(0),
             range = range,
             type = RecordTypeGoal.Type.Count(count),
-            daysOfWeek = DayOfWeek.values().toList(),
+            subtype = RecordTypeGoal.Subtype.Goal,
+            daysOfWeek = DayOfWeek.entries.toSet(),
         )
     }
 

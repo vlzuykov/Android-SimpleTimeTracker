@@ -6,19 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
-import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.model.CardOrder
-import com.example.util.simpletimetracker.domain.model.CardTagOrder
+import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
+import com.example.util.simpletimetracker.domain.recordType.model.CardOrder
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.recordTag.model.CardTagOrder
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.navigation.params.screen.CardOrderDialogParams
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class CardOrderViewModel @Inject constructor(
         }
     }
 
-    fun onDismiss(newList: List<ViewHolderType>) = GlobalScope.launch {
+    fun onDismiss(newList: List<ViewHolderType>) = MainScope().launch {
         val dataIds: List<Long> = when (extra.type) {
             is CardOrderDialogParams.Type.RecordType -> {
                 newList.filterIsInstance<RecordTypeViewData>().map { it.id }
@@ -106,7 +107,7 @@ class CardOrderViewModel @Inject constructor(
                     recordType = type,
                     numberOfCards = numberOfCards,
                     isDarkTheme = isDarkTheme,
-                    isChecked = null,
+                    checkState = GoalCheckmarkView.CheckState.HIDDEN,
                     isComplete = false,
                 )
             }

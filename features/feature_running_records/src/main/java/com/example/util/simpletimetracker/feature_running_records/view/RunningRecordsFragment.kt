@@ -10,7 +10,7 @@ import com.example.util.simpletimetracker.core.dialog.OnTagSelectedListener
 import com.example.util.simpletimetracker.core.sharedViewModel.MainTabsViewModel
 import com.example.util.simpletimetracker.core.utils.InsetConfiguration
 import com.example.util.simpletimetracker.core.utils.updateRunningRecordPreview
-import com.example.util.simpletimetracker.domain.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.createActivityFilterAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.activityFilter.createActivityFilterAddAdapterDelegate
@@ -21,6 +21,8 @@ import com.example.util.simpletimetracker.feature_base_adapter.hintBig.createHin
 import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.createRecordTypeAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSpecial.createRunningRecordTypeSpecialAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.recordTypeSuggestion.createRecordTypeSuggestionAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.recordWithHint.createRecordWithHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.createRunningRecordAdapterDelegate
 import com.example.util.simpletimetracker.feature_running_records.viewModel.RunningRecordsViewModel
 import com.example.util.simpletimetracker.feature_views.TransitionNames
@@ -68,6 +70,11 @@ class RunningRecordsFragment :
                 onItemLongClick = viewModel::onRecordTypeLongClick,
                 withTransition = true,
             ),
+            createRecordTypeSuggestionAdapterDelegate(
+                onItemClick = viewModel::onRecordTypeClick,
+                onItemLongClick = viewModel::onRecordTypeLongClick,
+            ),
+            createRecordWithHintAdapterDelegate(),
             createRunningRecordTypeSpecialAdapterDelegate(throttle(viewModel::onSpecialRecordTypeClick)),
             createActivityFilterAdapterDelegate(viewModel::onActivityFilterClick, viewModel::onActivityFilterLongClick),
             createActivityFilterAddAdapterDelegate(throttle(viewModel::onAddActivityFilterClick)),
@@ -92,7 +99,7 @@ class RunningRecordsFragment :
         }
     }
 
-    override fun initViewModel() = with(binding) {
+    override fun initViewModel() {
         with(viewModel) {
             runningRecords.observe(runningRecordsAdapter::replace)
             resetScreen.observe { resetScreen() }

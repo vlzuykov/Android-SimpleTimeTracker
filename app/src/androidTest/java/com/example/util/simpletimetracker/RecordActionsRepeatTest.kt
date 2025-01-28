@@ -73,7 +73,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         clickOnViewWithText(fullName)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
 
         // Check record still there
@@ -120,7 +123,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         // Repeat untracked doesn't work
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
@@ -133,7 +139,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         // Repeat
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
         val runningRecordTimeStartedPreview = System.currentTimeMillis().formatTime()
 
@@ -182,7 +191,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         // Repeat untracked doesn't work
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
         clickOnViewWithId(com.google.android.material.R.id.snackbar_text)
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
@@ -195,7 +207,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         // Repeat
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
         val runningRecordTimeStartedPreview = System.currentTimeMillis().formatTime()
 
@@ -269,7 +284,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
         val runningRecordTimeStartedPreview = System.currentTimeMillis().formatTime()
 
@@ -307,7 +325,10 @@ class RecordActionsRepeatTest : BaseUiTest() {
         clickOnRecyclerItem(changeRecordR.id.rvChangeRecordType, withText(name2))
         onView(withText(coreR.string.change_record_actions_hint)).perform(nestedScrollTo())
         clickOnViewWithText(coreR.string.change_record_actions_hint)
-        scrollRecyclerToView(changeRecordR.id.rvChangeRecordAction, withText(coreR.string.change_record_repeat))
+        scrollRecyclerToView(
+            changeRecordR.id.rvChangeRecordAction,
+            hasDescendant(withText(coreR.string.change_record_repeat)),
+        )
         clickOnViewWithText(coreR.string.change_record_repeat)
 
         // Running record stopped

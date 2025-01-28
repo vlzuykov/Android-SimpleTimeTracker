@@ -19,6 +19,7 @@
     <string name="select_nothing">Välj ingenting</string>
     <string name="no_data">Inga data</string>
     <string name="general_error">Något gick fel. Försök igen eller starta om appen.</string>
+    <string name="copied_to_clipboard">Kopierade till urklipp</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Igår</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Okategoriserad</string>
     <string name="uncategorized_time_name">Okategoriserad</string>
     <string name="multitask_time_name">Multi aktivitet</string>
-    <string name="running_record_goal_time">mål %s</string>
     <string name="record_types_empty">Inga tillagda aktiviteter</string>
     <string name="record_tag_selection_hint">Välj händelsetagg</string>
     <string name="time_now">Nu</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Åtgärder</string>
     <string name="change_record_last_comments_hint">Tidigare kommentarer</string>
     <string name="change_record_favourite_comments_hint">Favorit</string>
+    <string name="change_record_favourite_comments_hint_long">Favoritkommentarer</string>
+    <string name="change_record_similar_comments_hint">Liknande kommentarer</string>
     <string name="change_record_categories_empty">Ingen händelsetagg vald</string>
     <string name="change_record_save">Spara</string>
     <string name="change_record_untagged">Ej taggad</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Ange nytt namn</string>
     <string name="change_record_type_new_icon_text_hint">Skriv in ny text</string>
     <string name="change_record_type_color_hint">Färg</string>
+    <string name="change_record_favourite_colors_hint">Favoritfärger</string>
     <string name="change_record_type_icon_image_hint">Ikon</string>
     <string name="change_record_type_icon_text_hint">Text</string>
     <string name="change_record_type_icon_emoji_hint">Emoji</string>
     <string name="change_record_type_icon_search_hint">Sök (på engelska)</string>
     <string name="change_record_type_no_icon">Ingen ikon</string>
+    <string name="change_record_favourite_icons_hint">Favoritikoner</string>
     <string name="change_record_type_save">Spara</string>
     <string name="change_record_message_choose_name">Ange ett namn</string>
     <string name="change_record_message_name_exist">Namnet har redan använts</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">Inga kategorier har lagts till</string>
     <string name="change_record_type_goal_time_disabled">Inaktiverad</string>
     <string name="change_record_type_goal_time_hint">Mål</string>
+    <string name="change_record_type_limit_time_hint">Begränsa</string>
     <string name="change_record_type_additional_hint">Ytterligare</string>
     <string name="change_record_type_default_duration">Standardvaraktighet</string>
     <string name="change_record_type_default_duration_hint">Aktiviteter med standardvaraktighet spåras direkt vid klick.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Välj åtgärd</string>
     <string name="change_complex_rule_choose_condition">Välj villkor</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Visar förslag för nästa aktivitet baserat på aktuell eller senaste aktivitet</string>
+    <string name="activity_suggestions_calculate">Beräkna från statistik</string>
+    <string name="activity_suggestions_select_activity_hint">Förslag kommer att visas för utvalda aktiviteter</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Aktivitetsfilter</string>
     <string name="change_activity_filter_removed">Filter borttaget</string>
     <string name="change_activity_filter_save">Spara</string>
     <string name="change_activity_filter_type">Filtertyp</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Justera färg</string>
     <string name="color_selection_final_color_hint">Slutlig färg</string>
 
-    <string name="csv_export_settings_range">Intervall</string>
-    <string name="csv_export_settings_all">Allt</string>
+    <string name="csv_export_settings_filename_hint">Anpassat filnamn</string>
+    <string name="csv_export_settings_filename_default">Standard</string>
     <string name="csv_export_settings_hint">Välj tidsintervall eller exportera alla händelser</string>
 
     <string name="schedule_exact_alarms">Systeminställningen bör vara aktiverad för den här appen för att kunna schemalägga exakta larm</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">Visa inte igen</string>
 
     <string name="record_tag_selection_exclude_activities_title">Uteslut aktiviteter</string>
-    <string name="record_tag_selection_exclude_activities_hint">Dialogrutan för val av tagg kommer inte att visas för valda aktiviteter.</string>
+    <string name="record_tag_selection_exclude_activities_hint">Dialogrutan kommer inte att visas för valda aktiviteter.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Välj aktiviteter</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Pomodoro kommer att startas automatiskt när valda aktiviteter startas.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Sortera händelser</string>
     <string name="records_all_sort_time_started">Starttid</string>
     <string name="records_all_sort_duration">Varaktighet</string>
-    <string name="records_all_search_comment">Sök kommentar</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">För att börja spåra, lägg till aktiviteter genom att klicka på %s-knappen eller använd standardförinställningar genom att klicka på %s-knappen</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">Namn</string>
     <string name="settings_sort_by_color">Färg</string>
     <string name="settings_sort_manually">Manuellt</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Aktivitetsordning</string>
     <string name="settings_first_day_of_week">Första veckodagen</string>
     <string name="settings_show_repeat_button">Visa upprepningsknapp på huvudskärmen</string>
     <string name="settings_repeat_button_type">Läge</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Visa aktivitetsaviseringar</string>
     <string name="settings_show_notifications_hint">Visa notis när tidtagning av aktivitet pågår.</string>
     <string name="settings_show_notifications_controls">Aktivera aktivitetsväxling från avisering</string>
+    <string name="settings_show_notifications_controls_hint">Kan också användas för att byta aktiviteter från låsskärmen.</string>
+    <string name="settings_show_notification_even_with_no_timers">Visa även när inga timers körs</string>
     <string name="settings_keep_statistics_range">Kom ihåg valt intervall för statistik</string>
     <string name="settings_keep_statistics_range_hint">Om aktiverat så öppnas detaljerad statistik med samma tidsintervall som valts i statistikvyn.</string>
+    <string name="settings_retroactive_tracking_mode">Aktivera retroaktiv tidsspårning</string>
+    <string name="settings_retroactive_tracking_mode_hint">Spåra tid genom att välja vilken aktivitet som har gjorts sedan förra gången snarare än vilken aktivitet som ska göras från och med nu.</string>
     <string name="settings_start_of_day">Tid för dagens skiftstart</string>
     <string name="settings_start_of_day_hint">Dagens början kommer att förskjutas med den angivna tidsperioden, framåt eller bakåt beroende på tecken.</string>
     <string name="settings_start_of_day_hint_value">Idag börjar på %s</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Arkiv</string>
     <string name="settings_data_edit">Dataredigering</string>
     <string name="settings_complex_rules">Komplicerade regler</string>
+    <string name="settings_activity_suggestions">Aktivitetsförslag</string>
     <string name="settings_edit_categories">Redigera kategorier och taggar</string>
     <string name="settings_edit_categories_hint">Tilldela kategorier till aktiviteter och taggar till poster.</string>
     <string name="settings_show_record_tag_selection">Dialog för händelsetagg</string>
     <string name="settings_show_record_tag_selection_hint">Visa dialogruta för val av händelsetaggar om den påbörjade aktiviteten har tilldelade händelsetaggar.</string>
     <string name="settings_show_record_tag_close_hint">Stäng efter att ha valt en tagg</string>
+    <string name="settings_show_comment_input">Visa kommentarinmatning</string>
+    <string name="settings_show_comment_input_hint">När du startar en timer - en dialogruta för kommentarinmatning visas.</string>
     <string name="settings_rate">Ge oss ett betyg</string>
     <string name="settings_rate_description">Betygsätt appen och lämna en recension.</string>
     <string name="settings_support_development">Stöd utveckling</string>
@@ -348,29 +365,20 @@ För att aktivera detta beteende behöver tredjepartsapplikationen stödja \"int
 <b>Action</b> - \"%s\" eller \"%s\".<br/>
 <b>Extra</b> - \"%s\" med namnet på aktiviteten som ska startas eller stoppas.<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Valfria parametrar för start av aktivitet:<br/>
-<br/>
-<b>Extra</b> - \"%s\" med händelsekommentar.<br/>
-<b>Extra</b> - \"%s\" med namnet på en händelsetagg.<br/>
-<br/>
-Ytterligare:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" med extrafunktioner: \"%s\", \"%s\", \"%s\" och \"%s\", \"%s\" i formatet \"åååå-MM-dd HH:mm:ss\" eller UTC-tidsstämpel.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Skicka händelser</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-Om inställningen <b>\"%s\"</b> är aktiverad, kommer appen att skicka händelser vid påbörjad eller stoppad aktivitet till tredjepartsprogram för automatisk spårning med dessa parametrar:<br/>
-<br/>
-<b>Action</b> - \"%s\" eller \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+Om inställningen <b>\"%s\"</b> är aktiverad, kommer appen att skicka händelser vid påbörjad eller stoppad aktivitet till tredjepartsprogram för automatisk spårning.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Tillgängliga åtgärder:</string>
+    <string name="settings_automated_tracking_available_events">Tillgängliga evenemang:</string>
+    <string name="settings_automated_tracking_extras_description">Beskrivning:</string>
+    <string name="settings_automated_tracking_extra_name">med namnet på aktiviteten som ska startas eller stoppas.</string>
+    <string name="settings_automated_tracking_extra_tag">med namnet på en händelsetagg. Eller lista över taggnamn separerade med kommatecken.</string>
+    <string name="settings_automated_tracking_extra_time">i formatet \"åååå-MM-dd HH:mm:ss\" eller UTC-tidsstämpel.</string>
+    <string name="settings_automated_tracking_find_record_mode">väljer vilken post som ska ändras.</string>
+    <string name="settings_automated_tracking_comment_mode">väljer hur kommentaren för den valda posten ska ändras.</string>
+    <string name="settings_automated_tracking_find_with_activity">väljer dessutom post efter aktivitetsnamn, om det finns flera aktuella eller senaste poster.</string>
 
     <string name="settings_save_backup">Spara säkerhetskopia</string>
     <string name="settings_save_description">Innan du sparar, se till att du har den senaste versionen av appen för att förhindra datakonflikter.</string>
@@ -380,6 +388,7 @@ Om inställningen <b>\"%s\"</b> är aktiverad, kommer appen att skicka händelse
     <string name="settings_automatic_last_save">Senast sparad:</string>
     <string name="settings_restore_backup">Återställ säkerhetskopia</string>
     <string name="settings_restore_description">Nuvarande data kommer tas bort.</string>
+    <string name="settings_backup_options">Avancerade alternativ</string>
     <string name="settings_dialog_message">Återställa säkerhetskopia?</string>
     <string name="settings_export_csv">Exportera kalkyblad</string>
     <string name="settings_export_csv_description">Exportera händelser som en csv-fil för att öppna med kalkylbladsprogram.</string>
@@ -412,9 +421,22 @@ Exempel:<br/>
     <string name="message_import_complete">Importen slutförd</string>
     <string name="message_import_complete_hint">Poster tillagda: %s</string>
     <string name="message_import_error">Importfel</string>
+    <string name="message_action_share">Dela</string>
     <string name="message_automatic_backup_error">Det uppstod ett fel med automatisk säkerhetskopiering.</string>
     <string name="message_automatic_export_error">Det uppstod ett fel med automatisk export.</string>
     <string name="message_automatic_error_hint">Försök att välja en annan plats</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">Importera</string>
+    <string name="backup_options_save_without_records">Spara säkerhetskopia utan register</string>
+    <string name="backup_options_save_without_records_hint">Kan användas för att dela inställningen.</string>
+    <string name="backup_options_full_restore">Fullständig återställning</string>
+    <string name="backup_options_full_restore_hint">Återställer data och inställningar. Kräver omstart av appen.</string>
+    <string name="backup_options_partial_restore">Importera data från backup</string>
+    <string name="backup_options_partial_restore_hint">Tillåter att välja vilken data som ska importeras. Aktuell data kommer inte att gå förlorad.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Välj vilken data som ska importeras från filen.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">timvis</string>
@@ -427,6 +449,7 @@ Exempel:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">m</string>
     <string name="statistics_detail_legend_hour_suffix">t</string>
+    <string name="statistics_detail_chart_split">Uppdelad efter aktivitet</string>
 
     <string name="statistics_detail_range_averages_title">Genomsnitt för period: %s</string>
     <string name="statistics_detail_range_averages">För hela sortimentet</string>
@@ -449,12 +472,16 @@ Exempel:<br/>
     <string name="statistics_detail_streaks_latest">Senast</string>
     <string name="statistics_detail_streaks_any">Vilken varaktighet som helst</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Aktivitetsfördelning</string>
-    <string name="statistics_detail_tag_split_hint">Fördelning av taggar</string>
+    <string name="statistics_detail_data_split_hint">Distribution</string>
+    <string name="statistics_detail_data_split_pie_chart">Cirkel</string>
+    <string name="statistics_detail_data_split_bar_chart">Kolumner</string>
     <string name="statistics_detail_day_split_hint">Daglig fördelning</string>
     <string name="statistics_detail_duration_split_hint">Fördelning händelselängd</string>
     <string name="statistics_detail_next_activities_hint">Topp nästa aktiviteter</string>
     <string name="statistics_detail_multitasking_activities_hint">Top multitasked</string>
+    <string name="statistics_detail_goals_hint">Målöverskott eller underskott</string>
+    <string name="statistics_detail_goals_excess">Överskott</string>
+    <string name="statistics_detail_goals_deficit">Underskott</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">händelser</item>-->
@@ -478,7 +505,9 @@ Exempel:<br/>
     <string name="notification_activity_title">Aktivitetspåminnelse</string>
     <string name="notification_activity_text">Gör du fortfarande: %s?</string>
     <string name="notification_goal_time_description">mål uppnått</string>
+    <string name="notification_limit_time_description">gräns nådd</string>
     <string name="notification_time_started">Påbörjade %s</string>
+    <string name="notification_time_ended">Avslutade vid %s</string>
     <string name="notification_record_type_stop">Sluta</string>
     <string name="notification_pomodoro_subtitle">Startar: %s (%s)</string>
 
@@ -502,14 +531,18 @@ Exempel:<br/>
     <string name="data_edit_hint">Dessa ändringar kan inte ångras. Se till att skapa en säkerhetskopia innan du gör något.</string>
     <string name="data_edit_select_records">Välj poster</string>
     <string name="data_edit_change_activity">Ändra aktivitet</string>
+    <string name="data_edit_change_tag">Byt taggar</string>
     <string name="data_edit_change_activity_hint">Taggar för aktuell aktivitet kommer att tas bort.</string>
     <string name="data_edit_change_comment">Ändra kommentar</string>
     <string name="data_edit_change_add_tag">Lägg till taggar</string>
     <string name="data_edit_change_remove_tag">Ta bort taggar</string>
     <string name="data_edit_button_change">Förändra</string>
+    <string name="data_edit_button_delete_records">Radera alla poster</string>
+    <string name="data_edit_button_delete_data">Radera all data</string>
     <string name="data_edit_success_message">Data har ändrats</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Dupliceringar</string>
     <string name="records_filter_select_tags">Välj taggar</string>
     <string name="records_filter_filter_tags">Uteslut taggar</string>
     <string name="records_filter_manually_filtered">Filtrerad</string>
@@ -517,12 +550,20 @@ Exempel:<br/>
     <string name="records_filter_any_comment">Någon kommentar</string>
     <string name="records_filter_select">Välj</string>
     <string name="records_filter_invert_selection">Invertera urval</string>
+    <string name="records_filter_duration_min">Minimum</string>
+    <string name="records_filter_duration_max">Maximal</string>
+    <string name="records_filter_duplications_same_activity">Samma aktivitet</string>
+    <string name="records_filter_duplications_same_times">Samma tid</string>
+    <string name="records_filter_duplications_manually_fitler">Filtrera dubbletter</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Fokus</string>
     <string name="pomodoro_state_break">Paus</string>
     <string name="pomodoro_state_long_break">Lång paus</string>
     <string name="pomodoro_settings_periods_until_long_break">Perioder till lång paus</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Välj vad du har gjort</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">Ansiktsuttryck &amp; Känslor</string>

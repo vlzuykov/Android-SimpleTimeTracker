@@ -2,10 +2,10 @@ package com.example.util.simpletimetracker.feature_notification.automaticExport.
 
 import com.example.util.simpletimetracker.core.extension.post
 import com.example.util.simpletimetracker.core.repo.AutomaticExportRepo
-import com.example.util.simpletimetracker.domain.interactor.AutomaticExportInteractor
-import com.example.util.simpletimetracker.domain.interactor.CsvExportInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.resolver.ResultCode
+import com.example.util.simpletimetracker.domain.backup.interactor.AutomaticExportInteractor
+import com.example.util.simpletimetracker.domain.backup.interactor.CsvExportInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.backup.model.ResultCode
 import com.example.util.simpletimetracker.feature_notification.automaticExport.scheduler.AutomaticExportScheduler
 import com.example.util.simpletimetracker.feature_notification.core.GetTimeToDayEndInteractor
 import javax.inject.Inject

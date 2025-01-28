@@ -8,20 +8,22 @@ import com.example.util.simpletimetracker.core.extension.lazySuspend
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.interactor.CheckExactAlarmPermissionInteractor
 import com.example.util.simpletimetracker.core.repo.PermissionRepo
-import com.example.util.simpletimetracker.domain.extension.getDaily
-import com.example.util.simpletimetracker.domain.extension.getMonthly
-import com.example.util.simpletimetracker.domain.extension.getSession
-import com.example.util.simpletimetracker.domain.extension.getWeekly
+import com.example.util.simpletimetracker.core.view.buttonsRowView.ButtonsRowViewData
+import com.example.util.simpletimetracker.domain.recordType.extension.getDaily
+import com.example.util.simpletimetracker.domain.recordType.extension.getMonthly
+import com.example.util.simpletimetracker.domain.recordType.extension.getSession
+import com.example.util.simpletimetracker.domain.recordType.extension.getWeekly
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeGoalInteractor
-import com.example.util.simpletimetracker.domain.model.DayOfWeek
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeGoalInteractor
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.DayOfWeek
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_base_adapter.dayOfWeek.DayOfWeekViewData
 import com.example.util.simpletimetracker.feature_change_goals.mapper.GoalsViewDataMapper
 import com.example.util.simpletimetracker.feature_change_goals.viewData.ChangeRecordTypeGoalsState
 import com.example.util.simpletimetracker.feature_change_goals.api.ChangeRecordTypeGoalsViewData
 import com.example.util.simpletimetracker.feature_change_goals.api.GoalsViewModelDelegate
+import com.example.util.simpletimetracker.feature_change_goals.viewData.ChangeRecordTypeGoalSubtypeViewData
 import com.example.util.simpletimetracker.navigation.Router
 import com.example.util.simpletimetracker.navigation.params.action.OpenSystemSettings
 import com.example.util.simpletimetracker.navigation.params.screen.DurationDialogParams
@@ -61,42 +63,39 @@ class GoalsViewModelDelegateImpl @Inject constructor(
     }
 
     override fun onGoalTypeSelected(range: RecordTypeGoal.Range, position: Int) {
-        val currentType = when (range) {
-            is RecordTypeGoal.Range.Session -> newGoalsState.session
-            is RecordTypeGoal.Range.Daily -> newGoalsState.daily
-            is RecordTypeGoal.Range.Weekly -> newGoalsState.weekly
-            is RecordTypeGoal.Range.Monthly -> newGoalsState.monthly
-        }
         val newType = goalsViewDataMapper.toGoalType(position)
-        if (currentType::class.java == newType::class.java) return
+        if (newGoalsState.getCurrentState(range).type::class.java == newType::class.java) return
+        newGoalsState = newGoalsState.change(range) { copy(type = newType) }
+        updateGoalsViewData()
+    }
 
-        newGoalsState = when (range) {
-            is RecordTypeGoal.Range.Session -> newGoalsState.copy(session = newType)
-            is RecordTypeGoal.Range.Daily -> newGoalsState.copy(daily = newType)
-            is RecordTypeGoal.Range.Weekly -> newGoalsState.copy(weekly = newType)
-            is RecordTypeGoal.Range.Monthly -> newGoalsState.copy(monthly = newType)
-        }
+    override fun onGoalSubTypeSelected(range: RecordTypeGoal.Range, viewData: ButtonsRowViewData) {
+        if (viewData !is ChangeRecordTypeGoalSubtypeViewData) return
+        val newSubType = viewData.subtype
+        if (newGoalsState.getCurrentState(range).subtype::class.java == newSubType::class.java) return
+        newGoalsState = newGoalsState.change(range) { copy(subtype = newSubType) }
         updateGoalsViewData()
     }
 
     override fun onGoalCountChange(range: RecordTypeGoal.Range, count: String) {
-        val currentGoal = when (range) {
+        val currentState = when (range) {
             is RecordTypeGoal.Range.Session -> newGoalsState.session
             is RecordTypeGoal.Range.Daily -> newGoalsState.daily
             is RecordTypeGoal.Range.Weekly -> newGoalsState.weekly
             is RecordTypeGoal.Range.Monthly -> newGoalsState.monthly
         }
-        val currentCount = (currentGoal as? RecordTypeGoal.Type.Count)
+        val currentCount = (currentState.type as? RecordTypeGoal.Type.Count)
             ?.value ?: return
         val newCount = count.toLongOrNull()
 
         if (currentCount != newCount) {
             val newType = RecordTypeGoal.Type.Count(newCount.orZero())
+            val newState = currentState.copy(type = newType)
             newGoalsState = when (range) {
-                is RecordTypeGoal.Range.Session -> newGoalsState.copy(session = newType)
-                is RecordTypeGoal.Range.Daily -> newGoalsState.copy(daily = newType)
-                is RecordTypeGoal.Range.Weekly -> newGoalsState.copy(weekly = newType)
-                is RecordTypeGoal.Range.Monthly -> newGoalsState.copy(monthly = newType)
+                is RecordTypeGoal.Range.Session -> newGoalsState.copy(session = newState)
+                is RecordTypeGoal.Range.Daily -> newGoalsState.copy(daily = newState)
+                is RecordTypeGoal.Range.Weekly -> newGoalsState.copy(weekly = newState)
+                is RecordTypeGoal.Range.Monthly -> newGoalsState.copy(monthly = newState)
             }
             updateGoalsViewData()
         }
@@ -120,7 +119,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
             DurationDialogParams(
                 tag = tag,
                 value = DurationDialogParams.Value.DurationSeconds(
-                    duration = goalType.value.orZero(),
+                    duration = goalType.type.value.orZero(),
                 ),
             ),
         )
@@ -128,7 +127,7 @@ class GoalsViewModelDelegateImpl @Inject constructor(
 
     override fun onDayOfWeekClick(data: DayOfWeekViewData) {
         val current = newGoalsState.daysOfWeek
-        val new = current.toMutableList().apply { addOrRemove(data.dayOfWeek) }
+        val new = current.toMutableSet().apply { addOrRemove(data.dayOfWeek) }
         newGoalsState = newGoalsState.copy(daysOfWeek = new)
         updateGoalsViewData()
     }
@@ -144,18 +143,21 @@ class GoalsViewModelDelegateImpl @Inject constructor(
 
         suspend fun processGoal(
             goalId: Long,
-            goalType: RecordTypeGoal.Type,
+            state: ChangeRecordTypeGoalsState.GoalState,
             goalRange: RecordTypeGoal.Range,
-            daysOfWeek: List<DayOfWeek>,
+            daysOfWeek: Set<DayOfWeek>,
         ) {
-            if (goalType.value == 0L) {
+            val type = state.type
+            val goalType = state.subtype
+            if (type.value == 0L) {
                 recordTypeGoalInteractor.remove(goalId)
             } else {
                 RecordTypeGoal(
                     id = goalId,
                     idData = id,
                     range = goalRange,
-                    type = goalType,
+                    type = type,
+                    subtype = goalType,
                     daysOfWeek = daysOfWeek,
                 ).let {
                     recordTypeGoalInteractor.add(it)
@@ -165,27 +167,27 @@ class GoalsViewModelDelegateImpl @Inject constructor(
 
         processGoal(
             goalId = goals.getSession()?.id.orZero(),
-            goalType = newGoalsState.session,
+            state = newGoalsState.session,
             goalRange = RecordTypeGoal.Range.Session,
-            daysOfWeek = emptyList(),
+            daysOfWeek = emptySet(),
         )
         processGoal(
             goalId = goals.getDaily()?.id.orZero(),
-            goalType = newGoalsState.daily,
+            state = newGoalsState.daily,
             goalRange = RecordTypeGoal.Range.Daily,
             daysOfWeek = newGoalsState.daysOfWeek,
         )
         processGoal(
             goalId = goals.getWeekly()?.id.orZero(),
-            goalType = newGoalsState.weekly,
+            state = newGoalsState.weekly,
             goalRange = RecordTypeGoal.Range.Weekly,
-            daysOfWeek = emptyList(),
+            daysOfWeek = emptySet(),
         )
         processGoal(
             goalId = goals.getMonthly()?.id.orZero(),
-            goalType = newGoalsState.monthly,
+            state = newGoalsState.monthly,
             goalRange = RecordTypeGoal.Range.Monthly,
-            daysOfWeek = emptyList(),
+            daysOfWeek = emptySet(),
         )
     }
 
@@ -195,35 +197,36 @@ class GoalsViewModelDelegateImpl @Inject constructor(
         val goals = getGoals(id)
         val defaultGoal = goalsViewDataMapper.getDefaultGoal()
 
+        fun mapState(
+            goal: RecordTypeGoal,
+        ): ChangeRecordTypeGoalsState.GoalState {
+            return ChangeRecordTypeGoalsState.GoalState(
+                type = goal.type,
+                subtype = goal.subtype,
+            )
+        }
+
         newGoalsState = ChangeRecordTypeGoalsState(
-            session = goals.getSession()?.type ?: defaultGoal,
-            daily = goals.getDaily()?.type ?: defaultGoal,
-            weekly = goals.getWeekly()?.type ?: defaultGoal,
-            monthly = goals.getMonthly()?.type ?: defaultGoal,
-            daysOfWeek = goals.getDaily()?.daysOfWeek ?: DayOfWeek.values().toList(),
+            session = goals.getSession()?.let(::mapState) ?: defaultGoal,
+            daily = goals.getDaily()?.let(::mapState) ?: defaultGoal,
+            weekly = goals.getWeekly()?.let(::mapState) ?: defaultGoal,
+            monthly = goals.getMonthly()?.let(::mapState) ?: defaultGoal,
+            daysOfWeek = goals.getDaily()?.daysOfWeek ?: DayOfWeek.entries.toSet(),
         )
 
         updateGoalsViewData()
     }
 
     private fun onNewGoalDuration(tag: String?, duration: Long) {
-        val newType = RecordTypeGoal.Type.Duration(duration)
-
-        when (tag) {
-            SESSION_GOAL_TIME_DIALOG_TAG -> {
-                newGoalsState = newGoalsState.copy(session = newType)
-            }
-            DAILY_GOAL_TIME_DIALOG_TAG -> {
-                newGoalsState = newGoalsState.copy(daily = newType)
-            }
-            WEEKLY_GOAL_TIME_DIALOG_TAG -> {
-                newGoalsState = newGoalsState.copy(weekly = newType)
-            }
-            MONTHLY_GOAL_TIME_DIALOG_TAG -> {
-                newGoalsState = newGoalsState.copy(monthly = newType)
-            }
+        val range = when (tag) {
+            SESSION_GOAL_TIME_DIALOG_TAG -> RecordTypeGoal.Range.Session
+            DAILY_GOAL_TIME_DIALOG_TAG -> RecordTypeGoal.Range.Daily
+            WEEKLY_GOAL_TIME_DIALOG_TAG -> RecordTypeGoal.Range.Weekly
+            MONTHLY_GOAL_TIME_DIALOG_TAG -> RecordTypeGoal.Range.Monthly
+            else -> return
         }
-
+        val newType = RecordTypeGoal.Type.Duration(duration)
+        newGoalsState = newGoalsState.change(range) { copy(type = newType) }
         updateGoalsViewData()
     }
 
@@ -231,6 +234,31 @@ class GoalsViewModelDelegateImpl @Inject constructor(
         return when (id) {
             is RecordTypeGoal.IdData.Type -> recordTypeGoalInteractor.getByType(id.value)
             is RecordTypeGoal.IdData.Category -> recordTypeGoalInteractor.getByCategory(id.value)
+        }
+    }
+
+    private fun ChangeRecordTypeGoalsState.getCurrentState(
+        range: RecordTypeGoal.Range,
+    ): ChangeRecordTypeGoalsState.GoalState {
+        return when (range) {
+            is RecordTypeGoal.Range.Session -> session
+            is RecordTypeGoal.Range.Daily -> daily
+            is RecordTypeGoal.Range.Weekly -> weekly
+            is RecordTypeGoal.Range.Monthly -> monthly
+        }
+    }
+
+    private fun ChangeRecordTypeGoalsState.change(
+        range: RecordTypeGoal.Range,
+        producer: ChangeRecordTypeGoalsState.GoalState.() -> ChangeRecordTypeGoalsState.GoalState,
+    ): ChangeRecordTypeGoalsState {
+        val currentState = getCurrentState(range)
+        val newState = currentState.producer()
+        return when (range) {
+            is RecordTypeGoal.Range.Session -> newGoalsState.copy(session = newState)
+            is RecordTypeGoal.Range.Daily -> newGoalsState.copy(daily = newState)
+            is RecordTypeGoal.Range.Weekly -> newGoalsState.copy(weekly = newState)
+            is RecordTypeGoal.Range.Monthly -> newGoalsState.copy(monthly = newState)
         }
     }
 

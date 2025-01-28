@@ -2,10 +2,10 @@ package com.example.util.simpletimetracker.feature_widget.statistics.customView
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.example.util.simpletimetracker.feature_views.ColorUtils
+import com.example.util.simpletimetracker.feature_views.extension.layoutInflater
 import com.example.util.simpletimetracker.feature_views.extension.visible
 import com.example.util.simpletimetracker.feature_views.pieChart.PiePortion
 import com.example.util.simpletimetracker.feature_widget.R
@@ -21,8 +21,7 @@ class WidgetStatisticsChartView @JvmOverloads constructor(
     defStyleAttr,
 ) {
 
-    private val binding = WidgetStatisticsChartViewLayoutBinding
-        .inflate(LayoutInflater.from(context), this)
+    private val binding = WidgetStatisticsChartViewLayoutBinding.inflate(layoutInflater, this)
 
     init {
         ContextCompat.getColor(context, R.color.widget_universal_background_color).let(::setCardBackgroundColor)

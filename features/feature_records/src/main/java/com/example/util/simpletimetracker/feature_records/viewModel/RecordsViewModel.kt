@@ -7,18 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.util.simpletimetracker.core.base.SingleLiveEvent
 import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.extension.toParams
-import com.example.util.simpletimetracker.core.extension.toRecordParams
+import com.example.util.simpletimetracker.core.interactor.GetChangeRecordNavigationParamsInteractor
 import com.example.util.simpletimetracker.core.interactor.SharingInteractor
-import com.example.util.simpletimetracker.core.mapper.ChangeRecordDateTimeMapper
 import com.example.util.simpletimetracker.core.mapper.RangeViewDataMapper
 import com.example.util.simpletimetracker.core.model.NavigationTab
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordsShareUpdateInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordsUpdateInteractor
-import com.example.util.simpletimetracker.domain.interactor.UpdateRunningRecordFromChangeScreenInteractor
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.count
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordsShareUpdateInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordsUpdateInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.UpdateRunningRecordFromChangeScreenInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.daysOfWeek.model.count
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.loader.LoaderViewData
 import com.example.util.simpletimetracker.feature_base_adapter.record.RecordViewData
@@ -53,7 +52,7 @@ class RecordsViewModel @Inject constructor(
     private val rangeViewDataMapper: RangeViewDataMapper,
     private val recordsViewDataMapper: RecordsViewDataMapper,
     private val updateRunningRecordFromChangeScreenInteractor: UpdateRunningRecordFromChangeScreenInteractor,
-    private val changeRecordDateTimeMapper: ChangeRecordDateTimeMapper,
+    private val getChangeRecordNavigationParamsInteractor: GetChangeRecordNavigationParamsInteractor,
 ) : ViewModel() {
 
     var extra: RecordsExtra? = null
@@ -97,28 +96,12 @@ class RecordsViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val useMilitaryTimeFormat = prefsInteractor.getUseMilitaryTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
-
-        val params = ChangeRunningRecordParams(
-            transitionName = sharedElements?.second.orEmpty(),
-            id = item.id,
+        val params = getChangeRecordNavigationParamsInteractor.execute(
+            item = item,
             from = ChangeRunningRecordParams.From.Records,
-            preview = ChangeRunningRecordParams.Preview(
-                name = item.name,
-                tagName = item.tagName,
-                timeStarted = item.timeStarted,
-                timeStartedDateTime = changeRecordDateTimeMapper.map(
-                    param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeStartedTimestamp),
-                    field = ChangeRecordDateTimeMapper.Field.Start,
-                    useMilitaryTimeFormat = useMilitaryTimeFormat,
-                    showSeconds = showSeconds,
-                ).toRecordParams(),
-                duration = item.timer,
-                durationTotal = item.timerTotal,
-                goalTime = item.goalTime.toParams(),
-                iconId = item.iconId.toParams(),
-                color = item.color,
-                comment = item.comment,
-            ),
+            useMilitaryTimeFormat = useMilitaryTimeFormat,
+            showSeconds = showSeconds,
+            sharedElements = sharedElements,
         )
         router.navigate(
             data = ChangeRunningRecordFromMainParams(params),
@@ -132,44 +115,14 @@ class RecordsViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val useMilitaryTimeFormat = prefsInteractor.getUseMilitaryTimeFormat()
         val showSeconds = prefsInteractor.getShowSeconds()
-
-        val preview = ChangeRecordParams.Preview(
-            name = item.name,
-            tagName = item.tagName,
-            timeStarted = item.timeStarted,
-            timeFinished = item.timeFinished,
-            timeStartedDateTime = changeRecordDateTimeMapper.map(
-                param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeStartedTimestamp),
-                field = ChangeRecordDateTimeMapper.Field.Start,
-                useMilitaryTimeFormat = useMilitaryTimeFormat,
-                showSeconds = showSeconds,
-            ).toRecordParams(),
-            timeEndedDateTime = changeRecordDateTimeMapper.map(
-                param = ChangeRecordDateTimeMapper.Param.DateTime(item.timeEndedTimestamp),
-                field = ChangeRecordDateTimeMapper.Field.End,
-                useMilitaryTimeFormat = useMilitaryTimeFormat,
-                showSeconds = showSeconds,
-            ).toRecordParams(),
-            duration = item.duration,
-            iconId = item.iconId.toParams(),
-            color = item.color,
-            comment = item.comment,
+        val params = getChangeRecordNavigationParamsInteractor.execute(
+            item = item,
+            from = ChangeRecordParams.From.Records,
+            shift = shift,
+            useMilitaryTimeFormat = useMilitaryTimeFormat,
+            showSeconds = showSeconds,
+            sharedElements = sharedElements,
         )
-
-        val params = when (item) {
-            is RecordViewData.Tracked -> ChangeRecordParams.Tracked(
-                transitionName = sharedElements?.second.orEmpty(),
-                id = item.id,
-                from = ChangeRecordParams.From.Records,
-                preview = preview,
-            )
-            is RecordViewData.Untracked -> ChangeRecordParams.Untracked(
-                transitionName = sharedElements?.second.orEmpty(),
-                timeStarted = item.timeStartedTimestamp,
-                timeEnded = item.timeEndedTimestamp,
-                preview = preview,
-            )
-        }
         router.navigate(
             data = ChangeRecordFromMainParams(params),
             sharedElements = sharedElements?.let(::mapOf).orEmpty(),

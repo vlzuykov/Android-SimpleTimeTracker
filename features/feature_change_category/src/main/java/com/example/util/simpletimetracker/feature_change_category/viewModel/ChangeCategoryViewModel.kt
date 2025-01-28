@@ -8,21 +8,20 @@ import com.example.util.simpletimetracker.core.base.ViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSelectionViewModelDelegate
 import com.example.util.simpletimetracker.core.delegates.colorSelection.ColorSelectionViewModelDelegateImpl
 import com.example.util.simpletimetracker.core.extension.set
+import com.example.util.simpletimetracker.core.extension.trimIfNotBlank
 import com.example.util.simpletimetracker.core.interactor.SnackBarMessageNavigationInteractor
 import com.example.util.simpletimetracker.core.interactor.StatisticsDetailNavigationInteractor
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
 import com.example.util.simpletimetracker.core.view.ViewChooserStateDelegate
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.NotificationGoalTimeInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.WidgetInteractor
-import com.example.util.simpletimetracker.domain.model.Category
-import com.example.util.simpletimetracker.domain.model.ChartFilterType
-import com.example.util.simpletimetracker.domain.model.RecordTypeGoal
-import com.example.util.simpletimetracker.domain.model.WidgetType
+import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.category.interactor.RecordTypeCategoryInteractor
+import com.example.util.simpletimetracker.domain.category.model.Category
+import com.example.util.simpletimetracker.domain.notifications.interactor.UpdateExternalViewsInteractor
+import com.example.util.simpletimetracker.domain.statistics.model.ChartFilterType
+import com.example.util.simpletimetracker.domain.recordType.model.RecordTypeGoal
 import com.example.util.simpletimetracker.feature_base_adapter.category.CategoryViewData
 import com.example.util.simpletimetracker.feature_base_adapter.recordType.RecordTypeViewData
 import com.example.util.simpletimetracker.feature_change_category.R
@@ -47,9 +46,8 @@ class ChangeCategoryViewModel @Inject constructor(
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val snackBarMessageNavigationInteractor: SnackBarMessageNavigationInteractor,
     private val goalsViewModelDelegate: GoalsViewModelDelegate,
-    private val widgetInteractor: WidgetInteractor,
-    private val notificationGoalTimeInteractor: NotificationGoalTimeInteractor,
     private val statisticsDetailNavigationInteractor: StatisticsDetailNavigationInteractor,
+    private val externalViewsInteractor: UpdateExternalViewsInteractor,
     private val colorSelectionViewModelDelegateImpl: ColorSelectionViewModelDelegateImpl,
 ) : ViewModel(),
     GoalsViewModelDelegate by goalsViewModelDelegate,
@@ -126,8 +124,8 @@ class ChangeCategoryViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val type = categoryInteractor.get(name)
-            val error = if (type != null && type.id != categoryId) {
+            val items = categoryInteractor.get(name).filter { it.id != categoryId }
+            val error = if (items.isNotEmpty()) {
                 resourceRepo.getString(R.string.change_record_message_name_exist)
             } else {
                 ""
@@ -137,11 +135,9 @@ class ChangeCategoryViewModel @Inject constructor(
     }
 
     fun onNoteChange(note: String) {
-        viewModelScope.launch {
-            if (note != newNote) {
-                newNote = note
-                updateNoteState()
-            }
+        if (note != newNote) {
+            newNote = note
+            updateNoteState()
         }
     }
 
@@ -173,8 +169,7 @@ class ChangeCategoryViewModel @Inject constructor(
         viewModelScope.launch {
             if (categoryId != 0L) {
                 categoryInteractor.remove(categoryId)
-                notificationGoalTimeInteractor.cancel(RecordTypeGoal.IdData.Category(categoryId))
-                widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
+                externalViewsInteractor.onCategoryRemove(categoryId)
                 showMessage(R.string.change_category_removed)
                 (keyboardVisibility as MutableLiveData).value = false
                 router.back()
@@ -208,7 +203,7 @@ class ChangeCategoryViewModel @Inject constructor(
             // Zero id creates new record
             Category(
                 id = categoryId,
-                name = newName,
+                name = newName.trimIfNotBlank(),
                 color = colorSelectionViewModelDelegateImpl.newColor,
                 note = newNote,
             ).let {
@@ -216,8 +211,7 @@ class ChangeCategoryViewModel @Inject constructor(
                 saveTypes(addedId)
                 goalsViewModelDelegate.saveGoals(RecordTypeGoal.IdData.Category(addedId))
                 val typeIds = (initialTypes + newTypes).toSet().toList()
-                notificationGoalTimeInteractor.checkAndReschedule(typeIds)
-                widgetInteractor.updateWidgets(listOf(WidgetType.STATISTICS_CHART))
+                externalViewsInteractor.onCategoryAddOrChange(typeIds)
                 (keyboardVisibility as MutableLiveData).value = false
                 router.back()
             }

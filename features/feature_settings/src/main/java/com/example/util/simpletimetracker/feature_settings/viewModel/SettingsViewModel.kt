@@ -9,7 +9,7 @@ import com.example.util.simpletimetracker.core.extension.set
 import com.example.util.simpletimetracker.core.model.NavigationTab
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_settings.api.SettingsBlock
-import com.example.util.simpletimetracker.domain.interactor.SettingsDataUpdateInteractor
+import com.example.util.simpletimetracker.domain.statistics.interactor.SettingsDataUpdateInteractor
 import com.example.util.simpletimetracker.feature_settings.mapper.SettingsMapper
 import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.SettingsAdditionalViewModelDelegate
 import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.SettingsBackupViewModelDelegate
@@ -22,6 +22,7 @@ import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.Se
 import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.SettingsRatingViewModelDelegate
 import com.example.util.simpletimetracker.feature_settings.viewModel.delegate.SettingsTranslatorsViewModelDelegate
 import com.example.util.simpletimetracker.navigation.Router
+import com.example.util.simpletimetracker.navigation.params.screen.DataExportSettingsResult
 import com.example.util.simpletimetracker.navigation.params.screen.DateTimeDialogParams
 import com.example.util.simpletimetracker.navigation.params.screen.DateTimeDialogType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,10 +85,6 @@ class SettingsViewModel @Inject constructor(
         ratingDelegate.onHidden()
     }
 
-    fun onRequestUpdate() {
-        viewModelScope.launch { updateContent() }
-    }
-
     fun onBlockClicked(block: SettingsBlock) {
         mainDelegate.onBlockClicked(block)
         notificationsDelegate.onBlockClicked(block)
@@ -102,6 +99,10 @@ class SettingsViewModel @Inject constructor(
         displayDelegate.onSpinnerPositionSelected(block, position)
         additionalDelegate.onSpinnerPositionSelected(block, position)
         mainDelegate.onSpinnerPositionSelected(block, position)
+    }
+
+    fun onPositiveClick(tag: String?) {
+        backupDelegate.onPositiveClick(tag)
     }
 
     fun onDurationSet(tag: String?, duration: Long) {
@@ -120,6 +121,10 @@ class SettingsViewModel @Inject constructor(
         notificationsDelegate.onDateTimeSet(timestamp, tag)
         displayDelegate.onDateTimeSet(timestamp, tag)
         additionalDelegate.onDateTimeSet(timestamp, tag)
+    }
+
+    fun onDataExportSettingsSelected(data: DataExportSettingsResult) {
+        backupDelegate.onDataExportSettingsSelected(data)
     }
 
     fun onTypesSelected(
@@ -185,7 +190,8 @@ class SettingsViewModel @Inject constructor(
         const val UNTRACKED_RANGE_START_DIALOG_TAG = "untracked_range_start_dialog_tag"
         const val UNTRACKED_RANGE_END_DIALOG_TAG = "untracked_range_end_dialog_tag"
         const val START_OF_DAY_DIALOG_TAG = "start_of_day_dialog_tag"
-        const val EXCLUDE_ACTIVITIES_TYPES_SELECTION = "exclude_activities_types_selection"
+        const val TAG_EXCLUDE_ACTIVITIES_TYPES_SELECTION = "tag_exclude_activities_types_selection"
+        const val COMMENT_EXCLUDE_ACTIVITIES_TYPES_SELECTION = "comment_exclude_activities_types_selection"
         const val SELECT_ACTIVITIES_TO_AUTOSTART_POMODORO = "select_activities_to_autostart_pomodoro"
     }
 }

@@ -4,15 +4,16 @@ import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordToRecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordToRecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.feature_dialogs.R
 import com.example.util.simpletimetracker.feature_dialogs.archive.viewData.ArchiveDialogButtonsViewData
 import com.example.util.simpletimetracker.feature_dialogs.archive.viewData.ArchiveDialogInfoViewData
 import com.example.util.simpletimetracker.feature_dialogs.archive.viewData.ArchiveDialogTitleViewData
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import javax.inject.Inject
 
 class ArchiveDialogViewDataInteractor @Inject constructor(
@@ -35,7 +36,7 @@ class ArchiveDialogViewDataInteractor @Inject constructor(
             recordType = type,
             numberOfCards = numberOfCards,
             isDarkTheme = isDarkTheme,
-            isChecked = null,
+            checkState = GoalCheckmarkView.CheckState.HIDDEN,
             isComplete = false,
         )
         val recordsCount = recordInteractor.getByType(listOf(typeId)).size

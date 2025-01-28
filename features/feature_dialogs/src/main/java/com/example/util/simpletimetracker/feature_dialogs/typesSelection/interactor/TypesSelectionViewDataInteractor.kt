@@ -3,20 +3,23 @@ package com.example.util.simpletimetracker.feature_dialogs.typesSelection.intera
 import com.example.util.simpletimetracker.core.mapper.CategoryViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTypeViewDataMapper
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.model.RecordType
+import com.example.util.simpletimetracker.domain.recordTag.interactor.GetSelectableTagsInteractor
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.divider.DividerViewData
 import com.example.util.simpletimetracker.feature_base_adapter.empty.EmptyViewData
 import com.example.util.simpletimetracker.feature_base_adapter.info.InfoViewData
 import com.example.util.simpletimetracker.feature_dialogs.R
 import com.example.util.simpletimetracker.feature_dialogs.typesSelection.model.TypesSelectionCacheHolder
+import com.example.util.simpletimetracker.feature_views.GoalCheckmarkView
 import com.example.util.simpletimetracker.navigation.params.screen.TypesSelectionDialogParams
 import javax.inject.Inject
 
 class TypesSelectionViewDataInteractor @Inject constructor(
     private val recordTagInteractor: RecordTagInteractor,
+    private val getSelectableTagsInteractor: GetSelectableTagsInteractor,
     private val recordTypeViewDataMapper: RecordTypeViewDataMapper,
     private val categoryViewDataMapper: CategoryViewDataMapper,
     private val prefsInteractor: PrefsInteractor,
@@ -27,14 +30,23 @@ class TypesSelectionViewDataInteractor @Inject constructor(
         extra: TypesSelectionDialogParams,
         types: List<RecordType>,
     ): List<TypesSelectionCacheHolder> {
-        return when (extra.type) {
+        val extraType = extra.type
+        return when (extraType) {
             is TypesSelectionDialogParams.Type.Activity -> {
                 types.filter {
                     !it.hidden || it.id in extra.idsShouldBeVisible
                 }.map(TypesSelectionCacheHolder::Type)
             }
             is TypesSelectionDialogParams.Type.Tag -> {
-                recordTagInteractor.getAll().filter {
+                val tags = when (extraType) {
+                    is TypesSelectionDialogParams.Type.Tag.All -> {
+                        recordTagInteractor.getAll()
+                    }
+                    is TypesSelectionDialogParams.Type.Tag.ByType -> {
+                        getSelectableTagsInteractor.execute(extraType.typeId)
+                    }
+                }
+                tags.filter {
                     !it.archived || it.id in extra.idsShouldBeVisible
                 }.map(TypesSelectionCacheHolder::Tag)
             }
@@ -58,7 +70,7 @@ class TypesSelectionViewDataInteractor @Inject constructor(
                         recordType = type.data,
                         numberOfCards = numberOfCards,
                         isDarkTheme = isDarkTheme,
-                        isChecked = null,
+                        checkState = GoalCheckmarkView.CheckState.HIDDEN,
                         isComplete = false,
                     )
                 }
@@ -91,13 +103,15 @@ class TypesSelectionViewDataInteractor @Inject constructor(
             result += EmptyViewData(message = message)
             return result
         }
-        if (selected.isNotEmpty()) {
+
+        if (selected.isNotEmpty() && extra.showHints) {
             result += InfoViewData(resourceRepo.getString(R.string.something_selected))
-            result += selected
-        } else {
+        }
+        result += selected
+        if (selected.isEmpty() && extra.showHints) {
             result += InfoViewData(resourceRepo.getString(R.string.nothing_selected))
         }
-        if (available.isNotEmpty()) {
+        if (available.isNotEmpty() && extra.showHints) {
             result += DividerViewData(0)
         }
         result += available

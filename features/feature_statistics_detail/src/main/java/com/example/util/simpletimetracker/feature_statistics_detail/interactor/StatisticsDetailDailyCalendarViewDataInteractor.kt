@@ -5,24 +5,24 @@ import com.example.util.simpletimetracker.core.mapper.ColorMapper
 import com.example.util.simpletimetracker.core.mapper.RecordTagViewDataMapper
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.view.dayCalendar.DayCalendarViewData
-import com.example.util.simpletimetracker.domain.extension.getCategoryItems
-import com.example.util.simpletimetracker.domain.extension.getSelectedTags
-import com.example.util.simpletimetracker.domain.extension.hasUncategorizedItem
-import com.example.util.simpletimetracker.domain.extension.hasUntaggedItem
+import com.example.util.simpletimetracker.domain.record.extension.getCategoryItems
+import com.example.util.simpletimetracker.domain.record.extension.getSelectedTags
+import com.example.util.simpletimetracker.domain.record.extension.hasUncategorizedItem
+import com.example.util.simpletimetracker.domain.record.extension.hasUntaggedItem
 import com.example.util.simpletimetracker.domain.extension.orZero
-import com.example.util.simpletimetracker.domain.interactor.CategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.PrefsInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.interactor.RecordTypeInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsCategoryInteractor
-import com.example.util.simpletimetracker.domain.interactor.StatisticsTagInteractor
-import com.example.util.simpletimetracker.domain.mapper.RangeMapper
-import com.example.util.simpletimetracker.domain.model.Category
-import com.example.util.simpletimetracker.domain.model.RangeLength
-import com.example.util.simpletimetracker.domain.model.RecordBase
-import com.example.util.simpletimetracker.domain.model.RecordTag
-import com.example.util.simpletimetracker.domain.model.RecordType
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.category.interactor.CategoryInteractor
+import com.example.util.simpletimetracker.domain.category.model.Category
+import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
+import com.example.util.simpletimetracker.domain.statistics.interactor.StatisticsCategoryInteractor
+import com.example.util.simpletimetracker.domain.statistics.interactor.StatisticsTagInteractor
+import com.example.util.simpletimetracker.domain.record.mapper.RangeMapper
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.RecordBase
+import com.example.util.simpletimetracker.domain.recordTag.model.RecordTag
+import com.example.util.simpletimetracker.domain.recordType.model.RecordType
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.mapper.StatisticsDetailDailyCalendarViewDataMapper
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailDayCalendarViewData
@@ -200,8 +200,10 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
     ): List<RecordHolder> {
         val categories = categoryInteractor.getAll()
             .associateBy(Category::id)
-        val categoriesData = statisticsCategoryInteractor.getCategoryRecords(
-            records,
+
+        return statisticsCategoryInteractor.getCategoryRecords(
+            allRecords = records,
+            addUncategorized = filter.getCategoryItems().hasUncategorizedItem(),
         ).flatMap { (categoryId, records) ->
             records.map { record ->
                 val color = categories[categoryId]?.color
@@ -210,18 +212,6 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
                 mapper.mapRecordHolder(record, color)
             }
         }
-        val uncategorizedRecords = if (
-            filter.getCategoryItems().hasUncategorizedItem()
-        ) {
-            statisticsCategoryInteractor.getUncategorized(records)
-        } else {
-            emptyList()
-        }
-        val uncategorizedData = uncategorizedRecords.map { record ->
-            mapper.mapRecordHolder(record, untrackedColor)
-        }
-
-        return categoriesData + uncategorizedData
     }
 
     private suspend fun getTagsData(
@@ -234,8 +224,10 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
             .associateBy(RecordTag::id)
         val types = recordTypeInteractor.getAll()
             .associateBy(RecordType::id)
-        val tagsData = statisticsTagInteractor.getTagRecords(
-            records,
+
+        return statisticsTagInteractor.getTagRecords(
+            allRecords = records,
+            addUncategorized = filter.getSelectedTags().hasUntaggedItem(),
         ).flatMap { (tagId, records) ->
             records.map { record ->
                 val color = tags[tagId]
@@ -245,18 +237,6 @@ class StatisticsDetailDailyCalendarViewDataInteractor @Inject constructor(
                 mapper.mapRecordHolder(record, color)
             }
         }
-        val untaggedRecords = if (
-            filter.getSelectedTags().hasUntaggedItem()
-        ) {
-            statisticsTagInteractor.getUntagged(records)
-        } else {
-            emptyList()
-        }
-        val untaggedData = untaggedRecords.map { record ->
-            mapper.mapRecordHolder(record, untrackedColor)
-        }
-
-        return tagsData + untaggedData
     }
 
     data class RecordHolder(

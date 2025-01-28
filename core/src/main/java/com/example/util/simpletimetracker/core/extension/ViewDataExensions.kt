@@ -2,13 +2,17 @@ package com.example.util.simpletimetracker.core.extension
 
 import com.example.util.simpletimetracker.core.mapper.TimeMapper
 import com.example.util.simpletimetracker.core.viewData.ChangeRecordDateTimeState
-import com.example.util.simpletimetracker.domain.model.Range
-import com.example.util.simpletimetracker.domain.model.RecordsFilter
+import com.example.util.simpletimetracker.domain.record.model.Range
+import com.example.util.simpletimetracker.domain.statistics.model.RangeLength
+import com.example.util.simpletimetracker.domain.record.model.RecordDataSelectionDialogResult
+import com.example.util.simpletimetracker.domain.record.model.RecordsFilter
 import com.example.util.simpletimetracker.feature_base_adapter.runningRecord.GoalTimeViewData
 import com.example.util.simpletimetracker.feature_views.viewData.RecordTypeIcon
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRecordDateTimeStateParams
 import com.example.util.simpletimetracker.navigation.params.screen.ChangeRunningRecordParams
+import com.example.util.simpletimetracker.navigation.params.screen.RangeLengthParams
 import com.example.util.simpletimetracker.navigation.params.screen.RangeParams
+import com.example.util.simpletimetracker.navigation.params.screen.RecordTagSelectionParams
 import com.example.util.simpletimetracker.navigation.params.screen.RecordTypeIconParams
 import com.example.util.simpletimetracker.navigation.params.screen.RecordsFilterParam
 
@@ -43,15 +47,31 @@ fun Range.toParams(): RangeParams {
 fun ChangeRunningRecordParams.Preview.GoalTimeParams.toViewData(): GoalTimeViewData {
     return GoalTimeViewData(
         text = this.text,
-        complete = this.complete,
+        state = this.state.toViewData(),
     )
 }
 
 fun GoalTimeViewData.toParams(): ChangeRunningRecordParams.Preview.GoalTimeParams {
     return ChangeRunningRecordParams.Preview.GoalTimeParams(
         text = this.text,
-        complete = this.complete,
+        state = this.state.toParams(),
     )
+}
+
+fun ChangeRunningRecordParams.Preview.GoalSubtypeParams.toViewData(): GoalTimeViewData.Subtype {
+    return when (this) {
+        is ChangeRunningRecordParams.Preview.GoalSubtypeParams.Hidden -> GoalTimeViewData.Subtype.Hidden
+        is ChangeRunningRecordParams.Preview.GoalSubtypeParams.Goal -> GoalTimeViewData.Subtype.Goal
+        is ChangeRunningRecordParams.Preview.GoalSubtypeParams.Limit -> GoalTimeViewData.Subtype.Limit
+    }
+}
+
+fun GoalTimeViewData.Subtype.toParams(): ChangeRunningRecordParams.Preview.GoalSubtypeParams {
+    return when (this) {
+        is GoalTimeViewData.Subtype.Hidden -> ChangeRunningRecordParams.Preview.GoalSubtypeParams.Hidden
+        is GoalTimeViewData.Subtype.Goal -> ChangeRunningRecordParams.Preview.GoalSubtypeParams.Goal
+        is GoalTimeViewData.Subtype.Limit -> ChangeRunningRecordParams.Preview.GoalSubtypeParams.Limit
+    }
 }
 
 fun ChangeRecordDateTimeStateParams.toViewData(): ChangeRecordDateTimeState {
@@ -98,13 +118,14 @@ fun RecordsFilterParam.toModel(): RecordsFilter {
         is RecordsFilterParam.Activity -> RecordsFilter.Activity(typeIds)
         is RecordsFilterParam.Category -> RecordsFilter.Category(items.map { it.toModel() })
         is RecordsFilterParam.Comment -> RecordsFilter.Comment(items.map { it.toModel() })
-        is RecordsFilterParam.Date -> RecordsFilter.Date(Range(rangeStart, rangeEnd))
+        is RecordsFilterParam.Date -> RecordsFilter.Date(range.toModel(), position)
         is RecordsFilterParam.SelectedTags -> RecordsFilter.SelectedTags(items.map { it.toModel() })
         is RecordsFilterParam.FilteredTags -> RecordsFilter.FilteredTags(items.map { it.toModel() })
         is RecordsFilterParam.ManuallyFiltered -> RecordsFilter.ManuallyFiltered(recordIds)
         is RecordsFilterParam.DaysOfWeek -> RecordsFilter.DaysOfWeek(items)
         is RecordsFilterParam.TimeOfDay -> RecordsFilter.TimeOfDay(range.toModel())
         is RecordsFilterParam.Duration -> RecordsFilter.Duration(range.toModel())
+        is RecordsFilterParam.Duplications -> RecordsFilter.Duplications(items.map { it.toModel() })
     }
 }
 
@@ -115,13 +136,14 @@ fun RecordsFilter.toParams(): RecordsFilterParam {
         is RecordsFilter.Activity -> RecordsFilterParam.Activity(typeIds)
         is RecordsFilter.Category -> RecordsFilterParam.Category(items.map { it.toParams() })
         is RecordsFilter.Comment -> RecordsFilterParam.Comment(items.map { it.toParams() })
-        is RecordsFilter.Date -> RecordsFilterParam.Date(range.timeStarted, range.timeEnded)
+        is RecordsFilter.Date -> RecordsFilterParam.Date(range.toParams(), position)
         is RecordsFilter.SelectedTags -> RecordsFilterParam.SelectedTags(items.map { it.toParams() })
         is RecordsFilter.FilteredTags -> RecordsFilterParam.FilteredTags(items.map { it.toParams() })
         is RecordsFilter.ManuallyFiltered -> RecordsFilterParam.ManuallyFiltered(recordIds)
         is RecordsFilter.DaysOfWeek -> RecordsFilterParam.DaysOfWeek(items)
         is RecordsFilter.TimeOfDay -> RecordsFilterParam.TimeOfDay(range.toParams())
         is RecordsFilter.Duration -> RecordsFilterParam.Duration(range.toParams())
+        is RecordsFilter.Duplications -> RecordsFilterParam.Duplications(items.map { it.toParams() })
     }
 }
 
@@ -166,5 +188,61 @@ fun RecordsFilter.TagItem.toParams(): RecordsFilterParam.TagItem {
     return when (this) {
         is RecordsFilter.TagItem.Tagged -> RecordsFilterParam.TagItem.Tagged(tagId)
         is RecordsFilter.TagItem.Untagged -> RecordsFilterParam.TagItem.Untagged
+    }
+}
+
+fun RecordsFilterParam.DuplicationsItem.toModel(): RecordsFilter.DuplicationsItem {
+    return when (this) {
+        is RecordsFilterParam.DuplicationsItem.SameActivity -> RecordsFilter.DuplicationsItem.SameActivity
+        is RecordsFilterParam.DuplicationsItem.SameTimes -> RecordsFilter.DuplicationsItem.SameTimes
+    }
+}
+
+fun RecordsFilter.DuplicationsItem.toParams(): RecordsFilterParam.DuplicationsItem {
+    return when (this) {
+        is RecordsFilter.DuplicationsItem.SameActivity -> RecordsFilterParam.DuplicationsItem.SameActivity
+        is RecordsFilter.DuplicationsItem.SameTimes -> RecordsFilterParam.DuplicationsItem.SameTimes
+    }
+}
+
+fun RangeLengthParams.toModel(): RangeLength {
+    return when (this) {
+        is RangeLengthParams.Day -> RangeLength.Day
+        is RangeLengthParams.Week -> RangeLength.Week
+        is RangeLengthParams.Month -> RangeLength.Month
+        is RangeLengthParams.Year -> RangeLength.Year
+        is RangeLengthParams.All -> RangeLength.All
+        is RangeLengthParams.Custom -> Range(
+            timeStarted = start, timeEnded = end,
+        ).let(RangeLength::Custom)
+        is RangeLengthParams.Last -> RangeLength.Last(
+            days = days,
+        )
+    }
+}
+
+fun RangeLength.toParams(): RangeLengthParams {
+    return when (this) {
+        is RangeLength.Day -> RangeLengthParams.Day
+        is RangeLength.Week -> RangeLengthParams.Week
+        is RangeLength.Month -> RangeLengthParams.Month
+        is RangeLength.Year -> RangeLengthParams.Year
+        is RangeLength.All -> RangeLengthParams.All
+        is RangeLength.Custom -> RangeLengthParams.Custom(
+            start = range.timeStarted,
+            end = range.timeEnded,
+        )
+        is RangeLength.Last -> RangeLengthParams.Last(
+            days = days,
+        )
+    }
+}
+
+fun RecordDataSelectionDialogResult.toParams(): List<RecordTagSelectionParams.Field> {
+    return fields.map {
+        when (it) {
+            is RecordDataSelectionDialogResult.Field.Tags -> RecordTagSelectionParams.Field.Tags
+            is RecordDataSelectionDialogResult.Field.Comment -> RecordTagSelectionParams.Field.Comment
+        }
     }
 }

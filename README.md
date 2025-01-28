@@ -23,6 +23,8 @@ Simple app that helps track how much time you spend on all the useless activitie
 <img src="metadata/en-US/images/phoneScreenshots/4.png" width="225"/>
 <img src="metadata/en-US/images/phoneScreenshots/5.png" width="225"/>
 <img src="metadata/en-US/images/phoneScreenshots/6.png" width="225"/>
+<img src="metadata/en-US/images/phoneScreenshots/7.png" width="225"/>
+<img src="metadata/en-US/images/phoneScreenshots/8.png" width="225"/>
 </p>
 
 ## Wear OS
@@ -98,6 +100,7 @@ Simple app that helps track how much time you spend on all the useless activitie
     │   ├── feature_settings                  # One of main tabs, settings.
     │   ├── feature_statistics                # One of main tabs, statistics.
     │   ├── feature_statistics_detail         # Screen showing detailed statistics.
+    │   ├── feature_suggestions               # Screen for activity suggestions.
     │   ├── feature_tag_selection             # Screen for selecting tags.
     │   ├── feature_views                     # Custom views.
     │   ├── feature_wear                      # Phone app logic to connect to wear app.
@@ -107,7 +110,7 @@ Simple app that helps track how much time you spend on all the useless activitie
 
 **Android App**
 
-Copyright (C) 2020-2024
+Copyright (C) 2020-2025
 Anton Razinkov devrazeeman@gmail.com
 
 This program is free software: you can redistribute it and/or modify
@@ -125,7 +128,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 **Wear OS App**
 
-Copyright (C) 2023-2024
+Copyright (C) 2023-2025
 Joseph Hale https://jhale.dev, [@kantahrek](https://github.com/kantahrek), Anton Razinkov devrazeeman@gmail.com
 
 This Source Code Form is subject to the terms of the Mozilla Public

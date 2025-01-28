@@ -173,10 +173,10 @@ class SettingsSortTag : BaseUiTest() {
         NavUtils.openSettingsDisplay()
         scrollSettingsRecyclerToText(R.string.settings_sort_order_tag)
         clickOnSettingsSpinnerBesideText(R.string.settings_sort_order_tag)
-        clickOnViewWithText(coreR.string.change_record_type_field)
+        clickOnViewWithText(coreR.string.settings_sort_activity)
         settingsSelectorValueBesideText(
             R.string.settings_sort_order_tag,
-            withText(coreR.string.change_record_type_field),
+            withText(coreR.string.settings_sort_activity),
         )
 
         // Check new order

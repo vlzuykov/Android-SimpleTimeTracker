@@ -19,6 +19,7 @@
     <string name="select_nothing">Hiçbir şey seçme</string>
     <string name="no_data">Veri yok</string>
     <string name="general_error">Bir şeyler ters gitti. Lütfen tekrar deneyin veya uygulamayı yeniden başlatın.</string>
+    <string name="copied_to_clipboard">Panoya kopyalandı</string>
 
     <!--  Range selection  -->
     <string name="title_yesterday">Dün</string>
@@ -58,7 +59,6 @@
     <string name="untracked_time_name">Takipsiz</string>
     <string name="uncategorized_time_name">Kategorize edilmemiş</string>
     <string name="multitask_time_name">Çoklu görev</string>
-    <string name="running_record_goal_time">hedef %s</string>
     <string name="record_types_empty">Aktivite eklenmedi</string>
     <string name="record_tag_selection_hint">Kayıt etiketi seçin</string>
     <string name="time_now">Şimdi</string>
@@ -109,6 +109,8 @@
     <string name="change_record_actions_hint">Hareketler</string>
     <string name="change_record_last_comments_hint">Son yorumlar</string>
     <string name="change_record_favourite_comments_hint">Favori</string>
+    <string name="change_record_favourite_comments_hint_long">Favori yorumlar</string>
+    <string name="change_record_similar_comments_hint">Benzer yorumlar</string>
     <string name="change_record_categories_empty">Kayıt etiketi eklenmedi</string>
     <string name="change_record_save">Kaydet</string>
     <string name="change_record_untagged">Etiketsiz</string>
@@ -142,11 +144,13 @@
     <string name="change_record_type_name_hint">Yeni isim girin</string>
     <string name="change_record_type_new_icon_text_hint">Yeni metin girin</string>
     <string name="change_record_type_color_hint">Renk</string>
+    <string name="change_record_favourite_colors_hint">Favori renkler</string>
     <string name="change_record_type_icon_image_hint">Simge</string>
     <string name="change_record_type_icon_text_hint">Metin</string>
     <string name="change_record_type_icon_emoji_hint">Emoji</string>
     <string name="change_record_type_icon_search_hint">Arama (İngilizce)</string>
     <string name="change_record_type_no_icon">Simge yok</string>
+    <string name="change_record_favourite_icons_hint">Favori simgeler</string>
     <string name="change_record_type_save">Kaydet</string>
     <string name="change_record_message_choose_name">İsim seçin</string>
     <string name="change_record_message_name_exist">Ad zaten kullanılmış</string>
@@ -154,6 +158,7 @@
     <string name="change_record_type_categories_empty">Kategori eklenmedi</string>
     <string name="change_record_type_goal_time_disabled">Devre dışı</string>
     <string name="change_record_type_goal_time_hint">Hedef</string>
+    <string name="change_record_type_limit_time_hint">Sınır</string>
     <string name="change_record_type_additional_hint">Ek olarak</string>
     <string name="change_record_type_default_duration">Varsayılan süre</string>
     <string name="change_record_type_default_duration_hint">Varsayılan süreye sahip etkinlikler, tıklandığında hemen izlenir.</string>
@@ -183,7 +188,13 @@
     <string name="change_complex_rule_choose_action">Eylem seçin</string>
     <string name="change_complex_rule_choose_condition">Koşulları seçin</string>
 
+    <!--  Activity suggestions  -->
+    <string name="activity_suggestions_hint">Mevcut veya son aktiviteye göre bir sonraki aktivite için öneriler gösterir</string>
+    <string name="activity_suggestions_calculate">İstatistiklerden hesapla</string>
+    <string name="activity_suggestions_select_activity_hint">Seçili aktiviteler için öneriler gösterilecek</string>
+
     <!--  Activity filters  -->
+    <string name="change_activity_filters_hint">Etkinlik filtreleri</string>
     <string name="change_activity_filter_removed">Filtre kaldırıldı</string>
     <string name="change_activity_filter_save">Kaydet</string>
     <string name="change_activity_filter_type">Filtre tipi</string>
@@ -212,8 +223,8 @@
     <string name="color_selection_adjust_color_hint">Rengi ayarlayın</string>
     <string name="color_selection_final_color_hint">Sonuç renk</string>
 
-    <string name="csv_export_settings_range">Tarih aralığı</string>
-    <string name="csv_export_settings_all">Tümü</string>
+    <string name="csv_export_settings_filename_hint">Özel dosya adı</string>
+    <string name="csv_export_settings_filename_default">Varsayılan</string>
     <string name="csv_export_settings_hint">Tarih aralığı seçin veya tüm kayıtları dışa aktarın</string>
 
     <string name="schedule_exact_alarms">Kesin alarmları programlamak için bu uygulama için sistem ayarı etkinleştirilmelidir</string>
@@ -224,7 +235,7 @@
     <string name="default_types_selection_hide">Bir daha gösterme</string>
 
     <string name="record_tag_selection_exclude_activities_title">Etkinlikleri hariç tut</string>
-    <string name="record_tag_selection_exclude_activities_hint">Seçilen etkinlikler için etiket seçimi iletişim kutusu gösterilmeyecektir.</string>
+    <string name="record_tag_selection_exclude_activities_hint">Seçilen etkinlikler için diyalog gösterilmeyecektir.</string>
 
     <string name="select_activities_to_autostart_pomodoro_title">Etkinlikleri seçin</string>
     <string name="select_activities_to_autostart_pomodoro_hint">Seçilen aktiviteler başlatıldığında Pomodoro otomatik olarak başlatılacaktır.</string>
@@ -233,7 +244,6 @@
     <string name="records_all_sort_order">Kayıtları sırala</string>
     <string name="records_all_sort_time_started">Başlangıç zamanı</string>
     <string name="records_all_sort_duration">Süre</string>
-    <string name="records_all_search_comment">Yorum ara</string>
 
     <!--  Running records  -->
     <string name="running_records_types_empty">İzlemeye başlamak için %s düğmesine tıklayarak etkinlikler ekleyin veya %s düğmesine tıklayarak varsayılan ön ayarları kullanın</string>
@@ -259,7 +269,7 @@
     <string name="settings_sort_by_name">İsim</string>
     <string name="settings_sort_by_color">Renk</string>
     <string name="settings_sort_manually">Elle</string>
-    <string name="settings_sort_activity">@string/change_record_type_field</string>
+    <string name="settings_sort_activity">Etkinlik sırası</string>
     <string name="settings_first_day_of_week">Haftanın ilk günü</string>
     <string name="settings_show_repeat_button">Ana ekranda tekrarla düğmesini göster</string>
     <string name="settings_repeat_button_type">Mod</string>
@@ -288,8 +298,12 @@
     <string name="settings_show_notifications">Zamanlayıcı bildirimlerini göster</string>
     <string name="settings_show_notifications_hint">Zamanlayıcılar çalışırken bildirim göster.</string>
     <string name="settings_show_notifications_controls">Bildirimden etkinlik değiştirmeyi etkinleştir</string>
+    <string name="settings_show_notifications_controls_hint">Kilit ekranından etkinlikler arasında geçiş yapmak için de kullanılabilir.</string>
+    <string name="settings_show_notification_even_with_no_timers">Hiçbir zamanlayıcı çalışmadığında bile göster</string>
     <string name="settings_keep_statistics_range">İstatistik aralığını koru</string>
     <string name="settings_keep_statistics_range_hint">Etkinleştirilirse, istatistiklerde seçilen aynı zaman aralığı ile ayrıntılı istatistikler açılır.</string>
+    <string name="settings_retroactive_tracking_mode">Geriye dönük zaman takibini etkinleştir</string>
+    <string name="settings_retroactive_tracking_mode_hint">Şu andan itibaren hangi etkinliğin yapılacağını değil, son seferden bu yana hangi etkinliğin yapıldığını seçerek zamanı takip edin.</string>
     <string name="settings_start_of_day">Gün başlangıcı</string>
     <string name="settings_start_of_day_hint">Günün başlangıcı, işarete bağlı olarak belirtilen süre kadar ileri veya geri kaydırılacaktır.</string>
     <string name="settings_start_of_day_hint_value">Bugün %s\'de başlıyor</string>
@@ -317,11 +331,14 @@
     <string name="settings_archive">Arşiv</string>
     <string name="settings_data_edit">Veri düzenleme</string>
     <string name="settings_complex_rules">Karmaşık kurallar</string>
+    <string name="settings_activity_suggestions">Etkinlik önerileri</string>
     <string name="settings_edit_categories">Kategorileri ve etiketleri düzenle</string>
     <string name="settings_edit_categories_hint">Etkinliklere kategoriler ve kayıtlara etiketler atayın.</string>
     <string name="settings_show_record_tag_selection">Kayıt etiketi seçimini göster</string>
     <string name="settings_show_record_tag_selection_hint">Eğer aktivite kayıt etiketine sahipse, zamanlayıcı başlatılırken seçim ekranı görünecek.</string>
     <string name="settings_show_record_tag_close_hint">Bir etiket seçildiğinde seçim ekranını kapat</string>
+    <string name="settings_show_comment_input">Yorum girişini göster</string>
+    <string name="settings_show_comment_input_hint">Bir zamanlayıcıyı başlatırken, bir yorum girişi iletişim kutusu gösterilecektir.</string>
     <string name="settings_rate">Bizi oylayın</string>
     <string name="settings_rate_description">Uygulamayı oyla ve bir yorum bırak.</string>
     <string name="settings_support_development">Geliştirmeyi destekleyin</string>
@@ -348,29 +365,20 @@ Bu davranışı etkinleştirmek için bu uygulamaların şu parametrelerle \"int
 <b>Action</b> - \"%s\" veya \"%s\".<br/>
 <b>Extra</b> - Başlatılması veya durdurulması gereken etkinlik adıyla \"%s\".<br/>
 <b>Package</b> - \"%s\".<br/>
-<br/>
-Aktiviteyi başlatmak için isteğe bağlı parametreler:<br/>
-<br/>
-<b>Extra</b> - Kayıt yorumuyla \"%s\".<br/>
-<b>Extra</b> - Bir kayıt etiketi adıyla \"%s\".<br/>
-<br/>
-Ek olarak:<br/>
-<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\".<br/>
-<b>Action</b> - \"%s\" ve ekstralar: \"%s\", \"%s\", \"%s\" ve \"%s\", \"%s\" \"yyyy-AA-gg SS:dd:ss\" veya UTC zaman damgası biçiminde.<br/>
     ]]></string>
     <string name="settings_automated_tracking_send_events">Etkinlikleri gönder</string>
     <string name="settings_automated_tracking_send_events_text"><![CDATA[
-<b>\"%s\"</b> ayarı etkinleştirilirse uygulama, başlatılan veya durdurulan etkinliklerle ilgili olayları otomatik izleme için şu parametrelerle üçüncü taraf uygulamalara gönderir:<br/>
-<br/>
-<b>Action</b> - \"%s\" veya \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
-<b>Extra</b> - \"%s\".<br/>
+<b>\"%s\"</b> ayarı etkinleştirilirse, uygulama, etkinlik başlatıldığında veya durdurulduğunda otomatik izleme için olayları üçüncü taraf uygulamalarına gönderir.<br/>
     ]]></string>
+    <string name="settings_automated_tracking_available_actions">Mevcut eylemler:</string>
+    <string name="settings_automated_tracking_available_events">Mevcut etkinlikler:</string>
+    <string name="settings_automated_tracking_extras_description">Tanım:</string>
+    <string name="settings_automated_tracking_extra_name">başlatılması veya durdurulması gereken etkinlik adıyla.</string>
+    <string name="settings_automated_tracking_extra_tag">bir kayıt etiketi adıyla. Veya virgülle ayrılmış etiket adlarının listesi.</string>
+    <string name="settings_automated_tracking_extra_time">veya UTC zaman damgası biçiminde.</string>
+    <string name="settings_automated_tracking_find_record_mode">hangi kaydın değiştirileceğini seçer.</string>
+    <string name="settings_automated_tracking_comment_mode">seçili kaydın yorumunun nasıl değiştirileceğini seçer.</string>
+    <string name="settings_automated_tracking_find_with_activity">ayrica, birden fazla geçerli veya son kayıt varsa, aktivite adına göre kaydı seçer.</string>
 
     <string name="settings_save_backup">Yedekleme kaydet</string>
     <string name="settings_save_description">Kaydetmeden önce, uyuşmazlık yaşamamak için uygulamanın güncel olduğundan emin olun.</string>
@@ -380,6 +388,7 @@ Ek olarak:<br/>
     <string name="settings_automatic_last_save">Son kaydetme:</string>
     <string name="settings_restore_backup">Yedeklemeyi geri yükle</string>
     <string name="settings_restore_description">Varolan veri silinecek.</string>
+    <string name="settings_backup_options">Gelişmiş seçenekler</string>
     <string name="settings_dialog_message">Yedeklemeyi geri yükle?</string>
     <string name="settings_export_csv">Çizelge dışa aktar</string>
     <string name="settings_export_csv_description">Aktivite kayıtlarını, tercih edilen çizelge uygulamasında görüntülemek için csv dosyası olarak dışa aktar.</string>
@@ -412,9 +421,22 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="message_import_complete">İçe aktarma tamamlandı</string>
     <string name="message_import_complete_hint">Eklenen kayıtlar: %s</string>
     <string name="message_import_error">Alma hatası</string>
+    <string name="message_action_share">Paylaşmak</string>
     <string name="message_automatic_backup_error">Otomatik yedeklemede bir hata oluştu.</string>
     <string name="message_automatic_export_error">Otomatik dışa aktarmayla ilgili bir hata oluştu.</string>
     <string name="message_automatic_error_hint">Farklı bir konum seçmeyi deneyin</string>
+
+    <!--  Backup options  -->
+    <string name="backup_options_import">İçe aktarmak</string>
+    <string name="backup_options_save_without_records">Yedeklemeyi kayıt olmadan kaydet</string>
+    <string name="backup_options_save_without_records_hint">Kurulumu paylaşmak için kullanılabilir.</string>
+    <string name="backup_options_full_restore">Tam geri yükleme</string>
+    <string name="backup_options_full_restore_hint">Verileri ve ayarları geri yükler. Uygulamanın yeniden başlatılmasını gerektirir.</string>
+    <string name="backup_options_partial_restore">Yedeklemeden verileri içe aktar</string>
+    <string name="backup_options_partial_restore_hint">Hangi verilerin içe aktarılacağını seçmenize izin verir. Mevcut veriler kaybolmayacaktır.</string>
+
+    <!--  Partial restore  -->
+    <string name="partial_restore_filter_hint">Dosyadan hangi verilerin içe aktarılacağını seçin.</string>
 
     <!--  Statistics detail  -->
     <string name="statistics_detail_chart_hourly">Saatlik</string>
@@ -427,6 +449,7 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="statistics_detail_length_hundred">100</string>
     <string name="statistics_detail_legend_minute_suffix">dk</string>
     <string name="statistics_detail_legend_hour_suffix">sa</string>
+    <string name="statistics_detail_chart_split">Etkinliğe göre böl</string>
 
     <string name="statistics_detail_range_averages_title">%s ortalama</string>
     <string name="statistics_detail_range_averages">Tüm tarih aralığı</string>
@@ -449,12 +472,16 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="statistics_detail_streaks_latest">En sonuncu</string>
     <string name="statistics_detail_streaks_any">Herhangi bir süre</string>
     <string name="statistics_detail_streaks_goal">@string/change_record_type_goal_time_hint</string>
-    <string name="statistics_detail_activity_split_hint">Etkinlik dağılımı</string>
-    <string name="statistics_detail_tag_split_hint">Etiket dağılımı</string>
+    <string name="statistics_detail_data_split_hint">Dağıtım</string>
+    <string name="statistics_detail_data_split_pie_chart">Daire</string>
+    <string name="statistics_detail_data_split_bar_chart">Sütunlar</string>
     <string name="statistics_detail_day_split_hint">Günlük dağılım</string>
     <string name="statistics_detail_duration_split_hint">Kayıt süresi dağılımı</string>
     <string name="statistics_detail_next_activities_hint">Sonraki en iyi aktiviteler</string>
     <string name="statistics_detail_multitasking_activities_hint">En iyi çoklu görev</string>
+    <string name="statistics_detail_goals_hint">Hedef fazlası veya açığı</string>
+    <string name="statistics_detail_goals_excess">Aşırı</string>
+    <string name="statistics_detail_goals_deficit">Açık</string>
 
     <plurals name="statistics_detail_times_tracked">
         <!--        <item quantity="zero">Kayıt</item>-->
@@ -478,7 +505,9 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="notification_activity_title">Etkinlik hatırlatıcısı</string>
     <string name="notification_activity_text">Hala şunu yapıyor musunuz: %s?</string>
     <string name="notification_goal_time_description">hedef ulaşıldı</string>
+    <string name="notification_limit_time_description">sınıra ulaşıldı</string>
     <string name="notification_time_started">Başlangıç zamanı %s</string>
+    <string name="notification_time_ended">%s\'de tamamlandı</string>
     <string name="notification_record_type_stop">Durmak</string>
     <string name="notification_pomodoro_subtitle">Başlangıç: %s (%s)</string>
 
@@ -502,14 +531,18 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="data_edit_hint">Bu değişiklikler geri alınamaz. Herhangi bir şey yapmadan önce bir yedekleme dosyası oluşturduğunuzdan emin olun.</string>
     <string name="data_edit_select_records">Kayıtları seç</string>
     <string name="data_edit_change_activity">Etkinliği değiştir</string>
+    <string name="data_edit_change_tag">Etiketleri değiştir</string>
     <string name="data_edit_change_activity_hint">Mevcut etkinliğin etiketleri kaldırılacak.</string>
     <string name="data_edit_change_comment">Yorumu değiştir</string>
     <string name="data_edit_change_add_tag">Etiket ekle</string>
     <string name="data_edit_change_remove_tag">Etiketleri kaldır</string>
     <string name="data_edit_button_change">Değiştirmek</string>
+    <string name="data_edit_button_delete_records">Tüm kayıtları sil</string>
+    <string name="data_edit_button_delete_data">Tüm verileri sil</string>
     <string name="data_edit_success_message">Veri değişti</string>
 
     <!--  Records filter  -->
+    <string name="records_filter_duplications">Çoğaltmalar</string>
     <string name="records_filter_select_tags">Etiketleri seçin</string>
     <string name="records_filter_filter_tags">Etiketleri hariç tut</string>
     <string name="records_filter_manually_filtered">Filtrelendi</string>
@@ -517,12 +550,20 @@ CSV dosyası virgülle ayrılmış şu sütunları içermelidir:<br/>
     <string name="records_filter_any_comment">Herhangi bir yorum</string>
     <string name="records_filter_select">Seçme</string>
     <string name="records_filter_invert_selection">Zıt seçim</string>
+    <string name="records_filter_duration_min">Asgari</string>
+    <string name="records_filter_duration_max">Maksimum</string>
+    <string name="records_filter_duplications_same_activity">Aynı aktivite</string>
+    <string name="records_filter_duplications_same_times">Aynı zaman</string>
+    <string name="records_filter_duplications_manually_fitler">Kopyaları filtrele</string>
 
     <!--  Pomodoro  -->
     <string name="pomodoro_state_focus">Odaklanma</string>
     <string name="pomodoro_state_break">Ara</string>
     <string name="pomodoro_state_long_break">Uzun ara</string>
     <string name="pomodoro_settings_periods_until_long_break">Uzun araya kalan dönemler</string>
+
+    <!--  Retroactive tracking mode  -->
+    <string name="retroactive_tracking_mode_hint">Ne yaptığınızı seçin</string>
 
     <!--  Icon emoji category  -->
     <string name="emojiGroupSmileys">İfadeler</string>

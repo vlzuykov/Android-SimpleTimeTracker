@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.util.simpletimetracker.core.base.BaseFragment
 import com.example.util.simpletimetracker.core.utils.InsetConfiguration
 import com.example.util.simpletimetracker.feature_base_adapter.BaseRecyclerAdapter
+import com.example.util.simpletimetracker.feature_base_adapter.button.createButtonAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.hint.createHintAdapterDelegate
 import com.example.util.simpletimetracker.feature_base_adapter.loader.createLoaderAdapterDelegate
-import com.example.util.simpletimetracker.feature_complex_rules.adapter.createComplexRuleAdapterDelegate
-import com.example.util.simpletimetracker.feature_complex_rules.adapter.createComplexRuleAddAdapterDelegate
+import com.example.util.simpletimetracker.feature_base_adapter.complexRule.createComplexRuleAdapterDelegate
 import com.example.util.simpletimetracker.feature_complex_rules.viewModel.ComplexRulesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.util.simpletimetracker.feature_complex_rules.databinding.ComplexRulesFragmentBinding as Binding
@@ -34,7 +34,7 @@ class ComplexRulesFragment : BaseFragment<Binding>() {
                 onItemClick = throttle(viewModel::onRuleClick),
                 onDisableClick = viewModel::onRuleDisableClick,
             ),
-            createComplexRuleAddAdapterDelegate(throttle(viewModel::onAddRuleClick)),
+            createButtonAdapterDelegate(throttle(viewModel::onItemButtonClick)),
         )
     }
 

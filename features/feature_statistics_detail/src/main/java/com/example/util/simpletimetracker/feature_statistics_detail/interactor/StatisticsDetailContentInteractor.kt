@@ -2,11 +2,12 @@ package com.example.util.simpletimetracker.feature_statistics_detail.interactor
 
 import android.graphics.Color
 import com.example.util.simpletimetracker.core.repo.ResourceRepo
-import com.example.util.simpletimetracker.domain.model.OneShotValue
+import com.example.util.simpletimetracker.domain.base.OneShotValue
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_statistics_detail.R
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBarChartViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailBlock
+import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailButtonsRowViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailCardDoubleViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailCardViewData
@@ -17,6 +18,7 @@ import com.example.util.simpletimetracker.feature_statistics_detail.adapter.Stat
 import com.example.util.simpletimetracker.feature_statistics_detail.adapter.StatisticsDetailSeriesChartViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailChartViewData
+import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailGoalsCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailPreviewCompositeViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailPreviewViewData
 import com.example.util.simpletimetracker.feature_statistics_detail.viewData.StatisticsDetailStatsViewData
@@ -41,6 +43,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
         durationSplitChartViewData: StatisticsDetailChartViewData?,
         comparisonDurationSplitChartViewData: StatisticsDetailChartViewData?,
         nextActivitiesViewData: List<ViewHolderType>?,
+        goalsViewData: StatisticsDetailGoalsCompositeViewData?,
     ): List<ViewHolderType> {
         val result = mutableListOf<ViewHolderType>()
 
@@ -76,7 +79,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.chartData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.ChartData,
-                    color = getPreviewColor(),
+                    singleColor = getPreviewColor(),
                     marginTopDp = 16,
                     data = viewData.chartData,
                 )
@@ -85,7 +88,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.compareChartData.visible && comparisonChartIsVisible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.ChartDataComparison,
-                    color = getPreviewColorComparison(),
+                    singleColor = getPreviewColorComparison(),
                     marginTopDp = 16,
                     data = viewData.compareChartData,
                 )
@@ -105,6 +108,17 @@ class StatisticsDetailContentInteractor @Inject constructor(
                     marginTopDp = -10,
                     data = viewData.chartLengthViewData,
                 )
+            }
+
+            if (viewData.chartData.visible) {
+                // Update margin top depending if has buttons before.
+                val hasButtonsBefore = result.lastOrNull() is StatisticsDetailButtonsRowViewData
+                val newMarginTopDp = if (hasButtonsBefore) -10 else 4
+                val additionalChartButtonItems = viewData.additionalChartButtonItems.map {
+                    (it as? StatisticsDetailButtonViewData)
+                        ?.copy(marginTopDp = newMarginTopDp) ?: it
+                }
+                result += additionalChartButtonItems
             }
 
             val rangeAveragesData = viewData.rangeAverages
@@ -219,7 +233,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 )
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.SplitChart,
-                    color = getPreviewColor(),
+                    singleColor = getPreviewColor(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -230,7 +244,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.SplitChartComparison,
-                    color = getPreviewColorComparison(),
+                    singleColor = getPreviewColorComparison(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -255,7 +269,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 )
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.DurationSplitChart,
-                    color = getPreviewColor(),
+                    singleColor = getPreviewColor(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -266,7 +280,7 @@ class StatisticsDetailContentInteractor @Inject constructor(
             if (viewData.visible) {
                 result += StatisticsDetailBarChartViewData(
                     block = StatisticsDetailBlock.DurationSplitChartComparison,
-                    color = getPreviewColorComparison(),
+                    singleColor = getPreviewColorComparison(),
                     marginTopDp = 0,
                     data = viewData,
                 )
@@ -281,6 +295,8 @@ class StatisticsDetailContentInteractor @Inject constructor(
                 )
             }
         }
+
+        result += goalsViewData?.viewData.orEmpty()
 
         statsViewData?.let { viewData ->
             result += viewData.splitData

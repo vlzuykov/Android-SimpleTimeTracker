@@ -10,7 +10,6 @@ import com.example.util.simpletimetracker.core.base.BaseFragment
 import com.example.util.simpletimetracker.core.di.BaseViewModelFactory
 import com.example.util.simpletimetracker.core.dialog.DateTimeDialogListener
 import com.example.util.simpletimetracker.core.dialog.DurationDialogListener
-import com.example.util.simpletimetracker.core.extension.observeOnce
 import com.example.util.simpletimetracker.core.extension.setSharedTransitions
 import com.example.util.simpletimetracker.core.extension.toViewData
 import com.example.util.simpletimetracker.core.sharedViewModel.RemoveRecordViewModel
@@ -51,7 +50,7 @@ class ChangeRecordFragment :
     private val core by lazy { ChangeRecordCore(viewModel = viewModel) }
 
     private val extra: ChangeRecordParams by fragmentArgumentDelegate(
-        key = ARGS_PARAMS, default = ChangeRecordParams.New(),
+        key = ARGS_PARAMS, default = ChangeRecordParams.New(0),
     )
 
     override fun initUi(): Unit = with(binding) {
@@ -89,9 +88,6 @@ class ChangeRecordFragment :
     override fun initViewModel() = with(binding) {
         with(viewModel) {
             extra = this@ChangeRecordFragment.extra
-            record.observeOnce(viewLifecycleOwner) {
-                core.updateUi(layoutChangeRecordCore, it.comment)
-            }
             record.observe(::updatePreview)
             core.initViewModel(this@ChangeRecordFragment, layoutChangeRecordCore)
         }
