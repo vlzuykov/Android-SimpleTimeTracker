@@ -21,7 +21,9 @@ fun createChangeRecordCommentFieldAdapterDelegate(
     with(binding) {
         item as ViewData
 
-        if (item.text != etChangeRecordCommentField.text.toString()) {
+        if (item.text != null &&
+            item.text != etChangeRecordCommentField.text.toString()
+        ) {
             etChangeRecordCommentField.setText(item.text)
             etChangeRecordCommentField.setSelection(item.text.length)
         }
@@ -38,7 +40,7 @@ fun createChangeRecordCommentFieldAdapterDelegate(
 
 data class ChangeRecordCommentFieldViewData(
     val id: Long,
-    val text: String,
+    val text: String?,
     @ColorInt val iconColor: Int,
 ) : ViewHolderType {
 

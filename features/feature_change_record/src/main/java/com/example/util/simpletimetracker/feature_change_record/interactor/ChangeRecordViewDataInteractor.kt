@@ -7,10 +7,10 @@ import com.example.util.simpletimetracker.core.view.timeAdjustment.TimeAdjustmen
 import com.example.util.simpletimetracker.domain.favourite.interactor.FavouriteCommentInteractor
 import com.example.util.simpletimetracker.domain.prefs.interactor.PrefsInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.RecordInteractor
-import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
-import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.domain.record.interactor.RunningRecordInteractor
 import com.example.util.simpletimetracker.domain.record.model.Record
+import com.example.util.simpletimetracker.domain.recordTag.interactor.RecordTagInteractor
+import com.example.util.simpletimetracker.domain.recordType.interactor.RecordTypeInteractor
 import com.example.util.simpletimetracker.feature_base_adapter.ViewHolderType
 import com.example.util.simpletimetracker.feature_base_adapter.hint.HintViewData
 import com.example.util.simpletimetracker.feature_change_record.R
@@ -63,6 +63,7 @@ class ChangeRecordViewDataInteractor @Inject constructor(
     suspend fun getCommentsViewData(
         comment: String,
         typeId: Long,
+        fromCommentChange: Boolean,
     ): List<ViewHolderType> {
         data class Data(val timeStarted: Long, val comment: String)
 
@@ -71,8 +72,10 @@ class ChangeRecordViewDataInteractor @Inject constructor(
         val isFavourite = favouriteCommentInteractor.get(comment) != null
 
         ChangeRecordCommentFieldViewData(
-            id = 1L, // Only one at the time.
-            text = comment,
+            // Only one at the time.
+            id = 1L,
+            // Do not update text if update coming from typing.
+            text = if (fromCommentChange) null else comment,
             iconColor = if (isFavourite) {
                 resourceRepo.getColor(R.color.colorSecondary)
             } else {
