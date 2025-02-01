@@ -55,7 +55,6 @@ class RecordsContainerFragment :
 
     override fun initUi(): Unit = with(binding) {
         pagerRecordsContainer.apply {
-            isSaveEnabled = false // See BaseFragment.
             adapter = SafeFragmentStateAdapter(
                 RecordsContainerAdapter(this@RecordsContainerFragment),
             )

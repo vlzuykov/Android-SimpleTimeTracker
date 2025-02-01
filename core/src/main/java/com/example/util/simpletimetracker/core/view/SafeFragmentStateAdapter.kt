@@ -83,6 +83,11 @@ class SafeFragmentStateAdapter(
 
     override fun restoreState(savedState: Parcelable) {
         try {
+            // Restoring is crashing with "Expected the adapter to be 'fresh' while restoring state".
+            // Don't need it anyway, because binding is saved in BaseFragment.
+            // Crash can be avoided with setSaveEnabled,
+            // which would cause skipping of saveState / restoreState,
+            // but it will cause fragments to save themselves which would cause TransactionTooLargeException.
             adapter.restoreState(savedState)
         } catch (e: Exception) {
             Timber.e(e)
