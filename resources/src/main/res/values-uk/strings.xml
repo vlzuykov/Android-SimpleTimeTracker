@@ -101,7 +101,7 @@
     <string name="change_record_tag_default_types_hint">Тег буде призначено за замовчуванням під час запуску таймера з вибраними діями</string>
 
     <!--  Change record  -->
-    <string name="change_record_message_choose_type">Оберати активність</string>
+    <string name="change_record_message_choose_type">Обрати активність</string>
     <string name="change_record_type_field">Активність</string>
     <string name="change_record_tag_field">Тег</string>
     <string name="change_record_comment_field">Коментар</string>
