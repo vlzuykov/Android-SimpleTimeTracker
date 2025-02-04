@@ -79,7 +79,6 @@ class MainFragment : BaseFragment<Binding>() {
     }
 
     private fun setupPager() = with(binding) {
-        mainPager.isSaveEnabled = false // See BaseFragment.
         mainPager.adapter = SafeFragmentStateAdapter(
             MainContentAdapter(
                 fragment = this@MainFragment,

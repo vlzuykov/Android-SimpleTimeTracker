@@ -80,7 +80,7 @@ abstract class ChangeRecordBaseViewModel(
         return@lazy MutableLiveData<List<ViewHolderType>>().let { initial ->
             viewModelScope.launch {
                 initializePreviewViewData()
-                initial.value = loadCommentsViewData()
+                initial.value = loadCommentsViewData(fromCommentChange = false)
             }
             initial
         }
@@ -338,7 +338,13 @@ abstract class ChangeRecordBaseViewModel(
     }
 
     fun onCommentClick(item: ChangeRecordCommentViewData) {
-        onCommentChange(item.text)
+        viewModelScope.launch {
+            if (item.text != newComment) {
+                newComment = item.text
+                updatePreview()
+                updateCommentsViewData()
+            }
+        }
     }
 
     fun onCommentChange(comment: String) {
@@ -346,7 +352,7 @@ abstract class ChangeRecordBaseViewModel(
             if (comment != newComment) {
                 newComment = comment
                 updatePreview()
-                updateCommentsViewData()
+                updateCommentsViewData(fromCommentChange = true)
             }
         }
     }
@@ -845,17 +851,22 @@ abstract class ChangeRecordBaseViewModel(
         )
     }
 
-    private fun updateCommentsViewData() {
+    private fun updateCommentsViewData(
+        fromCommentChange: Boolean = false,
+    ) {
         searchLoadJob?.cancel()
         searchLoadJob = viewModelScope.launch {
-            comments.set(loadCommentsViewData())
+            comments.set(loadCommentsViewData(fromCommentChange))
         }
     }
 
-    private suspend fun loadCommentsViewData(): List<ViewHolderType> {
+    private suspend fun loadCommentsViewData(
+        fromCommentChange: Boolean,
+    ): List<ViewHolderType> {
         return changeRecordViewDataInteractor.getCommentsViewData(
             comment = newComment,
             typeId = newTypeId,
+            fromCommentChange = fromCommentChange,
         )
     }
 

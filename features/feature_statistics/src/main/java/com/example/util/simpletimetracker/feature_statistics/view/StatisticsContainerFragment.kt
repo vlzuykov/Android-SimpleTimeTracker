@@ -53,7 +53,6 @@ class StatisticsContainerFragment :
 
     override fun initUi(): Unit = with(binding) {
         pagerStatisticsContainer.apply {
-            isSaveEnabled = false // See BaseFragment.
             adapter = SafeFragmentStateAdapter(
                 StatisticsContainerAdapter(this@StatisticsContainerFragment),
             )
